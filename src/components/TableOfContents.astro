@@ -1,0 +1,130 @@
+---
+/**
+ * 目录导航组件 - 从 slot 内容中提取标题并渲染目录
+ * 极简设计：只用缩进区分层级，h2 带圆圈序号
+ */
+
+import type { TocItem } from '@/types/utils';
+
+export interface Props {
+  /** 自定义样式类名 */
+  className?: string;
+  /** 最小显示层级 */
+  minLevel?: number;
+  /** 最大显示层级 */
+  maxLevel?: number;
+  /** 标题 */
+  title?: string | undefined;
+  /** 无目录时的提示文字 */
+  emptyText?: string | undefined;
+  /** 目录数据 */
+  toc: TocItem[];
+}
+
+const {
+  className = '',
+  minLevel = 1,
+  maxLevel = 6,
+  title = '目录',
+  emptyText = '本文章没有目录',
+  toc,
+} = Astro.props;
+
+// 过滤有效层级的标题
+const filteredHeadings = toc.filter(
+  h => h.level >= minLevel && h.level <= maxLevel,
+);
+
+// 找到实际的最小层级（可能是h1、h2或更深）
+const actualMinLevel = filteredHeadings.length > 0
+  ? Math.min(...filteredHeadings.map(h => h.level))
+  : minLevel;
+
+// 计算顶层标题的序号
+let topLevelIndex = 0;
+const itemsWithIndex = filteredHeadings.map((item) => {
+  if (item.level === actualMinLevel) {
+    topLevelIndex++;
+    return { ...item, topLevelIndex };
+  }
+  return { ...item, topLevelIndex: null };
+});
+---
+
+<nav
+  id="toc"
+  class:list={['py-4', className]}
+  aria-label={title}
+>
+  <h2 class={`
+    mb-4 border-b border-line pb-2 text-2xl font-bold text-primary opacity-80
+  `}
+  >
+    {title}
+  </h2>
+
+  {filteredHeadings.length > 1
+    ? (
+        <div>
+          {itemsWithIndex.map((item) => {
+            // 计算相对于最小层级的偏移量
+            const levelOffset = item.level - actualMinLevel;
+
+            return (
+              <a
+                href={`#${item.id}`}
+                class:list={[
+                  'group relative flex items-center gap-2 rounded-md py-1.5',
+                  'text-secondary no-underline transition-colors',
+                  'hover:bg-hover hover:text-primary',
+                  levelOffset === 0 && 'pl-3',
+                  levelOffset === 1 && 'pl-7',
+                  levelOffset === 2 && 'pl-10',
+                  levelOffset === 3 && 'pl-13',
+                  levelOffset === 4 && 'pl-16',
+                  levelOffset >= 5 && 'pl-19',
+                ]}
+                data-toc-id={item.id}
+              >
+                {/* 顶层：圆圈序号；非顶层：小圆点 */}
+                {item.topLevelIndex
+                  ? (
+                      <span
+                        data-toc-level="top"
+                        class={`
+                          inline-flex h-5 w-5 shrink-0 items-center
+                          justify-center rounded-full text-xs font-semibold
+                          text-surface transition-colors
+                        `}
+                      >
+                        {item.topLevelIndex}
+                      </span>
+                    )
+                  : (
+                      <span
+                        data-toc-level="sub"
+                        class={`
+                          h-1.5 w-1.5 shrink-0 rounded-full transition-colors
+                        `}
+                      >
+                      </span>
+                    )}
+
+                {/* 标题文字 */}
+                <span class={`
+                  flex-1 overflow-hidden text-ellipsis whitespace-nowrap
+                `}
+                >
+                  <Fragment set:html={item.text} />
+                </span>
+              </a>
+            );
+          })}
+        </div>
+      )
+    : (
+        <p class="text-sm text-muted">
+          {emptyText}
+        </p>
+      )}
+</nav>

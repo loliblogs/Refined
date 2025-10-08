@@ -1,0 +1,151 @@
+---
+title: "[HNOI2008]明明的烦恼"
+date: 2018-04-28
+categories: 题解
+tags: [树的prufer编码]
+---
+
+import { getPostUrl } from '@/utils/collection-paths';
+
+详见<a href={getPostUrl('prufer-encoding', 'oi') + '#题目分析'}>Prufer编码例题</a>
+
+::more
+
+## Problem
+
+### 题目描述
+
+自从明明学了树的结构，
+就对奇怪的树产生了兴趣……
+
+给出标号为 $1$ 到 $N$ 的点，
+以及某些点最终的度数，
+允许在任意两点间连线，
+可产生多少棵度数满足要求的树？
+
+### 输入格式
+
+第一行为 $N (0 \lt N \le 1000)$，
+接下来 $N$ 行，
+第 $i + 1$ 行给出第 $i$ 个节点的度数 $D_i$，
+如果对度数不要求，则输入 `-1`。
+
+### 输出格式
+
+一个整数，表示不同的满足要求的树的个数，
+无解输出 `0`。
+
+### 输入
+
+```plain
+3
+1
+-1
+-1
+```
+
+### 输出
+
+```plain
+2
+```
+
+### 说明/提示
+
+两棵树分别为 `1-2-3` 和 `1-3-2`
+
+## Code
+```cpp
+#include <iostream>
+#include <cstdio>
+#include <cstring>
+#include <algorithm>
+using namespace std;
+struct bigint
+{
+	mutable int a[1005];
+	inline int& operator[](size_t pos)const{return a[pos];}
+	inline bigint(){memset(a,0,sizeof(a));a[0]=1;}
+	inline bigint& operator*=(int b)
+	{
+		int i;
+		for(i=1;i<=a[0];++i)a[i]*=b;
+		for(i=1;i<=a[0]||a[i];++i)
+		{
+			if(a[i]>=10000)
+			{
+				a[i+1]+=a[i]/10000;
+				a[i]%=10000;
+			}
+		}
+		a[0]=i-1;
+		return *this;
+	}
+}ans;
+inline ostream& operator<<(ostream& os,const bigint& a)
+{
+	printf("%d",a[a[0]]);
+	for(int i=a[0]-1;i>=1;--i)printf("%04d",a[i]);
+	return os;
+}
+int num[1005],d[1005],p[1005],cnt;
+bool vis[1005];
+inline void Solve(int x,int del)
+{
+	int i,j,s;
+	for(i=1;i<=cnt&&p[i]<=x;++i)
+	{
+		s=p[i];
+		while(s<=x)
+		{
+			num[i]+=(x/s)*del;
+			s*=p[i];
+		}
+	}
+	return;
+}
+inline void Init()
+{
+	int i,j;
+	for(i=2;i<=1000;++i)
+	{
+		if(!vis[i])p[++cnt]=i;
+		for(j=1;j<=cnt&&i*p[j]<=1000;++j)
+		{
+			vis[i*p[j]]=1;
+			if(i%p[j]==0)break;
+		}
+	}
+	return;
+}
+int main(void)
+{
+	Init();
+	int i,j,n,m=0,sum=0;
+	scanf("%d",&n);
+	for(i=1;i<=n;++i)
+	{
+		scanf("%d",&d[i]);
+		if(d[i]==-1)++m;
+		else
+		{
+			--d[i];sum+=d[i];
+		}
+	}
+	if(sum>n-2){printf("0\n");return 0;}
+	Solve(n-2,1);
+	Solve(n-sum-2,-1);
+	for(i=1;i<=n;++i)
+	{
+		if(d[i]>0)Solve(d[i],-1);
+	}
+	ans[1]=1;
+	for(i=1;i<=cnt;++i)
+	{
+		for(j=1;j<=num[i];++j)ans*=p[i];
+	}
+	for(i=1;i<=n-sum-2;++i)ans*=m;
+	cout<<ans<<endl;
+	return 0;
+}
+```

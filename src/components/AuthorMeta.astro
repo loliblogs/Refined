@@ -1,0 +1,71 @@
+---
+/**
+ * 作者信息组件 - 匹配 Concise 主题样式
+ */
+import { MapPinIcon } from '@phosphor-icons/react';
+
+import { getSiteConfig } from '@/config/site.config';
+import type { CollectionName } from '@/types/content';
+
+import MathJax from './MathJax.astro';
+import SocialLinks from './SocialLinks.astro';
+import Image from './ImageWrapper.astro';
+
+interface Props {
+  collection?: CollectionName;
+}
+
+const { collection = 'post' } = Astro.props;
+
+const config = getSiteConfig(collection);
+---
+
+<div class="w-full text-center leading-8 text-primary">
+  <div class="flex justify-center pb-9">
+    <a href={config.author.avatar.href}>
+      <div
+        class={`
+          overflow-hidden rounded-full transition-transform duration-200
+          ease-in-out
+          hover:scale-110
+        `}
+      >
+        <Image
+          src={config.author.avatar.src}
+          alt={config.author.avatar.alt}
+          widths={[
+            config.author.avatar.width * 1.5,
+            config.author.avatar.width * 2,
+            config.author.avatar.width * 3,
+            config.author.avatar.width * 4,
+            config.author.avatar.width * 5,
+          ]}
+          sizes={`calc(clamp(1rem, 0.66rem + 0.38vw, 2rem) * ${config.author.avatar.width / 16})`}
+          priority
+          style={{
+            width: `${config.author.avatar.width / 16}rem`,
+            height: `${config.author.avatar.height / 16}rem`,
+          }}
+        />
+      </div>
+    </a>
+  </div>
+
+  <MathJax cacheKey={`author-meta-${collection}`}>
+    <div class="text-2xl leading-8 text-primary">{config.author.name}</div>
+    {config.author.work && (
+      <div class="text-base leading-8 text-secondary">{config.author.work}</div>
+    )}
+    <div class={`
+      mt-2 flex items-center justify-center text-sm leading-8 text-secondary
+    `}
+    >
+      <MapPinIcon size="1rem" weight="regular" />
+      <span class="ml-1">{config.author.location}</span>
+    </div>
+  </MathJax>
+
+  {config.links.length > 0 && (
+    <SocialLinks links={config.links} />
+  )}
+</div>

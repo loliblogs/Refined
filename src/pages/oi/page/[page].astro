@@ -1,0 +1,13 @@
+---
+import PagedHomePage from '@/components/pages/PagedHomePage.astro';
+import { createHomePagedRoutes } from '@/utils/route-generator';
+import type { HomePagedRouteProps } from '@/types/routes';
+
+export const getStaticPaths = createHomePagedRoutes('oi');
+
+type Props = HomePagedRouteProps;
+
+const { page } = Astro.props;
+---
+
+<PagedHomePage page={page} collection="oi" />

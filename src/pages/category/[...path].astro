@@ -1,0 +1,21 @@
+---
+import CategoryPage from '@/components/pages/CategoryPage.astro';
+import { createCategoryRoutes } from '@/utils/route-generator';
+import type { CategoryRouteProps } from '@/types/routes';
+
+export const getStaticPaths = createCategoryRoutes('post');
+
+type Props = CategoryRouteProps;
+
+const { category, posts, ancestors, subcategories, currentPage, lastPage } = Astro.props;
+---
+
+<CategoryPage
+  category={category}
+  posts={posts}
+  ancestors={ancestors}
+  subcategories={subcategories}
+  currentPage={currentPage}
+  lastPage={lastPage}
+  collection="post"
+/>

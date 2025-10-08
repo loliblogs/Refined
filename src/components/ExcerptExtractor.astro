@@ -1,0 +1,19 @@
+---
+/**
+ * 极简摘要提取器
+ * Breaking change: 没有<!--more-->就显示全文
+ */
+
+// 通过slot获取渲染后的HTML
+const html = await Astro.slots.render('default');
+
+// 查找<!--more-->
+const moreIndex = html.indexOf('<span id="more">');
+
+// 有标记就截断，没有就全文
+const excerpt = moreIndex !== -1
+  ? html.substring(0, moreIndex).trim()
+  : html;
+---
+
+<Fragment set:html={excerpt} />

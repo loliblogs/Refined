@@ -1,0 +1,13 @@
+---
+import PageComponent from '@/components/pages/PageComponent.astro';
+import { createCustomPageRoutes } from '@/utils/route-generator';
+import type { CustomPageRouteProps } from '@/types/routes';
+
+export const getStaticPaths = createCustomPageRoutes('page');
+
+type Props = CustomPageRouteProps;
+
+const { page } = Astro.props;
+---
+
+<PageComponent page={page} collection="post" />

@@ -1,0 +1,99 @@
+---
+import type { Tag, CollectionName } from '@/types/content';
+import { getTagUrl } from '@/utils/collection-paths';
+
+export interface Props {
+  tags: Tag[];
+  class?: string;
+  showPostCount?: boolean;
+  sortBy?: 'name' | 'count';
+  sortDirection?: 'asc' | 'desc';
+  collection?: CollectionName;
+}
+
+const {
+  tags,
+  class: className = '',
+  showPostCount = true,
+  sortBy = 'count',
+  sortDirection = 'desc',
+  collection = 'post',
+} = Astro.props;
+
+// 排序标签
+const sortedTags = [...tags].sort((a, b) => {
+  if (sortBy === 'name') {
+    return sortDirection === 'asc'
+      ? a.name.localeCompare(b.name)
+      : b.name.localeCompare(a.name);
+  }
+  return sortDirection === 'asc'
+    ? a.postIds.size - b.postIds.size
+    : b.postIds.size - a.postIds.size;
+});
+
+// 按首字母分组
+const groupedTags = sortedTags.reduce<Record<string, Tag[]>>((groups, tag) => {
+  const firstChar = tag.name[0]?.toUpperCase() ?? '#';
+  const key = /[A-Z]/.test(firstChar) ? firstChar : '#';
+  groups[key] ??= [];
+  groups[key].push(tag);
+  return groups;
+}, {});
+
+const sortedGroups = Object.entries(groupedTags).sort(([a], [b]) => {
+  if (a === '#') return 1;
+  if (b === '#') return -1;
+  return a.localeCompare(b);
+});
+---
+
+<div class={className}>
+  {sortedGroups.map(([letter, letterTags]) => (
+    <div class="mb-6">
+      <h3 class="mb-2 border-b border-hover pb-1 text-xl font-bold text-primary">
+        {letter}
+        {' '}
+        (
+        {letterTags.length}
+        )
+      </h3>
+
+      <ul class="list-none p-0">
+        {letterTags.map(tag => (
+          <li class={`
+            border-b border-hover px-4 py-3 transition-colors duration-200
+            hover:bg-hover
+          `}
+          >
+            <a
+              href={getTagUrl(tag.path, collection)}
+              class="block text-inherit no-underline"
+            >
+              <div class="flex items-center gap-2">
+                <span class="font-medium text-primary">
+                  {tag.name}
+                </span>
+
+                {showPostCount && (
+                  <span class={`
+                    rounded bg-hover px-1.5 py-0.5 text-sm text-secondary
+                  `}
+                  >
+                    {tag.postIds.size}
+                  </span>
+                )}
+              </div>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  ))}
+
+  {sortedTags.length === 0 && (
+    <div class="py-8 text-center text-muted italic">
+      暂无标签
+    </div>
+  )}
+</div>

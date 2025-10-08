@@ -1,0 +1,147 @@
+---
+import { getSiteConfig } from '@/config/site.config';
+import styles from '@/styles/global.css?url';
+
+import Footer from '@/components/Footer.astro';
+import type { PageContext } from '@/types/content';
+
+interface Props {
+  pageContext: PageContext;
+}
+
+const {
+  pageContext,
+} = Astro.props;
+
+const config = getSiteConfig(pageContext.collection);
+
+export const partial = true;
+---
+
+<!DOCTYPE html>
+<html lang={config.language} class="h-full scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      <xsl:value-of select="rss/channel/title" />
+      {' '}
+      - RSS Feed
+    </title>
+    <link rel="stylesheet" href={styles} />
+  </head>
+
+  <body class="min-h-screen bg-surface font-sans leading-relaxed text-primary">
+    {/* 顶部导航栏 */}
+    <nav class={`
+      fixed top-0 right-0 left-0 h-16 border-b border-line bg-surface-nav
+    `}
+    >
+      <div class={`
+        mx-auto flex h-full max-w-[var(--spacing-content-max)] items-center
+        justify-between px-4
+      `}
+      >
+        <a
+          href="/"
+          class={`
+            text-xl font-semibold transition-colors
+            hover:text-red
+          `}
+        >
+          <xsl:attribute name="href">
+            <xsl:value-of select="rss/channel/link" />
+          </xsl:attribute>
+          <xsl:value-of select="rss/channel/title" />
+        </a>
+        <div class="flex items-center gap-4">
+          <a
+            href="/"
+            class={`
+              transition-colors
+              hover:text-red
+            `}
+          >
+            <xsl:attribute name="href">
+              <xsl:value-of select="rss/channel/link" />
+            </xsl:attribute>
+            返回博客
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    {/* 主内容区 */}
+    <main>
+      {/* 文章列表 */}
+      <div class="mx-auto max-w-[var(--spacing-content-max)] px-4 py-4 pt-20">
+        {/* RSS 信息 */}
+        <div class="mb-4 rounded-lg bg-surface-aside p-6">
+          <h1 class="mb-3 text-2xl font-semibold text-primary">
+            <xsl:value-of select="rss/channel/title" />
+          </h1>
+          <p class="mb-4 text-secondary">
+            <xsl:value-of select="rss/channel/description" />
+          </p>
+          <div class="flex flex-col gap-2">
+            <p class="text-sm text-muted">订阅此 RSS Feed：</p>
+            <div class={`
+              w-full cursor-text overflow-x-auto rounded bg-hover px-3 py-2
+              font-mono text-sm select-all
+            `}
+            >
+              <xsl:value-of select="rss/channel/link" />
+              <span>/rss.xml</span>
+            </div>
+          </div>
+        </div>
+
+        {/* 文章列表 */}
+        <div class="space-y-4">
+          <xsl:for-each select="rss/channel/item">
+            <article class={`
+              rounded-lg border border-line bg-surface p-6 transition-colors
+              hover:border-primary
+            `}
+            >
+              <h2 class="mb-2 text-xl font-semibold">
+                <a
+                  href="/"
+                  class={`
+                    text-primary transition-colors
+                    hover:text-red
+                  `}
+                >
+                  <xsl:attribute name="href">
+                    <xsl:value-of select="link" />
+                  </xsl:attribute>
+                  <xsl:value-of select="title" />
+                </a>
+              </h2>
+
+              <div class="mb-3 flex flex-wrap gap-3 text-sm text-secondary">
+                <span>
+                  <xsl:value-of select="substring(pubDate, 1, 16)" />
+                </span>
+                <xsl:if test="category">
+                  <div class="flex flex-wrap gap-2">
+                    <xsl:for-each select="category">
+                      <span class="rounded-full bg-hover px-2 py-0.5 text-xs">
+                        <xsl:value-of select="." />
+                      </span>
+                    </xsl:for-each>
+                  </div>
+                </xsl:if>
+              </div>
+
+              <p class="leading-relaxed text-secondary">
+                <xsl:value-of select="description" />
+              </p>
+            </article>
+          </xsl:for-each>
+        </div>
+        <Footer pageContext={pageContext} />
+      </div>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,48 @@
+---
+/**
+ * 分页首页组件 - 处理Astro paginate返回的page对象
+ * 完全兼容原始page/[page].astro的行为
+ */
+import type { Page } from 'astro';
+
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getPaginationUrl, getBasePath } from '@/utils/collection-paths';
+
+import ArticleCard from '../ArticleCard.astro';
+import PaginationNav from '../PaginationNav.astro';
+
+import type { CollectionName } from '@/types/content';
+import type { Post } from '@/types/content';
+
+interface Props {
+  page: Page<Post>;  // Astro的Page对象
+  collection?: CollectionName;
+}
+
+const { page, collection = 'post' } = Astro.props;
+
+// 页面上下文
+const pageContext = {
+  path: getPaginationUrl(page.currentPage, collection),
+  layoutType: 'home' as const,
+  collection,
+};
+---
+
+<BaseLayout pageContext={pageContext}>
+  {page.data.map((post, index) => (
+    <ArticleCard
+      post={post}
+      showExcerpt={true}
+      isFirst={index === 0}
+    />
+  ))}
+
+  {page.lastPage > 1 && (
+    <PaginationNav
+      currentPage={page.currentPage}
+      lastPage={page.lastPage}
+      baseUrl={getBasePath(collection)}
+    />
+  )}
+</BaseLayout>

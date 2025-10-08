@@ -1,0 +1,129 @@
+---
+import { FilesIcon, ListIcon } from '@phosphor-icons/react';
+
+import { getSiteConfig } from '@/config/site.config';
+import type { CollectionName } from '@/types/content';
+
+import MathJax from './MathJax.astro';
+import NavigationController from './NavigationController';
+
+interface Props {
+  collection?: CollectionName | undefined;
+}
+
+const { collection = 'post' } = Astro.props;
+const config = getSiteConfig(collection);
+---
+
+<nav
+  id="nav"
+  class={`
+    relative h-full w-[var(--spacing-nav)] shrink-0 bg-nav
+    max-lg:fixed max-lg:z-10 max-lg:h-auto max-lg:w-full
+  `}
+>
+  {/* 移动端顶部栏 */}
+  <div
+    id="nav-mobile-bar"
+    class={`
+      hidden h-11 items-center justify-center bg-nav
+      max-lg:flex
+    `}
+  >
+    <button
+      id="open-panel"
+      class={`
+        m-0 flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center
+        border-none bg-transparent p-0 text-primary transition-colors
+        duration-100 ease-in-out outline-none
+        hover:bg-active
+        focus:bg-active
+      `}
+      aria-label="打开侧边栏"
+      type="button"
+    >
+      <FilesIcon size="1.25rem" weight="regular" />
+    </button>
+    <h1 class={`
+      m-0 min-w-0 flex-1 overflow-hidden text-center text-2xl text-ellipsis
+      whitespace-nowrap
+    `}
+    >
+      {config.title}
+    </h1>
+    <button
+      id="open-menus"
+      class={`
+        m-0 flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center
+        border-none bg-transparent p-0 text-primary transition-colors
+        duration-100 ease-in-out outline-none
+        hover:bg-active
+        focus:bg-active
+      `}
+      aria-label="切换菜单"
+      type="button"
+    >
+      <ListIcon size="1.25rem" weight="regular" />
+    </button>
+  </div>
+
+  {/* 菜单项 */}
+  <MathJax cacheKey={`nav-menu-${collection}`}>
+    <div
+      id="nav-menu"
+      class={`
+        flex h-full flex-col justify-center
+        max-lg:h-0 max-lg:overflow-hidden max-lg:opacity-0
+        max-lg:transition-[height_0.35s_cubic-bezier(0.4,0,0.2,1),opacity_0.25s_ease-out]
+        [&.no-transition]:!transition-none
+        max-lg:[&.show]:!h-11 max-lg:[&.show]:!opacity-100
+        max-lg:[&.show]:transition-[height_0.35s_cubic-bezier(0.4,0,0.2,1),opacity_0.25s_ease-in_0.1s]
+      `}
+    >
+      <div
+        class={`
+          flex max-h-full flex-col overflow-y-auto
+          max-lg:flex-nowrap max-lg:justify-center max-lg:overflow-x-auto
+          max-lg:overflow-y-hidden max-lg:text-center max-lg:whitespace-nowrap
+        `}
+        data-overlayscrollbars-initialize
+        data-nav-menu-scroll
+      >
+        {Object.entries(config.menu).map(([label, navItem]) => {
+        // 统一处理为对象格式
+          const item = typeof navItem === 'string'
+            ? { path: navItem, recursive: true }
+            : { ...navItem, recursive: navItem.recursive ?? true };
+
+          return (
+            <a
+              data-nav-item
+              class={`
+                flex h-[var(--spacing-nav-height)] flex-shrink-0 items-center
+                justify-center text-primary no-underline transition-colors
+                duration-100 ease-in-out
+                hover:bg-active
+                max-lg:inline-block max-lg:h-11 max-lg:px-5 max-lg:align-top
+                max-lg:text-base max-lg:leading-11
+              `}
+              href={item.path}
+              data-path={item.path}
+              data-recursive={item.recursive.toString()}
+            >
+              <span
+                class={`
+                  inline-block overflow-hidden text-ellipsis whitespace-nowrap
+                  max-lg:inline max-lg:text-inherit
+                `}
+              >
+                {label}
+              </span>
+            </a>
+          );
+        })}
+      </div>
+    </div>
+  </MathJax>
+</nav>
+
+<NavigationController client:idle />

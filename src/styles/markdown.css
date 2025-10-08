@@ -1,0 +1,313 @@
+/* Markdown Enhanced Styles - Only what's truly needed */
+
+[data-markdown] :is(h1, h2, h3, h4, h5, h6) {
+  scroll-margin-top: 1rem;
+  margin-top: 1.5em;
+  margin-bottom: 1em;
+  font-weight: 600;
+}
+
+/* GitHub-style heading borders */
+[data-markdown] :is(h1, h2) {
+  padding-bottom: 0.3em;
+  border-bottom: 0.0625rem solid var(--color-border);
+}
+
+[data-markdown] span#more {
+  scroll-margin-top: 8rem;
+}
+
+/* Paragraphs */
+[data-markdown] :is(p, blockquote, table, details) {
+  margin-top: 0;
+  margin-bottom: 1em;
+}
+
+/* Links */
+[data-markdown] a {
+  color: var(--color-link);
+  text-decoration: underline;
+  transition: color 0.1s ease;
+  scroll-margin-top: 1rem;
+}
+
+[data-markdown] a:hover {
+  color: var(--color-link-hover);
+}
+
+[data-markdown] del {
+  text-decoration: line-through;
+  text-decoration-color: var(--color-secondary);
+}
+
+/* Abbreviations */
+[data-markdown] abbr {
+  border-bottom: 0.0625rem dotted var(--color-secondary);
+  cursor: help;
+  text-decoration: none;
+}
+
+/* Lists */
+[data-markdown] :is(ul, ol) {
+  margin-top: 0;
+  margin-bottom: 0.5em;
+  padding-left: 1em;
+}
+
+[data-markdown] :is(ul ul, ol ol, ul ol, ol ul) {
+  margin-bottom: 0;
+}
+
+[data-markdown] li {
+  margin-top: 0.25em;
+}
+
+[data-markdown] ul {
+  list-style-type: disc;
+}
+
+[data-markdown] ol {
+  list-style-type: decimal;
+}
+
+/* 嵌套列表样式 */
+[data-markdown] ul ul,
+[data-markdown] ol ul {
+  list-style-type: circle;
+}
+
+[data-markdown] ul ul ul,
+[data-markdown] ol ul ul,
+[data-markdown] ol ol ul,
+[data-markdown] ul ol ul {
+  list-style-type: square;
+}
+
+[data-markdown] ol ol,
+[data-markdown] ul ol {
+  list-style-type: lower-alpha;
+}
+
+[data-markdown] ol ol ol,
+[data-markdown] ul ol ol,
+[data-markdown] ul ul ol,
+[data-markdown] ol ul ol {
+  list-style-type: lower-roman;
+}
+
+/* Inline Code --- Use em instead of rem*/
+[data-markdown] code {
+  font-family: var(--font-mono);
+  background-color: var(--color-hover);
+  padding: 0.125em 0.25em;
+  border-radius: 0.25em;
+}
+
+/* Highlight mark */
+[data-markdown] mark {
+  background-color: var(--color-highlight);
+  color: inherit;
+  padding: 0.125em 0.25em;
+  border-radius: 0.25em;
+}
+
+/* Blockquote - 基础样式（独立圆角竖线）*/
+[data-markdown] blockquote {
+  position: relative;
+  padding-left: 1.25em;
+  color: var(--color-secondary);
+}
+
+[data-markdown] blockquote::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 0.25em;
+  background-color: var(--color-border);
+  border-radius: 0.25em;
+}
+
+/* Admonitions - 只覆盖文字颜色 */
+[data-markdown] blockquote[data-directive-type] {
+  color: inherit;
+}
+
+[data-markdown] blockquote[data-directive-type] > p:first-child {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  vertical-align: middle;
+  gap: 0.5em;
+  font-size: var(--text-xl);
+  line-height: var(--leading-7);
+  margin-bottom: 0.5em;
+  font-weight: 600;
+}
+
+[data-markdown] blockquote[data-directive-type] > p:first-child::before {
+  content: '';
+  display: inline-block;
+  width: 1.5em;
+  height: 1.5em;
+  background-color: currentColor;
+  mask-size: 100%;
+  mask-repeat: no-repeat;
+  mask-position: center;
+}
+
+[data-markdown] blockquote[data-directive-type="note"]::before {
+  background-color: var(--color-admonition-note);
+}
+
+[data-markdown] blockquote[data-directive-type="note"] > p:first-child {
+  color: var(--color-admonition-note);
+}
+
+[data-markdown] blockquote[data-directive-type="note"] > p:first-child::before {
+  mask-image: url('@phosphor-icons/core/bold/info-bold.svg');
+}
+
+[data-markdown] blockquote[data-directive-type="tip"]::before {
+  background-color: var(--color-admonition-tip);
+}
+
+[data-markdown] blockquote[data-directive-type="tip"] > p:first-child {
+  color: var(--color-admonition-tip);
+}
+
+[data-markdown] blockquote[data-directive-type="tip"] > p:first-child::before {
+  mask-image: url('@phosphor-icons/core/bold/lightbulb-bold.svg');
+}
+
+[data-markdown] blockquote[data-directive-type="important"]::before {
+  background-color: var(--color-admonition-important);
+}
+
+[data-markdown] blockquote[data-directive-type="important"] > p:first-child {
+  color: var(--color-admonition-important);
+}
+
+[data-markdown] blockquote[data-directive-type="important"] > p:first-child::before {
+  mask-image: url('@phosphor-icons/core/bold/seal-warning-bold.svg');
+}
+
+[data-markdown] blockquote[data-directive-type="warning"]::before {
+  background-color: var(--color-admonition-warning);
+}
+
+[data-markdown] blockquote[data-directive-type="warning"] > p:first-child {
+  color: var(--color-admonition-warning);
+}
+
+[data-markdown] blockquote[data-directive-type="warning"] > p:first-child::before {
+  mask-image: url('@phosphor-icons/core/bold/warning-bold.svg');
+}
+
+[data-markdown] blockquote[data-directive-type="caution"]::before {
+  background-color: var(--color-admonition-caution);
+}
+
+[data-markdown] blockquote[data-directive-type="caution"] > p:first-child {
+  color: var(--color-admonition-caution);
+}
+
+[data-markdown] blockquote[data-directive-type="caution"] > p:first-child::before {
+  mask-image: url('@phosphor-icons/core/bold/warning-octagon-bold.svg');
+}
+
+/* Tables */
+[data-markdown] table {
+  width: max-content;
+  max-width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1em;
+}
+
+[data-markdown] table th,
+[data-markdown] table td {
+  padding: 0.375em 0.8125em;
+  border: 0.0625rem solid var(--color-border);
+}
+
+[data-markdown] table th {
+  font-weight: 600;
+  background-color: var(--color-hover);
+}
+
+/* Image styling */
+[data-markdown] img {
+  border-radius: 0.5rem;
+  box-shadow: var(--shadow-md);
+  margin: 0.5em auto;
+}
+
+/* Task list */
+[data-markdown] .contains-task-list {
+  padding-left: 0;
+}
+
+[data-markdown] .contains-task-list .task-list-item {
+  display: flex;
+  align-items: center;
+  vertical-align: middle;
+  flex-wrap: wrap;
+  gap: 0.75em;
+  list-style: none;
+}
+
+[data-markdown] .contains-task-list .task-list-item input[type="checkbox"] {
+  height: 1em;
+  width: 1em;
+}
+
+/* Footnotes */
+[data-markdown] .footnotes {
+  margin-top: 3em;
+  padding-top: 1em;
+  border-top: 0.125rem solid var(--color-border);
+  font-size: 0.875rem;
+  color: var(--color-secondary);
+}
+
+[data-markdown] .footnotes::before {
+  content: "脚注";
+  font-weight: 600;
+  font-size: var(--text-2xl);
+  display: block;
+  margin-bottom: 0.5em;
+}
+
+[data-markdown] .footnotes > ol > li > p {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+[data-markdown] .footnotes [data-footnote-backref] {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+  font-size: 0;
+}
+
+[data-markdown] .footnotes [data-footnote-backref]::before {
+  content: '';
+  width: 0.875em;
+  height: 0.9296875em;
+  vertical-align: middle;
+  mask-image:
+    url('@phosphor-icons/core/bold/arrow-u-down-left-bold.svg'),
+    linear-gradient(black, black);
+  background-color: currentColor;
+  mask-size: 100% 100%, 100% 0.0859375em;
+  mask-repeat: no-repeat, no-repeat;
+  mask-position: center, bottom;
+}
+
+/* Horizontal rule */
+[data-markdown] hr {
+  border: none;
+  border-top: 0.0625rem solid var(--color-border);
+  margin: 2em 0;
+}

@@ -1,0 +1,62 @@
+---
+/**
+ * 首页组件 - 支持多collection
+ * 可被不同的页面路由复用，通过collection参数区分
+ */
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getSiteConfig } from '@/config/site.config';
+import { getPosts } from '@/utils/data-loader';
+import { getBasePath } from '@/utils/collection-paths';
+
+import ArticleCard from '../ArticleCard.astro';
+import PaginationNav from '../PaginationNav.astro';
+
+import type { CollectionName } from '@/types/content';
+
+interface Props {
+  collection?: CollectionName;
+  currentPage?: number;
+}
+
+const {
+  collection = 'post',
+  currentPage = 1,
+} = Astro.props;
+
+// 获取配置（支持per-collection配置）
+const config = getSiteConfig(collection);
+
+// 获取所有文章（已排序：sticky优先+时间）
+const allPosts = await getPosts('index', collection);
+
+// 分页配置
+const postsPerPage = config.pagination.index;
+const totalPages = Math.ceil(allPosts.length / postsPerPage);
+const startIndex = (currentPage - 1) * postsPerPage;
+const paginatedPosts = allPosts.slice(startIndex, startIndex + postsPerPage);
+
+// 页面上下文
+const pageContext = {
+  path: getBasePath(collection),
+  layoutType: 'home' as const,
+  collection,
+};
+---
+
+<BaseLayout pageContext={pageContext}>
+  {paginatedPosts.map((post, index) => (
+    <ArticleCard
+      post={post}
+      showExcerpt={true}
+      isFirst={index === 0 && currentPage === 1}
+    />
+  ))}
+
+  {totalPages > 1 && (
+    <PaginationNav
+      currentPage={currentPage}
+      lastPage={totalPages}
+      baseUrl={getBasePath(collection)}
+    />
+  )}
+</BaseLayout>

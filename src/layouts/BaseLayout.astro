@@ -1,0 +1,127 @@
+---
+import { ClientRouter } from 'astro:transitions';
+
+import { getSiteConfig } from '@/config/site.config';
+import Footer from '@/components/Footer.astro';
+import Navigation from '@/components/Navigation.astro';
+import Sidebar from '@/components/Sidebar.astro';
+import PageScrollManager from '@/components/PageScrollManager';
+import MediumZoom from '@/components/MediumZoom';
+import { getRssUrl } from '@/utils/collection-paths';
+
+import type { PageContext } from '@/types/content';
+
+import 'overlayscrollbars/overlayscrollbars.css';
+import '@/styles/global.css';
+import 'medium-zoom-next/dist/style.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  pageContext: PageContext;
+}
+
+const {
+  title: propTitle,
+  description: propDescription,
+  pageContext,
+} = Astro.props;
+
+// 获取全局配置 - 统一配置源
+const config = getSiteConfig(pageContext.collection);
+
+
+// 构建页面标题
+// 优先使用直接传入的 title，其次使用 pageContext 中的 title
+const pageTitle = propTitle ?? pageContext.title;
+
+// 构建页面描述 - 直接使用传入的或默认值
+const pageDescription = propDescription ?? config.description;
+
+// 构建完整标题
+const fullTitle = pageTitle ? `${pageTitle} | ${config.title}` : config.title;
+---
+
+<!DOCTYPE html>
+<html lang={config.language} class="h-full scroll-smooth" data-overlayscrollbars-initialize>
+  <head>
+    <meta charset="UTF-8" />
+    <title>{fullTitle}</title>
+    <meta name="author" content={config.author.name} />
+    <meta name="keywords" content={config.keywords} />
+    <meta name="description" content={pageDescription} />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+    <link rel="dns-prefetch" href="https://giscus.app" />
+    <link rel="preconnect" href="https://giscus.app" crossorigin />
+
+    <ClientRouter />
+
+    {/* RSS 订阅 */}
+    <link rel="alternate" href={getRssUrl(pageContext.collection)} title={config.title} type="application/rss+xml" />
+
+    {/* 网站图标 */}
+    <config.favicon />
+
+    {/* 主题颜色 */}
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#2b2e32" media="(prefers-color-scheme: dark)" />
+    <meta name="color-scheme" content="light dark" />
+  </head>
+
+  <body class="bg-surface font-sans leading-relaxed text-primary">
+    <main class="flex h-[var(--viewport-height)] flex-col">
+      <header
+        id="header"
+        class={`
+          fixed top-0 bottom-0 left-0 flex w-[var(--spacing-header)]
+          max-lg:static max-lg:h-0 max-lg:w-full
+        `}
+      >
+        <Navigation transition:name="navigation" collection={pageContext.collection} />
+        {Astro.slots.has('sidebar')
+          ? (
+              <Sidebar
+                pageContext={pageContext}
+              >
+                <slot name="sidebar" />
+              </Sidebar>
+            )
+          : (
+              <Sidebar
+                pageContext={pageContext}
+              />
+            )}
+      </header>
+      <div
+        id="content"
+        class={`
+          ml-[var(--spacing-header)] flex min-h-0 flex-1 overflow-y-auto px-8
+          pt-8 pb-2
+          max-lg:ml-0 max-lg:px-4 max-lg:pt-[4.25rem] max-lg:pb-1.5
+        `}
+        transition:name="content"
+        transition:animate={config.animation}
+        data-overlayscrollbars-initialize
+      >
+        <div
+          id="wrapper"
+          class={`
+            mx-auto flex min-h-full w-full max-w-[var(--spacing-content-max)]
+            flex-col
+          `}
+        >
+          <div class="flex-grow">
+            <slot />
+          </div>
+          <div class="mt-auto">
+            <Footer transition:name="footer" pageContext={pageContext} />
+          </div>
+        </div>
+        <MediumZoom client:idle />
+        <PageScrollManager client:idle />
+      </div>
+    </main>
+    {config.analytics && <config.analytics />}
+  </body>
+</html>

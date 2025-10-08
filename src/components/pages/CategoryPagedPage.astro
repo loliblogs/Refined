@@ -1,0 +1,65 @@
+---
+/**
+ * 分类分页页面组件 - 处理Astro paginate返回的page对象
+ * 完全兼容原始[...path]/page/[page].astro的行为
+ */
+import type { Page } from 'astro';
+
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getCategoryUrl } from '@/utils/collection-paths';
+import PostList from '../PostList.astro';
+import PaginationNav from '../PaginationNav.astro';
+
+import type { CollectionName } from '@/types/content';
+import type { Post, Category } from '@/types/content';
+
+interface Props {
+  page: Page<Post>;  // Astro的Page对象
+  category: Category;
+  collection?: CollectionName;
+}
+
+const { page, category, collection = 'post' } = Astro.props;
+
+// 页面上下文
+const pageContext = {
+  path: `${getCategoryUrl(category.path, collection)}/page/${page.currentPage}`,
+  layoutType: 'category' as const,
+  collection,
+};
+---
+
+<BaseLayout
+  title={`分类: ${category.name} - 第${page.currentPage}页 | 博客`}
+  description={`查看"${category.name}"分类下的所有文章`}
+  pageContext={pageContext}
+>
+  <header class="mb-8">
+    <h1 class="mb-2 text-3xl font-bold">
+      分类:
+      {' '}
+      {category.name}
+    </h1>
+    <p class="text-secondary">
+      第
+      {' '}
+      {page.currentPage}
+      {' '}
+      页，共
+      {' '}
+      {category.postIds.size}
+      {' '}
+      篇文章
+    </p>
+  </header>
+
+  <main class="mb-8">
+    <PostList posts={page.data} collection={collection} />
+
+    <PaginationNav
+      currentPage={page.currentPage}
+      lastPage={page.lastPage}
+      baseUrl={getCategoryUrl(category.path, collection)}
+    />
+  </main>
+</BaseLayout>

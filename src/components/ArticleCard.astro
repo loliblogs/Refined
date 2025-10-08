@@ -1,0 +1,165 @@
+---
+import { CalendarIcon, TagIcon, ArrowClockwiseIcon } from '@phosphor-icons/react';
+
+import { getSiteConfig } from '@/config/site.config';
+import type { Post } from '@/types/content';
+import { getPostUrl, getTagUrl, getArchiveUrl } from '@/utils/collection-paths';
+import { formatDate } from '@/utils/date-helpers';
+
+import ExcerptExtractor from './ExcerptExtractor.astro';
+
+export interface Props {
+  post: Post;
+  showExcerpt?: boolean;
+  isFirst?: boolean;
+}
+
+const { post, showExcerpt = true, isFirst = false } = Astro.props;
+
+const config = getSiteConfig(post.collection);
+
+// 处理摘要逻辑
+const manualExcerpt = post.excerpt;
+const isEncrypted = !!post.derivedKey;
+
+// 获取Content组件（只在需要且未加密时）
+const shouldRenderContent = showExcerpt && !manualExcerpt && !isEncrypted;
+const Content = shouldRenderContent
+  ? (await post.render()).Content
+  : null;
+
+// 使用动态路径生成（消除硬编码）
+const postUrl = getPostUrl(post.slug, post.collection);
+const excerptLink = config.excerpt_link;
+---
+
+<article
+  class:list={[
+    `
+      pb-10
+      max-lg:pb-5
+    `,
+    { '-mt-px border-t border-line pt-10 max-lg:pt-5': !isFirst },
+  ]}
+>
+  {/* 文章头部 */}
+  <header>
+    <h1 class="mb-2 text-[2em] font-normal">
+      <a
+        href={postUrl}
+        class={`
+          text-primary no-underline transition-colors duration-200
+          hover:text-link-hover
+        `}
+      >
+        {post.title}
+      </a>
+    </h1>
+
+    {/* 文章元信息 */}
+    <div class={`
+      flex flex-wrap items-center gap-4 pt-2 text-sm
+      max-lg:text-xs
+    `}
+    >
+      {/* 日期 */}
+      <a
+        href={`${getArchiveUrl(post.collection)}?focus=${formatDate(post.date)}`}
+        class={`
+          flex items-center text-muted no-underline transition-colors
+          duration-200
+          hover:text-primary
+        `}
+      >
+        <CalendarIcon size="1rem" weight="regular" />
+        <time datetime={post.date.toISOString()} class="ml-1.5">
+          {formatDate(post.date)}
+        </time>
+      </a>
+
+      {post.updated && (
+        <a
+          href={`${getArchiveUrl(post.collection)}?focus=${formatDate(post.updated)}`}
+          class={`
+            flex items-center text-muted no-underline transition-colors
+            duration-200
+            hover:text-primary
+          `}
+        >
+          <ArrowClockwiseIcon size="1rem" weight="regular" />
+          <time datetime={post.updated.toISOString()} class="ml-1.5">
+            {formatDate(post.updated)}
+          </time>
+        </a>
+      )}
+
+      {/* 标签 */}
+      {post.tags.length > 0 && (
+        <div class="flex list-none items-center overflow-hidden text-muted">
+          <TagIcon size="1rem" weight="regular" />
+          {post.tags.map((tag, tagIndex) => (
+            <>
+              <a
+                href={getTagUrl(tag, post.collection)}
+                class={`
+                  ml-1.5 text-muted no-underline transition-colors
+                  hover:text-primary
+                `}
+              >
+                {tag}
+              </a>
+              {tagIndex < post.tags.length - 1 && (
+                <span class="text-muted">,</span>
+              )}
+            </>
+          ))}
+        </div>
+      )}
+    </div>
+  </header>
+
+  {/* 文章内容/摘要 */}
+  {showExcerpt && (
+    <div class="mt-5">
+      <div class="mb-4 leading-relaxed text-secondary">
+        {manualExcerpt
+          ? (
+            // 有手动设置的摘要，直接显示（加密也优先使用用户指定的）
+              <p class="mb-4">{manualExcerpt}</p>
+            )
+          : isEncrypted
+            ? (
+              // 文章加密且没有手动excerpt，显示预处理的prompt
+                <p class="mb-4">{post.prompt}</p>
+              )
+            : Content
+              ? (
+            // 没有手动摘要且未加密，使用ExcerptExtractor处理内容
+                  <div data-markdown>
+                    <ExcerptExtractor>
+                      <Content />
+                    </ExcerptExtractor>
+                  </div>
+                )
+              : null}
+      </div>
+
+      {/* 只在内容不是完整显示时才显示继续阅读按钮 */}
+      {excerptLink && (!shouldRenderContent || post.hasMoreTag) && (
+        <div class="text-right">
+          <a
+            href={post.hasMoreTag ? `${postUrl}#more` : postUrl}
+            class={`
+              inline-block rounded border border-line px-3 py-1.5 text-sm
+              leading-none text-muted no-underline transition-colors
+              duration-300
+              hover:bg-hover hover:no-underline
+            `}
+          >
+            {excerptLink}
+          </a>
+        </div>
+      )}
+    </div>
+  )}
+</article>

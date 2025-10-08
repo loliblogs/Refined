@@ -1,0 +1,65 @@
+---
+import { CopyrightIcon, LineVerticalIcon, XIcon } from '@phosphor-icons/react';
+
+import { getSiteConfig } from '@/config/site.config';
+
+import type { PageContext } from '@/types/content';
+
+interface Props {
+  pageContext: PageContext;
+}
+
+const {
+  pageContext,
+} = Astro.props;
+
+const config = getSiteConfig(pageContext.collection);
+
+const currentYear = new Date().getFullYear();
+---
+
+<footer
+  class={`
+    mt-3 border-t border-line bg-surface pt-3 text-center text-xs text-muted
+  `}
+>
+  <div class="flex flex-wrap items-center justify-center gap-1">
+    <span class="flex items-center gap-1">
+      <CopyrightIcon size="0.75rem" weight="regular" />
+      <span>{currentYear}</span>
+      <span>{config.title}</span>
+    </span>
+    <span>
+      <LineVerticalIcon size="1rem" weight="bold" />
+    </span>
+    <a
+      href="https://astro.build"
+      target="_blank"
+      rel="noopener"
+      class={`
+        text-muted
+        hover:text-primary
+      `}
+    >
+      <span class="underline">Astro</span>
+    </a>
+    <span><XIcon size="0.75rem" weight="bold" /></span>
+    <a
+      href="https://github.com/loliblogs/Refined"
+      target="_blank"
+      rel="noopener"
+      class={`
+        text-muted
+        hover:text-primary
+      `}
+    >
+      <span class="underline">Refined</span>
+    </a>
+    {config.footer && (
+      <span>
+        <LineVerticalIcon size="1rem" weight="bold" />
+      </span>
+      <config.footer />
+    )}
+  </div>
+</footer>

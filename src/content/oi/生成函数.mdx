@@ -1,0 +1,29 @@
+---
+title: 生成函数
+categories: 算法
+tags: [生成函数]
+date: 2018-08-11
+---
+
+import { getPostUrl } from '@/utils/collection-paths';
+
+## 注意：
+
+
+::more
+
+## 法一：广义二项式定理
+
+由数式二项式定理可得
+
+$\begin{split}(1+x)^n=\sum_{i=0}^n C_{n+i-1}^i\cdot x^i \end{split}$
+
+这里的 $n$ 是正数，当指数为负整数时 $−1\le x\le 1$，且 $n$ 为正整数时
+
+$\begin{split}(1−x)^{−n}=\sum_{i=0}^{\infty}C_{n+i-1}^i\cdot x^i \end{split}$
+
+## 法二(一会儿补充)
+
+## 模板题
+
+* <a href={getPostUrl('solution-code4763', 'oi')}>code4763</a>

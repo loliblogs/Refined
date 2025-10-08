@@ -1,0 +1,150 @@
+---
+/**
+ * 分类索引页面组件 - 支持多collection
+ * 完全兼容原始category/index.astro的行为
+ */
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getCategorySystem } from '@/utils/data-loader';
+import { getCategoryUrl, getCategoryIndexUrl } from '@/utils/collection-paths';
+
+import type { CollectionName } from '@/types/content';
+
+interface Props {
+  collection?: CollectionName;
+}
+
+const { collection = 'post' } = Astro.props;
+
+// 获取分类数据（每个collection独立）
+const categorySystem = await getCategorySystem(collection);
+const topCategories = categorySystem.getRootNodes();
+const stats = categorySystem.getBaseStats();
+const popularCategories = categorySystem.getPopularNodes(10);
+
+// 页面上下文
+const pageContext = {
+  path: getCategoryIndexUrl(collection),
+  layoutType: 'category' as const,
+  collection,
+};
+---
+
+<BaseLayout
+  title="分类 | 博客"
+  description="浏览所有文章分类"
+  pageContext={pageContext}
+>
+  {/* 页面标题 */}
+  <header class="mb-8">
+    <h1 class="mb-4 text-3xl font-bold">分类</h1>
+    <p class="text-secondary">
+      共
+      {' '}
+      {stats.totalNodes}
+      {' '}
+      个分类，最大深度
+      {' '}
+      {stats.maxLevel}
+      {' '}
+      级
+    </p>
+  </header>
+
+  {/* 热门分类 */}
+  <section class="mb-12">
+    <h2 class="mb-4 text-2xl font-bold">热门分类</h2>
+    <div class={`
+      grid grid-cols-5 gap-4
+      max-lg:grid-cols-2
+    `}
+    >
+      {popularCategories.map(category => (
+        <a
+          href={getCategoryUrl(category.path, collection)}
+          class={`
+            rounded border p-4 text-center transition
+            hover:bg-hover
+          `}
+        >
+          <div class="font-medium">{category.name}</div>
+          <div class="mt-1 text-sm text-secondary">
+            {category.count}
+            {' '}
+            篇
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  {/* 分类树
+      注意：显示的是每个分类包含子分类的总文章数
+      例如 Frontend(25) 包含了其所有子分类 React(15) Vue(10) 的文章总和 */}
+  <section class="mb-12">
+    <h2 class="mb-4 text-2xl font-bold">分类目录</h2>
+    <div class="rounded-lg bg-hover p-6">
+      {topCategories.map(category => (
+        <div class="mb-4">
+          <a
+            href={getCategoryUrl(category.path, collection)}
+            class={`
+              text-lg font-semibold transition
+              hover:text-link
+            `}
+          >
+            {category.name}
+            {' '}
+            {/* 包含子分类的总文章数 */}
+            (
+            {category.count}
+            )
+          </a>
+
+          {category.childNodes.size > 0 && (
+            <div class="mt-2 ml-6 space-y-2">
+              {Array.from(category.childNodes).map(child => (
+                <div>
+                  <a
+                    href={getCategoryUrl(child.path, collection)}
+                    class={`
+                      text-primary transition
+                      hover:text-link
+                    `}
+                  >
+                    {child.name}
+                    {' '}
+                    (
+                    {child.count}
+                    )
+                  </a>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  </section>
+
+  {/* 统计信息 */}
+  <aside class="mt-12 rounded-lg bg-hover p-6">
+    <h3 class="mb-2 text-lg font-bold">统计信息</h3>
+    <ul class="space-y-1 text-sm">
+      <li>
+        分类总数:
+        {stats.totalNodes}
+      </li>
+      <li>
+        最大深度:
+        {stats.maxLevel}
+        {' '}
+        级
+      </li>
+      <li>
+        分类饱和度:
+        {stats.averagePostsPerNode.toFixed(1)}
+        篇 / 节点
+      </li>
+    </ul>
+  </aside>
+</BaseLayout>

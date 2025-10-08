@@ -1,0 +1,266 @@
+---
+/**
+ * 归档页面组件 - 支持多collection
+ * 完全兼容原始archive/index.astro的行为
+ */
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getPosts } from '@/utils/data-loader';
+import { getArchiveUrl, getPostUrl } from '@/utils/collection-paths';
+import { formatDate, formatMonthDay } from '@/utils/date-helpers';
+import TimelineFilterClient from '../TimelineFilterClient';
+import { DotIcon, CaretDownIcon } from '@phosphor-icons/react';
+
+import type { CollectionName, Post } from '@/types/content';
+
+interface Props {
+  collection?: CollectionName;
+}
+
+const { collection = 'post' } = Astro.props;
+
+// 获取已排序的文章（纯时间排序）
+const timelinePosts = await getPosts('archive', collection);
+
+// 计算时间范围 + 按月分组 - 一次遍历完成所有工作
+const nowTime = Date.now();
+let minTime = Infinity;
+let maxTime = -Infinity;
+const monthGroups = new Map<number, Post[]>();
+
+for (const post of timelinePosts) {
+  const timestamp = post.date.getTime();
+
+  // 更新时间范围
+  if (timestamp < minTime) minTime = timestamp;
+  if (timestamp > maxTime) maxTime = timestamp;
+
+  // 生成年月键（简单数字：202401 = 2024年1月）
+  const year = post.date.getFullYear();
+  const month = post.date.getMonth() + 1;
+  const yearMonthKey = year * 100 + month;
+
+  // 获取或创建分组
+  let posts = monthGroups.get(yearMonthKey);
+  if (!posts) {
+    posts = [];
+    monthGroups.set(yearMonthKey, posts);
+  }
+
+  // 添加文章
+  posts.push(post);
+}
+
+// 处理边界情况：没有文章时 minTime/maxTime 为 Infinity
+if (!isFinite(minTime) || !isFinite(maxTime)) {
+  minTime = maxTime = nowTime;
+}
+
+// 页面上下文
+const pageContext = {
+  path: getArchiveUrl(collection),
+  layoutType: 'archive' as const,
+  collection,
+};
+
+// 复用的样式
+const buttonClass = 'rounded-md border px-3 py-1 text-sm transition-colors hover:bg-hover';
+---
+
+<BaseLayout title="归档" pageContext={pageContext}>
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold">文章归档</h1>
+  </div>
+
+  {/* 渐进式时间线（SSR HTML + TSX 行为脚本） */}
+  <div
+    data-role="timeline"
+    data-min-time={minTime}
+    data-max-time={maxTime}
+  >
+    {/* 滑块 */}
+    <div class="mb-2 px-4">
+      <div
+        class="relative h-5 select-none"
+        data-role="track"
+        style="--slider-start:0%;--slider-end:100%;--slider-width:100%;"
+        role="group"
+        aria-label="时间范围选择器"
+      >
+        {/* 轨道背景 */}
+        <div class={`
+          absolute top-1/2 h-1 w-full -translate-y-1/2 rounded bg-muted
+        `}
+        >
+        </div>
+
+        {/* 选中范围 */}
+        <div class={`
+          absolute top-1/2
+          [left:var(--slider-start)]
+          h-1
+          [width:var(--slider-width)]
+          -translate-y-1/2 rounded bg-primary
+        `}
+        >
+        </div>
+
+        {/* 起始滑块 */}
+        <div
+          class={`
+            absolute top-1/2
+            [left:var(--slider-start)]
+            z-20 h-4 w-4 -translate-x-1/2 -translate-y-1/2 cursor-grab
+            touch-none rounded-full bg-primary shadow-md transition-transform
+            hover:scale-110
+            focus:ring-2 focus:ring-primary focus:ring-offset-2
+            focus:outline-none
+            active:scale-125 active:cursor-grabbing
+          `}
+          data-role="thumb-start"
+          role="slider"
+          aria-label="开始日期"
+          aria-valuemin="0"
+          aria-valuemax="100"
+          aria-valuenow="0"
+          aria-orientation="horizontal"
+          tabindex="0"
+        >
+        </div>
+
+        {/* 结束滑块 */}
+        <div
+          class={`
+            absolute top-1/2
+            [left:var(--slider-end)]
+            z-10 h-4 w-4 -translate-x-1/2 -translate-y-1/2 cursor-grab
+            touch-none rounded-full bg-primary shadow-md transition-transform
+            hover:scale-110
+            focus:ring-2 focus:ring-primary focus:ring-offset-2
+            focus:outline-none
+            active:scale-125 active:cursor-grabbing
+          `}
+          data-role="thumb-end"
+          role="slider"
+          aria-label="结束日期"
+          aria-valuemin="0"
+          aria-valuemax="100"
+          aria-valuenow="100"
+          aria-orientation="horizontal"
+          tabindex="0"
+        >
+        </div>
+      </div>
+
+      {/* 范围与统计 */}
+      <div class="mt-1 flex items-center justify-center text-sm text-primary" aria-live="polite" aria-atomic="true">
+        <span class="mr-1 font-medium">
+          <span data-role="label-start">{formatDate(new Date(minTime))}</span>
+          ~
+          <span data-role="label-end">{formatDate(new Date(maxTime))}</span>
+        </span>
+        <span class="flex items-center gap-1" aria-live="polite" aria-atomic="true">
+          <span class="text-muted"><DotIcon size="1rem" weight="regular" /></span>
+          显示
+          <span data-role="count-visible">{timelinePosts.length}</span>
+          /
+          {timelinePosts.length}
+          篇文章
+        </span>
+      </div>
+    </div>
+
+    {/* 预设 + 自定义 */}
+    <div class="mt-3 mb-4 flex items-center justify-center gap-2 border-b pb-4">
+      {/* 预设 */}
+      <div class="flex gap-1" data-role="presets">
+        <button data-preset="all" class={buttonClass}>全部</button>
+        <button data-preset="this-year" class={buttonClass}>今年</button>
+        <button data-preset="last-year" class={buttonClass}>去年</button>
+        <button data-preset="last-3m" class={buttonClass}>最近3月</button>
+        <button data-preset="last-6m" class={buttonClass}>最近6月</button>
+      </div>
+
+      <div class="mx-2 h-6 border-l border-border"></div>
+
+      {/* 自定义 */}
+      <details class="relative" data-role="custom">
+        <summary class:list={[`flex cursor-pointer list-none items-center gap-1`, buttonClass]}>
+          <span class="mr-1">自定义</span>
+          <CaretDownIcon size="0.75rem" weight="regular" />
+        </summary>
+        <div
+          data-role="custom-panel"
+          class={`
+            absolute top-full right-0 z-50 mt-2 flex items-center gap-2
+            rounded-lg border bg-surface p-3 whitespace-nowrap shadow-lg
+          `}
+        >
+          <input
+            type="date"
+            data-role="input-start"
+            value={formatDate(new Date(minTime))}
+            class="rounded border bg-surface px-2 py-1 text-sm"
+            aria-label="开始日期输入"
+          />
+          <span class="text-sm">~</span>
+          <input
+            type="date"
+            data-role="input-end"
+            value={formatDate(new Date(maxTime))}
+            class="rounded border bg-surface px-2 py-1 text-sm"
+            aria-label="结束日期输入"
+          />
+        </div>
+      </details>
+    </div>
+
+    {/* 列表（SSR 全量） */}
+    <div class="space-y-6" data-role="list">
+      {Array.from(monthGroups, ([yearMonthKey, posts]) => (
+        <section data-role="section" data-ym={yearMonthKey}>
+          <h2
+            id={`archive-${yearMonthKey}`}
+            class="mb-3 text-lg font-medium text-primary"
+          >
+            {Math.floor(yearMonthKey / 100)}
+            年
+            {yearMonthKey % 100}
+            月
+            <span class="ml-2 text-sm text-secondary">
+              (
+              {posts.length}
+              篇 )
+            </span>
+          </h2>
+          <ol class="space-y-2">
+            {posts.map(post => (
+              <li
+                data-role="item"
+                data-timestamp={post.date.getTime()}
+                data-post-id={post.id}
+                class="flex items-baseline gap-4"
+              >
+                <span class="flex-shrink-0 text-sm text-secondary">
+                  {formatMonthDay(post.date)}
+                </span>
+                <a
+                  href={getPostUrl(post.slug, collection)}
+                  class={`
+                    text-secondary transition-colors
+                    hover:text-primary
+                  `}
+                >
+                  {post.title}
+                </a>
+              </li>
+            ))}
+          </ol>
+        </section>
+      ))}
+      <div class="hidden py-8 text-center text-secondary" data-role="empty">该时间范围内没有文章</div>
+    </div>
+  </div>
+
+  {/* 客户端脚本（TSX，仅行为） */}
+  <TimelineFilterClient client:only="react" />
+</BaseLayout>

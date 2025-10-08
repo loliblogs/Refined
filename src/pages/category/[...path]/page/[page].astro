@@ -1,0 +1,13 @@
+---
+import CategoryPagedPage from '@/components/pages/CategoryPagedPage.astro';
+import { createCategoryPagedRoutes } from '@/utils/route-generator';
+import type { CategoryPagedRouteProps } from '@/types/routes';
+
+export const getStaticPaths = createCategoryPagedRoutes('post');
+
+type Props = CategoryPagedRouteProps;
+
+const { page, category } = Astro.props;
+---
+
+<CategoryPagedPage page={page} category={category} collection="post" />

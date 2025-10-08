@@ -1,0 +1,16 @@
+---
+import { Image } from 'astro:assets';
+import type { LocalImageProps, RemoteImageProps } from 'astro:assets';
+
+export type Props = LocalImageProps | RemoteImageProps;
+
+const props = Astro.props;
+
+const src = props.src instanceof Promise
+  ? (await props.src).default.src
+  : typeof props.src === 'string'
+    ? props.src
+    : props.src.src;
+---
+
+<Image {...props} data-zoom-src={src} />

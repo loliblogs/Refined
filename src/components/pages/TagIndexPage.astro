@@ -1,0 +1,98 @@
+---
+/**
+ * 标签索引页面组件 - 支持多collection
+ * 完全兼容原始tag/index.astro的行为
+ */
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getTagSystem } from '@/utils/data-loader';
+import { getTagIndexUrl, getTagUrl } from '@/utils/collection-paths';
+import TagCloud from '../TagCloud';
+import TagList from '../TagList.astro';
+
+import type { CollectionName } from '@/types/content';
+
+interface Props {
+  collection?: CollectionName;
+}
+
+const { collection = 'post' } = Astro.props;
+
+// 获取标签数据（每个collection独立）
+const tagSystem = await getTagSystem(collection);
+const allTags = tagSystem.getAllNodes();
+const stats = tagSystem.getBaseStats();
+const tagCloudTags = tagSystem.getTagCloud(1);
+
+// 页面上下文
+const pageContext = {
+  path: getTagIndexUrl(collection),
+  layoutType: 'tag' as const,
+  collection,
+};
+---
+
+<BaseLayout
+  title="标签 | 博客"
+  description="浏览所有文章标签"
+  pageContext={pageContext}
+>
+  {/* 页面标题 */}
+  <header class="mb-8">
+    <h1 class="mb-4 text-3xl font-bold">标签</h1>
+    <p class="text-secondary">
+      共
+      {' '}
+      {stats.totalNodes}
+      {' '}
+      个标签
+      {stats.maxLevel > 1 && `，${stats.maxLevel} 级层次`}
+    </p>
+  </header>
+
+  {/* 标签云 */}
+  <section class="mb-12">
+    <h2 class="mb-4 text-2xl font-bold">标签云</h2>
+    <div class="min-h-64 rounded-lg bg-hover p-6">
+      <TagCloud
+        tags={tagCloudTags.map(t => [t.name, t.postIds.size, getTagUrl(t.path, collection)])}
+        collection={collection}
+        client:only="react"
+      />
+    </div>
+  </section>
+
+  {/* 所有标签列表 */}
+  <section>
+    <h2 class="mb-4 text-2xl font-bold">所有标签</h2>
+    <TagList
+      tags={allTags}
+      showPostCount={true}
+      sortBy="count"
+      sortDirection="desc"
+      class="space-y-2"
+      collection={collection}
+    />
+  </section>
+
+  {/* 统计信息 */}
+  <aside class="mt-12 rounded-lg bg-hover p-6">
+    <h3 class="mb-2 text-lg font-bold">统计信息</h3>
+    <ul class="space-y-1 text-sm">
+      <li>
+        标签总数:
+        {stats.totalNodes}
+      </li>
+      {stats.maxLevel > 1 && (
+        <li>
+          最大层级:
+          {stats.maxLevel}
+        </li>
+      )}
+      <li>
+        标签饱和度:
+        {stats.averagePostsPerNode.toFixed(1)}
+        篇 / 节点
+      </li>
+    </ul>
+  </aside>
+</BaseLayout>

@@ -1,0 +1,15 @@
+---
+// MathJax 包装组件 - 支持缓存的版本
+import { processMathJax } from '@/utils/mathjax-singleton';
+
+interface Props {
+  cacheKey?: string;  // 可选的缓存key，用于区分不同内容
+}
+
+const { cacheKey } = Astro.props;
+
+const slotContent = await Astro.slots.render('default');
+const processedHtml = slotContent ? await processMathJax(slotContent, cacheKey) : slotContent;
+---
+
+<Fragment set:html={processedHtml} />

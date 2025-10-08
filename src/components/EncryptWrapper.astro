@@ -1,0 +1,26 @@
+---
+/**
+ * 加密包装组件 - 纯粹的加密器
+ * 接收内容，返回加密后的JSON字符串
+ * "Do one thing and do it well"
+ */
+import { encryptContent } from '@/utils/encrypt-processor';
+
+interface Props {
+  derivedKey: string;  // 预计算的密钥 base64 编码
+  salt: string;        // base64格式的salt
+}
+
+const { derivedKey, salt } = Astro.props;
+
+// 获取 slot 内容
+const htmlContent = await Astro.slots.render('default');
+
+// 直接加密 - 不需要重新计算密钥
+const encryptedData = encryptContent(htmlContent, derivedKey, salt);
+
+// 返回加密数据的JSON字符串
+const jsonString = JSON.stringify(encryptedData);
+---
+{/* 直接输出加密数据作为data属性值 */}
+{jsonString}

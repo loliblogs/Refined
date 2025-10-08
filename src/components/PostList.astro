@@ -1,0 +1,72 @@
+---
+import { formatDate } from '@/utils/date-helpers';
+import type { Post, CollectionName } from '@/types/content';
+import { getPostUrl, getTagUrl } from '@/utils/collection-paths';
+
+export interface Props {
+  posts: Post[];
+  showExcerpt?: boolean;
+  collection?: CollectionName;
+}
+
+const { posts, showExcerpt = true, collection = 'post' } = Astro.props;
+
+// 直接使用posts，已经在data-loader中标准化过了
+---
+<div class="space-y-6">
+  {posts.map(post => (
+    <article class={`
+      border-b pb-6
+      last:border-b-0
+    `}
+    >
+      <h2 class="mb-2 text-2xl font-bold">
+        <a
+          href={getPostUrl(post.slug, collection)}
+          class={`
+            text-primary transition
+            hover:text-link
+          `}
+        >
+          {post.title}
+        </a>
+      </h2>
+
+      <div class="mb-3 flex items-center gap-4 text-sm text-secondary">
+        <time datetime={post.date.toISOString()}>
+          {formatDate(post.date)}
+        </time>
+
+        <span>
+          作者:
+          {post.author}
+        </span>
+      </div>
+
+      {showExcerpt && post.excerpt && (
+        <p class="mb-3 text-primary">
+          {post.excerpt}
+        </p>
+      )}
+
+      <div class="flex flex-wrap gap-2">
+        {post.tags.map(tag => (
+          <a
+            href={getTagUrl(tag, collection)}
+            class={`
+              rounded bg-active px-2 py-1 text-xs text-muted transition
+              hover:bg-hover hover:text-primary
+            `}
+          >
+            #
+            {tag}
+          </a>
+        ))}
+      </div>
+    </article>
+  ))}
+
+  {posts.length === 0 && (
+    <p class="py-8 text-center text-secondary">暂无文章</p>
+  )}
+</div>

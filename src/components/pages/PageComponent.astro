@@ -1,0 +1,89 @@
+---
+/**
+ * 独立页面组件 - 用于page和oiPage集合
+ * 极简设计：标题 + 可选日期 + 内容
+ */
+import type { CollectionEntry } from 'astro:content';
+
+import { CalendarIcon, ArrowClockwiseIcon } from '@phosphor-icons/react';
+
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { formatDate } from '@/utils/date-helpers';
+import { getPageUrl } from '@/utils/collection-paths';
+
+import type { CollectionName, PageCollectionName } from '@/types/content';
+import Comments from '@/config/comments.config';
+import { getSiteConfig } from '@/config/site.config';
+
+interface Props {
+  page: CollectionEntry<PageCollectionName>; // Astro自动生成的collection entry类型
+  collection: CollectionName;
+}
+
+const { page, collection } = Astro.props;
+const { Content } = await page.render();
+
+// 页面上下文
+const pageContext = {
+  title: page.data.title,
+  path: getPageUrl(page.slug, collection),
+  layoutType: 'page' as const,
+  collection,
+};
+
+const config = getSiteConfig(collection);
+
+// 决定是否显示评论
+const showComments = page.data.comments ?? config.comments;
+
+---
+
+<BaseLayout title={page.data.title} pageContext={pageContext}>
+  <article>
+    <header class="mb-8 border-b border-line pb-4">
+      <h1 class={`
+        mb-4 text-4xl leading-tight font-normal text-primary
+        max-lg:text-3xl
+      `}
+      >
+        {page.data.title}
+      </h1>
+
+      {/* 日期信息 - 仅在存在时显示 */}
+      {(page.data.date ?? page.data.updated) && (
+        <div class="flex flex-wrap items-center gap-4 text-sm text-muted">
+          {page.data.date && (
+            <div class="flex items-center gap-1.5">
+              <CalendarIcon size="1rem" weight="fill" />
+              <time datetime={page.data.date.toISOString()}>
+                {formatDate(page.data.date)}
+              </time>
+            </div>
+          )}
+
+          {/* 更新日期 - 简化后的逻辑 */}
+          {page.data.updated && (
+            <div class="flex items-center gap-1.5">
+              <ArrowClockwiseIcon size="1rem" weight="fill" />
+              <time datetime={page.data.updated.toISOString()}>
+                {formatDate(page.data.updated)}
+              </time>
+            </div>
+          )}
+        </div>
+      )}
+    </header>
+
+    {/* 内容主体 - 直接渲染，可被pagefind索引 */}
+    <div data-markdown class="my-8 leading-[1.8]" data-pagefind-body>
+      <Content />
+    </div>
+
+    {/* 评论区 */}
+    {showComments && (
+      <section class="mt-12 border-t border-line pt-8">
+        <Comments collection={collection} client:load />
+      </section>
+    )}
+  </article>
+</BaseLayout>

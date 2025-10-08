@@ -1,0 +1,114 @@
+---
+/**
+ * 标签分页页面组件 - 处理Astro paginate返回的page对象
+ * 完全兼容原始[...path]/page/[page].astro的行为
+ */
+import type { Page } from 'astro';
+
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getTagUrl } from '@/utils/collection-paths';
+import PostList from '../PostList.astro';
+import PaginationNav from '../PaginationNav.astro';
+import TagCloud from '../TagCloud';
+
+import type { CollectionName } from '@/types/content';
+import type { Post, Tag } from '@/types/content';
+
+interface Props {
+  page: Page<Post>;  // Astro的Page对象
+  tag: Tag;
+  relatedTags?: Tag[];
+  childTags?: Tag[];
+  collection?: CollectionName;
+}
+
+const { page, tag, relatedTags = [], childTags = [], collection = 'post' } = Astro.props;
+
+// 页面上下文
+const pageContext = {
+  path: `${getTagUrl(tag.path, collection)}/page/${page.currentPage}`,
+  layoutType: 'tag' as const,
+  collection,
+};
+---
+
+<BaseLayout
+  title={`标签: ${tag.name} - 第${page.currentPage}页 | 博客`}
+  description={`查看所有标记为"${tag.name}"的文章`}
+  pageContext={pageContext}
+>
+  <header class="mb-8">
+    <h1 class="mb-2 text-3xl font-bold">
+      标签:
+      {' '}
+      {tag.name}
+    </h1>
+    {/* 显示直接属于该标签的文章数（不包含子标签）
+        使用 postIds.size 表示直接文章数，count 表示包含子标签的总数 */}
+    <p class="text-secondary">
+      第
+      {' '}
+      {page.currentPage}
+      {' '}
+      页，共
+      {' '}
+      {tag.postIds.size}
+      {' '}
+      篇文章
+    </p>
+  </header>
+
+  {/* 子标签（只在第一页显示） */}
+  {page.currentPage === 1 && childTags.length > 0 && (
+    <section class="mb-8">
+      <h2 class="mb-4 text-xl font-bold">子标签</h2>
+      <div class={`
+        grid grid-cols-4 gap-4
+        max-lg:grid-cols-2
+      `}
+      >
+        {childTags.map(child => (
+          <a
+            href={getTagUrl(child.path, collection)}
+            class={`
+              rounded border p-4 transition
+              hover:bg-hover
+            `}
+          >
+            <h3 class="font-semibold">{child.name}</h3>
+            {/* 子标签显示包含其子标签的总文章数 */}
+            <p class="text-sm text-secondary">
+              {child.count}
+              {' '}
+              篇文章
+            </p>
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
+
+  <main class="mb-8">
+    <PostList posts={page.data} collection={collection} />
+
+    <PaginationNav
+      currentPage={page.currentPage}
+      lastPage={page.lastPage}
+      baseUrl={getTagUrl(tag.path, collection)}
+    />
+  </main>
+
+  {/* 相关标签（只在第一页显示） */}
+  {page.currentPage === 1 && relatedTags.length > 0 && (
+    <aside>
+      <h2 class="mb-4 text-xl font-bold">相关标签</h2>
+      <div class="min-h-64 rounded-lg bg-hover p-6">
+        <TagCloud
+          tags={relatedTags.map(t => [t.name, t.count, getTagUrl(t.path, collection)])}
+          collection={collection}
+          client:only="react"
+        />
+      </div>
+    </aside>
+  )}
+</BaseLayout>

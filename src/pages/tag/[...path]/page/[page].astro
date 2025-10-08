@@ -1,0 +1,19 @@
+---
+import TagPagedPage from '@/components/pages/TagPagedPage.astro';
+import { createTagPagedRoutes } from '@/utils/route-generator';
+import type { TagPagedRouteProps } from '@/types/routes';
+
+export const getStaticPaths = createTagPagedRoutes('post');
+
+type Props = TagPagedRouteProps;
+
+const { page, tag, relatedTags, childTags } = Astro.props;
+---
+
+<TagPagedPage
+  page={page}
+  tag={tag}
+  relatedTags={relatedTags}
+  childTags={childTags}
+  collection="post"
+/>

@@ -1,0 +1,13 @@
+---
+import PostPage from '@/components/pages/PostPage.astro';
+import { createPostRoutes } from '@/utils/route-generator';
+import type { PostRouteProps } from '@/types/routes';
+
+export const getStaticPaths = createPostRoutes('oi');
+
+type Props = PostRouteProps;
+
+const { post, prevPost, nextPost } = Astro.props;
+---
+
+<PostPage post={post} prevPost={prevPost} nextPost={nextPost} collection="oi" />

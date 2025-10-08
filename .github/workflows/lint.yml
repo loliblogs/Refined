@@ -1,0 +1,33 @@
+name: Lint
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 'lts/*'
+          cache: 'pnpm'
+      
+      - run: pnpm install
+
+      - name: Typecheck
+        id: typecheck
+        run: pnpm typecheck
+        continue-on-error: true
+
+      - name: ESLint
+        id: lint
+        run: pnpm lint
+        continue-on-error: true
+
+      - name: Check results
+        if: steps.lint.outcome != 'success' || steps.typecheck.outcome != 'success'
+        run: exit 1

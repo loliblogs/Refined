@@ -1,0 +1,93 @@
+---
+import { MagnifyingGlassIcon, ArrowSquareOutIcon } from '@phosphor-icons/react';
+import SearchBoxClient from './SearchBoxClient';
+
+export interface Props {
+  placeholder?: string;
+  searchUrl?: string;
+}
+
+const {
+  placeholder = '搜索',
+  searchUrl = '/search',
+} = Astro.props;
+---
+
+<div class="relative w-full" data-search-container>
+  <div class="relative">
+    {/* 输入框 - 完全匹配原版 */}
+    <input
+      type="search"
+      id="search-input"
+      class={`
+        peer box-border block h-9 w-full appearance-none rounded-md border
+        border-line bg-surface px-3 py-2 text-sm text-muted
+        focus:ring-2 focus:ring-line focus:outline-none
+      `}
+      placeholder=" "
+      aria-label={placeholder}
+      autocomplete="off"
+      data-search-input
+    />
+
+    {/* 占位符层：图标 + 文字 */}
+    <div
+      class={`
+        pointer-events-none absolute top-0 right-3 left-2 flex h-9 items-center
+        gap-2 text-muted transition-opacity duration-200
+        peer-focus:opacity-0
+        peer-[:not(:placeholder-shown)]:opacity-0
+      `}
+    >
+      <MagnifyingGlassIcon size="1rem" />
+      <span class="text-sm">{placeholder}</span>
+    </div>
+
+    {/* 搜索结果浮层 - 永久存在，通过hidden控制显示 */}
+    <div
+      class={`
+        absolute top-full right-0 left-0 z-50 mt-2 hidden overflow-hidden
+        rounded-md border border-line bg-surface shadow-lg
+      `}
+      data-search-dropdown
+    >
+      {/* 全站搜索选项 - 预渲染完整结构 */}
+      <a
+        href={`${searchUrl}?q=`}
+        data-index="0"
+        data-global-search
+        class={`
+          items-center gap-2 border-b border-line px-4 py-3 font-medium
+          transition-colors
+          hover:bg-muted/10
+          active:bg-muted/20
+        `}
+      >
+        <MagnifyingGlassIcon size="1rem" weight="bold" />
+        <span class="mr-auto gap-0" data-search-keyword></span>
+        <ArrowSquareOutIcon size="1rem" />
+      </a>
+
+      {/* 本地搜索结果容器 */}
+      <div
+        class={`
+          max-h-[min(var(--search-space),max(calc(var(--search-space)*0.4),var(--search-min-h)))]
+          overflow-x-hidden overflow-y-auto
+        `}
+        data-overlayscrollbars-initialize
+        data-searchresults-container
+      >
+        {/* 内部wrapper，防止OverlayScrollbars破坏我们的DOM操作 */}
+        <div data-search-results-wrapper>
+          {/* 结果将由客户端动态填充到这个wrapper内 */}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{/* 客户端增强 - 只负责交互逻辑，不渲染任何DOM */}
+<SearchBoxClient
+  client:idle
+  searchUrl={searchUrl}
+/>

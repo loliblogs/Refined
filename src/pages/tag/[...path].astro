@@ -1,0 +1,22 @@
+---
+import TagPage from '@/components/pages/TagPage.astro';
+import { createTagRoutes } from '@/utils/route-generator';
+import type { TagRouteProps } from '@/types/routes';
+
+export const getStaticPaths = createTagRoutes('post');
+
+type Props = TagRouteProps;
+
+const { tag, posts, ancestors, relatedTags, childTags, currentPage, lastPage } = Astro.props;
+---
+
+<TagPage
+  tag={tag}
+  posts={posts}
+  ancestors={ancestors}
+  relatedTags={relatedTags}
+  childTags={childTags}
+  currentPage={currentPage}
+  lastPage={lastPage}
+  collection="post"
+/>

@@ -1,0 +1,295 @@
+---
+/**
+ * 文章详情页组件 - 支持多collection
+ * 完全保持原始[...slug].astro的结构和行为
+ */
+import { CalendarIcon, TagIcon, FolderIcon, UserIcon, LockSimpleIcon, CircleNotchIcon, ArrowClockwiseIcon } from '@phosphor-icons/react';
+
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { formatDate } from '@/utils/date-helpers';
+import { getPostUrl, getCategoryUrl, getTagUrl, getArchiveUrl } from '@/utils/collection-paths';
+import { getSiteConfig } from '@/config/site.config';
+import Comments from '@/config/comments.config';
+import EncryptWrapper from '../EncryptWrapper.astro';
+import DecryptClient from '../DecryptClient';
+import NavigationCard from '../NavigationCard.astro';
+import TableOfContents from '../TableOfContents.astro';
+
+import type { CollectionName, Post } from '@/types/content';
+import type { TocItem } from '@/types/utils';
+
+interface Props {
+  post: Post;
+  prevPost: Post | null;
+  nextPost: Post | null;
+  collection?: CollectionName;
+}
+
+const { post, prevPost, nextPost, collection = 'post' } = Astro.props;
+const { Content, remarkPluginFrontmatter } = await post.render();
+
+// 提取第一个分类（如果存在）
+const firstCategory = post.category[0];
+
+// 决定是否显示评论
+const showComments = post.comments;
+
+// 获取配置
+const siteConfig = getSiteConfig(collection);
+const lockIconSize = siteConfig.author.avatar.width; // 锁图标尺寸与头像相同
+const tocEmptyText = siteConfig.tocEmptyText ?? '本文章没有目录'; // 空目录提示文字
+
+// 页面上下文（使用动态路径）
+const pageContext = {
+  title: post.title,
+  render: post.render,
+  path: getPostUrl(post.slug, collection),
+  layoutType: 'post' as const,
+  collection,
+};
+---
+
+<BaseLayout
+  title={post.title}
+  description={post.description}
+  pageContext={pageContext}
+>
+  <article>
+    <header class="mb-8 border-b border-line pb-4">
+      <h1 class={`
+        mb-4 text-4xl leading-tight font-normal text-primary
+        max-lg:text-3xl
+      `}
+      >
+        {post.title}
+      </h1>
+
+      <div class="flex flex-wrap items-center gap-4 text-sm text-muted">
+        <div class="flex items-center gap-1.5">
+          <CalendarIcon size="1rem" weight="fill" />
+          <a
+            href={`${getArchiveUrl(collection)}?focus=${formatDate(post.date)}`}
+            class={`
+              transition-colors
+              hover:text-primary
+            `}
+          >
+            <time datetime={post.date.toISOString()}>
+              {formatDate(post.date)}
+            </time>
+          </a>
+        </div>
+
+        {post.updated && (
+          <div class="flex items-center gap-1.5">
+            <ArrowClockwiseIcon size="1rem" weight="fill" />
+            <time datetime={post.updated.toISOString()}>
+              {formatDate(post.updated)}
+            </time>
+          </div>
+        )}
+
+        <div class="flex items-center gap-1.5">
+          <UserIcon size="1rem" weight="fill" />
+          <span>{post.author}</span>
+        </div>
+
+        {firstCategory && (
+          <div class="flex items-center gap-1.5">
+            <FolderIcon size="1rem" weight="fill" />
+            <a
+              href={getCategoryUrl(firstCategory, collection)}
+              class={`
+                transition-colors
+                hover:text-primary
+              `}
+            >
+              {firstCategory}
+            </a>
+          </div>
+        )}
+      </div>
+
+      {post.tags.length > 0 && (
+        <div class="mt-4 flex flex-wrap gap-2">
+          {post.tags.map(tag => (
+            <a
+              href={getTagUrl(tag, collection)}
+              class={`
+                inline-flex items-center gap-1 rounded-full bg-surface-aside
+                px-2.5 py-1 text-xs text-muted transition-colors duration-200
+                hover:bg-hover hover:text-primary
+              `}
+            >
+              <TagIcon size="0.75rem" weight="fill" />
+              {tag}
+            </a>
+          ))}
+        </div>
+      )}
+    </header>
+
+    {/* 文章主体 - 加密时隐藏且不被pagefind索引 */}
+    <div
+      id="markdown-body"
+      data-markdown
+      class:list={[
+        'my-8 leading-[1.8]',
+        post.derivedKey && 'hidden',
+      ]}
+      {...(!post.derivedKey && { 'data-pagefind-body': true })}
+    >
+      {post.derivedKey && post.salt
+        ? (
+            <EncryptWrapper derivedKey={post.derivedKey} salt={post.salt}>
+              <Content />
+            </EncryptWrapper>
+          )
+        : (
+            <Content />
+          )}
+    </div>
+
+    {/* 解密UI - 与mardown-body并行，只在加密时显示 */}
+    {post.derivedKey && (
+      <div
+        id="decrypt-panel"
+        class="my-8 rounded-lg border border-line bg-surface p-6"
+      >
+        <div class="flex flex-col items-center gap-4">
+          {/* 锁图标和提示 */}
+          <div class="flex flex-wrap items-center gap-2 align-middle text-muted">
+            <LockSimpleIcon size="1rem" weight="regular" />
+            <span id="decrypt-prompt" set:html={post.prompt} />
+          </div>
+
+          {/* 辅助文本与可感知名称（使用可见的 prompt 作为描述） */}
+          <label for="decrypt-password" class="sr-only">文章密码</label>
+
+          {/* 输入和按钮 */}
+          <div id="input-group" class="flex gap-4">
+            <input
+              type="password"
+              id="decrypt-password"
+              class={`
+                w-[15rem] rounded border border-line px-3 py-2 transition-colors
+                duration-200
+                focus:border-link focus:outline-none
+              `}
+              placeholder={post.hint}
+              autocomplete="off"
+              aria-describedby="decrypt-prompt"
+              aria-required="true"
+              aria-invalid="false"
+            />
+            <button
+              id="decrypt-button"
+              type="button"
+              class={`
+                relative flex w-18 items-center justify-center rounded bg-link
+                text-white transition-colors duration-200
+                hover:bg-link-hover
+                disabled:cursor-not-allowed disabled:opacity-50
+              `}
+              aria-controls="markdown-body"
+              aria-describedby="decrypt-prompt"
+            >
+              <span id="button-text">解锁</span>
+              <span
+                id="button-loading"
+                class={`
+                  absolute inset-0 hidden animate-[spin_1s_linear_infinite]
+                  items-center justify-center
+                `}
+              >
+                <CircleNotchIcon size="1.25rem" weight="bold" />
+              </span>
+            </button>
+          </div>
+
+          {/* 错误提示 - 可被读屏立即朗读 */}
+          <div
+            id="decrypt-error"
+            class="hidden text-link"
+            role="status"
+            aria-live="assertive"
+            aria-atomic="true"
+          >
+            <span id="error-text"></span>
+          </div>
+        </div>
+      </div>
+    )}
+
+    <footer class="border-t border-line/50 pt-12">
+      <nav>
+        <div class={`
+          grid grid-cols-2 gap-12
+          max-lg:grid-cols-1 max-lg:gap-8
+        `}
+        >
+          {prevPost
+            ? (
+                <NavigationCard
+                  post={prevPost}
+                  direction="prev"
+                  collection={collection}
+                />
+              )
+            : (
+                <div class="invisible" />
+              )}
+
+          {nextPost
+            ? (
+                <NavigationCard
+                  post={nextPost}
+                  direction="next"
+                  collection={collection}
+                />
+              )
+            : (
+                <div class="invisible" />
+              )}
+        </div>
+      </nav>
+    </footer>
+  </article>
+
+  {/* 解密客户端 - 只在有密码时加载 */}
+  {post.derivedKey && <DecryptClient client:idle />}
+
+  {/* 评论区 */}
+  {showComments && (
+    <section class="mt-12 border-t border-line pt-8">
+      <Comments collection={collection} client:load />
+    </section>
+  )}
+
+  {/* Sidebar slot：传递（已加密或明文）TOC 到侧边栏 */}
+  <Fragment slot="sidebar">
+    {post.derivedKey && post.salt
+      ? (
+          <>
+            {/* 加密占位符 - 大大的锁图标，上下左右居中 */}
+            <div
+              data-toc-placeholder
+              class="flex h-full items-center justify-center text-secondary"
+            >
+              <LockSimpleIcon size={lockIconSize} weight="duotone" />
+            </div>
+
+            {/* 加密数据 - 隐藏，供解密使用 */}
+            <div class="hidden" data-toc-encrypted>
+              <EncryptWrapper derivedKey={post.derivedKey} salt={post.salt}>
+                <TableOfContents emptyText={tocEmptyText} toc={remarkPluginFrontmatter.toc as TocItem[]} />
+              </EncryptWrapper>
+            </div>
+          </>
+        )
+      : (
+          <TableOfContents emptyText={tocEmptyText} toc={remarkPluginFrontmatter.toc as TocItem[]} />
+        )}
+  </Fragment>
+
+</BaseLayout>

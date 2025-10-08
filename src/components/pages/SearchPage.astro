@@ -1,0 +1,35 @@
+---
+/**
+ * 搜索页面组件 - 支持多collection
+ * 完全兼容原始search.astro的行为
+ */
+import '@pagefind/default-ui/css/ui.css';
+
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getSearchUrl } from '@/utils/collection-paths';
+import PagefindSearch from '../PagefindSearch';
+import '@/styles/pagefind.css';
+
+import type { CollectionName } from '@/types/content';
+
+interface Props {
+  collection?: CollectionName;
+}
+
+const { collection = 'post' } = Astro.props;
+
+// 页面上下文
+const pageContext = {
+  path: getSearchUrl(collection),
+  layoutType: 'page' as const,
+  collection,
+};
+---
+
+<BaseLayout title="搜索" pageContext={pageContext}>
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold">搜索</h1>
+  </div>
+  <div id="pagefind-ui" />
+  <PagefindSearch basePath={pageContext.path} client:only="react" />
+</BaseLayout>

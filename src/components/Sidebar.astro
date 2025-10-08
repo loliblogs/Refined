@@ -1,0 +1,137 @@
+---
+import AuthorMeta from './AuthorMeta.astro';
+import SearchBox from './SearchBox.astro';
+
+import { getSearchUrl } from '@/utils/collection-paths';
+
+import type { PageContext } from '@/types/content';
+
+
+interface Props {
+  pageContext: PageContext;
+}
+
+const { pageContext } = Astro.props;
+
+// 根据collection获取配置和搜索URL
+const collection = pageContext.collection;
+const searchUrl = getSearchUrl(collection);
+
+// 来自父级的 TOC 插槽（已在 PostPage 侧生成/处理）
+const hasTocSlot = Astro.slots.has('default');
+---
+
+<aside
+  id="aside"
+  class={`
+    relative h-full w-[var(--spacing-aside)] border-r border-line
+    bg-surface-aside
+    max-lg:pointer-events-none max-lg:fixed max-lg:top-0 max-lg:left-0
+    max-lg:z-[90] max-lg:block max-lg:w-full max-lg:bg-transparent
+    max-lg:[&.aside-panel-show]:!pointer-events-auto
+  `}
+>
+  <div
+    id="aside-mask"
+    class={`
+      hidden
+      max-lg:pointer-events-none max-lg:absolute max-lg:inset-0 max-lg:block
+      max-lg:bg-overlay max-lg:opacity-0 max-lg:transition-opacity
+      max-lg:[&.aside-mask-visible]:!pointer-events-auto
+      max-lg:[&.aside-mask-visible]:!opacity-100
+    `}
+  >
+  </div>
+
+  <div
+    id="aside-inner"
+    class={`
+      relative flex h-full w-full flex-col
+      max-lg:w-4/5 max-lg:max-w-sm max-lg:min-w-[var(--spacing-aside-min)]
+      max-lg:-translate-x-full max-lg:bg-surface-aside
+      max-lg:transition-transform max-lg:duration-300 max-lg:ease-in-out
+      max-lg:will-change-[transform] max-lg:[.aside-panel-show_&]:translate-x-0
+    `}
+  >
+    {/* 阅读进度条 - 固定在 aside 顶部 */}
+    <div
+      id="reading-progress-container"
+      class={`
+        pointer-events-none absolute top-0 right-0 left-0 h-1 bg-border/30
+        opacity-0 transition-opacity duration-300 will-change-[opacity]
+      `}
+      aria-hidden="true"
+    >
+      <div
+        id="reading-progress-bar"
+        class={`
+          h-full w-[var(--progress,0%)] origin-left bg-gradient-to-r
+          from-primary to-secondary transition-[width] duration-150 ease-out
+          will-change-[width]
+        `}
+      />
+    </div>
+
+    {/* Mobile close button will be added via JavaScript */}
+
+    {/* 搜索框区域 - 统一放在顶部，不滚动 */}
+    <div class={`
+      flex-shrink-0 px-6 pt-8 pb-4
+      max-lg:p-4
+    `}
+    >
+      <SearchBox
+        placeholder="搜索"
+        searchUrl={searchUrl}
+      />
+    </div>
+
+    {/* 根据是否有 TOC 插槽显示不同内容 */}
+    {hasTocSlot
+      ? (
+          /* 内容区域 - 可滚动，滚动条在最右边 */
+          <div
+            class="min-h-0 flex-1 overflow-x-hidden overflow-y-auto"
+            data-overlayscrollbars-initialize
+            data-toc-container
+          >
+            <div class={`
+              h-full px-6
+              max-lg:px-4
+            `}
+            >
+              {/* 使用来自 PostPage 的插槽内容（可能是明文 TOC 或加密占位） */}
+              <slot />
+            </div>
+          </div>
+        )
+      : (
+          /* AuthorMeta 在整个容器中居中 */
+          <div class="min-h-0 flex-1 overflow-hidden">
+            <div
+              class="flex h-full flex-col overflow-x-hidden overflow-y-auto"
+              data-overlayscrollbars-initialize
+              data-authmeta-container
+            >
+              <div class="flex h-full flex-col">
+                <div class="min-h-0 shrink grow basis-0" aria-hidden="true" />
+                <div class={`
+                  shrink-0 px-6
+                  max-lg:px-4
+                `}
+                >
+                  <AuthorMeta collection={collection} />
+                </div>
+                <div
+                  class={`
+                    min-h-0 shrink grow basis-[6.25rem]
+                    max-lg:basis-[4.25rem]
+                  `}
+                  aria-hidden="true"
+                />
+              </div>
+            </div>
+          </div>
+        )}
+  </div>
+</aside>

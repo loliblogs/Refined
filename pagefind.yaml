@@ -1,0 +1,4 @@
+# 主站 post collection 的搜索索引
+site: dist
+exclude:
+  - oi/**  # 排除 OI collection 的内容

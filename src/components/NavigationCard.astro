@@ -1,0 +1,105 @@
+---
+import { ArrowLeftIcon, ArrowRightIcon } from '@phosphor-icons/react';
+import { formatDate } from '@/utils/date-helpers';
+import { getPostUrl } from '@/utils/collection-paths';
+
+import type { Post, CollectionName } from '@/types/content';
+
+interface Props {
+  post: Post;
+  direction: 'prev' | 'next';
+  collection: CollectionName;
+}
+
+const { post, direction, collection } = Astro.props;
+
+const Icon = direction === 'prev' ? ArrowLeftIcon : ArrowRightIcon;
+const label = direction === 'prev' ? '上一篇' : '下一篇';
+---
+
+<a
+  href={getPostUrl(post.slug, collection)}
+  class:list={[
+    `
+      group relative block p-4
+      max-lg:p-3
+    `,
+    'bg-surface',
+    'rounded-2xl border-2 border-line',
+    `
+      shadow-md
+      hover:shadow-2xl
+    `,
+    'hover:border-primary',
+    'transform transition-transform duration-300 ease-out',
+    'overflow-hidden',
+    {
+      'hover:-translate-x-1': direction === 'prev',
+      'hover:translate-x-1': direction === 'next',
+    },
+  ]}
+  id={`page${direction}`}
+>
+  {/* 方向指示 - 使用 flex-row-reverse 消除重复 */}
+  <div class:list={[
+    'mb-3 flex items-center gap-3',
+    { 'flex-row-reverse': direction === 'next' },
+  ]}
+  >
+    <span class={`
+      flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full
+      bg-hover transition-transform duration-200
+      group-hover:scale-110
+    `}
+    >
+      <span class="text-primary">
+        <Icon size="1.25rem" weight="bold" />
+      </span>
+    </span>
+    <div class:list={[
+      'flex-1',
+      { 'text-right': direction === 'next' },
+    ]}
+    >
+      <span class="text-xs font-medium tracking-wider text-secondary uppercase">
+        {label}
+      </span>
+      <div class="mt-0.5 text-xs text-secondary/70">
+        {formatDate(post.date)}
+      </div>
+    </div>
+  </div>
+
+  {/* 文章标题 */}
+  <h1 class={`
+    mb-2 text-xl font-semibold text-primary transition-colors duration-200
+    group-hover:text-link
+  `}
+  >
+    {post.title}
+  </h1>
+
+  {/* 文章描述 */}
+  <p class="mb-2 line-clamp-2 text-xs leading-relaxed text-secondary">
+    {post.excerpt ?? post.description}
+  </p>
+
+  {/* 标签 */}
+  {post.tags.length > 0 && (
+    <div class="mt-2">
+      <div class="flex flex-wrap gap-2">
+        {post.tags.slice(0, 3).map(tag => (
+          <span class={`
+            rounded-md bg-surface-aside px-2.5 py-1 text-xs font-medium
+            text-secondary transition-colors duration-200
+            group-hover:bg-primary/10 group-hover:text-primary
+          `}
+          >
+            #
+            {tag}
+          </span>
+        ))}
+      </div>
+    </div>
+  )}
+</a>

@@ -1,0 +1,17 @@
+/* Pagefind UI 自定义样式覆盖 */
+/* 必须在 @pagefind/default-ui/css/ui.css 之后加载 */
+
+:root {
+  /* 根据HTML的font-size缩放 */
+  --pagefind-ui-scale: calc(var(--base-font-size) / 1rem);
+  --pagefind-ui-primary: var(--color-link);
+  --pagefind-ui-text: var(--color-primary);
+  --pagefind-ui-background: var(--color-bg);
+  --pagefind-ui-border: var(--color-border);
+  --pagefind-ui-tag: var(--color-hover);
+  --pagefind-ui-border-width: 0.0625rem;
+  --pagefind-ui-border-radius: 0.5rem;
+  --pagefind-ui-image-border-radius: 0.5rem;
+  --pagefind-ui-image-box-ratio: 3 / 2;
+  --pagefind-ui-font: var(--font-sans);
+}
