@@ -16,7 +16,6 @@ import NavigationCard from '../NavigationCard.astro';
 import TableOfContents from '../TableOfContents.astro';
 
 import type { CollectionName, Post } from '@/types/content';
-import type { TocItem } from '@/types/utils';
 
 interface Props {
   post: Post;
@@ -26,7 +25,7 @@ interface Props {
 }
 
 const { post, prevPost, nextPost, collection = 'post' } = Astro.props;
-const { Content, remarkPluginFrontmatter } = await post.render();
+const { Content } = await post.render();
 
 // 提取第一个分类（如果存在）
 const firstCategory = post.category[0];
@@ -282,13 +281,17 @@ const pageContext = {
             {/* 加密数据 - 隐藏，供解密使用 */}
             <div class="hidden" data-toc-encrypted>
               <EncryptWrapper derivedKey={post.derivedKey} salt={post.salt}>
-                <TableOfContents emptyText={tocEmptyText} toc={remarkPluginFrontmatter.toc as TocItem[]} />
+                <TableOfContents emptyText={tocEmptyText} >
+                  <Content />
+                </TableOfContents>
               </EncryptWrapper>
             </div>
           </>
         )
       : (
-          <TableOfContents emptyText={tocEmptyText} toc={remarkPluginFrontmatter.toc as TocItem[]} />
+          <TableOfContents emptyText={tocEmptyText} >
+            <Content />
+          </TableOfContents>
         )}
   </Fragment>
 

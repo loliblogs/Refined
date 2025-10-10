@@ -9,9 +9,7 @@ import rehypeMathJax from './src/plugins/rehype-mathjax';
 import rehypeSanitize from './src/plugins/rehype-sanitize';
 import remarkDirectiveRehype from './src/plugins/remark-directive-rehype';
 import remarkRemoveCjkBreaks from './src/plugins/remark-remove-cjk-breaks';
-import rehypeToc from './src/plugins/rehype-toc';
 
-import { rehypeHeadingIds } from '@astrojs/markdown-remark';
 import remarkDirective from 'remark-directive';
 import remarkEmoji from 'remark-emoji';
 import remarkGithubAdmonitionsToDirectives from 'remark-github-admonitions-to-directives';
@@ -73,7 +71,7 @@ export default defineConfig({
       }], [remarkEmoji, {
         accessible: true,
       }]],
-    rehypePlugins: [rehypeHeadingIds, rehypeMathJax, rehypeSanitize, rehypeToc],
+    rehypePlugins: [rehypeMathJax, rehypeSanitize],
   },
   image: {
     layout: 'constrained',

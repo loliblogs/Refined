@@ -4,6 +4,7 @@
  * 极简设计：只用缩进区分层级，h2 带圆圈序号
  */
 
+import * as cheerio from 'cheerio';
 import type { TocItem } from '@/types/utils';
 
 export interface Props {
@@ -17,8 +18,6 @@ export interface Props {
   title?: string | undefined;
   /** 无目录时的提示文字 */
   emptyText?: string | undefined;
-  /** 目录数据 */
-  toc: TocItem[];
 }
 
 const {
@@ -27,8 +26,16 @@ const {
   maxLevel = 6,
   title = '目录',
   emptyText = '本文章没有目录',
-  toc,
 } = Astro.props;
+
+const html = await Astro.slots.render('default');
+
+const $ = cheerio.load(html);
+const toc: TocItem[] = $('h1, h2, h3, h4, h5, h6').map((_, el) => ({
+  level: parseInt(el.tagName[1] ?? '-1'),
+  text: $(el).html() ?? '',
+  id: $(el).attr('id') ?? '',
+})).get();
 
 // 过滤有效层级的标题
 const filteredHeadings = toc.filter(
