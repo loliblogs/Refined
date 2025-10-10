@@ -2,8 +2,8 @@
 
 [data-markdown] :is(h1, h2, h3, h4, h5, h6) {
   scroll-margin-top: 1rem;
-  margin-top: 1.5em;
-  margin-bottom: 1em;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
   font-weight: 600;
 }
 
@@ -99,7 +99,7 @@
 [data-markdown] code {
   font-family: var(--font-mono);
   background-color: var(--color-hover);
-  padding: 0.125em 0.25em;
+  padding: 0 0.25em;
   border-radius: 0.25em;
 }
 
@@ -107,7 +107,7 @@
 [data-markdown] mark {
   background-color: var(--color-highlight);
   color: inherit;
-  padding: 0.125em 0.25em;
+  padding: 0 0.25em;
   border-radius: 0.25em;
 }
 

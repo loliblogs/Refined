@@ -35,7 +35,9 @@ export default defineConfig({
     HTML: true,
     Image: false,
     JavaScript: false,
-  }), sitemap()],
+  }), sitemap({
+    lastmod: new Date(),
+  })],
   vite: {
     build: {
       minify: 'terser',
