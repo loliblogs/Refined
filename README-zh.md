@@ -70,11 +70,12 @@ pnpm sync
 
 ```text
 /
+├── LICENSE
 ├── astro.config.ts
 ├── eslint.config.ts
+├── ec.config.mjs
 ├── tsconfig.json
 ├── pagefind.yaml
-├── wrangler.json
 ├── package.json
 ├── pnpm-lock.yaml
 ├── pnpm-workspace.yaml
@@ -286,7 +287,7 @@ SECRET_ENCRYPTION_SALT='another-strong-random-string-or-base64'
 
 ## 👀 想了解更多？
 
-查阅 [Astro 文档](https://docs.astro.build) 或加入 [Astro Discord](https://astro.build/chat)。针对本项目，请在 [Issues](https://github.com/lolifamily/Refined/issues) 中报告可复现的 bug、回归与范围明确的特性请求；在 [Discussions](https://github.com/lolifamily/Refined/discussions) 中提问、寻求使用帮助、讨论想法、设计提案与一般性反馈——这样可以让 issue 列表保持聚焦与可执行。
+查阅 [Astro 文档](https://docs.astro.build) 或加入 [Astro Discord](https://astro.build/chat)。针对本项目，请在 [Issues](https://github.com/loliblogs/Refined/issues) 中报告可复现的 bug、回归与范围明确的特性请求；在 [Discussions](https://github.com/loliblogs/Refined/discussions) 中提问、寻求使用帮助、讨论想法、设计提案与一般性反馈——这样可以让 issue 列表保持聚焦与可执行。
 
 这是一个个人项目。这里的“个人”意味着优先满足作者自身使用的“够用”，而非通用主题。为保持代码体量小、可读、易维护，以下请求会被有意排除在范围之外：
 

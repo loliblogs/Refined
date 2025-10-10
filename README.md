@@ -70,11 +70,12 @@ Inside of your Astro project, you'll see the following folders and files:
 
 ```text
 /
+├── LICENSE
 ├── astro.config.ts
 ├── eslint.config.ts
+├── ec.config.mjs
 ├── tsconfig.json
 ├── pagefind.yaml
-├── wrangler.json
 ├── package.json
 ├── pnpm-lock.yaml
 ├── pnpm-workspace.yaml
@@ -286,7 +287,7 @@ For UI chrome like the Navigation and Sidebar, math may appear in dynamic string
 
 ## 👀 Want to learn more?
 
-Check the [Astro documentation](https://docs.astro.build) or join the [Astro Discord](https://astro.build/chat). For this project specifically, please use [Issues](https://github.com/lolifamily/Refined/issues) for reproducible bugs, regressions, and well‑scoped feature requests. Use [Discussions](https://github.com/lolifamily/Refined/discussions) for questions, how‑to help, ideas, design proposals, and general feedback—this keeps the issue tracker focused and actionable.
+Check the [Astro documentation](https://docs.astro.build) or join the [Astro Discord](https://astro.build/chat). For this project specifically, please use [Issues](https://github.com/loliblogs/Refined/issues) for reproducible bugs, regressions, and well‑scoped feature requests. Use [Discussions](https://github.com/loliblogs/Refined/discussions) for questions, how‑to help, ideas, design proposals, and general feedback—this keeps the issue tracker focused and actionable.
 
 This is a personal project. Here, “personal” means good‑enough for my own use rather than a general‑purpose theme. To keep the code small, readable, and easy to maintain, some requests are intentionally out of scope:
 
