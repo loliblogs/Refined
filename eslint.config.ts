@@ -117,11 +117,11 @@ export default defineConfig(
     extends: [reactRefresh.configs.vite],
   },
   {
-    files: ['**/*.{js,cjs,mjs}'],
+    files: ['**/*.{js,cjs,mjs,jsx}'],
     extends: [tseslint.configs.disableTypeChecked],
   },
   {
-    files: ['**/*.{md,mdx}/**'],
+    files: ['**/*.{md,mdx,astro}/**'],
     extends: [tseslint.configs.disableTypeChecked],
     rules: {
       '@typescript-eslint/no-unused-vars': 'off',
