@@ -7,6 +7,7 @@ import Navigation from '@/components/Navigation.astro';
 import Sidebar from '@/components/Sidebar.astro';
 import PageScrollManager from '@/components/PageScrollManager';
 import MediumZoom from '@/components/MediumZoom';
+import AstroTransition from '@/components/AstroTransition';
 import { getRssUrl } from '@/utils/collection-paths';
 
 import type { PageContext } from '@/types/content';
@@ -138,26 +139,11 @@ const fullTitle = pageTitle ? `${pageTitle} | ${config.title}` : config.title;
       原因：transition:animate 在 fetch 完成后才播放，用户点击链接会感知延迟
       这里在 before-preparation（fetch 前）就开始播放退出动画，提升响应速度
     */}
-    {config.animationOld && (
-      <script is:inline define:vars={{
-        animationOld: config.animationOld,
-        animationNew: config.animationNew,
-      }}>
-        document.addEventListener('astro:before-preparation', () => {
-          const aside = document.getElementById('aside-inner');
-          const content = document.getElementById('content');
-          aside?.classList.remove(animationNew);
-          content?.classList.remove(animationNew);
-          aside?.classList.add(animationOld);
-          content?.classList.add(animationOld);
-        });
-        document.addEventListener('astro:before-swap', (event) => {
-          const aside = event.newDocument.getElementById('aside-inner');
-          const content = event.newDocument.getElementById('content');
-          aside?.classList.add(animationNew);
-          content?.classList.add(animationNew);
-        })
-      </script>
-    )}
+    <AstroTransition
+      animationOld={config.animationOld}
+      animationNew={config.animationNew}
+      transition:persist
+      client:only="react"
+    />
   </body>
 </html>
