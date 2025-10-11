@@ -67,8 +67,6 @@ const PageScrollManager: FC = () => {
 
     // 检测评论区是否进入视口
     function checkGiscusVisibility(viewport: HTMLElement) {
-      console.log('checkGiscusVisibility giscusLoaded', giscusLoaded);
-      console.log('checkGiscusVisibility commentsSection', commentsSection);
       // 如果已经加载或者没有评论区，直接返回
       if (giscusLoaded || !commentsSection) return;
 

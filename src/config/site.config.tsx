@@ -23,22 +23,6 @@ import type { CollectionName } from '@/types/content';
  * ==========================================
  */
 
-/**
- * 动画配置
- */
-const animation = {
-  old: {
-    name: 'fade-out-up',
-    duration: '0.3s',
-    easing: 'ease-out',
-  },
-  new: {
-    name: 'fade-in-down',
-    duration: '0.3s',
-    easing: 'ease-out',
-  },
-};
-
 // Post Collection 配置（默认博客）
 const postConfig: SiteConfig = {
   // ========== 站点基本信息 ==========
@@ -134,10 +118,8 @@ const postConfig: SiteConfig = {
   // ),
 
   // ========== 其他配置 ==========
-  animation: {
-    forwards: animation,
-    backwards: animation,
-  },
+  animationOld: 'animate-[fade-out-up_0.2s_ease-out_forwards]',
+  animationNew: 'animate-[fade-in-down_0.3s_ease-out]',
   // 网站图标
   favicon: () => (                     // 图标 (Vite 处理后的 URL)
     <>
@@ -215,7 +197,8 @@ const oiConfig: SiteConfig = {
   // analytics: postConfig.analytics,
 
   // ========== 其他配置 ==========
-  animation: postConfig.animation,
+  animationOld: postConfig.animationOld,
+  animationNew: postConfig.animationNew,
   // 网站图标（可以使用相同或不同的图标）
   favicon: postConfig.favicon,
 

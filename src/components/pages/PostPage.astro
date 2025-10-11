@@ -281,7 +281,7 @@ const pageContext = {
             {/* 加密数据 - 隐藏，供解密使用 */}
             <div class="hidden" data-toc-encrypted>
               <EncryptWrapper derivedKey={post.derivedKey} salt={post.salt}>
-                <TableOfContents emptyText={tocEmptyText} >
+                <TableOfContents emptyText={tocEmptyText}>
                   <Content />
                 </TableOfContents>
               </EncryptWrapper>
@@ -289,7 +289,7 @@ const pageContext = {
           </>
         )
       : (
-          <TableOfContents emptyText={tocEmptyText} >
+          <TableOfContents emptyText={tocEmptyText}>
             <Content />
           </TableOfContents>
         )}

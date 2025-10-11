@@ -28,6 +28,9 @@ export default defineConfig({
   trailingSlash: 'never',
   output: 'static',
   cacheDir: '.cache',
+  prefetch: {
+    prefetchAll: true,
+  },
   integrations: [expressiveCode(), preact(), mdx(), db(), playformCompress({
     CSS: false,
     HTML: true,

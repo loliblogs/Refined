@@ -80,10 +80,16 @@ const fullTitle = pageTitle ? `${pageTitle} | ${config.title}` : config.title;
           max-lg:static max-lg:h-0 max-lg:w-full
         `}
       >
-        <Navigation transition:name="navigation" collection={pageContext.collection} />
+        <Navigation
+          transition:name="navigation"
+          collection={pageContext.collection}
+        />
+
         {Astro.slots.has('sidebar')
           ? (
               <Sidebar
+                transition:animate="none"
+                transition:name="aside"
                 pageContext={pageContext}
               >
                 <slot name="sidebar" />
@@ -91,6 +97,8 @@ const fullTitle = pageTitle ? `${pageTitle} | ${config.title}` : config.title;
             )
           : (
               <Sidebar
+                transition:animate="none"
+                transition:name="aside"
                 pageContext={pageContext}
               />
             )}
@@ -103,7 +111,7 @@ const fullTitle = pageTitle ? `${pageTitle} | ${config.title}` : config.title;
           max-lg:ml-0 max-lg:px-4 max-lg:pt-[4.25rem] max-lg:pb-1.5
         `}
         transition:name="content"
-        transition:animate={config.animation}
+        transition:animate="none"
         data-overlayscrollbars-initialize
       >
         <div
@@ -125,5 +133,31 @@ const fullTitle = pageTitle ? `${pageTitle} | ${config.title}` : config.title;
       </div>
     </main>
     {config.analytics && <config.analytics />}
+    {/*
+      手动控制页面切换动画，而不是用 transition:animate API
+      原因：transition:animate 在 fetch 完成后才播放，用户点击链接会感知延迟
+      这里在 before-preparation（fetch 前）就开始播放退出动画，提升响应速度
+    */}
+    {config.animationOld && (
+      <script is:inline define:vars={{
+        animationOld: config.animationOld,
+        animationNew: config.animationNew,
+      }}>
+        document.addEventListener('astro:before-preparation', () => {
+          const aside = document.getElementById('aside-inner');
+          const content = document.getElementById('content');
+          aside?.classList.remove(animationNew);
+          content?.classList.remove(animationNew);
+          aside?.classList.add(animationOld);
+          content?.classList.add(animationOld);
+        });
+        document.addEventListener('astro:before-swap', (event) => {
+          const aside = event.newDocument.getElementById('aside-inner');
+          const content = event.newDocument.getElementById('content');
+          aside?.classList.add(animationNew);
+          content?.classList.add(animationNew);
+        })
+      </script>
+    )}
   </body>
 </html>
