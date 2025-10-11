@@ -20,7 +20,7 @@ importers:
         version: 6.3.8
       '@astrojs/mdx':
         specifier: ^4.3.7
-        version: 4.3.7(astro@5.14.3(@netlify/blobs@10.0.10)(@types/node@24.7.1)(@vercel/blob@1.0.2)(jiti@2.6.1)(lightningcss@1.30.1)(rollup@4.46.2)(terser@5.44.0)(typescript@5.9.3)(yaml@2.8.1))
+        version: 4.3.7(astro@5.14.4(@netlify/blobs@10.0.10)(@types/node@24.7.1)(@vercel/blob@1.0.2)(jiti@2.6.1)(lightningcss@1.30.1)(rollup@4.46.2)(terser@5.44.0)(typescript@5.9.3)(yaml@2.8.1))
       '@astrojs/preact':
         specifier: ^4.1.1
         version: 4.1.1(@babel/core@7.28.3)(@types/node@24.7.1)(jiti@2.6.1)(lightningcss@1.30.1)(preact@10.27.2)(terser@5.44.0)(yaml@2.8.1)
@@ -79,11 +79,11 @@ importers:
         specifier: ^1.18.0
         version: 1.18.0
       astro:
-        specifier: ^5.14.3
-        version: 5.14.3(@netlify/blobs@10.0.10)(@types/node@24.7.1)(@vercel/blob@1.0.2)(jiti@2.6.1)(lightningcss@1.30.1)(rollup@4.46.2)(terser@5.44.0)(typescript@5.9.3)(yaml@2.8.1)
+        specifier: ^5.14.4
+        version: 5.14.4(@netlify/blobs@10.0.10)(@types/node@24.7.1)(@vercel/blob@1.0.2)(jiti@2.6.1)(lightningcss@1.30.1)(rollup@4.46.2)(terser@5.44.0)(typescript@5.9.3)(yaml@2.8.1)
       astro-expressive-code:
         specifier: ^0.41.3
-        version: 0.41.3(astro@5.14.3(@netlify/blobs@10.0.10)(@types/node@24.7.1)(@vercel/blob@1.0.2)(jiti@2.6.1)(lightningcss@1.30.1)(rollup@4.46.2)(terser@5.44.0)(typescript@5.9.3)(yaml@2.8.1))
+        version: 0.41.3(astro@5.14.4(@netlify/blobs@10.0.10)(@types/node@24.7.1)(@vercel/blob@1.0.2)(jiti@2.6.1)(lightningcss@1.30.1)(rollup@4.46.2)(terser@5.44.0)(typescript@5.9.3)(yaml@2.8.1))
       cheerio:
         specifier: ^1.1.2
         version: 1.1.2
@@ -179,8 +179,8 @@ importers:
         specifier: ^0.9.4
         version: 0.9.4(typescript@5.9.3)
       '@eslint/css':
-        specifier: ^0.12.0
-        version: 0.12.0
+        specifier: ^0.13.0
+        version: 0.13.0
       '@eslint/js':
         specifier: ^9.37.0
         version: 9.37.0
@@ -711,8 +711,8 @@ packages:
     resolution: {integrity: sha512-bJgnXu0D0K1BbfPfHTmCaJe2ucBOjeg/tG37H2CSqYCw51VMmBtPfWrH8LKPLAVCOp0h94e1n8PfR3v9iRbtyA==}
     engines: {node: ^10 || ^12.20.0 || ^14.13.0 || >=15.0.0}
 
-  '@eslint/css@0.12.0':
-    resolution: {integrity: sha512-cwDOIsLwCkVGNI8iLakioJcdu/QL0cG+h+02/KxunDfnD5bZqlqZMsVlWH+Egf7+KjoyNVYAYoG71tEW4avsGg==}
+  '@eslint/css@0.13.0':
+    resolution: {integrity: sha512-nPUDpWDKq3uXrvvft+wfZmx7jCF/TLMzXassUrSxLTumQ7Cr4F/HTUcibVit2MdbSqfgAkWgLRc6Gns5/PRAEA==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
   '@eslint/eslintrc@3.3.1':
@@ -1884,8 +1884,8 @@ packages:
     peerDependencies:
       astro: ^4.0.0-beta || ^5.0.0-beta || ^3.3.0
 
-  astro@5.14.3:
-    resolution: {integrity: sha512-iRvl3eEYYdSYA195eNREjh43hqMMwKY1uoHYiKfLCB9G+bjFtaBtDe8R0ip7AbTD69wyOKgUCOtMad+lkOnT/w==}
+  astro@5.14.4:
+    resolution: {integrity: sha512-yqgMAO2Whi9GmZkByyiPcG7CiiPr0Me0iBSorMa6M0g+wQk/ewnIqUyr7T/uFCPTQndoKwucnYFTrf0yfb0urw==}
     engines: {node: 18.20.8 || ^20.3.0 || >=22.0.0, npm: '>=9.6.5', pnpm: '>=7.1.0'}
     hasBin: true
 
@@ -2898,8 +2898,8 @@ packages:
   html-escaper@3.0.3:
     resolution: {integrity: sha512-RuMffC89BOWQoY0WKGpIhn5gX3iI54O6nRA0yC124NYVtzjmFWBIiFd8M0x+ZdX0P9R4lADg1mgP8C7PxGOWuQ==}
 
-  html-minifier-next@2.1.6:
-    resolution: {integrity: sha512-4NzJqfN5WJaTuWXW5dq1nyMcxbqAkenpQPrEHq3/QfL1CQlTEaCpKMUAXiDxVHuHamRoQ/Lo9xQunZIBlq/wIg==}
+  html-minifier-next@2.1.7:
+    resolution: {integrity: sha512-ORX2kXeGlfLHhkmS2Bol8m0j6/NOjH2gnLqYXN4jjkdwt8HWvNzSIkqitAxoL7ST8W+ZISW6fC4OWYmXLU/gXg==}
     hasBin: true
 
   html-void-elements@3.0.0:
@@ -5118,12 +5118,12 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@astrojs/mdx@4.3.7(astro@5.14.3(@netlify/blobs@10.0.10)(@types/node@24.7.1)(@vercel/blob@1.0.2)(jiti@2.6.1)(lightningcss@1.30.1)(rollup@4.46.2)(terser@5.44.0)(typescript@5.9.3)(yaml@2.8.1))':
+  '@astrojs/mdx@4.3.7(astro@5.14.4(@netlify/blobs@10.0.10)(@types/node@24.7.1)(@vercel/blob@1.0.2)(jiti@2.6.1)(lightningcss@1.30.1)(rollup@4.46.2)(terser@5.44.0)(typescript@5.9.3)(yaml@2.8.1))':
     dependencies:
       '@astrojs/markdown-remark': 6.3.8
       '@mdx-js/mdx': 3.1.1
       acorn: 8.15.0
-      astro: 5.14.3(@netlify/blobs@10.0.10)(@types/node@24.7.1)(@vercel/blob@1.0.2)(jiti@2.6.1)(lightningcss@1.30.1)(rollup@4.46.2)(terser@5.44.0)(typescript@5.9.3)(yaml@2.8.1)
+      astro: 5.14.4(@netlify/blobs@10.0.10)(@types/node@24.7.1)(@vercel/blob@1.0.2)(jiti@2.6.1)(lightningcss@1.30.1)(rollup@4.46.2)(terser@5.44.0)(typescript@5.9.3)(yaml@2.8.1)
       es-module-lexer: 1.7.0
       estree-util-visit: 2.0.0
       hast-util-to-html: 9.0.5
@@ -5562,7 +5562,7 @@ snapshots:
       mdn-data: 2.23.0
       source-map-js: 1.2.1
 
-  '@eslint/css@0.12.0':
+  '@eslint/css@0.13.0':
     dependencies:
       '@eslint/core': 0.16.0
       '@eslint/css-tree': 3.6.5
@@ -6095,12 +6095,12 @@ snapshots:
       '@playform/pipe': 0.1.3
       '@types/csso': 5.0.4
       '@types/html-minifier-terser': 7.0.2
-      astro: 5.14.3(@netlify/blobs@10.0.10)(@types/node@24.7.1)(@vercel/blob@1.0.2)(jiti@2.6.1)(lightningcss@1.30.1)(rollup@4.46.2)(terser@5.42.0)(typescript@5.9.3)(yaml@2.8.1)
+      astro: 5.14.4(@netlify/blobs@10.0.10)(@types/node@24.7.1)(@vercel/blob@1.0.2)(jiti@2.6.1)(lightningcss@1.30.1)(rollup@4.46.2)(terser@5.42.0)(typescript@5.9.3)(yaml@2.8.1)
       commander: 14.0.0
       csso: 5.0.5
       deepmerge-ts: 7.1.5
       fast-glob: 3.3.3
-      html-minifier-terser: html-minifier-next@2.1.6
+      html-minifier-terser: html-minifier-next@2.1.7
       kleur: 4.1.5
       lightningcss: 1.30.1
       sharp: 0.34.2
@@ -6853,12 +6853,12 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  astro-expressive-code@0.41.3(astro@5.14.3(@netlify/blobs@10.0.10)(@types/node@24.7.1)(@vercel/blob@1.0.2)(jiti@2.6.1)(lightningcss@1.30.1)(rollup@4.46.2)(terser@5.44.0)(typescript@5.9.3)(yaml@2.8.1)):
+  astro-expressive-code@0.41.3(astro@5.14.4(@netlify/blobs@10.0.10)(@types/node@24.7.1)(@vercel/blob@1.0.2)(jiti@2.6.1)(lightningcss@1.30.1)(rollup@4.46.2)(terser@5.44.0)(typescript@5.9.3)(yaml@2.8.1)):
     dependencies:
-      astro: 5.14.3(@netlify/blobs@10.0.10)(@types/node@24.7.1)(@vercel/blob@1.0.2)(jiti@2.6.1)(lightningcss@1.30.1)(rollup@4.46.2)(terser@5.44.0)(typescript@5.9.3)(yaml@2.8.1)
+      astro: 5.14.4(@netlify/blobs@10.0.10)(@types/node@24.7.1)(@vercel/blob@1.0.2)(jiti@2.6.1)(lightningcss@1.30.1)(rollup@4.46.2)(terser@5.44.0)(typescript@5.9.3)(yaml@2.8.1)
       rehype-expressive-code: 0.41.3
 
-  astro@5.14.3(@netlify/blobs@10.0.10)(@types/node@24.7.1)(@vercel/blob@1.0.2)(jiti@2.6.1)(lightningcss@1.30.1)(rollup@4.46.2)(terser@5.42.0)(typescript@5.9.3)(yaml@2.8.1):
+  astro@5.14.4(@netlify/blobs@10.0.10)(@types/node@24.7.1)(@vercel/blob@1.0.2)(jiti@2.6.1)(lightningcss@1.30.1)(rollup@4.46.2)(terser@5.42.0)(typescript@5.9.3)(yaml@2.8.1):
     dependencies:
       '@astrojs/compiler': 2.12.2
       '@astrojs/internal-helpers': 0.7.4
@@ -6904,7 +6904,7 @@ snapshots:
       prompts: 2.4.2
       rehype: 13.0.2
       semver: 7.7.2
-      shiki: 3.12.2
+      shiki: 3.13.0
       smol-toml: 1.4.2
       tinyexec: 1.0.1
       tinyglobby: 0.2.15
@@ -6959,7 +6959,7 @@ snapshots:
       - uploadthing
       - yaml
 
-  astro@5.14.3(@netlify/blobs@10.0.10)(@types/node@24.7.1)(@vercel/blob@1.0.2)(jiti@2.6.1)(lightningcss@1.30.1)(rollup@4.46.2)(terser@5.44.0)(typescript@5.9.3)(yaml@2.8.1):
+  astro@5.14.4(@netlify/blobs@10.0.10)(@types/node@24.7.1)(@vercel/blob@1.0.2)(jiti@2.6.1)(lightningcss@1.30.1)(rollup@4.46.2)(terser@5.44.0)(typescript@5.9.3)(yaml@2.8.1):
     dependencies:
       '@astrojs/compiler': 2.12.2
       '@astrojs/internal-helpers': 0.7.4
@@ -7005,7 +7005,7 @@ snapshots:
       prompts: 2.4.2
       rehype: 13.0.2
       semver: 7.7.2
-      shiki: 3.12.2
+      shiki: 3.13.0
       smol-toml: 1.4.2
       tinyexec: 1.0.1
       tinyglobby: 0.2.15
@@ -8270,7 +8270,7 @@ snapshots:
 
   html-escaper@3.0.3: {}
 
-  html-minifier-next@2.1.6:
+  html-minifier-next@2.1.7:
     dependencies:
       change-case: 4.1.2
       clean-css: 5.3.3

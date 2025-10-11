@@ -131,10 +131,11 @@ jobs:
           name: dist
           path: dist
 
+      # Disabled Netlify detection because we were frequently hitting its rate limits.
       - name: Exit with error if any step failed
         if: |
           steps.domestic.outcome != 'success' || steps.cloudflare_workers.outcome != 'success' ||
           steps.cloudflare_pages.outcome != 'success' || steps.vercel.outcome != 'success' ||
-          steps.netlify.outcome != 'success' || steps.github.outcome != 'success' ||
-          steps.gitlab.outcome != 'success' || steps.bitbucket.outcome != 'success'
+          steps.github.outcome != 'success' || steps.gitlab.outcome != 'success' ||
+          steps.bitbucket.outcome != 'success'
         run: exit 1

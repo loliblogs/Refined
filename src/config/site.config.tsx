@@ -23,6 +23,8 @@ import type { CollectionName } from '@/types/content';
  * ==========================================
  */
 
+// 动画配置
+const animationOld = 'animate-[fade-out-up_0.2s_ease-out_forwards]';
 const animationNew = {
   old: [],
   new: {
@@ -101,7 +103,7 @@ const postConfig: SiteConfig = {
     },
     {
       icon: () => <EnvelopeIcon size="2.5rem" weight="duotone" />,
-      url: 'mailto:charliez0sp@gmail.com',
+      url: 'mailto:lolifamilies@gmail.com',
       title: 'Email',
     },
   ],
@@ -127,7 +129,7 @@ const postConfig: SiteConfig = {
   // ),
 
   // ========== 其他配置 ==========
-  animationOld: 'animate-[fade-out-up_0.2s_ease-out_forwards]',
+  animationOld: animationOld,
   animationNew: {
     forwards: animationNew,
     backwards: animationNew,
