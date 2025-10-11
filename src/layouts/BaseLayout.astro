@@ -89,7 +89,7 @@ const fullTitle = pageTitle ? `${pageTitle} | ${config.title}` : config.title;
         {Astro.slots.has('sidebar')
           ? (
               <Sidebar
-                transition:animate="none"
+                transition:animate={config.animationNew}
                 transition:name="aside"
                 pageContext={pageContext}
               >
@@ -98,7 +98,7 @@ const fullTitle = pageTitle ? `${pageTitle} | ${config.title}` : config.title;
             )
           : (
               <Sidebar
-                transition:animate="none"
+                transition:animate={config.animationNew}
                 transition:name="aside"
                 pageContext={pageContext}
               />
@@ -112,7 +112,7 @@ const fullTitle = pageTitle ? `${pageTitle} | ${config.title}` : config.title;
           max-lg:ml-0 max-lg:px-4 max-lg:pt-[4.25rem] max-lg:pb-1.5
         `}
         transition:name="content"
-        transition:animate="none"
+        transition:animate={config.animationNew}
         data-overlayscrollbars-initialize
       >
         <div
@@ -141,7 +141,6 @@ const fullTitle = pageTitle ? `${pageTitle} | ${config.title}` : config.title;
     */}
     <AstroTransition
       animationOld={config.animationOld}
-      animationNew={config.animationNew}
       transition:persist
       client:only="react"
     />

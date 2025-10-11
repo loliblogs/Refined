@@ -23,6 +23,15 @@ import type { CollectionName } from '@/types/content';
  * ==========================================
  */
 
+const animationNew = {
+  old: [],
+  new: {
+    name: 'fade-in-down',
+    duration: '0.3s',
+    easing: 'ease-out',
+  },
+};
+
 // Post Collection 配置（默认博客）
 const postConfig: SiteConfig = {
   // ========== 站点基本信息 ==========
@@ -119,7 +128,10 @@ const postConfig: SiteConfig = {
 
   // ========== 其他配置 ==========
   animationOld: 'animate-[fade-out-up_0.2s_ease-out_forwards]',
-  animationNew: 'animate-[fade-in-down_0.3s_ease-out]',
+  animationNew: {
+    forwards: animationNew,
+    backwards: animationNew,
+  },
   // 网站图标
   favicon: () => (                     // 图标 (Vite 处理后的 URL)
     <>

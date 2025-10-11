@@ -6,6 +6,7 @@
  */
 
 import type { JSX } from 'react';
+import type { TransitionAnimationValue } from 'astro';
 
 /**
  * 路径类型约束 - 编译时强制路径格式
@@ -91,7 +92,7 @@ export interface SiteConfig {
 
   // ========== 其他配置 ==========
   animationOld: string;
-  animationNew: string;
+  animationNew: TransitionAnimationValue;
   comments: boolean;                           // 评论开关
   analytics?: (() => JSX.Element) | undefined; // 统计分析组件（可选）
   favicon: () => JSX.Element;                  // 网站图标
