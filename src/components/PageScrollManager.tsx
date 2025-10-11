@@ -38,6 +38,9 @@ const PageScrollManager: FC = () => {
         theme: 'os-theme-modern',  // 使用自定义主题
         clickScroll: true,
       },
+      update: {
+        debounce: [0, 1000],
+      },
     } satisfies PartialOptions;
 
     // 更新阅读进度

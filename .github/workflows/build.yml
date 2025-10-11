@@ -14,14 +14,28 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: 'lts/*'
-          cache: 'pnpm'
+          package-manager-cache: false
+
+      # 手动管理 pnpm store 缓存以启用增量复用
+      # setup-node 的 package-manager-cache 不支持 restore-keys，
+      # 导致依赖更新时 cache key 变化，必须全部重新下载。
+      # 使用 restore-keys 可以复用旧缓存，pnpm 只需增量下载变更的包。
+      - name: Get pnpm store path
+        run: echo PNPM_STORE_PATH=$(pnpm store path --silent) >> "$GITHUB_ENV"
+
+      - uses: actions/cache@v4
+        with:
+          path: ${{ env.PNPM_STORE_PATH }}
+          key: pnpm-cache-production-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: pnpm-cache-production-${{ runner.os }}-${{ runner.arch }}-
 
       - uses: actions/cache@v4
         with:
           path: |
             .astro
             .cache
-          key: 'astro-build-cache'
+          key: astro-build-${{ github.sha }}
+          restore-keys: astro-build-
 
       - run: pnpm install --production
       - run: pnpm build
@@ -100,14 +114,14 @@ jobs:
           git init
           git config user.name "Lolifamily Deploy Bot"
           git config user.email "lolifamilies+ci@gmail.com"
-          
+
           git remote add github git@github.com:loliblogs/loliblogs.github.io.git
           git remote add gitlab git@gitlab.com:loliblogs/loliblogs.gitlab.io.git
           git remote add bitbucket git@bitbucket.org:loliblogs/loliblogs.bitbucket.io.git
 
           (git fetch --depth=1 github main && git reset --soft FETCH_HEAD) || git checkout -b main
           git add -A
-          git commit -S -m "Deploy $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          git commit --allow-empty -S -m "Deploy $(date -u +%Y-%m-%dT%H:%M:%SZ)"
         
       - name: Push to Github
         id: github
