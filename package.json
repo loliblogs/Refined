@@ -121,11 +121,7 @@
       "argon2",
       "@tailwindcss/oxide",
       "esbuild",
-      "sharp",
-      "workerd",
-      "@parcel/watcher",
-      "netlify-cli",
-      "unix-dgram"
+      "sharp"
     ]
   },
   "remarkConfig": {
