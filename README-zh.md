@@ -4,6 +4,10 @@
 
 本项目使用 Astro 对优秀主题 [sanonz/hexo-theme-concise](https://github.com/sanonz/hexo-theme-concise) 进行再设计与精炼。致敬原作者，并在保持风格的同时适配 Astro 的内容集合与路由体系。
 
+|            桌面端               |            移动端              |
+| ------------------------------ | ------------------------------ |
+| ![桌面端](./assets/desktop.png) | ![移动端](./assets/mobile.png) |
+
 ## ⚡ 快速开始
 
 从这里开始，完成最常用的任务：

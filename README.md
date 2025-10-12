@@ -4,6 +4,10 @@
 
 This project refines and re-implements the excellent [sanonz/hexo-theme-concise](https://github.com/sanonz/hexo-theme-concise) with Astro. Credit to the original theme; ideas, structure and styles are adapted for Astro's content collections and routing.
 
+|            Desktop               |             Mobile             |
+| -------------------------------- | ------------------------------ |
+| ![desktop](./assets/desktop.png) | ![mobile](./assets/mobile.png) |
+
 ## ⚡ Quick Start
 
 Start here with the most common tasks:
