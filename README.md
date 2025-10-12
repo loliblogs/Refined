@@ -1,3 +1,5 @@
+[中文 README](./README-zh.md)
+
 # Refined Starter Guide
 
 This project refines and re-implements the excellent [sanonz/hexo-theme-concise](https://github.com/sanonz/hexo-theme-concise) with Astro. Credit to the original theme; ideas, structure and styles are adapted for Astro's content collections and routing.
