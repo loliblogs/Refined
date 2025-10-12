@@ -59,7 +59,7 @@
 /* CSS Variables - Matching Concise Theme Exactly */
 :root {
   /* Base font size for responsive scaling */
-  --base-font-size: clamp(1rem, 0.66rem + 0.38vw, 2rem);
+  --base-font-size: clamp(1rem, 0.85rem + 0.15vw, 1.25rem);
   
   /* 
    * 视口高度统一管理 - "消除特殊情况" - Linus
