@@ -18,7 +18,7 @@
     "lint:interactive": "eslint-interactive .",
     "online": "pnpm run online:workers && pnpm run online:pages && pnpm run online:vercel && pnpm run online:netlify",
     "online:workers": "pnpx wrangler -c wrangler-workers.json deploy",
-    "online:pages": "pnpx wrangler pages deploy --branch production",
+    "online:pages": "pnpx wrangler pages deploy",
     "online:vercel": "pnpx vercel --cwd dist deploy --prod",
     "online:netlify": "pnpx --package netlify-cli netlify deploy --no-build --prod"
   },

@@ -177,7 +177,7 @@ html {
   }
   to {
     opacity: 1;
-    transform: none;
+    transform: translate3d(0, 0, 0);
   }
 }
 
@@ -186,7 +186,7 @@ html {
     transform: translate3d(-100%, 0, 0);
   }
   to {
-    transform: none;
+    transform: translate3d(0, 0, 0);
   }
 }
 
@@ -197,7 +197,7 @@ html {
   }
   to {
     opacity: 1;
-    transform: none;
+    transform: translate3d(0, 0, 0);
   }
 }
 
@@ -205,38 +205,38 @@ html {
 @keyframes fade-in {
   from {
     opacity: 0;
-    transform: translateY(0.625rem);
+    transform: translate3d(0, 0.625rem, 0);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translate3d(0, 0, 0);
   }
 }
 
 @keyframes shake {
-  0% { transform: translateX(0); }
-  12.5% { transform: translateX(-1rem); }
-  37.5% { transform: translateX(1rem); }
-  62.5% { transform: translateX(-1rem); }
-  87.5% { transform: translateX(1rem); }
-  100% { transform: translateX(0); }
+  0% { transform: translate3d(0, 0, 0); }
+  12.5% { transform: translate3d(-1rem, 0, 0); }
+  37.5% { transform: translate3d(1rem, 0, 0); }
+  62.5% { transform: translate3d(-1rem, 0, 0); }
+  87.5% { transform: translate3d(1rem, 0, 0); }
+  100% { transform: translate3d(0, 0, 0); }
 }
 
 @keyframes fade-out-up {
   from {
     opacity: 1;
-    transform: translateY(0);
+    transform: translate3d(0, 0, 0);
   }
   to {
     opacity: 0;
-    transform: translateY(-1.25rem);
+    transform: translate3d(0, -1.25rem, 0);
   }
 }
 
 /* 旋转动画 */
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from { transform: rotate3d(0, 0, 1, 0deg); }
+  to { transform: rotate3d(0, 0, 1, 360deg); }
 }
 
 /* TimelineFilter focus高亮动画 */

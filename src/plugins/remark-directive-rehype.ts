@@ -5,7 +5,7 @@ import type { Root } from 'mdast';
 
 export default function remarkDirectiveRehype() {
   return function (tree: Root) {
-    visitParents(tree, ['containerDirective', 'leafDirective', 'textDirective'], (node) => {
+    visitParents(tree, ['containerDirective', 'leafDirective', 'textDirective'] as const, (node) => {
       if (node.type !== 'containerDirective'
         && node.type !== 'leafDirective'
         && node.type !== 'textDirective') {

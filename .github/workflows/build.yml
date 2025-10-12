@@ -37,7 +37,7 @@ jobs:
           key: astro-build-${{ github.sha }}
           restore-keys: astro-build-
 
-      - run: pnpm install --production
+      - run: pnpm install --frozen-lockfile --production
       - run: pnpm build
         env:
           ASTRO_DB_REMOTE_URL: ${{ secrets.ASTRO_DB_REMOTE_URL }}
