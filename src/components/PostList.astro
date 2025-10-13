@@ -43,11 +43,13 @@ const { posts, showExcerpt = true, collection = 'post' } = Astro.props;
         </span>
       </div>
 
-      {showExcerpt && post.excerpt && (
-        <p class="mb-3 text-primary">
-          {post.excerpt}
-        </p>
-      )}
+      {showExcerpt
+        && (post.excerptSource.type === 'manual' || post.excerptSource.type === 'encrypted')
+        && (
+          <p class="mb-3 text-primary">
+            {post.excerptSource.text}
+          </p>
+        )}
 
       <div class="flex flex-wrap gap-2">
         {post.tags.map(tag => (

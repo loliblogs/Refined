@@ -134,13 +134,13 @@ const pageContext = {
       data-markdown
       class:list={[
         'my-8 leading-[1.8]',
-        post.derivedKey && 'hidden',
+        post.encryption && 'hidden',
       ]}
-      {...(!post.derivedKey && { 'data-pagefind-body': true })}
+      {...(!post.encryption && !post.draft && { 'data-pagefind-body': true })}
     >
-      {post.derivedKey && post.salt
+      {post.encryption
         ? (
-            <EncryptWrapper derivedKey={post.derivedKey} salt={post.salt}>
+            <EncryptWrapper derivedKey={post.encryption.derivedKey} salt={post.encryption.salt}>
               <Content />
             </EncryptWrapper>
           )
@@ -150,7 +150,7 @@ const pageContext = {
     </div>
 
     {/* 解密UI - 与mardown-body并行，只在加密时显示 */}
-    {post.derivedKey && (
+    {post.encryption && (
       <div
         id="decrypt-panel"
         class="my-8 rounded-lg border border-line bg-surface p-6"
@@ -159,7 +159,7 @@ const pageContext = {
           {/* 锁图标和提示 */}
           <div class="flex flex-wrap items-center gap-2 align-middle text-muted">
             <LockSimpleIcon size="1rem" weight="regular" />
-            <span id="decrypt-prompt" set:html={post.prompt} />
+            <span id="decrypt-prompt" set:html={post.encryption.prompt} />
           </div>
 
           {/* 辅助文本与可感知名称（使用可见的 prompt 作为描述） */}
@@ -175,7 +175,7 @@ const pageContext = {
                 duration-200
                 focus:border-link focus:outline-none
               `}
-              placeholder={post.hint}
+              placeholder={post.encryption.hint}
               autocomplete="off"
               aria-describedby="decrypt-prompt"
               aria-required="true"
@@ -256,7 +256,7 @@ const pageContext = {
   </article>
 
   {/* 解密客户端 - 只在有密码时加载 */}
-  {post.derivedKey && <DecryptClient client:idle />}
+  {post.encryption && <DecryptClient client:idle />}
 
   {/* 评论区 */}
   {showComments && (
@@ -267,7 +267,7 @@ const pageContext = {
 
   {/* Sidebar slot：传递（已加密或明文）TOC 到侧边栏 */}
   <Fragment slot="sidebar">
-    {post.derivedKey && post.salt
+    {post.encryption
       ? (
           <>
             {/* 加密占位符 - 大大的锁图标，上下左右居中 */}
@@ -280,7 +280,7 @@ const pageContext = {
 
             {/* 加密数据 - 隐藏，供解密使用 */}
             <div class="hidden" data-toc-encrypted>
-              <EncryptWrapper derivedKey={post.derivedKey} salt={post.salt}>
+              <EncryptWrapper derivedKey={post.encryption.derivedKey} salt={post.encryption.salt}>
                 <TableOfContents emptyText={tocEmptyText}>
                   <Content />
                 </TableOfContents>

@@ -1,19 +1,35 @@
+/**
+ * 内容类型定义 - 重构版
+ *
+ * 核心改进：
+ * 1. excerptSource: 统一的摘要来源（判别联合类型）
+ * 2. encryption: 必选字段，false 或对象（强制完整性）
+ * 3. 删除所有分散的旧字段
+ */
+
 import type { RenderResult } from 'astro:content';
 import type { TaxonomyNode } from './utils';
 
 export type CollectionName = 'post' | 'oi';
 export type PageCollectionName = 'page' | 'oiPage';
 
+/**
+ * 摘要来源 - 判别联合类型
+ */
+export type ExcerptSource
+  = | { type: 'manual'; text: string }
+    | { type: 'encrypted'; text: string }
+    | { type: 'generated'; hasMoreTag: boolean }
+    | { type: 'none' };
 
 /**
- * TimelineFilter组件用的精简文章类型
- * 只包含时间线展示必需的字段
+ * 加密信息
  */
-export interface TimelinePost {
-  id: string;
-  date: string;
-  slug: string;
-  title: string;
+export interface EncryptionInfo {
+  salt: string;
+  derivedKey: string;
+  hint: string;
+  prompt: string;
 }
 
 /**
@@ -23,7 +39,6 @@ export interface Post {
   id: string;
   slug: string;
   title: string;
-  excerpt?: string | undefined;  // 可选（影响主页渲染逻辑）
   date: Date;
   updated?: Date | undefined;
   author: string;  // 现在是必需的（默认使用站点配置的作者）
@@ -38,17 +53,15 @@ export interface Post {
   sticky: number;  // 必需（默认 0）
   draft: boolean;  // 必需（默认 false）
   comments: boolean;  // 必需（默认使用站点配置）
-  hasMoreTag: boolean;  // 是否包含 <!--more--> 标记
 
   // SEO 相关
   description: string;  // 必需（没有则从内容自动生成）
 
-  // 加密相关
-  encrypted: boolean;  // 是否加密（必填）
-  salt?: string | undefined;       // 预处理的 salt（只有加密时才有）
-  derivedKey?: string | undefined; // 预计算的密钥 base64 编码（只在服务端存在，不会序列化到客户端）
-  hint?: string | undefined;       // 密码输入提示（只有加密时才有）
-  prompt?: string | undefined;     // 加密内容提示（只有加密时才有）
+  // 摘要（新增，必选）
+  excerptSource: ExcerptSource;
+
+  // 加密（新增，必选，false 或对象）
+  encryption: false | EncryptionInfo;
 
   // Astro 集成字段
   collection: CollectionName;  // 必需（标识内容集合）

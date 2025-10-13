@@ -86,66 +86,78 @@ async function initializeDataOnce(collection: CollectionName = 'post'): Promise<
   const defaultAuthor = siteConfig.author.name;
   const defaultComments = siteConfig.comments;
 
-  // 第一轮：并行处理所有文章的基础字段（不包括 Argon2 计算）
-  const processedPosts: Post[] = posts
-    .map((post) => {
-      // 统一转换为数组 - 简单直接
-      const normalizeArray = (value: string | string[] | undefined): string[] => {
-        if (!value) return [];
-        return Array.isArray(value) ? value : [value];
-      };
+  // 统一转换为数组 - 简单直接
+  const normalizeArray = (value: string | string[] | undefined): string[] => {
+    if (!value) return [];
+    return Array.isArray(value) ? value : [value];
+  };
 
-      // 兼容性：复数形式优先，单数形式回退
-      const normalizedCategory = normalizeArray(post.data.categories ?? post.data.category);
-      const normalizedTags = normalizeArray(post.data.tags ?? post.data.tag);
+  // 一轮循环处理所有文章（串行处理 Argon2 计算确保内存可控）
+  const processedPosts: Post[] = [];
+  for (const post of posts) {
+    // 兼容性：复数形式优先，单数形式回退
+    const normalizedCategory = normalizeArray(post.data.categories ?? post.data.category);
+    const normalizedTags = normalizeArray(post.data.tags ?? post.data.tag);
 
-      // 确定各字段的值
-      const finalAuthor = post.data.author ?? defaultAuthor;
-      const finalComments = post.data.comments ?? defaultComments;
+    // 确定各字段的值
+    const finalAuthor = post.data.author ?? defaultAuthor;
+    const finalComments = post.data.comments ?? defaultComments;
 
-      // 生成 SEO description
-      const finalDescription = post.data.description
-        ?? truncateText(post.body, 200, { wordBoundary: true });
+    // 生成 SEO description
+    const finalDescription = post.data.description
+      ?? truncateText(post.body, 200, { wordBoundary: true });
 
-      // 检查文章内容是否包含 <!--more--> 标记
-      const hasMoreTag = !!post.body
-        && (post.body.includes('<!--more-->') || post.body.includes('::more'));
+    // 检查文章内容是否包含 <!--more--> 标记
+    const hasMoreTag = !!post.body
+      && (post.body.includes('<!--more-->') || post.body.includes('::more'));
 
-      return {
-        id: post.id,
-        slug: post.slug,
-        title: post.data.title,
-        description: finalDescription,
-        date: post.data.date,
-        updated: post.data.updated,
-        category: normalizedCategory,
-        tags: normalizedTags,
-        author: finalAuthor,
-        comments: finalComments,
-        draft: post.data.draft,
-        sticky: post.data.sticky,
-        excerpt: post.data.excerpt,
-        hasMoreTag,  // 添加 hasMoreTag 字段
-        collection,  // 记录所属collection
-        render: post.render,
-        encrypted: post.data.encrypted,  // 布尔值
-        // 加密相关字段先不填，第二轮处理
-        hint: post.data.hint ?? siteConfig.passwordHint ?? '输入密码',
-        prompt: post.data.prompt ?? siteConfig.passwordPrompt ?? '此内容已加密，需要密码查看',
-      };
-    });
+    // 计算 excerptSource
+    const manualExcerpt = post.data.excerpt;
+    const isEncrypted = post.data.encrypted;
+    const prompt = post.data.prompt ?? siteConfig.passwordPrompt ?? '此内容已加密，需要密码查看';
 
-  // 第二轮：串行处理加密文章的 Argon2 计算
-  // 每个 Argon2 计算需要 64MB 内存，串行确保内存可控
-  for (const post of processedPosts) {
-    if (post.encrypted) {
-      const cacheResult = await getOrComputeArgon2Key(
-        collection,
-        post.id,
-      );
-      post.derivedKey = cacheResult.derivedKey;
-      post.salt = cacheResult.salt;
+    let excerptSource;
+    if (manualExcerpt) {
+      excerptSource = { type: 'manual' as const, text: manualExcerpt };
+    } else if (isEncrypted) {
+      excerptSource = { type: 'encrypted' as const, text: prompt };
+    } else {
+      excerptSource = { type: 'generated' as const, hasMoreTag };
     }
+
+    // 计算 encryption（可能需要 await Argon2）
+    let encryption;
+    if (isEncrypted) {
+      const cacheResult = await getOrComputeArgon2Key(collection, post.id);
+      encryption = {
+        salt: cacheResult.salt,
+        derivedKey: cacheResult.derivedKey,
+        hint: post.data.hint ?? siteConfig.passwordHint ?? '输入密码',
+        prompt,
+      };
+    } else {
+      encryption = false as const;
+    }
+
+    // 构造完整 Post 对象
+    processedPosts.push({
+      id: post.id,
+      slug: post.slug,
+      title: post.data.title,
+      description: finalDescription,
+      date: post.data.date,
+      updated: post.data.updated,
+      category: normalizedCategory,
+      tags: normalizedTags,
+      author: finalAuthor,
+      comments: finalComments,
+      draft: post.data.draft,
+      sticky: post.data.sticky,
+      collection,
+      render: post.render,
+      excerptSource,
+      encryption,
+    });
   }
 
   // 构建两套排序

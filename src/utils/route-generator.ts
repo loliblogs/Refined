@@ -24,7 +24,8 @@ export function createPostRoutes(collection: CollectionName = 'post') {
       params: { slug: post.slug },
       props: {
         post,
-        ...getAdjacentPosts(posts, index, !post.draft),
+        // 草稿文章的上下篇可以包含其他草稿，正式文章只链接到正式文章
+        ...getAdjacentPosts(posts, index, post.draft),
         collection,
       },
     }));

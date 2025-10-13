@@ -18,12 +18,16 @@ const { post, showExcerpt = true, isFirst = false } = Astro.props;
 
 const config = getSiteConfig(post.collection);
 
-// 处理摘要逻辑
-const manualExcerpt = post.excerpt;
-const isEncrypted = !!post.derivedKey;
+// 处理摘要逻辑 - manual 和 encrypted 都显示纯文本，合并处理
+const excerptText = post.excerptSource.type === 'manual' || post.excerptSource.type === 'encrypted'
+  ? post.excerptSource.text
+  : null;
 
-// 获取Content组件（只在需要且未加密时）
-const shouldRenderContent = showExcerpt && !manualExcerpt && !isEncrypted;
+// 只有 generated 且 hasMoreTag=false 时才不需要"继续阅读"按钮
+const hasMoreTag = post.excerptSource.type !== 'generated' || post.excerptSource.hasMoreTag;
+
+// 获取Content组件（只在需要时）
+const shouldRenderContent = showExcerpt && !excerptText;
 const Content = shouldRenderContent
   ? (await post.render()).Content
   : null;
@@ -122,33 +126,24 @@ const excerptLink = config.excerpt_link;
   {showExcerpt && (
     <div class="mt-5">
       <div class="mb-4 leading-relaxed text-secondary">
-        {manualExcerpt
+        {excerptText
           ? (
-            // 有手动设置的摘要，直接显示（加密也优先使用用户指定的）
-              <p class="mb-4">{manualExcerpt}</p>
+              <p class="mb-4">{excerptText}</p>
             )
-          : isEncrypted
-            ? (
-              // 文章加密且没有手动excerpt，显示预处理的prompt
-                <p class="mb-4">{post.prompt}</p>
-              )
-            : Content
-              ? (
-            // 没有手动摘要且未加密，使用ExcerptExtractor处理内容
-                  <div data-markdown>
-                    <ExcerptExtractor>
-                      <Content />
-                    </ExcerptExtractor>
-                  </div>
-                )
-              : null}
+          : Content && (
+            <div data-markdown>
+              <ExcerptExtractor>
+                <Content />
+              </ExcerptExtractor>
+            </div>
+          )}
       </div>
 
       {/* 只在内容不是完整显示时才显示继续阅读按钮 */}
-      {excerptLink && (!shouldRenderContent || post.hasMoreTag) && (
+      {excerptLink && hasMoreTag && (
         <div class="text-right">
           <a
-            href={post.hasMoreTag ? `${postUrl}#more` : postUrl}
+            href={post.excerptSource.type === 'generated' ? `${postUrl}#more` : postUrl}
             class={`
               inline-block rounded border border-line px-3 py-1.5 text-sm
               leading-none text-muted no-underline transition-colors
