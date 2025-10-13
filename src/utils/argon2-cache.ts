@@ -45,15 +45,18 @@ async function tryLoadFromCache(
   cacheKey: string,
   password: string,
 ): Promise<{ derivedKey: string; salt: string } | null> {
-  // 读取缓存条目
-  const [entry] = await db.select().from(Argon2Cache)
-    .where(eq(Argon2Cache.key, cacheKey))
-    .limit(1)
-    .catch((error: unknown) => {
-      console.warn(`Argon2 cache read failed for ${cacheKey}:`, error);
-      return [null];
-    });
+  // 读取缓存条目 - 直面错误，不玩类型把戏
+  let results;
+  try {
+    results = await db.select().from(Argon2Cache)
+      .where(eq(Argon2Cache.key, cacheKey))
+      .limit(1);
+  } catch (error: unknown) {
+    console.warn(`Argon2 cache read failed for ${cacheKey}:`, error);
+    return null;
+  }
 
+  const entry = results[0];
   if (!entry) return null;
 
   // 验证密码是否匹配

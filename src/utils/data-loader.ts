@@ -9,7 +9,7 @@
 import { getCollection } from 'astro:content';
 
 import { getSiteConfig } from '@/config/site.config';
-import type { Post, Tag, Category, CollectionName } from '@/types/content';
+import type { Post, Tag, Category, CollectionName, ExcerptSource } from '@/types/content';
 import type { CollectionData, TagPathData, CategoryPathData } from '@/types/utils';
 
 import { TaxonomySystem } from './taxonomy-system';
@@ -22,6 +22,41 @@ const collectionDataCache = new Map<CollectionName, CollectionData>();
 // 每个collection独立的taxonomy系统
 const tagSystems = new Map<CollectionName, TaxonomySystem>();
 const categorySystems = new Map<CollectionName, TaxonomySystem>();
+
+// ============================================================================
+// 纯工具函数
+// ============================================================================
+
+/**
+ * 统一转换为数组 - 兼容单个字符串或字符串数组
+ */
+function normalizeArray(value: string | string[] | undefined): string[] {
+  if (!value) return [];
+  return Array.isArray(value) ? value : [value];
+}
+
+/**
+ * 计算摘要来源 - 用类型系统消除 let 和条件分支
+ * "Don't fight your type system, use it"
+ */
+function computeExcerptSource(
+  excerpt: string | undefined,
+  encrypted: boolean | undefined,
+  prompt: string,
+  body: string,
+): ExcerptSource {
+  // 优先级：手动摘要 > 加密提示 > 生成摘要
+  if (excerpt) {
+    return { type: 'manual', text: excerpt };
+  }
+
+  if (encrypted) {
+    return { type: 'encrypted', text: prompt };
+  }
+
+  const hasMoreTag = !!body && (body.includes('<!--more-->') || body.includes('::more'));
+  return { type: 'generated', hasMoreTag };
+}
 
 /**
  * 获取指定collection的Tag Taxonomy系统（对外异步，内部不创建，仅返回已初始化缓存）
@@ -86,12 +121,6 @@ async function initializeDataOnce(collection: CollectionName = 'post'): Promise<
   const defaultAuthor = siteConfig.author.name;
   const defaultComments = siteConfig.comments;
 
-  // 统一转换为数组 - 简单直接
-  const normalizeArray = (value: string | string[] | undefined): string[] => {
-    if (!value) return [];
-    return Array.isArray(value) ? value : [value];
-  };
-
   // 一轮循环处理所有文章（串行处理 Argon2 计算确保内存可控）
   const processedPosts: Post[] = [];
   for (const post of posts) {
@@ -107,27 +136,18 @@ async function initializeDataOnce(collection: CollectionName = 'post'): Promise<
     const finalDescription = post.data.description
       ?? truncateText(post.body, 200, { wordBoundary: true });
 
-    // 检查文章内容是否包含 <!--more--> 标记
-    const hasMoreTag = !!post.body
-      && (post.body.includes('<!--more-->') || post.body.includes('::more'));
-
-    // 计算 excerptSource
-    const manualExcerpt = post.data.excerpt;
-    const isEncrypted = post.data.encrypted;
+    // 计算 excerptSource - 统一使用工具函数
     const prompt = post.data.prompt ?? siteConfig.passwordPrompt ?? '此内容已加密，需要密码查看';
-
-    let excerptSource;
-    if (manualExcerpt) {
-      excerptSource = { type: 'manual' as const, text: manualExcerpt };
-    } else if (isEncrypted) {
-      excerptSource = { type: 'encrypted' as const, text: prompt };
-    } else {
-      excerptSource = { type: 'generated' as const, hasMoreTag };
-    }
+    const excerptSource = computeExcerptSource(
+      post.data.excerpt,
+      post.data.encrypted,
+      prompt,
+      post.body,
+    );
 
     // 计算 encryption（可能需要 await Argon2）
     let encryption;
-    if (isEncrypted) {
+    if (post.data.encrypted) {
       const cacheResult = await getOrComputeArgon2Key(collection, post.id);
       encryption = {
         salt: cacheResult.salt,
