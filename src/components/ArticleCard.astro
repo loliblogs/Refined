@@ -18,13 +18,15 @@ const { post, showExcerpt = true, isFirst = false } = Astro.props;
 
 const config = getSiteConfig(post.collection);
 
-// 处理摘要逻辑 - manual 和 encrypted 都显示纯文本，合并处理
-const excerptText = post.excerptSource.type === 'manual' || post.excerptSource.type === 'encrypted'
-  ? post.excerptSource.text
-  : null;
+// 摘要文本：generated 类型动态生成，其他类型使用固定文本
+const excerptText = post.excerptSource.type === 'generated'
+  ? null
+  : post.excerptSource.text;
 
-// 只有 generated 且 hasMoreTag=false 时才不需要"继续阅读"按钮
-const hasMoreTag = post.excerptSource.type !== 'generated' || post.excerptSource.hasMoreTag;
+// "阅读更多"按钮：generated 类型根据 hasMoreTag 判断，其他类型总是显示
+const needsReadMore = post.excerptSource.type === 'generated'
+  ? post.excerptSource.hasMoreTag
+  : true;
 
 // 获取Content组件（只在需要时）
 const shouldRenderContent = showExcerpt && !excerptText;
@@ -140,7 +142,7 @@ const excerptLink = config.excerpt_link;
       </div>
 
       {/* 只在内容不是完整显示时才显示继续阅读按钮 */}
-      {excerptLink && hasMoreTag && (
+      {excerptLink && needsReadMore && (
         <div class="text-right">
           <a
             href={post.excerptSource.type === 'generated' ? `${postUrl}#more` : postUrl}

@@ -19,8 +19,7 @@ export type PageCollectionName = 'page' | 'oiPage';
 export type ExcerptSource
   = | { type: 'manual'; text: string }
     | { type: 'encrypted'; text: string }
-    | { type: 'generated'; hasMoreTag: boolean }
-    | { type: 'none' };
+    | { type: 'generated'; hasMoreTag: boolean };
 
 /**
  * 加密信息
