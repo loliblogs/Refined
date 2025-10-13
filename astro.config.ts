@@ -45,6 +45,9 @@ export default defineConfig({
       cssMinify: 'lightningcss',
       sourcemap: true, // 开源项目，随便看！
     },
+    optimizeDeps: {
+      include: ['argon2-browser/dist/argon2-bundled.min.js'],
+    },
     css: {
       transformer: 'lightningcss',
     },
