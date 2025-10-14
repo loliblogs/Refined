@@ -10,7 +10,7 @@ import { posix } from 'node:path';
 import { base as globalBase } from 'astro:config/server';
 
 import { getSiteConfig } from '@/config/site.config';
-import type { CollectionName, PageCollectionName } from '@/types/content';
+import type { CollectionName } from '@/types/content';
 
 /**
  * 获取collection的基础路径（包含 base）
@@ -18,20 +18,6 @@ import type { CollectionName, PageCollectionName } from '@/types/content';
 export function getBasePath(collection: CollectionName): string {
   const config = getSiteConfig(collection);
   return posix.join(globalBase, config.basePath);
-}
-
-/**
- * 将post/oi collection转换为对应的page collection
- */
-export function toPageCollection(collection: CollectionName): PageCollectionName {
-  return collection === 'oi' ? 'oiPage' : 'page';
-}
-
-/**
- * 将page/oiPage collection转换为对应的post collection
- */
-export function toPostCollection(pageCollection: PageCollectionName): CollectionName {
-  return pageCollection === 'oiPage' ? 'oi' : 'post';
 }
 
 /**

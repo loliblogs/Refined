@@ -9,7 +9,7 @@
 import { getCollection } from 'astro:content';
 
 import { getSiteConfig } from '@/config/site.config';
-import type { Post, Tag, Category, CollectionName, ExcerptSource } from '@/types/content';
+import type { Post, CollectionName, ExcerptSource } from '@/types/content';
 import type { CollectionData, TagPathData, CategoryPathData } from '@/types/utils';
 
 import { TaxonomySystem } from './taxonomy-system';
@@ -164,9 +164,6 @@ async function initializeDataOnce(collection: CollectionName = 'post'): Promise<
       encryption = false as const;
     }
 
-    // 渲染内容
-    const { Content } = await post.render();
-
     // 构造完整 Post 对象
     processedPosts.push({
       id: post.id,
@@ -182,7 +179,7 @@ async function initializeDataOnce(collection: CollectionName = 'post'): Promise<
       draft: post.data.draft,
       sticky: post.data.sticky,
       collection,
-      Content,
+      render: post.render,
       excerptSource,
       encryption,
     });
@@ -316,74 +313,6 @@ export async function getPosts(
       : data.indexPosts;
 }
 
-/**
- * 获取标签相关文章（支持多collection）
- */
-export async function getPostsByTag(
-  tagPath: string,
-  collection: CollectionName = 'post',
-): Promise<{
-  tag: Tag | null;
-  posts: Post[];
-  relatedTags: Tag[];
-}> {
-  await initializeDataOnce(collection);
-
-  // 直接从预计算的数据中查找
-  const data = getCollectionData(collection);
-  const tagData = data.tagPaths?.find(tp => tp.params.path === tagPath);
-
-  if (!tagData) {
-    return {
-      tag: null,
-      posts: [],
-      relatedTags: [],
-    };
-  }
-
-  return {
-    tag: tagData.props.tag,
-    posts: tagData.props.posts,
-    relatedTags: tagData.props.relatedTags,
-  };
-}
-
-/**
- * 获取分类相关文章（支持多collection）
- */
-export async function getPostsByCategory(
-  categoryPath: string,
-  collection: CollectionName = 'post',
-): Promise<{
-  category: Category | null;
-  posts: Post[];
-  ancestors: Category[];
-  subcategories: Category[];
-}> {
-  await initializeDataOnce(collection);
-
-  // 直接从预计算的数据中查找
-  const data = getCollectionData(collection);
-  const categoryData = data.categoryPaths?.find(cp => cp.params.path === categoryPath);
-
-  if (!categoryData) {
-    return {
-      category: null,
-      posts: [],
-      ancestors: [],
-      subcategories: [],
-    };
-  }
-
-  return {
-    category: categoryData.props.category,
-    posts: categoryData.props.posts,
-    ancestors: categoryData.props.ancestors,
-    subcategories: categoryData.props.subcategories,
-  };
-}
-
-
 export async function getAllTagPaths(collection: CollectionName = 'post'): Promise<TagPathData[]> {
   await initializeDataOnce(collection);
 
@@ -399,29 +328,4 @@ export async function getAllCategoryPaths(collection: CollectionName = 'post'): 
   // 直接返回预计算的结果
   const data = getCollectionData(collection);
   return data.categoryPaths ?? [];
-}
-
-// getStats 函数已删除 - 无人使用且包含无意义的 memoryUsage 计算
-
-/**
- * 获取文章详情（通过ID，支持多collection）
- */
-export async function getPostById(postId: string, collection: CollectionName = 'post'): Promise<Post | null> {
-  await initializeDataOnce(collection);
-  return getCollectionData(collection).postMap.get(postId) ?? null;
-}
-
-/**
- * 获取文章详情（通过slug，支持多collection）
- */
-export async function getPostBySlug(slug: string, collection: CollectionName = 'post'): Promise<Post | null> {
-  await initializeDataOnce(collection);
-  return getCollectionData(collection).indexPosts.find(post => post.slug === slug) ?? null;
-}
-
-/**
- * 获取所有文章（用于静态路径生成，支持多collection）
- */
-export async function getAllPosts(collection: CollectionName = 'post'): Promise<Post[]> {
-  return getPosts('archive', collection);
 }

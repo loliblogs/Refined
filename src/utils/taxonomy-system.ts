@@ -108,13 +108,6 @@ export class TaxonomySystem {
   }
 
   /**
-   * 获取节点 - 直接返回，不需要转换
-   */
-  getNode(path: string): TaxonomyNode | null {
-    return this.nodes.get(path) ?? null;
-  }
-
-  /**
    * 获取所有节点
    */
   getAllNodes(): TaxonomyNode[] {
@@ -126,27 +119,6 @@ export class TaxonomySystem {
    */
   getRootNodes(): TaxonomyNode[] {
     return Array.from(this.rootNode.childNodes);
-  }
-
-  /**
-   * 获取节点总数
-   */
-  getTotalCount(): number {
-    return this.nodes.size;
-  }
-
-  /**
-   * 获取无分类文章数量
-   */
-  getUncategorizedCount(): number {
-    return this.rootNode.postIds.size;
-  }
-
-  /**
-   * 获取所有文章总数（去重后）
-   */
-  getTotalUniquePostCount(): number {
-    return this.rootNode.count;
   }
 
   /**
@@ -167,18 +139,6 @@ export class TaxonomySystem {
   getNodesSortedByCount(): TaxonomyNode[] {
     return Array.from(this.nodes.values())
       .sort((a, b) => b.postIds.size - a.postIds.size);
-  }
-
-  /**
-   * 搜索节点
-   */
-  searchNodes(query: string): TaxonomyNode[] {
-    const lowerQuery = query.toLowerCase();
-    return Array.from(this.nodes.values())
-      .filter(node =>
-        node.name.toLowerCase().includes(lowerQuery)
-        || node.path.toLowerCase().includes(lowerQuery),
-      );
   }
 
   /**
@@ -229,15 +189,6 @@ export class TaxonomySystem {
     return this.getSiblings(nodePath)
       .sort((a, b) => b.postIds.size - a.postIds.size);
   }
-
-  /**
-   * 获取完整路径数组
-   */
-  getFullPath(nodePath: string): string[] {
-    const parts = nodePath.split('/').filter(Boolean);
-    return parts.map((_, i) => parts.slice(0, i + 1).join('/'));
-  }
-
 
   /**
    * 获取标签云数据 - 从 TagSystem 移过来的唯一有用功能

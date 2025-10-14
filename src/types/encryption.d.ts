@@ -9,17 +9,6 @@ export interface EncryptedPayload {
   c: string;              // ciphertext + AuthTag (base64) - AES-GCM自带完整性验证
 }
 
-export interface EncryptedBlock {
-  type: 'content' | 'toc' | 'mathStyle';
-  data: EncryptedPayload;
-}
-
-export interface ArticleInfo {
-  password: string;
-  salt: string;  // 预处理好的 base64 salt
-}
-
-
 export interface Argon2WorkerMessage {
   type: 'DERIVE_KEY';
   password: string;
