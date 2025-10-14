@@ -47,10 +47,8 @@ export interface CollectionData {
   archivePosts: Post[];    // 纯时间排序（归档用）
   unfilteredArchivePosts: Post[]; // 纯时间排序（实际渲染用，不过滤draft）
   postMap: Map<string, Post>;  // ID到文章的映射
-  // 预计算的路径数据 - 避免重复计算
-  tagPaths?: TagPathData[];  // 预计算的标签路径数据
-  categoryPaths?: CategoryPathData[];  // 预计算的分类路径数据
-  initialized: boolean;
+  tagPaths: TagPathData[];  // 预计算的标签路径数据
+  categoryPaths: CategoryPathData[];  // 预计算的分类路径数据
 }
 
 export interface TagPathData {

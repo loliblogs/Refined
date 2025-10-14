@@ -28,14 +28,6 @@ const categorySystems = new Map<CollectionName, TaxonomySystem>();
 // ============================================================================
 
 /**
- * 统一转换为数组 - 兼容单个字符串或字符串数组
- */
-function normalizeArray(value: string | string[] | undefined): string[] {
-  if (!value) return [];
-  return Array.isArray(value) ? value : [value];
-}
-
-/**
  * 计算摘要来源 - 用类型系统消除特殊情况
  * "Good taste: eliminate special cases"
  *
@@ -88,34 +80,16 @@ export async function getCategorySystem(collection: CollectionName) {
 }
 
 /**
- * 获取或创建collection数据
- */
-function getCollectionData(collection: CollectionName): CollectionData {
-  let data = collectionDataCache.get(collection);
-  if (!data) {
-    data = {
-      indexPosts: [],
-      archivePosts: [],
-      unfilteredArchivePosts: [],
-      postMap: new Map(),
-      tagPaths: [],
-      categoryPaths: [],
-      initialized: false,
-    };
-    collectionDataCache.set(collection, data);
-  }
-  return data;
-}
-
-/**
  * 核心加载函数（支持多collection）
+ * "数据即状态" - Map的存在性就是状态，不需要initialized标志
+ *
+ * @returns 初始化后的CollectionData（从缓存或新建）
  */
-async function initializeDataOnce(collection: CollectionName = 'post'): Promise<void> {
-  const data = getCollectionData(collection);
-
-  // 已经加载过就直接返回
-  if (data.initialized) {
-    return;
+async function initializeDataOnce(collection: CollectionName = 'post'): Promise<CollectionData> {
+  // 快速路径：数据存在就直接返回
+  const cached = collectionDataCache.get(collection);
+  if (cached) {
+    return cached;
   }
 
   // 加载对应collection的数据
@@ -129,10 +103,6 @@ async function initializeDataOnce(collection: CollectionName = 'post'): Promise<
   // 一轮循环处理所有文章（串行处理 Argon2 计算确保内存可控）
   const processedPosts: Post[] = [];
   for (const post of posts) {
-    // 兼容性：复数形式优先，单数形式回退
-    const normalizedCategory = normalizeArray(post.data.categories ?? post.data.category);
-    const normalizedTags = normalizeArray(post.data.tags ?? post.data.tag);
-
     // 确定各字段的值
     const finalAuthor = post.data.author ?? defaultAuthor;
     const finalComments = post.data.comments ?? defaultComments;
@@ -172,8 +142,8 @@ async function initializeDataOnce(collection: CollectionName = 'post'): Promise<
       description: finalDescription,
       date: post.data.date,
       updated: post.data.updated,
-      category: normalizedCategory,
-      tags: normalizedTags,
+      category: post.data.category,
+      tags: post.data.tag,
       author: finalAuthor,
       comments: finalComments,
       draft: post.data.draft,
@@ -185,8 +155,9 @@ async function initializeDataOnce(collection: CollectionName = 'post'): Promise<
     });
   }
 
-  // 构建两套排序
-  data.indexPosts = processedPosts
+  // 构建三套排序列表（SSG优化：预计算避免重复排序）
+  // 1. indexPosts: 过滤草稿 + sticky优先排序（用于首页）
+  const indexPosts = processedPosts
     .filter(post => !post.draft)
     .sort((a, b) => {
       // sticky 降序（大的在前）
@@ -202,7 +173,9 @@ async function initializeDataOnce(collection: CollectionName = 'post'): Promise<
       return a.slug.localeCompare(b.slug);
     });
 
-  data.unfilteredArchivePosts = processedPosts.sort((a, b) => {
+  // 2. unfilteredArchivePosts: 纯时间排序，包含草稿（用于渲染草稿）
+  // 注意：原地修改 processedPosts（后续操作不依赖原始顺序）
+  const unfilteredArchivePosts = processedPosts.sort((a, b) => {
     // 按时间降序
     const timeDiff = new Date(b.date).getTime() - new Date(a.date).getTime();
     if (timeDiff !== 0) {
@@ -212,12 +185,13 @@ async function initializeDataOnce(collection: CollectionName = 'post'): Promise<
     return a.slug.localeCompare(b.slug);
   });
 
-  data.archivePosts = data.unfilteredArchivePosts.filter(post => !post.draft);
+  // 3. archivePosts: 基于unfilteredArchivePosts过滤草稿（用于归档页）
+  const archivePosts = unfilteredArchivePosts.filter(post => !post.draft);
 
   // 构建文章映射
-  data.postMap.clear();
+  const postMap = new Map<string, Post>();
   processedPosts.forEach((post) => {
-    data.postMap.set(post.id, post);
+    postMap.set(post.id, post);
   });
 
   // 初始化系统（每个collection独立） - 在此唯一创建并写回缓存
@@ -234,7 +208,7 @@ async function initializeDataOnce(collection: CollectionName = 'post'): Promise<
   const categoryPostsMap = new Map<string, Post[]>();
 
   // 一次遍历，分配所有文章到对应的标签和分类
-  for (const post of data.indexPosts) {
+  for (const post of indexPosts) {
     // 处理标签
     for (const tagPath of post.tags) {
       let tagPosts = tagPostsMap.get(tagPath);
@@ -260,7 +234,7 @@ async function initializeDataOnce(collection: CollectionName = 'post'): Promise<
   const categories = categorySystem.getAllNodes();
 
   // 构建 tagPaths（预计算 ancestors 以提高性能）
-  data.tagPaths = tags.map(tag => ({
+  const tagPaths = tags.map(tag => ({
     params: {
       path: tag.path,
     },
@@ -274,7 +248,7 @@ async function initializeDataOnce(collection: CollectionName = 'post'): Promise<
   }));
 
   // 构建 categoryPaths（预计算 ancestors 以提高性能）
-  data.categoryPaths = categories.map(category => ({
+  const categoryPaths = categories.map(category => ({
     params: {
       path: category.path,
     },
@@ -286,7 +260,19 @@ async function initializeDataOnce(collection: CollectionName = 'post'): Promise<
     },
   }));
 
-  data.initialized = true;
+  // 一次性构建完整数据对象
+  const data: CollectionData = {
+    indexPosts,
+    archivePosts,
+    unfilteredArchivePosts,
+    postMap,
+    tagPaths,
+    categoryPaths,
+  };
+
+  // 写入缓存并返回
+  collectionDataCache.set(collection, data);
+  return data;
 }
 
 // 索引功能已移至 TaxonomySystem
@@ -304,28 +290,21 @@ export async function getPosts(
   sortMode: 'index' | 'archive' | 'unfilteredArchive' = 'index',
   collection: CollectionName = 'post',
 ): Promise<Post[]> {
-  await initializeDataOnce(collection);
-  const data = getCollectionData(collection);
-  return sortMode === 'archive'
-    ? data.archivePosts
-    : sortMode === 'unfilteredArchive'
-      ? data.unfilteredArchivePosts
-      : data.indexPosts;
+  const data = await initializeDataOnce(collection);
+
+  // 早返回模式：消除嵌套三元
+  if (sortMode === 'archive') return data.archivePosts;
+  if (sortMode === 'unfilteredArchive') return data.unfilteredArchivePosts;
+  return data.indexPosts;
 }
 
 export async function getAllTagPaths(collection: CollectionName = 'post'): Promise<TagPathData[]> {
-  await initializeDataOnce(collection);
-
-  // 直接返回预计算的结果
-  const data = getCollectionData(collection);
-  return data.tagPaths ?? [];
+  const data = await initializeDataOnce(collection);
+  return data.tagPaths;
 }
 
 
 export async function getAllCategoryPaths(collection: CollectionName = 'post'): Promise<CategoryPathData[]> {
-  await initializeDataOnce(collection);
-
-  // 直接返回预计算的结果
-  const data = getCollectionData(collection);
-  return data.categoryPaths ?? [];
+  const data = await initializeDataOnce(collection);
+  return data.categoryPaths;
 }
