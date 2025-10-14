@@ -36,8 +36,11 @@ function normalizeArray(value: string | string[] | undefined): string[] {
 }
 
 /**
- * 计算摘要来源 - 用类型系统消除 let 和条件分支
- * "Don't fight your type system, use it"
+ * 计算摘要来源 - 用类型系统消除特殊情况
+ * "Good taste: eliminate special cases"
+ *
+ * 优先级：手动摘要 > 加密提示 > 自动生成
+ * 前两者都是固定文本，统一为 fixed 类型
  */
 function computeExcerptSource(
   excerpt: string | undefined,
@@ -45,15 +48,17 @@ function computeExcerptSource(
   prompt: string,
   body: string,
 ): ExcerptSource {
-  // 优先级：手动摘要 > 加密提示 > 生成摘要
+  // 优先级1：手动摘要（用户明确写的）
   if (excerpt) {
-    return { type: 'manual', text: excerpt };
+    return { type: 'fixed', text: excerpt };
   }
 
+  // 优先级2：加密提示（配置的默认文本）
   if (encrypted) {
-    return { type: 'encrypted', text: prompt };
+    return { type: 'fixed', text: prompt };
   }
 
+  // 优先级3：自动生成（从正文提取）
   const hasMoreTag = !!body && (body.includes('<!--more-->') || body.includes('::more'));
   return { type: 'generated', hasMoreTag };
 }

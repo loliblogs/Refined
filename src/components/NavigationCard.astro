@@ -81,7 +81,7 @@ const label = direction === 'prev' ? '上一篇' : '下一篇';
 
   {/* 文章描述 */}
   <p class="mb-2 line-clamp-2 text-xs leading-relaxed text-secondary">
-    {(post.excerptSource.type === 'manual' || post.excerptSource.type === 'encrypted')
+    {post.excerptSource.type === 'fixed'
       ? post.excerptSource.text
       : post.description}
   </p>

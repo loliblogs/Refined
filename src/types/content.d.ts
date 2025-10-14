@@ -15,10 +15,11 @@ export type PageCollectionName = 'page' | 'oiPage';
 
 /**
  * 摘要来源 - 判别联合类型
+ * fixed: 用户手写摘要或加密提示（固定文本）
+ * generated: 从文章正文自动提取
  */
 export type ExcerptSource
-  = | { type: 'manual'; text: string }
-    | { type: 'encrypted'; text: string }
+  = | { type: 'fixed'; text: string }
     | { type: 'generated'; hasMoreTag: boolean };
 
 /**

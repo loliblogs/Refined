@@ -43,8 +43,7 @@ const { posts, showExcerpt = true, collection = 'post' } = Astro.props;
         </span>
       </div>
 
-      {showExcerpt
-        && (post.excerptSource.type === 'manual' || post.excerptSource.type === 'encrypted')
+      {showExcerpt && post.excerptSource.type === 'fixed'
         && (
           <p class="mb-3 text-primary">
             {post.excerptSource.text}
