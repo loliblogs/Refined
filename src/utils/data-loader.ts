@@ -159,6 +159,9 @@ async function initializeDataOnce(collection: CollectionName = 'post'): Promise<
       encryption = false as const;
     }
 
+    // 渲染内容
+    const { Content } = await post.render();
+
     // 构造完整 Post 对象
     processedPosts.push({
       id: post.id,
@@ -174,7 +177,7 @@ async function initializeDataOnce(collection: CollectionName = 'post'): Promise<
       draft: post.data.draft,
       sticky: post.data.sticky,
       collection,
-      render: post.render,
+      Content,
       excerptSource,
       encryption,
     });

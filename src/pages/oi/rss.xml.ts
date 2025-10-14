@@ -21,8 +21,7 @@ export async function GET(context: APIContext) {
   const items = await Promise.all(
     sortedPosts.map(async (post) => {
       // 渲染 markdown 内容为 HTML
-      const { Content } = await post.render();
-      const htmlContent = await container.renderToString(Content);
+      const htmlContent = await container.renderToString(post.Content);
 
       return {
         title: post.title,

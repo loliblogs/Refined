@@ -19,8 +19,6 @@ import expressiveCode from 'astro-expressive-code';
 import playformCompress from '@playform/compress';
 import db from '@astrojs/db';
 
-import os from 'node:os';
-
 // https://astro.build/config
 export default defineConfig({
   site: 'https://blog.lolifamily.js.org',
@@ -65,7 +63,6 @@ export default defineConfig({
   build: {
     // file模式可以保证不会因为目录自动跳转到带/的页面
     format: 'file',
-    concurrency: Math.min(4, os.availableParallelism()),
   },
   markdown: {
     remarkPlugins: [remarkGithubAdmonitionsToDirectives, remarkDirective, remarkDirectiveRehype, remarkPangu,

@@ -25,7 +25,6 @@ interface Props {
 }
 
 const { post, prevPost, nextPost, collection = 'post' } = Astro.props;
-const { Content } = await post.render();
 
 // 提取第一个分类（如果存在）
 const firstCategory = post.category[0];
@@ -41,7 +40,7 @@ const tocEmptyText = siteConfig.tocEmptyText ?? '本文章没有目录'; // 空�
 // 页面上下文（使用动态路径）
 const pageContext = {
   title: post.title,
-  render: post.render,
+  Content: post.Content,
   path: getPostUrl(post.slug, collection),
   layoutType: 'post' as const,
   collection,
@@ -141,11 +140,11 @@ const pageContext = {
       {post.encryption
         ? (
             <EncryptWrapper derivedKey={post.encryption.derivedKey} salt={post.encryption.salt}>
-              <Content />
+              <post.Content />
             </EncryptWrapper>
           )
         : (
-            <Content />
+            <post.Content />
           )}
     </div>
 
@@ -282,7 +281,7 @@ const pageContext = {
             <div class="hidden" data-toc-encrypted>
               <EncryptWrapper derivedKey={post.encryption.derivedKey} salt={post.encryption.salt}>
                 <TableOfContents emptyText={tocEmptyText}>
-                  <Content />
+                  <post.Content />
                 </TableOfContents>
               </EncryptWrapper>
             </div>
@@ -290,7 +289,7 @@ const pageContext = {
         )
       : (
           <TableOfContents emptyText={tocEmptyText}>
-            <Content />
+            <post.Content />
           </TableOfContents>
         )}
   </Fragment>

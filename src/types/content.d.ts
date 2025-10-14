@@ -7,7 +7,7 @@
  * 3. 删除所有分散的旧字段
  */
 
-import type { RenderResult } from 'astro:content';
+import type { AstroComponentFactory } from 'astro/runtime/server/index.js';
 import type { TaxonomyNode } from './utils';
 
 export type CollectionName = 'post' | 'oi';
@@ -64,7 +64,7 @@ export interface Post {
 
   // Astro 集成字段
   collection: CollectionName;  // 必需（标识内容集合）
-  render: () => Promise<RenderResult>;
+  Content: AstroComponentFactory; // 渲染结果组件
 }
 
 /**
@@ -80,7 +80,7 @@ export type Tag = TaxonomyNode;
 export interface PageContext {
   path: string;           // 当前页面路径
   layoutType?: LayoutType; // 页面类型
-  render?: () => Promise<RenderResult>;  // 渲染函数（仅文章页需要）
+  Content?: AstroComponentFactory;  // 渲染函数（仅文章页需要）
   title?: string;         // 页面标题
   collection: CollectionName; // 所属collection
 }
