@@ -58,6 +58,7 @@ const fullTitle = pageTitle ? `${pageTitle} | ${config.title}` : config.title;
     <ClientRouter />
 
     {/* 搜索引擎优化 */}
+    <link rel="canonical" href={new URL(pageContext.path, Astro.site)} />
     <link rel="sitemap" href="/sitemap-index.xml" />
     {/* RSS 订阅 */}
     <link rel="alternate" href={getRssUrl(pageContext.collection)} title={config.title} type="application/rss+xml" />

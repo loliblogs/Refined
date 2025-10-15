@@ -8,6 +8,13 @@
   "devCommand": null,
   "fluid": false,
   "public": true,
+  "redirects": [
+    {
+      "source": "/(.*)/page/1",
+      "destination": "/$1",
+      "permanent": true
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",

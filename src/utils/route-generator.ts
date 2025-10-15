@@ -66,6 +66,7 @@ export function createCategoryRoutes(collection: CollectionName = 'post') {
 /**
  * 分类分页路由生成器（第2页及以后）
  * 用于 /category/[...path]/page/[page]
+ * 注意：过滤掉第一页，避免与分类首页重复（SEO）
  */
 export function createCategoryPagedRoutes(collection: CollectionName = 'post') {
   return async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
@@ -85,7 +86,7 @@ export function createCategoryPagedRoutes(collection: CollectionName = 'post') {
         props: {
           category,
         },
-      });
+      }).filter(route => route.props.page.currentPage !== 1);
     });
   };
 }
@@ -125,6 +126,7 @@ export function createTagRoutes(collection: CollectionName = 'post') {
 /**
  * 标签分页路由生成器（第2页及以后）
  * 用于 /tag/[...path]/page/[page]
+ * 注意：过滤掉第一页，避免与标签首页重复（SEO）
  */
 export function createTagPagedRoutes(collection: CollectionName = 'post') {
   return async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
@@ -146,7 +148,7 @@ export function createTagPagedRoutes(collection: CollectionName = 'post') {
           relatedTags,
           childTags,
         },
-      });
+      }).filter(route => route.props.page.currentPage !== 1);
     });
   };
 }
@@ -154,6 +156,7 @@ export function createTagPagedRoutes(collection: CollectionName = 'post') {
 /**
  * 首页分页路由生成器
  * 用于 /page/[page] 和 /oi/page/[page]
+ * 注意：过滤掉第一页，避免与首页重复（SEO）
  */
 export function createHomePagedRoutes(collection: CollectionName = 'post') {
   return async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
@@ -162,7 +165,7 @@ export function createHomePagedRoutes(collection: CollectionName = 'post') {
 
     return paginate(sortedPosts, {
       pageSize: config.pagination.index,
-    });
+    }).filter(route => route.props.page.currentPage !== 1);
   };
 }
 
