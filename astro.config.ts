@@ -35,6 +35,9 @@ export default defineConfig({
     Image: false,
     JavaScript: false,
   }), sitemap({
+    filter: (page) => {
+      return !page.endsWith('/404') && !page.endsWith('/403');
+    },
     lastmod: new Date(),
   })],
   vite: {
