@@ -103,7 +103,7 @@ function createDisplayFromMarkdown(
         }
 
         const node = parent.children.at(-1);
-        if (node && node.type === 'inlineMath') {
+        if (node?.type === 'inlineMath') {
           // 添加强制显示标记
           node.data ??= {};
           node.data.hProperties ??= {};

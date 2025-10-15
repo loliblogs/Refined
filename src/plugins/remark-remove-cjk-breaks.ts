@@ -160,7 +160,7 @@ export default function remarkRemoveCjkBreaks({
     if (includeMathWithPunctuation) {
       visitParents(tree, 'inlineMath', (node, parents) => {
         const parent = parents[parents.length - 1];
-        if (!parent || parent.type !== 'paragraph') {
+        if (parent?.type !== 'paragraph') {
           return;
         }
 

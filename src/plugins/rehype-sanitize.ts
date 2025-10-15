@@ -27,7 +27,7 @@ export default function rehypeSanitize() {
       // 获取紧邻的文本作为 aria-label
       const parent = parents[parents.length - 1];
 
-      if (!parent || parent.type !== 'element'
+      if (parent?.type !== 'element'
         || parent.tagName !== 'li' || !Array.isArray(parent.properties.className)
         || parent.properties.className[0] !== 'task-list-item') {
         return;

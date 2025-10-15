@@ -29,7 +29,7 @@
     "@astrojs/preact": "^4.1.1",
     "@astrojs/rss": "^4.0.12",
     "@astrojs/sitemap": "^3.6.0",
-    "@astrojs/ts-plugin": "^1.10.4",
+    "@astrojs/ts-plugin": "^1.10.5",
     "@babel/preset-typescript": "^7.27.1",
     "@expressive-code/plugin-collapsible-sections": "^0.41.3",
     "@expressive-code/plugin-line-numbers": "^0.41.3",
@@ -45,7 +45,7 @@
     "@tailwindcss/vite": "^4.1.14",
     "argon2": "^0.44.0",
     "argon2-browser": "^1.18.0",
-    "astro": "^5.14.4",
+    "astro": "^5.14.5",
     "astro-expressive-code": "^0.41.3",
     "cheerio": "^1.1.2",
     "chroma-js": "^3.1.2",
@@ -75,7 +75,7 @@
     "unified": "^11.0.5",
     "unist-builder": "^4.0.0",
     "unist-util-visit-parents": "^6.0.1",
-    "vite": "^7.1.9",
+    "vite": "^7.1.10",
     "wordcloud": "^1.2.3"
   },
   "devDependencies": {
@@ -91,31 +91,30 @@
     "@types/mdast": "^4.0.4",
     "@types/node": "^24.7.2",
     "@types/react": "^19.2.2",
-    "@types/react-dom": "^19.2.1",
+    "@types/react-dom": "^19.2.2",
     "@types/wordcloud": "^1.2.2",
-    "@typescript-eslint/eslint-plugin": "^8.46.0",
-    "@typescript-eslint/parser": "^8.46.0",
+    "@typescript-eslint/parser": "^8.46.1",
     "eslint": "^9.37.0",
     "eslint-interactive": "^12.0.0",
     "eslint-mdx": "^3.6.2",
     "eslint-plugin-astro": "^1.3.1",
-    "eslint-plugin-better-tailwindcss": "^3.7.9",
+    "eslint-plugin-better-tailwindcss": "^3.7.10",
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-mdx": "^3.6.2",
-    "eslint-plugin-react-refresh": "^0.4.23",
+    "eslint-plugin-react-refresh": "^0.4.24",
     "mdast-util-directive": "^3.1.0",
     "remark-frontmatter": "^5.0.0",
     "remark-gfm": "^4.0.1",
     "remark-math": "^6.0.0",
     "remark-parse": "^11.0.0",
     "remark-stringify": "^11.0.0",
-    "typescript-eslint": "^8.46.0",
+    "typescript-eslint": "^8.46.1",
     "vfile": "^6.0.3"
   },
   "pnpm": {
     "overrides": {
       "html-minifier-terser": "npm:html-minifier-next",
-      "vite": "^7.1.9"
+      "vite": "^7.1.10"
     },
     "onlyBuiltDependencies": [
       "argon2",
@@ -134,5 +133,5 @@
       "remark-gfm"
     ]
   },
-  "packageManager": "pnpm@10.18.2"
+  "packageManager": "pnpm@10.18.3"
 }
