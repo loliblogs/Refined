@@ -1,1 +1,2 @@
-/*/page/1  /:splat  301
+/page/1    /         301
+/*/page/1  /:splat   301

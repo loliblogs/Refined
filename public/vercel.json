@@ -10,6 +10,11 @@
   "public": true,
   "redirects": [
     {
+      "source": "/page/1",
+      "destination": "/",
+      "permanent": true
+    },
+    {
       "source": "/(.*)/page/1",
       "destination": "/$1",
       "permanent": true
