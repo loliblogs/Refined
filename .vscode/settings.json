@@ -1,6 +1,11 @@
 {
   "editor.tabSize": 2,
   "files.eol": "\n",
+  "files.associations": {
+    "*.json": "jsonc",
+    "*.json5": "jsonc",
+    "*.css": "tailwindcss"
+  },
   "cursor.general.globalCursorIgnoreList": [
     "**/.env",
     "**/.env.*",
