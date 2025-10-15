@@ -96,6 +96,7 @@ export interface SiteConfig {
   comments: boolean;                           // 评论开关
   analytics?: (() => JSX.Element) | undefined; // 统计分析组件（可选）
   favicon: () => JSX.Element;                  // 网站图标
+  header?: (() => JSX.Element) | undefined;    // 顶部组件（可选）
   footer?: (() => JSX.Element) | undefined;    // 底部组件（可选）
   passwordHint?: string;                       // 全局密码输入提示
   passwordPrompt?: string;                     // 全局加密内容提示

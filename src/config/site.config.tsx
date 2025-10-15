@@ -143,6 +143,17 @@ const postConfig: SiteConfig = {
     </>
   ),
 
+  header: () => (
+    <>
+      <meta name="google-site-verification" content="7_jEvDR3ggk6tLdJKrr-rNzJchC81DGeO2ZzSXPixcg" />
+      <meta name="google-site-verification" content="svGvv3mqZ3LG3oc6wLWauuJ_br6i1hkIUP_Zl3G3xGU" />
+      <meta name="google-site-verification" content="F887_8q9nOn1uZ9dJj3ws-Alw27KnunixJO_3m__Z-Q" />
+      <meta name="google-site-verification" content="29mDgzP9v9aE6S-Rug2DeShzpcR-Jv21wR2fgzRu2MU" />
+      <meta name="google-site-verification" content="o9tV4facW2oZw6oLUBQtEtiDDiUmA6r84Dn8hO9yxjs" />
+      <meta name="google-site-verification" content="Pee7tcDayUCumv1uBEndhQpK89bf6VLIddKptqd3DpA" />
+    </>
+  ),
+
   footer: () => (
     <a
       href="https://icp.gov.moe/?keyword=20236898"
@@ -216,6 +227,7 @@ const oiConfig: SiteConfig = {
   // 网站图标（可以使用相同或不同的图标）
   favicon: postConfig.favicon,
 
+  header: postConfig.header,
   footer: postConfig.footer,
 
   // 加密相关默认值（OI专区可能使用不同的提示）

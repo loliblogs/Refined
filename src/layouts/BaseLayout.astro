@@ -66,6 +66,9 @@ const fullTitle = pageTitle ? `${pageTitle} | ${config.title}` : config.title;
     {/* 网站图标 */}
     <config.favicon />
 
+    {/* 顶部组件 */}
+    {config.header && <config.header />}
+
     {/* 主题颜色 */}
     <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#2b2e32" media="(prefers-color-scheme: dark)" />
