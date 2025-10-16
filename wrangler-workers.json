@@ -3,6 +3,7 @@
   "name": "blog",
   "workers_dev": true,
   "compatibility_date": "2025-10-05",
+  "preview_urls": true,
   "assets": {
     "directory": "dist",
     "html_handling": "drop-trailing-slash",

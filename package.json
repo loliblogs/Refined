@@ -17,10 +17,10 @@
     "lint:fix": "eslint . --fix",
     "lint:interactive": "eslint-interactive .",
     "online": "pnpm run online:workers && pnpm run online:pages && pnpm run online:vercel && pnpm run online:netlify",
-    "online:workers": "pnpx wrangler -c wrangler-workers.json deploy",
-    "online:pages": "pnpx wrangler pages deploy",
-    "online:vercel": "pnpx vercel --cwd dist deploy --prod",
-    "online:netlify": "pnpx --package netlify-cli netlify deploy --no-build --prod"
+    "online:workers": "pnpx wrangler@latest -c wrangler-workers.json deploy",
+    "online:pages": "pnpx wrangler@latest pages deploy",
+    "online:vercel": "pnpx vercel@latest --cwd dist deploy --prod",
+    "online:netlify": "pnpx --package netlify-cli@latest netlify deploy --no-build --prod"
   },
   "dependencies": {
     "@astrojs/db": "^0.18.0",
