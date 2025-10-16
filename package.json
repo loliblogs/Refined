@@ -9,7 +9,7 @@
     "dev": "astro dev --remote",
     "dev:full": "astro dev --remote --force",
     "build": "astro build --remote && pagefind && pagefind --site dist/oi",
-    "build:full": "astro build --force && pagefind && pagefind --site dist/oi",
+    "build:full": "astro build --force --remote && pagefind && pagefind --site dist/oi",
     "preview": "astro preview",
     "sync": "astro sync",
     "typecheck": "astro check",
@@ -17,7 +17,7 @@
     "lint:fix": "eslint . --fix",
     "lint:interactive": "eslint-interactive .",
     "online": "pnpm run online:workers && pnpm run online:pages && pnpm run online:vercel && pnpm run online:netlify",
-    "online:workers": "pnpx wrangler@latest -c wrangler-workers.json deploy",
+    "online:workers": "pnpx wrangler@latest -c wrangler-workers.jsonc deploy",
     "online:pages": "pnpx wrangler@latest pages deploy",
     "online:vercel": "pnpx vercel@latest --cwd dist deploy --prod",
     "online:netlify": "pnpx --package netlify-cli@latest netlify deploy --no-build --prod"
