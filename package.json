@@ -24,7 +24,6 @@
   },
   "dependencies": {
     "@astrojs/db": "^0.18.0",
-    "@astrojs/markdown-remark": "^6.3.8",
     "@astrojs/mdx": "^4.3.7",
     "@astrojs/preact": "^4.1.1",
     "@astrojs/rss": "^4.0.12",
