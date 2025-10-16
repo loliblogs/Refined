@@ -8,6 +8,8 @@ This project refines and re-implements the excellent [sanonz/hexo-theme-concise]
 | -------------------------------- | ------------------------------ |
 | ![desktop](./assets/desktop.png) | ![mobile](./assets/mobile.png) |
 
+![Star History Chart](https://api.star-history.com/svg?repos=loliblogs/Refined&type=date&legend=bottom-right)
+
 ## ⚡ Quick Start
 
 Start here with the most common tasks:

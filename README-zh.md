@@ -8,6 +8,8 @@
 | ------------------------------ | ------------------------------ |
 | ![桌面端](./assets/desktop.png) | ![移动端](./assets/mobile.png) |
 
+![Star 历史图](https://api.star-history.com/svg?repos=loliblogs/Refined&type=date&legend=bottom-right)
+
 ## ⚡ 快速开始
 
 从这里开始，完成最常用的任务：
