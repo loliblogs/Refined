@@ -35,5 +35,3 @@ pnpm-debug.log*
 # cache database
 .cache/*
 !.cache/.gitkeep
-
-.vercel
