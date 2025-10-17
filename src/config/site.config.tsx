@@ -145,6 +145,7 @@ const postConfig: SiteConfig = {
 
   header: () => (
     <>
+      <meta name="baidu-site-verification" content="codeva-z6djkNvZ2b" />
       <meta name="google-site-verification" content="7_jEvDR3ggk6tLdJKrr-rNzJchC81DGeO2ZzSXPixcg" />
       <meta name="google-site-verification" content="svGvv3mqZ3LG3oc6wLWauuJ_br6i1hkIUP_Zl3G3xGU" />
       <meta name="google-site-verification" content="F887_8q9nOn1uZ9dJj3ws-Alw27KnunixJO_3m__Z-Q" />
