@@ -105,7 +105,7 @@ const PageScrollManager: FC = () => {
       if (currLink) {
         currLink.setAttribute('data-active', 'true');
         // 滚动 TOC 容器以显示当前项
-        currLink.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        currLink.scrollIntoView({ behavior: 'instant', block: 'center' });
       }
 
       window.history.replaceState(
