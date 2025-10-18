@@ -7,17 +7,15 @@ import { useEffect, type FC } from 'react';
 import { PagefindUI } from '@pagefind/default-ui';
 
 interface PagefindSearchProps {
-  basePath?: string;
+  pagePath?: string;
+  bundlePath?: string;
 }
 
-const PagefindSearch: FC<PagefindSearchProps> = ({ basePath = '' }) => {
+const PagefindSearch: FC<PagefindSearchProps> = ({ pagePath = '', bundlePath = '' }) => {
   useEffect(() => {
     // 从URL获取初始查询
     const params = new URLSearchParams(window.location.search);
     const initialQuery = params.get('q') ?? '';
-
-    // 根据collection设置bundlePath
-    const bundlePath = `${basePath}/pagefind/`;
 
     const pagefindUI = new PagefindUI({
       element: '#pagefind-ui',
@@ -45,7 +43,7 @@ const PagefindSearch: FC<PagefindSearchProps> = ({ basePath = '' }) => {
       }
 
       // 更新URL但不刷新页面
-      const newUrl = `${basePath}/search${params.toString() ? '?' + params.toString() : ''}`;
+      const newUrl = `${pagePath}${params.toString() ? '?' + params.toString() : ''}`;
       window.history.replaceState({}, '', newUrl);
     };
 
@@ -74,7 +72,7 @@ const PagefindSearch: FC<PagefindSearchProps> = ({ basePath = '' }) => {
       }
       pagefindUI.destroy();
     };
-  }, [basePath]);
+  }, [pagePath, bundlePath]);
 
   return null;
 };

@@ -88,6 +88,14 @@ export function getSearchUrl(collection: CollectionName): string {
 }
 
 /**
+ * 生成搜索bundle路径
+ */
+export function getSearchBundlePath(collection: CollectionName): string {
+  const basePath = getBasePath(collection);
+  return posix.join(basePath, 'pagefind/');
+}
+
+/**
  * 生成RSS URL
  */
 export function getRssUrl(collection: CollectionName): string {

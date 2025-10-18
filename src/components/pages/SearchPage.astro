@@ -6,7 +6,7 @@
 import '@pagefind/default-ui/css/ui.css';
 
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { getSearchUrl } from '@/utils/collection-paths';
+import { getSearchBundlePath, getSearchUrl } from '@/utils/collection-paths';
 import PagefindSearch from '../PagefindSearch';
 import '@/styles/pagefind.css';
 
@@ -31,5 +31,9 @@ const pageContext = {
     <h1 class="text-3xl font-bold">搜索</h1>
   </div>
   <div id="pagefind-ui" />
-  <PagefindSearch basePath={pageContext.path} client:only="react" />
+  <PagefindSearch
+    pagePath={pageContext.path}
+    bundlePath={getSearchBundlePath(collection)}
+    client:only="react"
+  />
 </BaseLayout>
