@@ -9,7 +9,8 @@ import type { CollectionName } from '@/types/content';
 
 import MathJax from './MathJax.astro';
 import SocialLinks from './SocialLinks.astro';
-import Image from './ImageWrapper.astro';
+
+import { Picture } from 'astro:assets';
 
 interface Props {
   collection?: CollectionName;
@@ -30,7 +31,7 @@ const config = getSiteConfig(collection);
           hover:scale-110
         `}
       >
-        <Image
+        <Picture
           src={config.author.avatar.src}
           alt={config.author.avatar.alt}
           widths={[
@@ -40,6 +41,8 @@ const config = getSiteConfig(collection);
             config.author.avatar.width * 4,
             config.author.avatar.width * 5,
           ]}
+          formats={['avif']}
+          fallbackFormat="webp"
           sizes={`calc(clamp(1rem, 0.66rem + 0.38vw, 2rem) * ${config.author.avatar.width / 16})`}
           priority
           style={{

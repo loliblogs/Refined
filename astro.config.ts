@@ -81,6 +81,7 @@ export default defineConfig({
   },
   image: {
     layout: 'constrained',
+    responsiveStyles: true,
   },
   server: ({ command }) => {
     return {
