@@ -131,7 +131,7 @@ const SearchBoxClient: React.FC<SearchBoxClientProps> = ({
   // 滚动到结果
   const scrollToResult = (result: LocalMatch) => {
     result.element.scrollIntoView({
-      behavior: 'smooth',
+      behavior: 'auto',
       block: 'center',
     });
     highlightElement(result.element);

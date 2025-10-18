@@ -302,7 +302,7 @@ function highlightFocusedItem(elements: TimelineElements, range: DateRange): voi
 
   if (!closestItem) return;
 
-  closestItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  closestItem.scrollIntoView({ behavior: 'auto', block: 'center' });
   closestItem.classList.add('animate-[highlight-flash_2s_ease-in-out]');
   window.setTimeout(() => {
     closestItem.classList.remove('animate-[highlight-flash_2s_ease-in-out]');
