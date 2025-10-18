@@ -108,7 +108,7 @@ async function initializeDataOnce(collection: CollectionName = 'post'): Promise<
     const finalComments = post.data.comments ?? defaultComments;
 
     // 生成 SEO description
-    const finalDescription = post.data.description
+    const finalDescription = post.data.description ?? post.data.excerpt
       ?? truncateText(post.body, 200, { wordBoundary: true });
 
     // 计算 excerptSource - 统一使用工具函数

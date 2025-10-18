@@ -38,7 +38,11 @@ const showComments = page.data.comments ?? config.comments;
 
 ---
 
-<BaseLayout title={page.data.title} pageContext={pageContext}>
+<BaseLayout
+  title={page.data.title}
+  description={page.data.description}
+  pageContext={pageContext}
+>
   <article>
     <header class="mb-8 border-b border-line pb-4">
       <h1 class={`

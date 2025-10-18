@@ -53,6 +53,7 @@ const pageSchema = z.object({
   title: z.string(),
   date: z.coerce.date().optional(),
   updated: z.coerce.date().optional(),
+  description: z.string().optional(),
   comments: z.boolean().optional(),
 });
 

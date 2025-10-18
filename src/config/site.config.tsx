@@ -38,9 +38,9 @@ const animationNew = {
 const postConfig: SiteConfig = {
   // ========== 站点基本信息 ==========
   title: 'loli\'s diary',                           // 站点标题
-  subtitle: 'loli\'s modern blog built with Astro', // 副标题
-  description: 'lolifamily\'s diary',      // 站点描述（SEO）
-  keywords: 'blog, astro, modern, web',       // 关键词（SEO）
+  subtitle: 'loli\'s diary about learning and design with Astro', // 副标题
+  description: '关于学习和生活的日记碎碎念，记录在各种实验和实践中的经历和思考，进行一些案例分析和分享',      // 站点描述（SEO）
+  keywords: 'blog, design, learning, life, diary, thinking',       // 关键词（SEO）
   language: 'zh-CN',                          // 语言
   basePath: '',                               // 主博客在根路径
 
@@ -178,9 +178,9 @@ const postConfig: SiteConfig = {
 // OI Collection 配置
 const oiConfig: SiteConfig = {
   // ========== 站点基本信息 ==========
-  title: 'loli\'s OI diary',                              // 站点标题
-  subtitle: 'lolifamily\'s OI diary',              // 副标题
-  description: 'lolifamily\'s OI diary',     // 站点描述（SEO）
+  title: 'loli\'s OI log',                              // 站点标题
+  subtitle: 'lolifamily\'s log about competitive programming with Astro',              // 副标题
+  description: '关于OI学习的记录，记录题解和部分算法上思考',     // 站点描述（SEO）
   keywords: 'OI, ACM, algorithm, competitive programming', // 关键词（SEO）
   language: 'zh-CN',                          // 语言
   basePath: 'oi',                            // OI专区在oi路径下
