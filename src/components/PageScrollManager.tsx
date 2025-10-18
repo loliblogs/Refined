@@ -161,22 +161,22 @@ const PageScrollManager: FC = () => {
     function findActiveHeading(viewport: HTMLElement): string {
       if (headingElements.length === 0) return '';
 
-      const scrollTop = viewport.scrollTop;
+      const viewportTop = viewport.getBoundingClientRect().top;
       const len = headingElements.length;
       const scrollMarginTop = -48; // 美观考虑上移一定距离，与布局无关
 
       // 从上次位置开始搜索
       let index = Math.min(Math.max(0, lastIndex), len - 1);
 
-      const currentTop = headingElements[index]?.element.offsetTop;
+      const currentTop = headingElements[index]?.element.getBoundingClientRect().top;
 
       if (currentTop === undefined) return '';
 
-      if (currentTop + scrollMarginTop > scrollTop) {
+      if (currentTop + scrollMarginTop > viewportTop) {
         // 向前搜索：找到最后一个 offsetTop <= scrollTop 的元素
         while (index > 0) {
-          const heading = headingElements[index]?.element.offsetTop;
-          if (heading !== undefined && heading + scrollMarginTop <= scrollTop) {
+          const heading = headingElements[index]?.element.getBoundingClientRect().top;
+          if (heading !== undefined && heading + scrollMarginTop <= viewportTop) {
             break;
           }
           index--;
@@ -184,8 +184,8 @@ const PageScrollManager: FC = () => {
       } else {
         // 向后搜索：找到最后一个 offsetTop <= scrollTop 的元素
         while (index < len - 1) {
-          const heading = headingElements[index + 1]?.element.offsetTop;
-          if (heading !== undefined && heading + scrollMarginTop > scrollTop) {
+          const heading = headingElements[index + 1]?.element.getBoundingClientRect().top;
+          if (heading !== undefined && heading + scrollMarginTop > viewportTop) {
             break;
           }
           index++;
@@ -196,7 +196,7 @@ const PageScrollManager: FC = () => {
 
       // 搜索完成后检查：如果找到的标题还在视口下方，说明还没滚动到第一个标题
       const result = headingElements[index];
-      if (result === undefined || result.element.offsetTop + scrollMarginTop > scrollTop) {
+      if (result === undefined || result.element.getBoundingClientRect().top + scrollMarginTop > viewportTop) {
         return ''; // 不高亮
       }
 
