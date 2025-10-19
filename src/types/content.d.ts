@@ -83,6 +83,7 @@ export interface PageContext {
   layoutType?: LayoutType; // 页面类型
   title?: string;         // 页面标题
   collection: CollectionName; // 所属collection
+  noindex?: boolean;         // 是否不索引（默认 false）
 }
 
 /**

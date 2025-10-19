@@ -32,11 +32,12 @@ export default defineConfig({
   integrations: [expressiveCode(), preact(), mdx(), db(), playformCompress({
     CSS: false,
     HTML: true,
+    JSON: true,
     Image: false,
     JavaScript: false,
   }), sitemap({
     filter: (page) => {
-      return !page.endsWith('/404') && !page.endsWith('/403');
+      return !page.endsWith('/404') && !page.endsWith('/403') && !page.endsWith('/search');
     },
     lastmod: new Date(),
   })],
@@ -53,7 +54,7 @@ export default defineConfig({
       transformer: 'lightningcss',
     },
     plugins: [
-      ...tailwindcss(),
+      tailwindcss(),
     ],
     resolve: {
       alias: {
