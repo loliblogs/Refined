@@ -40,7 +40,6 @@ const tocEmptyText = siteConfig.tocEmptyText ?? '本文章没有目录'; // 空�
 
 // 页面上下文（使用动态路径）
 const pageContext = {
-  title: post.title,
   path: getPostUrl(post.slug, collection),
   collection,
 };

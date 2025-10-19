@@ -22,18 +22,13 @@ interface Props {
 }
 
 const {
-  title: propTitle,
+  title: pageTitle,
   description: propDescription,
   pageContext,
 } = Astro.props;
 
 // 获取全局配置 - 统一配置源
 const config = getSiteConfig(pageContext.collection);
-
-
-// 构建页面标题
-// 优先使用直接传入的 title，其次使用 pageContext 中的 title
-const pageTitle = propTitle ?? pageContext.title;
 
 // 构建页面描述 - 直接使用传入的或默认值
 const pageDescription = propDescription ?? config.description;

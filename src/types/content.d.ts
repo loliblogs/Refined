@@ -80,7 +80,6 @@ export type Tag = TaxonomyNode;
  */
 export interface PageContext {
   path: string;           // 当前页面路径
-  title?: string;         // 页面标题
   collection: CollectionName; // 所属collection
   noindex?: boolean;         // 是否不索引（默认 false）
 }

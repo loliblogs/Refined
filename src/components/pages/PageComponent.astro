@@ -25,7 +25,6 @@ const { Content } = await page.render();
 
 // 页面上下文
 const pageContext = {
-  title: page.data.title,
   path: getPageUrl(page.slug, collection),
   collection,
 };
