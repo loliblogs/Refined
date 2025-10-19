@@ -11,9 +11,9 @@
 import { GithubLogoIcon, EnvelopeIcon, LinuxLogoIcon, SteamLogoIcon } from '@phosphor-icons/react';
 
 import avatarImg from '@/assets/avatar.jpg';
-import faviconUrl from '@/assets/favicon-32x32.png?url';
-import faviconUrl192 from '@/assets/favicon-192x192.png?url';
-import faviconUrl180 from '@/assets/favicon-180x180.png?url';
+import faviconUrl from '@/assets/favicon-32x32.png?url&no-inline';
+import faviconUrl192 from '@/assets/favicon-192x192.png?url&no-inline';
+import faviconUrl180 from '@/assets/favicon-180x180.png?url&no-inline';
 import type { SiteConfig } from '@/types/site-config';
 import type { CollectionName } from '@/types/content';
 
