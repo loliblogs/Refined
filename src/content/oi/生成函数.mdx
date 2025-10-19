@@ -4,8 +4,7 @@ categories: 算法
 tags: [生成函数]
 date: 2018-08-11
 ---
-
-import { getPostUrl } from '@/utils/collection-paths';
+import PostLink from '@/components/PostLink.astro';
 
 ## 注意：
 
@@ -26,4 +25,4 @@ $\begin{split}(1−x)^{−n}=\sum_{i=0}^{\infty}C_{n+i-1}^i\cdot x^i \end{split}
 
 ## 模板题
 
-* <a href={getPostUrl('solution-code4763', 'oi')}>code4763</a>
+* <PostLink id="solution-code4763.mdx" collection="oi" text="code4763" />

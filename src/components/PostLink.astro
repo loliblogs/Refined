@@ -1,0 +1,29 @@
+---
+import { getPostUrl } from '@/utils/collection-paths';
+import { getSlugById } from '@/utils/data-loader';
+import type { CollectionName } from '@/types/content';
+
+export interface Props {
+  id: string;
+  collection: CollectionName;
+  text?: string | undefined;
+  anchor?: string | undefined;
+}
+
+const { id, collection, text, anchor } = Astro.props;
+
+const slug = await getSlugById(id, collection);
+---
+{slug
+  ? (
+      <a href={getPostUrl(`${slug}${anchor ? `#${anchor}` : ''}`, collection)}>{text ?? id}</a>
+    )
+  : (
+      <span class="text-admonition-caution">
+        Post not found for id "
+        {id}
+        " in collection "
+        {collection}
+        "
+      </span>
+    )}
