@@ -40,14 +40,25 @@ export function truncateText(
 
   let truncated = text.substring(0, truncateLength);
 
-  // 在单词边界截断
+  // 在单词/句子边界截断
   if (wordBoundary) {
-    // 查找最后一个空白字符的位置
-    const lastSpaceIndex = truncated.lastIndexOf(' ');
+    // 使用贪婪匹配找到最后一个标点符号（包括中英文标点和空白字符）
+    // 标点包含：空格、逗号、句号、分号、冒号、问号、感叹号、顿号、破折号、省略号等
+    const match = /.*([\s,，.。;；:：?？!！、\-—…])/.exec(truncated);
 
-    // 如果找到空白字符，在该位置截断
-    if (lastSpaceIndex > 0) {
-      truncated = truncated.substring(0, lastSpaceIndex);
+    if (match?.[1]) {
+      const punctuationChar = match[1]; // 捕获的标点字符
+      const punctuationIndex = match[0].length - 1; // 标点在整个匹配中的位置
+
+      // 对于空白字符，截断到它之前（不保留空白）
+      // 对于其他标点，截断到它之后（保留标点，使句子结构完整）
+      const breakpointIndex = /\s/.test(punctuationChar)
+        ? punctuationIndex
+        : punctuationIndex + 1;
+
+      if (breakpointIndex > 0) {
+        truncated = truncated.substring(0, breakpointIndex);
+      }
     }
   }
 

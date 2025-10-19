@@ -109,7 +109,7 @@ async function initializeDataOnce(collection: CollectionName = 'post'): Promise<
 
     // 生成 SEO description
     const finalDescription = post.data.description ?? post.data.excerpt
-      ?? truncateText(post.body, 200, { wordBoundary: true });
+      ?? truncateText(post.body, 150, { wordBoundary: true });
 
     // 计算 excerptSource - 统一使用工具函数
     const prompt = post.data.prompt ?? siteConfig.passwordPrompt ?? '此内容已加密，需要密码查看';
