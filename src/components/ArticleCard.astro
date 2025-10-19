@@ -84,19 +84,17 @@ const excerptLink = config.excerpt_link;
       </a>
 
       {post.updated && (
-        <a
-          href={`${getArchiveUrl(post.collection)}?focus=${formatDate(post.updated)}`}
+        <span
           class={`
             flex items-center text-muted no-underline transition-colors
             duration-200
-            hover:text-primary
           `}
         >
           <ArrowClockwiseIcon size="1rem" weight="regular" />
           <time datetime={post.updated.toISOString()} class="ml-1.5">
             {formatDate(post.updated)}
           </time>
-        </a>
+        </span>
       )}
 
       {/* 标签 */}
