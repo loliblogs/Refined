@@ -8,7 +8,7 @@
  * 3. 配置项都有详细的注释说明
  */
 
-import { GithubLogoIcon, EnvelopeIcon, LinuxLogoIcon, SteamLogoIcon } from '@phosphor-icons/react';
+import { GithubLogoIcon, LinuxLogoIcon, SteamLogoIcon, SubwayIcon } from '@phosphor-icons/react';
 
 import avatarImg from '@/assets/avatar.jpg';
 import faviconUrl from '@/assets/favicon-32x32.png?url&no-inline';
@@ -102,9 +102,9 @@ const postConfig: SiteConfig = {
       title: 'Steam',
     },
     {
-      icon: () => <EnvelopeIcon size="2.5rem" weight="duotone" />,
-      url: 'mailto:lolifamilies@gmail.com',
-      title: 'Email',
+      icon: () => <SubwayIcon size="2.5rem" weight="duotone" />,
+      url: 'https://www.travellings.cn/go.html',
+      title: 'Travelling',
     },
   ],
 
@@ -156,14 +156,14 @@ const postConfig: SiteConfig = {
 
   footer: () => (
     <a
-      href="https://icp.gov.moe/?keyword=20236898"
+      href="https://icp.gov.moe/?keyword=20252105"
       target="_blank"
       className={`
         text-muted
         hover:text-primary
       `}
     >
-      <span className="underline">萌ICP备20236898号</span>
+      <span className="underline">萌ICP备20252105号</span>
     </a>
   ),
 
