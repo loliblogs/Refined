@@ -28,8 +28,8 @@ const adaptor = liteAdaptor();
 RegisterHTMLHandler(adaptor);
 
 
-// 预编译的正则表达式（避免每次创建）
-const FONT_CLEANUP_REGEX = /src:\s*url\("@mathjax\/mathjax-newcm-font\/js\/chtml\/woff2\/[^"]*\.woff2"\)\s*format\("woff2"\);?\s*/gm;
+// 字体清理正则 - 直接移除所有 @font-face 块（包括注释和换行）
+const FONT_CLEANUP_REGEX = /@font-face[\s\S]*?\{[\s\S]*?\}\s*/g;
 
 // 数学符号检测正则：未转义的 $ 或 \( 或 \[
 const MATH_SYMBOLS_REGEX = /(?<!\\)\$|\\\(|\\\[/;
