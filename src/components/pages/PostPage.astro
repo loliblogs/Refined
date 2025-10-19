@@ -42,7 +42,6 @@ const tocEmptyText = siteConfig.tocEmptyText ?? '本文章没有目录'; // 空�
 const pageContext = {
   title: post.title,
   path: getPostUrl(post.slug, collection),
-  layoutType: 'post' as const,
   collection,
 };
 ---

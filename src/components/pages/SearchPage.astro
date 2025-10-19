@@ -21,7 +21,6 @@ const { collection = 'post' } = Astro.props;
 // 页面上下文
 const pageContext = {
   path: getSearchUrl(collection),
-  layoutType: 'page' as const,
   collection,
   noindex: true,
 };

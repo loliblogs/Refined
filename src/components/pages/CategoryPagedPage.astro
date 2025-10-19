@@ -24,7 +24,6 @@ const { page, category, collection = 'post' } = Astro.props;
 // 页面上下文
 const pageContext = {
   path: `${getCategoryUrl(category.path, collection)}/page/${page.currentPage}`,
-  layoutType: 'category' as const,
   collection,
 };
 ---

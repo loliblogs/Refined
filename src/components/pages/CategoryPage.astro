@@ -39,7 +39,6 @@ const siblingCategories = categorySystem.getSiblings(category.path).slice(0, 5);
 // 页面上下文
 const pageContext = {
   path: getCategoryUrl(category.path, collection),
-  layoutType: 'category' as const,
   collection,
 };
 

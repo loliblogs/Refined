@@ -38,7 +38,6 @@ const paginatedPosts = allPosts.slice(startIndex, startIndex + postsPerPage);
 // 页面上下文
 const pageContext = {
   path: getBasePath(collection),
-  layoutType: 'home' as const,
   collection,
 };
 ---

@@ -27,7 +27,6 @@ const showComments = config.comments;
 // 页面上下文
 const pageContext = {
   path: posix.join(getBasePath(collection), '404'),
-  layoutType: 'page' as const,
   collection,
   noindex: true,
 };

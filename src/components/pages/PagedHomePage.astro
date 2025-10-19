@@ -24,7 +24,6 @@ const { page, collection = 'post' } = Astro.props;
 // 页面上下文
 const pageContext = {
   path: getPaginationUrl(page.currentPage, collection),
-  layoutType: 'home' as const,
   collection,
 };
 ---

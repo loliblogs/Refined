@@ -27,7 +27,6 @@ const { page, tag, relatedTags = [], childTags = [], collection = 'post' } = Ast
 // 页面上下文
 const pageContext = {
   path: `${getTagUrl(tag.path, collection)}/page/${page.currentPage}`,
-  layoutType: 'tag' as const,
   collection,
 };
 ---

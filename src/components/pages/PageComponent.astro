@@ -27,7 +27,6 @@ const { Content } = await page.render();
 const pageContext = {
   title: page.data.title,
   path: getPageUrl(page.slug, collection),
-  layoutType: 'page' as const,
   collection,
 };
 

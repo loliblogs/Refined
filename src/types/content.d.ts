@@ -80,13 +80,7 @@ export type Tag = TaxonomyNode;
  */
 export interface PageContext {
   path: string;           // 当前页面路径
-  layoutType?: LayoutType; // 页面类型
   title?: string;         // 页面标题
   collection: CollectionName; // 所属collection
   noindex?: boolean;         // 是否不索引（默认 false）
 }
-
-/**
- * 布局类型定义
- */
-export type LayoutType = 'home' | 'post' | 'page' | 'archive' | 'category' | 'tag';
