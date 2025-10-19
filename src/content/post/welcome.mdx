@@ -4,15 +4,18 @@ date: 2018-04-26
 updated: 2025-10-06
 sticky: 100
 ---
+import PostLink from '@/components/PostLink.astro';
 
 Modern Blog 是一个基于 Astro 构建的现代化的博客系统。
 
 常见链接:
-* [友链](/links)
-* [README](/post/readme)
-* [中文 README](/post/readme-zh)
-* [Markdown 示例](/post/markdown-example)
 * [项目地址](https://github.com/loliblogs/Refined)
+* [友链](/links)
+* <PostLink id="readme.mdx" collection="post" text="README" />
+* <PostLink id="readme-zh.mdx" collection="post" text="中文 README" />
+* <PostLink id="markdown-example.mdx" collection="post" text="Markdown 示例" />
+* <PostLink id="test-toc-levels.mdx" collection="post" text="目录层级测试文章" />
+* <PostLink id="encryption-test.mdx" collection="post" text="加密测试文章" />
 
 ::more
 
