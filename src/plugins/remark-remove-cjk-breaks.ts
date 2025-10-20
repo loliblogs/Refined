@@ -5,7 +5,7 @@
 import { visitParents } from 'unist-util-visit-parents';
 import type { Root } from 'mdast';
 
-/* eslint-disable @stylistic/indent */
+/* eslint @stylistic/indent: ["error", 2, { "ignoreComments": true }] */
 const cjkChars = [
   '\\p{scx=Hani}',
   '\\p{scx=Bopomofo}',
@@ -82,7 +82,6 @@ const squaredLatinAbbrChars = [
                          // ... Squared Latin abbreviations, Abbreviations involving iter symbols, Squared Latin abbreviations
   '\\u{33FF}',           // ㏿ ... Squared Latin abbreviations (Square Gal)
 ];
-/* eslint-enable @stylistic/indent */
 
 // Emoji
 const emojiFlagSequence = '\\p{RI}\\p{RI}'; // emoji flag sequence

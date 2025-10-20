@@ -56,6 +56,9 @@
   /* 搜索框动态高度 - 使用CSS变量计算 */
   --search-min-h: 25rem;
   --search-space: var(--viewport-height-search); /* 使用统一的视口高度变量 */
+
+  /* 视口高度 */
+  --spacing-viewport-height: var(--viewport-height);
 }
 
 /* CSS Variables - Matching Concise Theme Exactly */
