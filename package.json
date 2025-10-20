@@ -41,10 +41,10 @@
     "@phosphor-icons/react": "^2.1.10",
     "@playform/compress": "^0.2.0",
     "@preact/compat": "^18.3.1",
-    "@tailwindcss/vite": "^4.1.14",
+    "@tailwindcss/vite": "^4.1.15",
     "argon2": "^0.44.0",
     "argon2-browser": "^1.18.0",
-    "astro": "^5.14.6",
+    "astro": "^5.14.7",
     "astro-expressive-code": "^0.41.3",
     "cheerio": "^1.1.2",
     "chroma-js": "^3.1.2",
@@ -68,17 +68,17 @@
     "remark-github-admonitions-to-directives": "^2.1.0",
     "remark-pangu": "^2.2.0",
     "sharp": "^0.34.4",
-    "tailwindcss": "^4.1.14",
+    "tailwindcss": "^4.1.15",
     "terser": "^5.44.0",
     "typescript": "^5.9.3",
     "unified": "^11.0.5",
     "unist-builder": "^4.0.0",
     "unist-util-visit-parents": "^6.0.2",
-    "vite": "^7.1.10",
+    "vite": "^7.1.11",
     "wordcloud": "^1.2.3"
   },
   "devDependencies": {
-    "@astrojs/check": "^0.9.4",
+    "@astrojs/check": "^0.9.5",
     "@eslint/css": "^0.13.0",
     "@eslint/js": "^9.38.0",
     "@stylistic/eslint-plugin": "^5.5.0",
@@ -113,7 +113,7 @@
   "pnpm": {
     "overrides": {
       "html-minifier-terser": "npm:html-minifier-next",
-      "vite": "^7.1.10"
+      "vite": "^7.1.11"
     },
     "onlyBuiltDependencies": [
       "argon2",
