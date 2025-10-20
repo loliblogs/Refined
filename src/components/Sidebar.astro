@@ -24,8 +24,7 @@ const hasTocSlot = Astro.slots.has('default');
 <aside
   id="aside"
   class={`
-    relative h-full w-[var(--spacing-aside)] border-r border-line
-    bg-surface-aside
+    relative h-full w-aside border-r border-line bg-surface-aside
     max-lg:pointer-events-none max-lg:fixed max-lg:top-0 max-lg:left-0
     max-lg:z-[90] max-lg:block max-lg:w-full max-lg:bg-transparent
     max-lg:[&.aside-panel-show]:!pointer-events-auto
@@ -47,7 +46,7 @@ const hasTocSlot = Astro.slots.has('default');
     id="aside-inner"
     class={`
       relative flex h-full w-full flex-col
-      max-lg:w-4/5 max-lg:max-w-sm max-lg:min-w-[var(--spacing-aside-min)]
+      max-lg:w-4/5 max-lg:max-w-sm max-lg:min-w-aside-min
       max-lg:-translate-x-full max-lg:bg-surface-aside
       max-lg:transition-transform max-lg:duration-300 max-lg:ease-in-out
       max-lg:will-change-[transform] max-lg:[.aside-panel-show_&]:translate-x-0

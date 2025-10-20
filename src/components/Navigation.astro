@@ -18,7 +18,7 @@ const config = getSiteConfig(collection);
 <nav
   id="nav"
   class={`
-    relative h-full w-[var(--spacing-nav)] shrink-0 bg-nav
+    relative h-full w-nav shrink-0 bg-nav
     max-lg:fixed max-lg:z-10 max-lg:h-auto max-lg:w-full
   `}
 >
@@ -99,9 +99,9 @@ const config = getSiteConfig(collection);
             <a
               data-nav-item
               class={`
-                flex h-[var(--spacing-nav-height)] flex-shrink-0 items-center
-                justify-center text-primary no-underline transition-colors
-                duration-100 ease-in-out
+                flex h-nav-height flex-shrink-0 items-center justify-center
+                text-primary no-underline transition-colors duration-100
+                ease-in-out
                 hover:bg-active
                 max-lg:inline-block max-lg:h-11 max-lg:px-5 max-lg:align-top
                 max-lg:text-base max-lg:leading-11

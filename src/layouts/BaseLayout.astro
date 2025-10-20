@@ -88,7 +88,7 @@ const fullTitle = pageTitle ? `${pageTitle} | ${config.title}` : config.title;
       <header
         id="header"
         class={`
-          fixed top-0 bottom-0 left-0 flex w-[var(--spacing-header)]
+          fixed top-0 bottom-0 left-0 flex w-header
           max-lg:static max-lg:h-0 max-lg:w-full
         `}
       >
@@ -118,8 +118,7 @@ const fullTitle = pageTitle ? `${pageTitle} | ${config.title}` : config.title;
       <div
         id="content"
         class={`
-          ml-[var(--spacing-header)] flex min-h-0 flex-1 overflow-y-auto px-8
-          pt-8 pb-2
+          ml-header flex min-h-0 flex-1 overflow-y-auto px-8 pt-8 pb-2
           max-lg:ml-0 max-lg:px-4 max-lg:pt-[4.25rem] max-lg:pb-1.5
         `}
         transition:name="content"
@@ -128,10 +127,7 @@ const fullTitle = pageTitle ? `${pageTitle} | ${config.title}` : config.title;
       >
         <div
           id="wrapper"
-          class={`
-            mx-auto flex min-h-full w-full max-w-[var(--spacing-content-max)]
-            flex-col
-          `}
+          class="mx-auto flex min-h-full w-full max-w-content-max flex-col"
         >
           <div class="flex-grow">
             <slot />
