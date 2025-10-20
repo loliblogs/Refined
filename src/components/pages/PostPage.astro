@@ -130,7 +130,7 @@ const pageContext = {
       id="markdown-body"
       data-markdown
       class:list={[
-        'my-8 leading-[1.8]',
+        'my-8 leading-markdown',
         post.encryption && 'hidden',
       ]}
       {...(!post.encryption && !post.draft && { 'data-pagefind-body': true })}
@@ -168,7 +168,7 @@ const pageContext = {
               type="password"
               id="decrypt-password"
               class={`
-                w-[15rem] rounded border border-line px-3 py-2 transition-colors
+                w-60 rounded border border-line px-3 py-2 transition-colors
                 duration-200
                 focus:border-link focus:outline-none
               `}

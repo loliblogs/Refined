@@ -50,6 +50,8 @@
   --spacing-nav-height: 3rem;     /* 48px - navigation item height */
   --spacing-footer: 2.5rem;       /* 40px - footer height */
   --spacing-content-max: 50rem;   /* 800px - content max width */
+
+  --leading-markdown: 1.8;
   
   /* 搜索框动态高度 - 使用CSS变量计算 */
   --search-min-h: 25rem;
