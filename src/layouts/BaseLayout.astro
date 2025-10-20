@@ -70,6 +70,17 @@ const fullTitle = pageTitle ? `${pageTitle} | ${config.title}` : config.title;
     <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#2b2e32" media="(prefers-color-scheme: dark)" />
     <meta name="color-scheme" content="light dark" />
+
+    {/* 重定向 */}
+    {pageContext.redirect && (
+      <meta
+        http-equiv="refresh"
+        content={[
+          pageContext.redirect.timeout,
+          pageContext.redirect.to && `url=${pageContext.redirect.to}`,
+        ].filter(Boolean).join('; ')}
+      />
+    )}
   </head>
 
   <body class="bg-surface font-sans leading-relaxed text-primary">
