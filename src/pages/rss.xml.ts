@@ -1,15 +1,16 @@
 import rss from '@astrojs/rss';
 import { getContainerRenderer as mdxContainerRenderer } from '@astrojs/mdx';
 import { getContainerRenderer as preactContainerRenderer } from '@astrojs/preact';
-import type { APIContext } from 'astro';
 import { experimental_AstroContainer } from 'astro/container';
 import { loadRenderers } from 'astro:container';
+
+import type { APIRoute } from 'astro';
 
 import { getPosts } from '@/utils/data-loader';
 import { getSiteConfig } from '@/config/site.config';
 import { getBasePath, getPostUrl, getRssStylesUrl } from '@/utils/collection-paths';
 
-export async function GET(context: APIContext) {
+export const GET: APIRoute = async (context) => {
   const config = getSiteConfig('post');
   // 获取已排序的文章（纯时间排序）
   const sortedPosts = await getPosts('archive');
@@ -53,4 +54,4 @@ export async function GET(context: APIContext) {
     stylesheet: getRssStylesUrl('post'),
     trailingSlash: false,
   });
-}
+};

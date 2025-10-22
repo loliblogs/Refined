@@ -36,9 +36,7 @@ export default defineConfig({
     Image: false,
     JavaScript: false,
   }), sitemap({
-    filter: (page) => {
-      return !page.endsWith('/404') && !page.endsWith('/403') && !page.endsWith('/search');
-    },
+    filter: page => !page.endsWith('/404') && !page.endsWith('/403') && !page.endsWith('/search'),
     lastmod: new Date(),
   })],
   vite: {
@@ -84,11 +82,9 @@ export default defineConfig({
     layout: 'constrained',
     responsiveStyles: true,
   },
-  server: ({ command }) => {
-    return {
-      port: (command === 'preview' ? 4321 : 3000),
-    };
-  },
+  server: ({ command }) => ({
+    port: command === 'preview' ? 4321 : 3000,
+  }),
   devToolbar: {
     enabled: false,
   },

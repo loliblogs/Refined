@@ -75,8 +75,8 @@ const config = getSiteConfig(collection);
         flex h-full flex-col justify-center
         max-lg:h-0 max-lg:overflow-hidden max-lg:opacity-0
         max-lg:transition-[height_0.35s_cubic-bezier(0.4,0,0.2,1),opacity_0.25s_ease-out]
-        [&.no-transition]:!transition-none
-        max-lg:[&.show]:!h-11 max-lg:[&.show]:!opacity-100
+        [&.no-transition]:transition-none!
+        max-lg:[&.show]:h-11! max-lg:[&.show]:opacity-100!
         max-lg:[&.show]:transition-[height_0.35s_cubic-bezier(0.4,0,0.2,1),opacity_0.25s_ease-in_0.1s]
       `}
     >
@@ -99,7 +99,7 @@ const config = getSiteConfig(collection);
             <a
               data-nav-item
               class={`
-                flex h-nav-height flex-shrink-0 items-center justify-center
+                flex h-nav-height shrink-0 items-center justify-center
                 text-primary no-underline transition-colors duration-100
                 ease-in-out
                 hover:bg-active
