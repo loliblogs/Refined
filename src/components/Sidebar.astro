@@ -26,8 +26,8 @@ const hasTocSlot = Astro.slots.has('default');
   class={`
     relative h-full w-aside border-r border-line bg-surface-aside
     max-lg:pointer-events-none max-lg:fixed max-lg:top-0 max-lg:left-0
-    max-lg:z-[90] max-lg:block max-lg:w-full max-lg:bg-transparent
-    max-lg:[&.aside-panel-show]:!pointer-events-auto
+    max-lg:z-90 max-lg:block max-lg:w-full max-lg:bg-transparent
+    max-lg:[&.aside-panel-show]:pointer-events-auto!
   `}
 >
   <div
@@ -36,8 +36,8 @@ const hasTocSlot = Astro.slots.has('default');
       hidden
       max-lg:pointer-events-none max-lg:absolute max-lg:inset-0 max-lg:block
       max-lg:bg-overlay max-lg:opacity-0 max-lg:transition-opacity
-      max-lg:[&.aside-mask-visible]:!pointer-events-auto
-      max-lg:[&.aside-mask-visible]:!opacity-100
+      max-lg:[&.aside-mask-visible]:pointer-events-auto!
+      max-lg:[&.aside-mask-visible]:opacity-100!
     `}
   >
   </div>
@@ -49,7 +49,7 @@ const hasTocSlot = Astro.slots.has('default');
       max-lg:w-4/5 max-lg:max-w-sm max-lg:min-w-aside-min
       max-lg:-translate-x-full max-lg:bg-surface-aside
       max-lg:transition-transform max-lg:duration-300 max-lg:ease-in-out
-      max-lg:will-change-[transform] max-lg:[.aside-panel-show_&]:translate-x-0
+      max-lg:will-change-transform max-lg:in-[.aside-panel-show]:translate-x-0
     `}
   >
     {/* 阅读进度条 - 固定在 aside 顶部 */}
@@ -64,8 +64,8 @@ const hasTocSlot = Astro.slots.has('default');
       <div
         id="reading-progress-bar"
         class={`
-          h-full w-[var(--progress,0%)] origin-left bg-gradient-to-r
-          from-primary to-secondary transition-[width] duration-150 ease-out
+          h-full w-(--progress,0%) origin-left bg-linear-to-r from-primary
+          to-secondary transition-[width] duration-150 ease-out
           will-change-[width]
         `}
       />
@@ -75,7 +75,7 @@ const hasTocSlot = Astro.slots.has('default');
 
     {/* 搜索框区域 - 统一放在顶部，不滚动 */}
     <div class={`
-      flex-shrink-0 px-6 pt-8 pb-4
+      shrink-0 px-6 pt-8 pb-4
       max-lg:p-4
     `}
     >
@@ -123,8 +123,8 @@ const hasTocSlot = Astro.slots.has('default');
                 </div>
                 <div
                   class={`
-                    min-h-0 shrink grow basis-[6.25rem]
-                    max-lg:basis-[4.25rem]
+                    min-h-0 shrink grow basis-25
+                    max-lg:basis-17
                   `}
                   aria-hidden="true"
                 />

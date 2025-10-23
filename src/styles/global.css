@@ -238,12 +238,6 @@ html {
   }
 }
 
-/* 旋转动画 */
-@keyframes spin {
-  from { transform: rotate3d(0, 0, 1, 0deg); }
-  to { transform: rotate3d(0, 0, 1, 360deg); }
-}
-
 /* TimelineFilter focus高亮动画 */
 @keyframes highlight-flash {
   0% { background-color: transparent; }
