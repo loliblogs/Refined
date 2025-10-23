@@ -81,9 +81,11 @@ const itemsWithIndex = filteredHeadings.map((item) => {
               <a
                 href={`#${item.id}`}
                 class:list={[
-                  'group relative flex items-center gap-2 rounded-md py-1.5',
-                  'text-secondary no-underline transition-colors',
-                  'hover:bg-hover hover:text-primary',
+                  `
+                    group relative flex items-center gap-2 rounded-md py-1.5
+                    text-secondary no-underline transition-colors
+                    hover:bg-hover hover:text-primary
+                  `,
                   levelOffset === 0 && 'pl-3',
                   levelOffset === 1 && 'pl-7',
                   levelOffset === 2 && 'pl-10',

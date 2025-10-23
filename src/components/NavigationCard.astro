@@ -21,18 +21,12 @@ const label = direction === 'prev' ? '上一篇' : '下一篇';
   href={getPostUrl(post.slug, collection)}
   class:list={[
     `
-      group relative block p-4
+      group relative block transform overflow-hidden rounded-2xl border-2
+      border-line bg-surface p-4 shadow-md transition-transform duration-300
+      ease-out
+      hover:border-primary hover:shadow-2xl
       max-lg:p-3
     `,
-    'bg-surface',
-    'rounded-2xl border-2 border-line',
-    `
-      shadow-md
-      hover:shadow-2xl
-    `,
-    'hover:border-primary',
-    'transform transition-transform duration-300 ease-out',
-    'overflow-hidden',
     {
       'hover:-translate-x-1': direction === 'prev',
       'hover:translate-x-1': direction === 'next',
@@ -64,7 +58,7 @@ const label = direction === 'prev' ? '上一篇' : '下一篇';
       <span class="text-xs font-medium tracking-wider text-secondary uppercase">
         {label}
       </span>
-      <div class="mt-0.5 text-xs text-secondary/70">
+      <div class="mt-0.5 text-xs text-secondary">
         {formatDate(post.date)}
       </div>
     </div>
