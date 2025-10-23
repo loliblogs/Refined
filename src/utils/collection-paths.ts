@@ -96,6 +96,13 @@ export function getSearchBundlePath(collection: CollectionName): string {
 }
 
 /**
+ * 生成sitemap索引URL
+ */
+export function getSitemapIndexUrl(): string {
+  return posix.join(globalBase, 'sitemap-index.xml');
+}
+
+/**
  * 生成RSS URL
  */
 export function getRssUrl(collection: CollectionName): string {

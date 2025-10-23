@@ -7,7 +7,7 @@ import Navigation from '@/components/Navigation.astro';
 import Sidebar from '@/components/Sidebar.astro';
 import PageScrollManager from '@/components/PageScrollManager';
 import MediumZoom from '@/components/MediumZoom';
-import { getRssUrl } from '@/utils/collection-paths';
+import { getRssUrl, getSitemapIndexUrl } from '@/utils/collection-paths';
 
 import type { PageContext } from '@/types/content';
 
@@ -54,7 +54,7 @@ const fullTitle = pageTitle ? `${pageTitle} | ${config.title}` : config.title;
 
     {/* 搜索引擎优化 */}
     <link rel="canonical" href={new URL(pageContext.path, Astro.site)} />
-    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="sitemap" href={getSitemapIndexUrl()} />
     {pageContext.noindex && <meta name="robots" content="noindex" />}
 
     {/* RSS 订阅 */}
