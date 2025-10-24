@@ -48,14 +48,15 @@ const fullTitle = pageTitle ? `${pageTitle} | ${config.title}` : config.title;
     <meta name="viewport" content="width=device-width,initial-scale=1" />
 
     <link rel="dns-prefetch" href="https://giscus.app" />
-    <link rel="preconnect" href="https://giscus.app" crossorigin />
+    <link rel="preconnect" href="https://giscus.app" crossorigin="anonymous" />
 
     <ClientRouter />
 
     {/* 搜索引擎优化 */}
-    <link rel="canonical" href={new URL(pageContext.path, Astro.site)} />
     <link rel="sitemap" href={getSitemapIndexUrl()} />
-    {pageContext.noindex && <meta name="robots" content="noindex" />}
+    {pageContext.noindex
+      ? <meta name="robots" content="noindex" />
+      : <link rel="canonical" href={new URL(pageContext.path, Astro.site).toString()} />}
 
     {/* RSS 订阅 */}
     <link rel="alternate" href={getRssUrl(pageContext.collection)} title={config.title} type="application/rss+xml" />
