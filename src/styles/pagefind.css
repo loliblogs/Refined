@@ -3,6 +3,7 @@
 
 :root {
   /* 根据HTML的font-size缩放 */
+  /*noinspection Annotator*/
   --pagefind-ui-scale: calc(var(--base-font-size) / 1rem);
   --pagefind-ui-primary: var(--color-link);
   --pagefind-ui-text: var(--color-primary);

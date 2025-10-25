@@ -35,6 +35,10 @@ const pageDescription = propDescription ?? config.description;
 
 // 构建完整标题
 const fullTitle = pageTitle ? `${pageTitle} | ${config.title}` : config.title;
+
+const Favicon = config.favicon;
+const Header = config.header;
+const Analytics = config.analytics;
 ---
 
 <!DOCTYPE html>
@@ -62,10 +66,10 @@ const fullTitle = pageTitle ? `${pageTitle} | ${config.title}` : config.title;
     <link rel="alternate" href={getRssUrl(pageContext.collection)} title={config.title} type="application/rss+xml" />
 
     {/* 网站图标 */}
-    <config.favicon />
+    <Favicon />
 
     {/* 顶部组件 */}
-    {config.header && <config.header />}
+    {Header && <Header />}
 
     {/* 主题颜色 */}
     <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
@@ -141,7 +145,7 @@ const fullTitle = pageTitle ? `${pageTitle} | ${config.title}` : config.title;
         <PageScrollManager client:idle />
       </div>
     </main>
-    {config.analytics && <config.analytics />}
+    {Analytics && <Analytics />}
     {/*
       手动控制页面切换动画，而不是用 transition:animate API
       原因：transition:animate 在 fetch 完成后才播放，用户点击链接会感知延迟

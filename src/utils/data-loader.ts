@@ -3,7 +3,7 @@
  * 核心改进：
  * 1. 支持多个collection独立管理
  * 2. 每个collection有独立的索引和缓存
- * 3. 保持向后兼容（默认使用'post'）
+ * 3. 保持向后兼容（默认使用post）
  */
 
 import { getCollection } from 'astro:content';
@@ -290,7 +290,7 @@ async function initializeDataOnce(collection: CollectionName = 'post'): Promise<
 /**
  * 获取文章列表（支持多collection）
  * @param sortMode 'index' = sticky优先+时间, 'archive' = 纯时间
- * @param collection 集合名称，默认'post'
+ * @param collection 集合名称，默认post
  */
 export async function getPosts(
   sortMode: 'index' | 'archive' | 'unfilteredArchive' = 'index',

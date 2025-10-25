@@ -254,7 +254,3 @@ const configMap = {
 export function getSiteConfig(collection: CollectionName): SiteConfig {
   return configMap[collection];
 }
-
-// 导出默认配置（用于类型推断和向后兼容）
-export const siteConfig = postConfig;
-export default postConfig;

@@ -200,13 +200,13 @@ export class TaxonomySystem {
 
   /**
    * 获取统计信息
-   * 使用虚拟根节点的 count 获取真实的去重文章总数
+   * 使用虚拟根节点的 count 获取真实地去重文章总数
    */
   getBaseStats(): TaxonomyStats {
     // 真实节点数（nodes 不包含虚拟根）
     const realNodeCount = this.nodes.size;
 
-    // 使用虚拟根节点的 count 作为真实的去重文章总数
+    // 使用虚拟根节点的 count 作为真实地去重文章总数
     const uniquePostCount = this.rootNode.count;
 
     // 平均每个节点分担的文章数（总文章数 / 节点数）

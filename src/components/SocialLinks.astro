@@ -17,27 +17,30 @@ const { links } = Astro.props;
 {links.length > 0 && (
   <div class="mt-5">
     <div class="flex items-center justify-center">
-      {links.map(link => (
-        <a
-          class={`
-            mx-2 inline-block text-muted transition-colors duration-200
-            hover:text-primary
-          `}
-          href={link.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          title={link.title}
-          aria-label={link.title ?? link.url}
-        >
-          <div class={`
-            transition-colors duration-200
-            hover:text-primary
-          `}
+      {links.map((link) => {
+        const Icon = link.icon;
+        return (
+          <a
+            class={`
+              mx-2 inline-block text-muted transition-colors duration-200
+              hover:text-primary
+            `}
+            href={link.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            title={link.title}
+            aria-label={link.title ?? link.url}
           >
-            <link.icon />
-          </div>
-        </a>
-      ))}
+            <div class={`
+              transition-colors duration-200
+              hover:text-primary
+            `}
+            >
+              <Icon />
+            </div>
+          </a>
+        );
+      })}
     </div>
   </div>
 )}

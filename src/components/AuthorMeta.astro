@@ -47,7 +47,7 @@ const config = getSiteConfig(collection);
           formats={['avif']}
           fallbackFormat="webp"
           sizes={`calc(clamp(1rem, 0.85rem + 0.15vw, 1.25rem) * ${config.author.avatar.width / 16})`}
-          priority
+          priority={true}
           style={{
             width: `${config.author.avatar.width / 16}rem`,
             height: `${config.author.avatar.height / 16}rem`,

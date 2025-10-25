@@ -4,8 +4,8 @@
 
 This project refines and re-implements the excellent [sanonz/hexo-theme-concise](https://github.com/sanonz/hexo-theme-concise) with Astro. Credit to the original theme; ideas, structure and styles are adapted for Astro's content collections and routing.
 
-|            Desktop               |             Mobile             |
-| -------------------------------- | ------------------------------ |
+| Desktop                          | Mobile                         |
+|----------------------------------|--------------------------------|
 | ![desktop](./assets/desktop.png) | ![mobile](./assets/mobile.png) |
 
 ![Star History Chart](https://api.star-history.com/svg?repos=loliblogs/Refined&type=date&legend=bottom-right)
@@ -48,7 +48,7 @@ Note: dev/build already generate types; this is mainly for CI or after schema ch
 More commands are listed in the table below.
 
 | Command                | Action                                                      |
-| :--------------------- | :---------------------------------------------------------- |
+|:-----------------------|:------------------------------------------------------------|
 | `pnpm install`         | Installs dependencies                                       |
 | `pnpm dev`             | Starts local dev server at `localhost:3000`                 |
 | `pnpm dev:full`        | Starts dev server with a full cold start (no cache)         |
@@ -74,7 +74,7 @@ Notes:
 
 ## 🚀 Project Structure
 
-Inside of your Astro project, you'll see the following folders and files:
+Inside your Astro project, you'll see the following folders and files:
 
 ```text
 /
@@ -307,4 +307,4 @@ This is a personal project. Here, “personal” means good‑enough for my own 
 
 Note: The items above are illustrative rather than exhaustive; they include—but are not limited to—the examples listed here.
 
-Bug fixes and small, focused improvements are welcome. For non‑trivial changes, please open a Discussion first to confirm fit. If a proposal is declined due to project philosophy or scope, the author may—at their discretion—offer pointers to relevant files/modules, high‑level direction, or suggested edits to help you implement the change yourself; this is a best‑effort courtesy, not an obligation. If the current direction doesn’t meet your needs, feel free to fork under the LICENSE.
+Bug fixes and small, focused improvements are welcome. For non‑trivial changes, please open a Discussion first to confirm fit. If a proposal is declined due to project philosophy or scope, the author may—at their discretion—offer pointers to relevant files/modules, high‑level direction, or suggested edits to help you implement the change yourself; this is the best‑effort courtesy, not an obligation. If the current direction doesn’t meet your needs, feel free to fork under the LICENSE.

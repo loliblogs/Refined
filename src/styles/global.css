@@ -164,7 +164,7 @@
 }
 
 html {
-  font-family: var(--font-sans);
+  font-family: var(--font-sans), serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-size: var(--base-font-size);

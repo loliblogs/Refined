@@ -3,7 +3,7 @@
  * 不渲染DOM，只增强已存在的静态HTML
  */
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, type FC } from 'react';
 import { clsx } from 'clsx/lite';
 
 interface SearchBoxClientProps {
@@ -19,7 +19,7 @@ interface LocalMatch {
 
 type Timeout = ReturnType<typeof setTimeout>;
 
-const SearchBoxClient: React.FC<SearchBoxClientProps> = ({
+const SearchBoxClient: FC<SearchBoxClientProps> = ({
   searchUrl = '/search',
 }) => {
   const [keyword, setKeyword] = useState('');
@@ -50,18 +50,16 @@ const SearchBoxClient: React.FC<SearchBoxClientProps> = ({
     const walker = document.createTreeWalker(
       article,
       NodeFilter.SHOW_TEXT,
-      {
-        acceptNode: (node: Node) => {
-          const parent = node.parentElement;
-          if (parent?.closest('script, style')) {
-            return NodeFilter.FILTER_REJECT;
-          }
-          // 跳过比关键词还短的文本节点
-          if (!node.textContent || node.textContent.length < keywordLen) {
-            return NodeFilter.FILTER_REJECT;
-          }
-          return NodeFilter.FILTER_ACCEPT;
-        },
+      (node: Node) => {
+        const parent = node.parentElement;
+        if (parent?.closest('script, style')) {
+          return NodeFilter.FILTER_REJECT;
+        }
+        // 跳过比关键词还短的文本节点
+        if (!node.textContent || node.textContent.length < keywordLen) {
+          return NodeFilter.FILTER_REJECT;
+        }
+        return NodeFilter.FILTER_ACCEPT;
       },
     );
 

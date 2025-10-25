@@ -91,9 +91,9 @@ const config = getSiteConfig(collection);
       >
         {Object.entries(config.menu).map(([label, navItem]) => {
         // 统一处理为对象格式
-          const item = typeof navItem === 'string'
-            ? { path: navItem, recursive: true }
-            : { ...navItem, recursive: navItem.recursive ?? true };
+          const item = typeof navItem === 'object'
+            ? { ...navItem, recursive: navItem.recursive ?? true }
+            : { path: navItem, recursive: true };
 
           return (
             <a

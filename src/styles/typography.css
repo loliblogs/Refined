@@ -4,37 +4,37 @@
 @layer base {
   h1 {
     font-size: var(--text-4xl);      /* 2.25rem (36px) */
-    line-height: var(--leading-10);   /* 2.5rem (40px) */
+    line-height: var(--text-4xl--line-height);   /* 2.5rem (40px) */
     font-weight: var(--font-weight-bold);
   }
 
   h2 {
     font-size: var(--text-3xl);      /* 1.875rem (30px) */
-    line-height: var(--leading-9);    /* 2.25rem (36px) */
+    line-height: var(--text-3xl--line-height);    /* 2.25rem (36px) */
     font-weight: var(--font-weight-semibold);
   }
 
   h3 {
     font-size: var(--text-2xl);      /* 1.5rem (24px) */
-    line-height: var(--leading-8);    /* 2rem (32px) */
+    line-height: var(--text-2xl--line-height);    /* 2rem (32px) */
     font-weight: var(--font-weight-semibold);
   }
 
   h4 {
     font-size: var(--text-xl);       /* 1.25rem (20px) */
-    line-height: var(--leading-7);    /* 1.75rem (28px) */
+    line-height: var(--text-xl--line-height);    /* 1.75rem (28px) */
     font-weight: var(--font-weight-medium);
   }
 
   h5 {
     font-size: var(--text-lg);       /* 1.125rem (18px) */
-    line-height: 1.625rem;           /* 1.625rem (26px) */
+    line-height: var(--text-lg--line-height);           /* 1.625rem (26px) */
     font-weight: var(--font-weight-medium);
   }
 
   h6 {
     font-size: var(--text-base);     /* 1rem (16px) */
-    line-height: var(--leading-6);    /* 1.5rem (24px) */
+    line-height: var(--text-base--line-height);    /* 1.5rem (24px) */
     font-weight: var(--font-weight-medium);
   }
 
@@ -42,23 +42,23 @@
   @media (max-width: 1023px) {
     h1 { 
       font-size: var(--text-3xl);
-      line-height: var(--leading-9);
+      line-height: var(--text-3xl--line-height);
     }
     h2 { 
       font-size: var(--text-2xl);
-      line-height: var(--leading-8);
+      line-height: var(--text-2xl--line-height);
     }
     h3 { 
       font-size: var(--text-xl);
-      line-height: var(--leading-7);
+      line-height: var(--text-xl--line-height);
     }
     h4 { 
       font-size: var(--text-lg);
-      line-height: 1.625rem;
+      line-height: var(--text-lg--line-height);
     }
     h5 { 
       font-size: var(--text-base);
-      line-height: var(--leading-6);
+      line-height: var(--text-base--line-height);
     }
   }
 }

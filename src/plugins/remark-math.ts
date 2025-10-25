@@ -5,7 +5,6 @@ import type { Root } from 'mdast';
 import type { Plugin } from 'unified';
 import type { Extension as FromMarkdownExtension } from 'mdast-util-from-markdown';
 import type { ToOptions as MathToOptions } from 'mdast-util-math';
-
 import { mathFromMarkdown, mathToMarkdown } from 'mdast-util-math';
 import { math as micromarkMath } from 'micromark-extension-math';
 
@@ -72,8 +71,7 @@ function createDisplayFromMarkdown(
       // 添加我们独有的处理器
       mathTextSequence(token) {
         if (this.data.customMathDelimiterSize == null) {
-          const size = token.end.column - token.start.column;
-          this.data.customMathDelimiterSize = size;
+          this.data.customMathDelimiterSize = token.end.column - token.start.column;
         }
       },
     },

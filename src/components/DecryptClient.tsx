@@ -3,7 +3,7 @@
  * 重构目标：拆分 165 行 useEffect → 职责清晰的多个函数
  */
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, type RefObject } from 'react';
 import argon2Worker from '@/utils/argon2-worker?worker';
 
 import type { EncryptedPayload, Argon2WorkerMessage, Argon2WorkerResponse } from '@/types/encryption';
@@ -192,7 +192,7 @@ function setDecryptUIState(
  * 使用 Argon2 从密码派生 AES-GCM 密钥
  */
 async function deriveKeyFromPassword(
-  workerRef: React.RefObject<Worker | null>,
+  workerRef: RefObject<Worker | null>,
   password: string,
   salt: Uint8Array,
 ): Promise<CryptoKey> {
@@ -241,7 +241,7 @@ async function deriveKeyFromPassword(
 async function executeDecryption(
   dom: DecryptElements,
   password: string,
-  workerRef: React.RefObject<Worker | null>,
+  workerRef: RefObject<Worker | null>,
 ): Promise<void> {
   const { contentData, tocData, markdownBody, tocWrapper } = dom;
 
@@ -277,7 +277,7 @@ async function executeDecryption(
 /**
  * 解密成功：淡出并移除解密面板
  */
-async function handleDecryptSuccess(dom: DecryptElements, workerRef: React.RefObject<Worker | null>): Promise<void> {
+async function handleDecryptSuccess(dom: DecryptElements, workerRef: RefObject<Worker | null>): Promise<void> {
   const { decryptPanel } = dom;
 
   decryptPanel.classList.add('animate-[fade-out-up_0.5s_ease-out_forwards]');
@@ -320,7 +320,7 @@ function handleEmptyPassword(dom: DecryptElements): void {
  */
 function createDecryptHandler(
   dom: DecryptElements,
-  workerRef: React.RefObject<Worker | null>,
+  workerRef: RefObject<Worker | null>,
 ) {
   let isDecrypting = false;
 

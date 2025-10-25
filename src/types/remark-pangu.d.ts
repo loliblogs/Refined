@@ -3,4 +3,4 @@ declare module 'remark-pangu' {
   import type { Root } from 'mdast';
 
   export default function remarkPangu(): Plugin<[], Root>;
-};
+}

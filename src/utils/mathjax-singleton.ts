@@ -29,7 +29,7 @@ RegisterHTMLHandler(adaptor);
 
 
 // 字体清理正则 - 直接移除所有 @font-face 块（包括注释和换行）
-const FONT_CLEANUP_REGEX = /@font-face[\s\S]*?\{[\s\S]*?\}\s*/g;
+const FONT_CLEANUP_REGEX = /@font-face[\s\S]*?\{[\s\S]*?}\s*/g;
 
 // 数学符号检测正则：未转义的 $ 或 \( 或 \[
 const MATH_SYMBOLS_REGEX = /(?<!\\)\$|\\\(|\\\[/;
