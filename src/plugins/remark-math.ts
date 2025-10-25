@@ -70,9 +70,7 @@ function createDisplayFromMarkdown(
 
       // 添加我们独有的处理器
       mathTextSequence(token) {
-        if (this.data.customMathDelimiterSize == null) {
-          this.data.customMathDelimiterSize = token.end.column - token.start.column;
-        }
+        this.data.customMathDelimiterSize ??= token.end.column - token.start.column;
       },
     },
 

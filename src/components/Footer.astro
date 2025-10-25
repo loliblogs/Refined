@@ -17,7 +17,7 @@ const config = getSiteConfig(pageContext.collection);
 
 const currentYear = new Date().getFullYear();
 
-const Footer = config.footer;
+const CustomFooter = config.footer;
 ---
 
 <footer
@@ -57,11 +57,11 @@ const Footer = config.footer;
     >
       <span class="underline">Refined</span>
     </a>
-    {Footer && (
+    {CustomFooter && (
       <span>
         <LineVerticalIcon size="1rem" weight="bold" />
       </span>
-      <Footer />
+      <CustomFooter />
     )}
   </div>
 </footer>

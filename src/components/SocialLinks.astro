@@ -18,7 +18,7 @@ const { links } = Astro.props;
   <div class="mt-5">
     <div class="flex items-center justify-center">
       {links.map((link) => {
-        const Icon = link.icon;
+        const CustomIcon = link.icon;
         return (
           <a
             class={`
@@ -36,7 +36,7 @@ const { links } = Astro.props;
               hover:text-primary
             `}
             >
-              <Icon />
+              <CustomIcon />
             </div>
           </a>
         );
