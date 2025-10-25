@@ -39,7 +39,7 @@
 
 这些经过@theme定义后均可直接使用，如果是其他的则必须使用任意值语法
 
-- 在使用命令行的时候，文件和目录名请使用双括号包裹
+- 在使用命令行的时候，非必要不要使用绝对目录，文件和目录名请始终使用操作系统对应的格式（如Windows请始终使用类似C:\这种）且使用双括号包裹
 - 请使用pnpm，不要使用npm，不要尝试使用background运行方式运行build等非无限等待的命令
 - 项目使用typescript-eslint和stylistic超级严格模式，外加extends astro/tsconfigs/strictest，请严格遵循语法规范，不允许尝试修改任何lint选项或在用户明确许可前使用eslint-disable等语句。
 - ultrathink是用于激活claude code的思维链的黑魔法词，对项目没有实际意义，只是说明你说明需要卖力的思考
