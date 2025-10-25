@@ -35,13 +35,17 @@ const config = getSiteConfig(collection);
           src={config.author.avatar.src}
           alt={config.author.avatar.alt}
           widths={[
+            config.author.avatar.width,
+            config.author.avatar.width * 1.25,
             config.author.avatar.width * 1.5,
+            config.author.avatar.width * 1.75,
             config.author.avatar.width * 2,
-            config.author.avatar.width * 3,
-            config.author.avatar.width * 4,
+            config.author.avatar.width * 2.5,
+            config.author.avatar.width * 3.5,
             config.author.avatar.width * 5,
           ]}
           formats={['avif']}
+          quality="high"
           fallbackFormat="webp"
           sizes={`calc(clamp(1rem, 0.85rem + 0.15vw, 1.25rem) * ${config.author.avatar.width / 16})`}
           priority
