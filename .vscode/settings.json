@@ -6,6 +6,7 @@
     "*.json5": "jsonc",
     "*.css": "tailwindcss"
   },
+  "tailwindCSS.classFunctions": ["clsx"],
   "cursor.general.globalCursorIgnoreList": [
     "**/.env",
     "**/.env.*",
