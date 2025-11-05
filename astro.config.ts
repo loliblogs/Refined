@@ -9,6 +9,7 @@ import rehypeMathJax from './src/plugins/rehype-mathjax';
 import rehypeSanitize from './src/plugins/rehype-sanitize';
 import remarkDirectiveRehype from './src/plugins/remark-directive-rehype';
 import remarkRemoveCjkBreaks from './src/plugins/remark-remove-cjk-breaks';
+import buildSearch from './src/plugins/build-search';
 
 import remarkDirective from 'remark-directive';
 import remarkEmoji from 'remark-emoji';
@@ -38,7 +39,7 @@ export default defineConfig({
   }), sitemap({
     filter: page => !page.endsWith('/404') && !page.endsWith('/403') && !page.endsWith('/search'),
     lastmod: new Date(),
-  })],
+  }), buildSearch],
   vite: {
     build: {
       minify: 'terser',

@@ -23,12 +23,5 @@
   ],
   "exclude": [
     "dist"
-  ],
-  "mdx": {
-    "plugins": [
-      "remark-frontmatter",
-      "remark-math",
-      "remark-gfm"
-    ]
-  }
+  ]
 }

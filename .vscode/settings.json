@@ -24,5 +24,6 @@
     "**/id_dsa",
     "**/.ssh/id_*",
     "!**/.env.example"
-  ]
+  ],
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

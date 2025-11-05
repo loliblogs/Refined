@@ -42,7 +42,6 @@
 - 在使用命令行的时候，非必要不要使用绝对目录，文件和目录名请始终使用操作系统对应的格式（如Windows请始终使用类似C:\这种）且使用双括号包裹
 - 请使用pnpm，不要使用npm，不要尝试使用background运行方式运行build等非无限等待的命令
 - 项目使用typescript-eslint和stylistic超级严格模式，外加extends astro/tsconfigs/strictest，请严格遵循语法规范，不允许尝试修改任何lint选项或在用户明确许可前使用eslint-disable等语句。
-- ultrathink是用于激活claude code的思维链的黑魔法词，对项目没有实际意义，只是说明你说明需要卖力的思考
 - 除非特别需要，项目中不允许出现js/mjs/jsx实现，必须ts/tsx实现
 - 如果不需要客户端代码，请始终编写astro文件，astro文件可以在编译的时候使用客户端组件，如果需要客户端代码，请始终将客户端部分编写tsx文件，并配置合理的client指令。尽量编写渐进式的设计，即把渲染的html部分放在astro里，tsx只保留client:only的脚本逻辑。
 - 所有图标资源请使用@phosphor-icons下的react组件或者core里面的svg文件，如果是其他资源请从src import后插入，图标清单可以从node\_modules/@phosphor-icons/core/src/dist/icons.d.ts读取。
