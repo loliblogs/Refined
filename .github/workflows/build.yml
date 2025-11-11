@@ -2,7 +2,6 @@ name: Build and Deploy
 
 on:
   push:
-    branches: [main]
 
 jobs:
   build-and-deploy:
@@ -45,7 +44,31 @@ jobs:
           SECRET_ENCRYPTION_SALT: ${{ secrets.SECRET_ENCRYPTION_SALT }}
           SECRET_PASSWORDS: ${{ secrets.SECRET_PASSWORDS }}
 
+      - name: Deploy to Cloudflare Workers
+        if: github.ref == 'refs/heads/main'
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        id: cloudflare_workers
+        run: pnpm online:workers
+        continue-on-error: true
+
+      - name: Deploy to Domestic VPS
+        if: github.ref == 'refs/heads/main'
+        uses: burnett01/rsync-deployments@7.1.0
+        id: domestic
+        with:
+          remote_host: "speedtest.lolifamily.js.org"
+          remote_port: 22022
+          remote_user: "root"
+          remote_path: "/var/www/html/loliblogs"
+          remote_key: ${{ secrets.SSH_KEY }}
+          path: "dist/*"
+          switches: -avzr --delete --no-owner --no-group
+        continue-on-error: true
+
       - name: Setup SSH for signing and pushing
+        if: github.ref == 'refs/heads/main'
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_ed25519
@@ -61,28 +84,7 @@ jobs:
           git config --global commit.gpgsign true
 
           # Configure git
-          git config --global init.defaultBranch main
-
-      - name: Deploy to Domestic VPS
-        uses: burnett01/rsync-deployments@7.1.0
-        id: domestic
-        with:
-          remote_host: "speedtest.lolifamily.js.org"
-          remote_port: 22022
-          remote_user: "root"
-          remote_path: "/var/www/html/loliblogs"
-          remote_key: ${{ secrets.SSH_KEY }}
-          path: "dist/*"
-          switches: -avzr --delete --no-owner --no-group
-        continue-on-error: true
-
-      - name: Deploy to Cloudflare Workers
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        id: cloudflare_workers
-        run: pnpm online:workers
-        continue-on-error: true
+          git config --global init.defaultBranch main  
 
       - name: Deploy to Cloudflare Pages
         env:
@@ -93,6 +95,7 @@ jobs:
         continue-on-error: true
 
       - name: Deploy to Vercel
+        if: github.ref == 'refs/heads/main'
         id: vercel
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
@@ -101,6 +104,7 @@ jobs:
         continue-on-error: true
 
       - name: Deploy to Netlify
+        if: github.ref == 'refs/heads/main'
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
@@ -109,6 +113,7 @@ jobs:
         continue-on-error: true
 
       - name: Deploy to Git platforms
+        if: github.ref == 'refs/heads/main'
         working-directory: dist
         run: |
           git init
@@ -124,16 +129,19 @@ jobs:
           git commit --allow-empty -S -m "Deploy $(date -u +%Y-%m-%dT%H:%M:%SZ)"
         
       - name: Push to Github
+        if: github.ref == 'refs/heads/main'
         id: github
         working-directory: dist
         run: git push -f github main
         continue-on-error: true
       - name: Push to Gitlab
+        if: github.ref == 'refs/heads/main'
         id: gitlab
         working-directory: dist
         run: git push -f gitlab main
         continue-on-error: true
       - name: Push to Bitbucket
+        if: github.ref == 'refs/heads/main'
         id: bitbucket
         working-directory: dist
         run: git push -f bitbucket main
@@ -148,8 +156,9 @@ jobs:
       # Disabled Netlify detection because we were frequently hitting its rate limits.
       - name: Exit with error if any step failed
         if: |
-          steps.domestic.outcome != 'success' || steps.cloudflare_workers.outcome != 'success' ||
-          steps.cloudflare_pages.outcome != 'success' || steps.vercel.outcome != 'success' ||
-          steps.github.outcome != 'success' || steps.gitlab.outcome != 'success' ||
-          steps.bitbucket.outcome != 'success'
+          steps.domestic.outcome == 'failure' || steps.cloudflare_workers.outcome == 'failure' ||
+          steps.cloudflare_pages.outcome == 'failure' || steps.vercel.outcome == 'failure' ||
+          steps.netlify.outcome == 'failure' ||
+          steps.github.outcome == 'failure' || steps.gitlab.outcome == 'failure' ||
+          steps.bitbucket.outcome == 'failure'
         run: exit 1
