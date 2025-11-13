@@ -1,6 +1,7 @@
 import { useEffect, type FC } from 'react';
 import { OverlayScrollbars, ClickScrollPlugin } from 'overlayscrollbars';
 import type { PartialOptions } from 'overlayscrollbars';
+import { decryptStore, commentsStore } from '@/stores/state';
 
 OverlayScrollbars.plugin(ClickScrollPlugin);
 
@@ -12,9 +13,8 @@ const PageScrollManager: FC = () => {
     const progressContainer = document.getElementById('reading-progress-container');
     const progressBar = document.getElementById('reading-progress-bar');
 
-    // 评论区懒加载状态 - 如果没有评论区元素，直接标记为已加载
+    // 评论区元素引用（用于可见性检测）
     const commentsSection = document.getElementById('comments-section');
-    let giscusLoaded = !commentsSection; // 没有评论区 = 不需要加载
 
     // TOC 高亮状态管理 - 全局状态
     let currentActiveId = '';
@@ -70,8 +70,9 @@ const PageScrollManager: FC = () => {
 
     // 检测评论区是否进入视口
     function checkGiscusVisibility(viewport: HTMLElement) {
-      // 如果已经加载或者没有评论区，直接返回
-      if (giscusLoaded || !commentsSection) return;
+      // 如果没有评论区或已经标记加载，直接返回
+      const currentState = commentsStore.getState();
+      if (!commentsSection || currentState.shouldLoad) return;
 
       // 使用 getBoundingClientRect 获取相对于视口的准确位置
       const viewportRect = viewport.getBoundingClientRect();
@@ -85,8 +86,8 @@ const PageScrollManager: FC = () => {
       // relativeTop < viewport.clientHeight 表示已经进入视口（不提前）
       // relativeTop < viewport.clientHeight * 2 表示还有一个视口高度就进入（提前一个视口）
       if (relativeTop < viewport.clientHeight * 2) {
-        // 发送自定义事件，通知评论组件开始加载
-        window.dispatchEvent(new CustomEvent('giscus:should-load'));
+        // 标记应该加载评论（通知 Comments 组件）
+        commentsStore.setState({ shouldLoad: true });
       }
     }
 
@@ -290,31 +291,21 @@ const PageScrollManager: FC = () => {
           instance.on('scroll', handleScroll); // 监听滚动事件
           instance.on('updated', handleUpdated); // 监听视口变化
 
-          const handleGiscusReady = () => {
-            checkGiscusVisibility(viewport);
-            window.removeEventListener('giscus:ready', handleGiscusReady);
-          };
-          window.addEventListener('giscus:ready', handleGiscusReady);
-
-          const handleGiscusLoaded = () => {
-            giscusLoaded = true;
-            window.removeEventListener('giscus:loaded', handleGiscusLoaded);
-          };
-          window.addEventListener('giscus:loaded', handleGiscusLoaded);
-
-          // 监听内容解密事件，重新初始化 TOC 数据
-          const handleContentDecrypted = () => {
-            initTocHighlight();
-            handleScroll();
-            window.removeEventListener('content-decrypted', handleContentDecrypted);
-          };
-          window.addEventListener('content-decrypted', handleContentDecrypted);
+          // 订阅内容解密状态（使用 Zustand store）
+          const unsubscribeDecrypt = decryptStore.subscribe(
+            state => state.isDecrypted,
+            (isDecrypted) => {
+              if (isDecrypted) {
+                initTocHighlight();
+                handleScroll();
+              }
+            },
+            { fireImmediately: true },  // 立即检查当前值（处理晚到的情况）
+          );
 
           // 保存清理函数
           return () => {
-            window.removeEventListener('content-decrypted', handleContentDecrypted);
-            window.removeEventListener('giscus:ready', handleGiscusReady);
-            window.removeEventListener('giscus:loaded', handleGiscusLoaded);
+            unsubscribeDecrypt();
           };
         }
       }

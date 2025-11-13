@@ -7,6 +7,7 @@ import { useEffect, useRef, type RefObject } from 'react';
 import argon2Worker from '@/utils/argon2-worker?worker';
 
 import type { EncryptedPayload, Argon2WorkerMessage, Argon2WorkerResponse } from '@/types/encryption';
+import { decryptStore } from '@/stores/state';
 
 // === 类型定义 ===
 
@@ -268,8 +269,8 @@ async function executeDecryption(
     applyTocToDOM(html, tocWrapper);
   }
 
-  // 触发解密完成事件
-  window.dispatchEvent(new CustomEvent('content-decrypted'));
+  // 标记内容已解密（通知其他组件重新初始化）
+  decryptStore.setState({ isDecrypted: true });
 }
 
 // === 成功/错误处理层 ===

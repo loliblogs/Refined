@@ -6,6 +6,7 @@
 import type { CollectionName } from '@/types/content';
 import { getSiteConfig } from './site.config';
 import { useEffect } from 'react';
+import { commentsStore } from '@/stores/state';
 
 /**
  * 默认评论组件 - 懒加载版本
@@ -14,25 +15,24 @@ export default function Comments({ collection, term }: { collection: CollectionN
   const config = getSiteConfig(collection);
 
   useEffect(() => {
-    // 监听 ScrollbarManager 的事件来加载 giscus
-    const handleLoadEvent = () => {
-      import('giscus').catch((error: unknown) => {
-        console.error('Failed to load giscus', error);
-      });
-      window.dispatchEvent(new CustomEvent('giscus:loaded'));
-      window.removeEventListener('giscus:should-load', handleLoadEvent);
-    };
+    // 订阅评论加载状态（即使组件晚挂载也能收到通知）
+    const unsubscribe = commentsStore.subscribe(
+      state => state.shouldLoad,  // selector: 只监听 shouldLoad
+      (shouldLoad) => {              // listener: 状态变化时触发
+        if (shouldLoad) {
+          import('giscus').catch((error: unknown) => {
+            console.error('Failed to load giscus', error);
+          });
+        }
+      },
+      { fireImmediately: true },     // 订阅时立即用当前值触发一次
+    );
 
-    window.addEventListener('giscus:should-load', handleLoadEvent);
-    window.dispatchEvent(new CustomEvent('giscus:ready'));
-
-    return () => {
-      window.removeEventListener('giscus:should-load', handleLoadEvent);
-    };
+    return unsubscribe;
   }, []);
 
   return (
-    <div id="comments-section" className="min-h-[20rem]">
+    <div id="comments-section" className="min-h-80">
       <giscus-widget
         repo="loliblogs/discussion"
         repoId="R_kgDOPgBpfA"

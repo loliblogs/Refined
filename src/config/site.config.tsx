@@ -173,7 +173,7 @@ const postConfig: SiteConfig = {
 
   // 目录配置
   tocEmptyText: '本文章没有目录',              // 无目录时的提示文字
-} satisfies SiteConfig;
+} as const satisfies SiteConfig;
 
 // OI Collection 配置
 const oiConfig: SiteConfig = {
@@ -236,7 +236,7 @@ const oiConfig: SiteConfig = {
 
   // 目录配置
   tocEmptyText: '本题解没有目录',              // 无目录时的提示文字
-} satisfies SiteConfig;
+} as const satisfies SiteConfig;
 
 /**
  * ==========================================
