@@ -54,3 +54,54 @@ magick "assets\day_mobile.png" ( +clone -fill black -colorize 100 -fill white -d
 import nginxConf from '@/../nginx.conf?raw';
 
 <Code lang="nginx" code={nginxConf} />
+
+## 简易老板键 AHK 2.0 脚本
+
+```autohotkey2
+#Requires AutoHotkey v2.0
+#SingleInstance Force
+#WinActivateForce
+SetTitleMatchMode 2       ; 模糊匹配
+
+if not A_IsAdmin
+{
+  try {
+    Run "*RunAs `"" A_ScriptFullPath "`""
+  }
+  ExitApp
+}
+
+GroupAdd "SecretApps", "ahk_exe steam.exe"
+GroupAdd "SecretApps", "ahk_exe SpaceEngineers.exe"
+GroupAdd "SecretApps", "ahk_exe SpaceEngineers2.exe"
+GroupAdd "SecretApps", "ahk_exe Legacy.exe"
+GroupAdd "SecretApps", "ahk_exe Modern.exe"
+
+SECRET_GROUP := "ahk_group SecretApps"
+COVER_APP := "ahk_exe Acrobat.exe"
+
+`::
+  {
+    try {
+      WinSetTransparent 0, SECRET_GROUP    ; 砍掉Windows动画
+      WinHide SECRET_GROUP
+    }
+
+    try {
+      WinActivate COVER_APP
+      WinMaximize COVER_APP
+    }
+  }
+
+; Shift + F12
++F12::
+  {
+    DetectHiddenWindows True
+    try {
+      WinShow SECRET_GROUP
+      WinSetTransparent "Off", SECRET_GROUP
+    }
+
+    DetectHiddenWindows False
+  }
+```

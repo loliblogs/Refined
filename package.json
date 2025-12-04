@@ -28,7 +28,7 @@
     "@astrojs/preact": "^4.1.3",
     "@astrojs/rss": "^4.0.14",
     "@astrojs/sitemap": "^3.6.0",
-    "@astrojs/ts-plugin": "^1.10.5",
+    "@astrojs/ts-plugin": "^1.10.6",
     "@babel/preset-typescript": "^7.28.5",
     "@expressive-code/plugin-collapsible-sections": "^0.41.3",
     "@expressive-code/plugin-line-numbers": "^0.41.3",
@@ -44,10 +44,10 @@
     "@tailwindcss/vite": "^4.1.17",
     "argon2": "^0.44.0",
     "argon2-browser": "^1.18.0",
-    "astro": "^5.16.0",
+    "astro": "^5.16.4",
     "astro-expressive-code": "^0.41.3",
     "cheerio": "^1.1.2",
-    "chroma-js": "^3.1.2",
+    "chroma-js": "^3.2.0",
     "clsx": "^2.1.1",
     "giscus": "^1.6.0",
     "globby": "^16.0.0",
@@ -57,9 +57,9 @@
     "mdast-util-math": "^3.0.0",
     "medium-zoom-next": "^2.0.1",
     "micromark-extension-math": "^3.1.0",
-    "overlayscrollbars": "^2.12.0",
+    "overlayscrollbars": "^2.13.0",
     "pagefind": "^1.4.0",
-    "preact": "^10.27.2",
+    "preact": "^10.28.0",
     "react": "npm:@preact/compat",
     "react-dom": "npm:@preact/compat",
     "rehype": "^13.0.2",
@@ -75,13 +75,13 @@
     "unified": "^11.0.5",
     "unist-builder": "^4.0.0",
     "unist-util-visit-parents": "^6.0.2",
-    "vite": "^7.2.4",
+    "vite": "^7.2.6",
     "wordcloud": "^1.2.3",
-    "zustand": "^5.0.8"
+    "zustand": "^5.0.9"
   },
   "devDependencies": {
-    "@astrojs/check": "^0.9.5",
-    "@astrojs/language-server": "^2.16.0",
+    "@astrojs/check": "^0.9.6",
+    "@astrojs/language-server": "^2.16.2",
     "@eslint/css": "^0.14.1",
     "@eslint/js": "^9.39.1",
     "@stylistic/eslint-plugin": "^5.6.1",
@@ -93,10 +93,10 @@
     "@types/mathjax": "^0.0.40",
     "@types/mdast": "^4.0.4",
     "@types/node": "^24.10.1",
-    "@types/react": "^19.2.6",
+    "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "@types/wordcloud": "^1.2.2",
-    "@typescript-eslint/parser": "^8.47.0",
+    "@typescript-eslint/parser": "^8.48.1",
     "eslint": "^9.39.1",
     "eslint-interactive": "^12.0.0",
     "eslint-mdx": "^3.6.2",
@@ -111,13 +111,13 @@
     "remark-math": "^6.0.0",
     "remark-parse": "^11.0.0",
     "remark-stringify": "^11.0.0",
-    "typescript-eslint": "^8.47.0",
+    "typescript-eslint": "^8.48.1",
     "vfile": "^6.0.3"
   },
   "pnpm": {
     "overrides": {
       "html-minifier-terser": "npm:html-minifier-next",
-      "vite": "^7.2.4"
+      "vite": "^7.2.6"
     },
     "onlyBuiltDependencies": [
       "argon2",
@@ -136,5 +136,5 @@
       "remark-gfm"
     ]
   },
-  "packageManager": "pnpm@10.23.0"
+  "packageManager": "pnpm@10.24.0"
 }
