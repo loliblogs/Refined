@@ -50,7 +50,7 @@
     "chroma-js": "^3.2.0",
     "clsx": "^2.1.1",
     "giscus": "^1.6.0",
-    "globby": "^16.0.0",
+    "globby": "^16.1.0",
     "hast-util-to-text": "^4.0.2",
     "hastscript": "^9.0.1",
     "mdast-util-from-markdown": "^2.0.2",
@@ -96,7 +96,7 @@
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "@types/wordcloud": "^1.2.2",
-    "@typescript-eslint/parser": "^8.50.0",
+    "@typescript-eslint/parser": "^8.50.1",
     "eslint": "^9.39.2",
     "eslint-interactive": "^12.0.0",
     "eslint-mdx": "^3.6.2",
@@ -111,7 +111,7 @@
     "remark-math": "^6.0.0",
     "remark-parse": "^11.0.0",
     "remark-stringify": "^11.0.0",
-    "typescript-eslint": "^8.50.0",
+    "typescript-eslint": "^8.50.1",
     "vfile": "^6.0.3"
   },
   "pnpm": {

@@ -186,10 +186,10 @@ mjx-container[display] {
   src: url("@mathjax/mathjax-newcm-font/chtml/woff2/mjx-ncm-em.woff2") format("woff2");
 }
 
-@font-face /* MJX-NCM-Be */ {
-  font-family: MJX-NCM-Be;
+@font-face /* MJX-NCM-B-a */ {
+  font-family: MJX-NCM-B-a;
   font-display: swap;
-  src: url("@mathjax/mathjax-newcm-font/chtml/woff2/mjx-ncm-be.woff2") format("woff2");
+  src: url("@mathjax/mathjax-newcm-font/chtml/woff2/mjx-ncm-b-a.woff2") format("woff2");
 }
 
 @font-face /* MJX-NCM-U */ {
@@ -198,10 +198,10 @@ mjx-container[display] {
   src: url("@mathjax/mathjax-newcm-font/chtml/woff2/mjx-ncm-u.woff2") format("woff2");
 }
 
-@font-face /* MJX-NCM-Ue */ {
-  font-family: MJX-NCM-Ue;
+@font-face /* MJX-NCM-U-a */ {
+  font-family: MJX-NCM-U-a;
   font-display: swap;
-  src: url("@mathjax/mathjax-newcm-font/chtml/woff2/mjx-ncm-ue.woff2") format("woff2");
+  src: url("@mathjax/mathjax-newcm-font/chtml/woff2/mjx-ncm-u-a.woff2") format("woff2");
 }
 
 @font-face /* MJX-NCM-S */ {
