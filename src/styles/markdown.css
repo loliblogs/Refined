@@ -1,15 +1,22 @@
 /* Markdown Enhanced Styles - Only what's truly needed */
 
+/* 标题基础样式 */
 [data-markdown] :is(h1, h2, h3, h4, h5, h6) {
   scroll-margin-top: 1rem;
-  margin-top: 0.5rem;
   margin-bottom: 1rem;
   font-weight: 600;
 }
 
-/* GitHub-style heading borders */
+/* 标题层级间距 - 用 rem 保持垂直节奏一致 */
+[data-markdown] h1 { margin-top: 2.5rem; }        /* 40px - 顶级标题（理论上不应出现） */
+[data-markdown] h2 { margin-top: 2rem; }          /* 32px - 章节分隔 */
+[data-markdown] h3 { margin-top: 1.5rem; }        /* 24px */
+[data-markdown] h4 { margin-top: 1.25rem; }       /* 20px */
+[data-markdown] :is(h5, h6) { margin-top: 1rem; } /* 16px */
+
+/* GitHub-style heading borders - 用 em 保持与字体的比例 */
 [data-markdown] :is(h1, h2) {
-  padding-bottom: 0.3em;
+  padding-bottom: 0.25em;
   border-bottom: 0.0625rem solid var(--color-border);
 }
 
@@ -51,7 +58,7 @@
 [data-markdown] :is(ul, ol) {
   margin-top: 0;
   margin-bottom: 0.5em;
-  padding-left: 1em;
+  padding-left: 1.25em;
 }
 
 [data-markdown] :is(ul ul, ol ol, ul ol, ol ul) {
@@ -227,7 +234,7 @@
 
 [data-markdown] table th,
 [data-markdown] table td {
-  padding: 0.375em 0.8125em;
+  padding: 0.375em 0.75em;
   border: 0.0625rem solid var(--color-border);
 }
 
@@ -284,25 +291,40 @@
   flex-wrap: wrap;
 }
 
+/*
+ * 脚注返回按钮 - 双伪元素方案
+ * ::before = 带下划线的空格（让浏览器计算下划线位置）
+ * ::after  = 图标（叠加在空格上方）
+ * visibility: hidden 隐藏原始内容（如 ↩），只显示伪元素
+ */
 [data-markdown] .footnotes [data-footnote-backref] {
-  display: inline-flex;
-  align-items: center;
-  vertical-align: middle;
-  font-size: 0;
+  position: relative;
+  visibility: hidden;
 }
 
+/* 下划线载体：em 空格（\2003 宽度 = 1em），提供完整宽度的下划线 */
 [data-markdown] .footnotes [data-footnote-backref]::before {
+  content: '\2003';
+  display: inline-block;
+  text-decoration: underline;
+  visibility: visible;
+}
+
+/* 图标：绝对定位叠加在空格上 */
+[data-markdown] .footnotes [data-footnote-backref]::after {
   content: '';
-  width: 0.875em;
-  height: 0.9296875em;
-  vertical-align: middle;
-  mask-image:
-    url('@phosphor-icons/core/bold/arrow-u-down-left-bold.svg'),
-    linear-gradient(black, black);
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1em;
+  height: 1em;
   background-color: currentColor;
-  mask-size: 100% 100%, 100% 0.0859375em;
-  mask-repeat: no-repeat, no-repeat;
-  mask-position: center, bottom;
+  mask-image: url('@phosphor-icons/core/bold/arrow-u-down-left-bold.svg');
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  visibility: visible;
 }
 
 /* Horizontal rule */
