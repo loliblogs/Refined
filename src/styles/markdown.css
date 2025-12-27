@@ -294,37 +294,34 @@
 /*
  * 脚注返回按钮 - 双伪元素方案
  * ::before = 带下划线的空格（让浏览器计算下划线位置）
- * ::after  = 图标（叠加在空格上方）
- * visibility: hidden 隐藏原始内容（如 ↩），只显示伪元素
+ * ::after  = 图标（用负 margin 叠加在空格上）
+ * 使用 flexbox 对齐避免 transform 的亚像素问题
  */
 [data-markdown] .footnotes [data-footnote-backref] {
-  position: relative;
-  visibility: hidden;
+  display: inline-flex;
+  align-items: center;
+  font-size: 0;
 }
 
 /* 下划线载体：em 空格（\2003 宽度 = 1em），提供完整宽度的下划线 */
 [data-markdown] .footnotes [data-footnote-backref]::before {
   content: '\2003';
-  display: inline-block;
+  font-size: 0.875rem;
   text-decoration: underline;
-  visibility: visible;
 }
 
-/* 图标：绝对定位叠加在空格上 */
+/* 图标：用负 margin 叠加在空格上，flexbox 自动垂直居中 */
 [data-markdown] .footnotes [data-footnote-backref]::after {
   content: '';
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
   width: 1em;
   height: 1em;
+  font-size: 0.875rem;
+  margin-left: -1em;
   background-color: currentColor;
   mask-image: url('@phosphor-icons/core/bold/arrow-u-down-left-bold.svg');
   mask-size: contain;
   mask-repeat: no-repeat;
   mask-position: center;
-  visibility: visible;
 }
 
 /* Horizontal rule */
