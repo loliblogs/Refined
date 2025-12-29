@@ -145,7 +145,6 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  vertical-align: middle;
   gap: 0.5em;
   font-size: var(--text-xl);
   line-height: 2;
@@ -155,7 +154,6 @@
 
 [data-markdown] blockquote[data-directive-type] > p:first-child::before {
   content: '';
-  display: inline-block;
   width: 1.5em;
   height: 1.5em;
   background-color: currentColor;
@@ -258,13 +256,12 @@
 [data-markdown] .contains-task-list .task-list-item {
   display: flex;
   align-items: center;
-  vertical-align: middle;
-  flex-wrap: wrap;
-  gap: 0.75em;
+  gap: 0.25em;
   list-style: none;
 }
 
 [data-markdown] .contains-task-list .task-list-item input[type="checkbox"] {
+  margin-right: 0.5em;
   height: 1em;
   width: 1em;
 }
@@ -284,11 +281,6 @@
   font-size: var(--text-2xl);
   display: block;
   margin-bottom: 0.5em;
-}
-
-[data-markdown] .footnotes > ol > li > p {
-  display: flex;
-  flex-wrap: wrap;
 }
 
 /*
