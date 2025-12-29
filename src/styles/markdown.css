@@ -24,8 +24,8 @@
   scroll-margin-top: 8rem;
 }
 
-/* Paragraphs */
-[data-markdown] :is(p, blockquote, table, details) {
+/* Paragraphs & Block Elements */
+[data-markdown] :is(p, blockquote, table, details, .expressive-code) {
   margin-top: 0;
   margin-bottom: 1em;
 }
@@ -105,7 +105,7 @@
 /* Inline Code --- Use em instead of rem*/
 [data-markdown] code {
   font-family: var(--font-mono), monospace;
-  background-color: var(--color-hover);
+  background-color: var(--color-code);
   padding: 0 0.25em;
   border-radius: 0.25em;
 }
@@ -121,8 +121,19 @@
 /* Blockquote - 基础样式（独立圆角竖线）*/
 [data-markdown] blockquote {
   position: relative;
+  padding-top: 0.25em;
+  padding-bottom: 0.5em;
   padding-left: 1.25em;
   color: var(--color-secondary);
+}
+
+/* 容器负责边界留白，子元素只负责彼此间距 */
+[data-markdown] blockquote > *:first-child {
+  margin-top: 0;
+}
+
+[data-markdown] blockquote > *:last-child {
+  margin-bottom: 0;
 }
 
 [data-markdown] blockquote::before {
@@ -147,8 +158,8 @@
   align-items: center;
   gap: 0.5em;
   font-size: var(--text-xl);
-  line-height: 2;
-  margin-bottom: 0.5em;
+  line-height: 1.5;
+  margin-bottom: 0.75em;
   font-weight: 600;
 }
 

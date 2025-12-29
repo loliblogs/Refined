@@ -22,6 +22,7 @@
   --color-overlay: var(--color-overlay);
   --color-red: var(--color-red);
   --color-highlight: var(--color-highlight);
+  --color-code: var(--color-code);
 
   /* Admonition colors - GitHub-style */
   --color-admonition-note: var(--color-admonition-note);
@@ -90,6 +91,7 @@
   /* Additional colors for convenience */
   --color-scrollbar-thumb: #a0a0a0;
   --color-highlight: #fff3bf;
+  --color-code: #d9d9d9;
 
   /* Admonition colors - GitHub-style */
   --color-admonition-note: #0969da;
@@ -128,6 +130,7 @@
     --color-aside: #282b30;
     --color-scrollbar-thumb: #52525b;
     --color-highlight: #5a4a1a;
+    --color-code: #4a4e54;
 
     /* Admonition colors for dark mode */
     --color-admonition-note: #58a6ff;
@@ -272,11 +275,7 @@ html {
   --os-handle-perpendicular-size-active: 100%;
 }
 
-/* All Code blocks */
-.expressive-code .frame pre {
-  margin-bottom: 1em;
-}
-
+/* Code blocks - 行号间距 */
 .expressive-code .ec-line .gutter .ln {
   padding-inline: 1.75ch;
 }
