@@ -25,7 +25,7 @@
 }
 
 /* Paragraphs & Block Elements */
-[data-markdown] :is(p, blockquote, table, details, .expressive-code) {
+[data-markdown] :is(p, blockquote, table, details, dl, .expressive-code) {
   margin-top: 0;
   margin-bottom: 1em;
 }
@@ -100,6 +100,19 @@
 [data-markdown] ul ul ol,
 [data-markdown] ol ul ol {
   list-style-type: lower-roman;
+}
+
+/* Definition List */
+[data-markdown] dt {
+  font-weight: 600;
+}
+
+[data-markdown] dd {
+  margin-left: 1.25em;
+}
+
+[data-markdown] dd + dt {
+  margin-top: 0.5em;
 }
 
 /* Inline Code --- Use em instead of rem*/
@@ -303,13 +316,11 @@
 [data-markdown] .footnotes [data-footnote-backref] {
   display: inline-flex;
   align-items: center;
-  font-size: 0;
 }
 
 /* 下划线载体：em 空格（\2003 宽度 = 1em），提供完整宽度的下划线 */
 [data-markdown] .footnotes [data-footnote-backref]::before {
   content: '\2003';
-  font-size: 0.875rem;
   text-decoration: underline;
 }
 
@@ -318,7 +329,6 @@
   content: '';
   width: 1em;
   height: 1em;
-  font-size: 0.875rem;
   margin-left: -1em;
   background-color: currentColor;
   mask-image: url('@phosphor-icons/core/bold/arrow-u-down-left-bold.svg');

@@ -15,6 +15,7 @@ import remarkDirective from 'remark-directive';
 import remarkEmoji from 'remark-emoji';
 import remarkGithubAdmonitionsToDirectives from 'remark-github-admonitions-to-directives';
 import remarkPangu from 'remark-pangu';
+import { remarkDefinitionList, defListHastHandlers } from 'remark-definition-list';
 
 import expressiveCode from 'astro-expressive-code';
 import playformCompress from '@playform/compress';
@@ -68,7 +69,8 @@ export default defineConfig({
     format: 'file',
   },
   markdown: {
-    remarkPlugins: [remarkGithubAdmonitionsToDirectives, remarkDirective, remarkDirectiveRehype, remarkPangu,
+    remarkPlugins: [remarkDefinitionList, remarkGithubAdmonitionsToDirectives,
+      remarkDirective, remarkDirectiveRehype, remarkPangu,
       [remarkRemoveCjkBreaks, {
         includeEmoji: true,
         includeMathWithPunctuation: true,
@@ -78,6 +80,14 @@ export default defineConfig({
         accessible: true,
       }]],
     rehypePlugins: [rehypeMathJax, rehypeSanitize],
+    remarkRehype: {
+      handlers: {
+        ...defListHastHandlers,
+      },
+      footnoteBackContent: () => '',
+      footnoteBackLabel: (idx, reIdx) => `返回引用 ${idx + 1}${reIdx > 1 ? `-${reIdx}` : ''}`,
+      footnoteLabel: '脚注',
+    },
   },
   image: {
     layout: 'constrained',
