@@ -3,6 +3,7 @@ import { FilesIcon, ListIcon } from '@phosphor-icons/react';
 
 import { getSiteConfig } from '@/config/site.config';
 import type { CollectionName } from '@/types/content';
+import { getBasePath } from '@/utils/collection-paths';
 
 import MathJax from './MathJax.astro';
 import NavigationController from './NavigationController';
@@ -13,6 +14,7 @@ interface Props {
 
 const { collection = 'post' } = Astro.props;
 const config = getSiteConfig(collection);
+const homePath = getBasePath(collection);
 ---
 
 <nav
@@ -44,13 +46,17 @@ const config = getSiteConfig(collection);
     >
       <FilesIcon size="1.25rem" weight="regular" />
     </button>
-    <h1 class={`
-      m-0 min-w-0 flex-1 overflow-hidden text-center text-2xl text-ellipsis
-      whitespace-nowrap
-    `}
+    <a
+      href={homePath}
+      class={`
+        m-0 flex h-11 min-w-0 flex-1 items-center justify-center overflow-hidden
+        text-center text-2xl font-bold text-ellipsis whitespace-nowrap
+        text-primary no-underline transition-colors duration-100 ease-in-out
+        hover:text-secondary
+      `}
     >
       {config.title}
-    </h1>
+    </a>
     <button
       id="open-menus"
       class={`
