@@ -84,7 +84,7 @@ export default defineConfig({
       handlers: {
         ...defListHastHandlers,
       },
-      footnoteBackContent: () => '',
+      footnoteBackContent: '\u2003', // Em Space
       footnoteBackLabel: (idx, reIdx) => `返回引用 ${idx + 1}${reIdx > 1 ? `-${reIdx}` : ''}`,
       footnoteLabel: '脚注',
     },

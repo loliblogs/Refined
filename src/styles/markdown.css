@@ -318,12 +318,6 @@
   align-items: center;
 }
 
-/* 下划线载体：em 空格（\2003 宽度 = 1em），提供完整宽度的下划线 */
-[data-markdown] .footnotes [data-footnote-backref]::before {
-  content: '\2003';
-  text-decoration: underline;
-}
-
 /* 图标：用负 margin 叠加在空格上，flexbox 自动垂直居中 */
 [data-markdown] .footnotes [data-footnote-backref]::after {
   content: '';
