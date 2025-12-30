@@ -2,7 +2,7 @@
 /**
  * 作者信息组件 - 匹配 Concise 主题样式
  */
-import { MapPinIcon } from '@phosphor-icons/react';
+import { IdentificationCardIcon, MapPinIcon } from '@phosphor-icons/react';
 
 import { getSiteConfig } from '@/config/site.config';
 import type { CollectionName } from '@/types/content';
@@ -53,11 +53,23 @@ const config = getSiteConfig(collection);
         />
         <div
           class={`
-            pointer-events-none absolute inset-0 bg-black/0 transition-colors
-            duration-200 ease-in-out
-            group-hover:bg-black/20
+            pointer-events-none absolute inset-0 flex items-center
+            justify-center bg-black/0
+            transition-[background-color,backdrop-filter] duration-200
+            ease-in-out
+            group-hover:bg-black/20 group-hover:backdrop-blur-[2px]
           `}
-        />
+        >
+          <span
+            class={`
+              text-white opacity-0 drop-shadow-md transition-opacity
+              duration-200 ease-in-out
+              group-hover:opacity-100
+            `}
+          >
+            <IdentificationCardIcon size="3rem" weight="duotone" />
+          </span>
+        </div>
       </div>
     </a>
   </div>
