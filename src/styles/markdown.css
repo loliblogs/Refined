@@ -118,6 +118,7 @@
 /* Inline Code & Sample Output */
 [data-markdown] :is(code, samp) {
   font-family: var(--font-mono), monospace;
+  color: var(--color-primary);
   background-color: var(--color-code);
   padding: 0 0.25em;
   border-radius: 0.25em;
@@ -131,6 +132,7 @@
 [data-markdown] kbd {
   font-family: var(--font-mono), monospace;
   font-size: 0.875em;
+  color: var(--color-primary);
   padding: 0.125em 0.375em;
   background: linear-gradient(180deg, var(--color-kbd) 0%, var(--color-code) 100%);
   border: 0.0625rem solid var(--color-border);
