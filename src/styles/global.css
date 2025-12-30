@@ -92,6 +92,7 @@
   --color-scrollbar-thumb: #a0a0a0;
   --color-highlight: #fff3bf;
   --color-code: #d9d9d9;
+  --color-kbd: #e9e9e9;
 
   /* Admonition colors - GitHub-style */
   --color-admonition-note: #0969da;
@@ -131,6 +132,7 @@
     --color-scrollbar-thumb: #52525b;
     --color-highlight: #5a4a1a;
     --color-code: #4a4e54;
+    --color-kbd: #393c42;
 
     /* Admonition colors for dark mode */
     --color-admonition-note: #58a6ff;

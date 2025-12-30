@@ -45,6 +45,8 @@ export default function remarkDirectiveRehype() {
         case 'mark':
         case 'sup':
         case 'sub':
+        case 'kbd':
+        case 'samp':
         case 'center':
           node.data.hName = node.name;
           node.data.hProperties = hast.properties;

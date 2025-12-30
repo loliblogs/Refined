@@ -449,7 +449,7 @@ jobs:
 
 import { Code } from 'astro-expressive-code/components';
 
-<Code code="import { Code } from 'astro-expressive-code/components'" lang="mdx" />
+<Code code="import { Code } from 'astro-expressive-code/components';" lang="mdx" />
 
 ## 数学公式
 
@@ -580,7 +580,15 @@ Term 2
 
 ## 键盘按键
 
-按 <kbd>Ctrl</kbd> + <kbd>C</kbd> 复制，按 <kbd>Ctrl</kbd> + <kbd>V</kbd> 粘贴。
+按 :kbd[Ctrl] + :kbd[C] 复制，按 :kbd[Ctrl] + :kbd[V] 粘贴。
+
+macOS 用户按 :kbd[Cmd] + :kbd[Shift] + :kbd[P] 打开命令面板。
+
+## 程序输出
+
+运行 `echo "Hello"` 命令后，终端会输出 :samp[Hello]。
+
+执行 `ls -la` 后会显示类似 :samp[drwxr-xr-x 5 user staff 160 Jan 1 12\:00 .] 的内容。
 
 ## 嵌套结构示例
 
