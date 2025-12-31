@@ -4,8 +4,6 @@ date: 2018-04-28
 categories: 算法
 tags: [树的prufer编码]
 ---
-import PostLink from '@/components/PostLink.astro';
-
 ## 注意：
 
 * 高精度！
@@ -147,9 +145,9 @@ $$
 \end{split}
 $$
 
-代码详见 <PostLink id="solution-code2425.mdx" collection="oi" text="Code" anchor="code"/>
+代码详见 :postlink[Code]{id="oi/solution-code2425.md" anchor="code"}
 
 ## 模板题
 
-* <PostLink id="solution-code2503.mdx" collection="oi" text="[HNOI2004]树的计数" />
-* <PostLink id="solution-code1826.mdx" collection="oi" text="小猴打架" />
+* :postlink[[HNOI2004]树的计数]{id="oi/solution-code2503.md"}
+* :postlink[小猴打架]{id="oi/solution-code1826.md"}

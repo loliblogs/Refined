@@ -9,15 +9,14 @@ import { posix } from 'node:path';
 
 import { base as globalBase } from 'astro:config/server';
 
-import { getSiteConfig } from '@/config/site.config';
+import { getBasePath as getBasePathConfig } from '@/config/paths.config';
 import type { CollectionName } from '@/types/content';
 
 /**
  * 获取collection的基础路径（包含 base）
  */
 export function getBasePath(collection: CollectionName): string {
-  const config = getSiteConfig(collection);
-  return posix.join(globalBase, config.basePath);
+  return posix.join(globalBase, getBasePathConfig(collection));
 }
 
 /**

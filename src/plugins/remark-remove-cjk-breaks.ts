@@ -83,29 +83,6 @@ const squaredLatinAbbrChars = [
   '\\u{33FF}',           // ㏿ ... Squared Latin abbreviations (Square Gal)
 ];
 
-// Emoji
-const emojiFlagSequence = '\\p{RI}\\p{RI}'; // emoji flag sequence
-const emojiPresentationSequence = '\\p{Emoji}\\u{EF0F}';
-const emojiKeycapSequence = '[0-9#*]\\u{FE0F}\\u{20E3}';
-const emojiModifierSequence = '\\p{Emoji_Modifier_Base}\\p{Emoji_Modifier}';
-const emojiTagSequence = `(?:\\p{Emoji}|${emojiModifierSequence}|${emojiPresentationSequence})[\\u{E0020}-\\u{E007E}]+\\u{E007F}`;
-const emojiCoreSequence = [
-  '\\p{Emoji}',
-  emojiPresentationSequence,
-  emojiKeycapSequence,
-  emojiModifierSequence,
-  emojiFlagSequence,
-].join('|');
-const emojiZWJSequence = `(?:\\p{Emoji}|${emojiPresentationSequence}|${emojiModifierSequence})(?:\\u{200d}(?:\\p{Emoji}|${emojiPresentationSequence}|${emojiModifierSequence}))+`;
-const emojiPattern = [
-  '\\p{Emoji_Presentation}', // default emoji presentation _character_
-  emojiCoreSequence,
-  emojiZWJSequence,
-  emojiTagSequence,
-].join('|');
-// Reference:
-// https://unicode.org/reports/tr51/#Definitions
-
 
 export default function remarkRemoveCjkBreaks({
   includeHangul = false,
@@ -123,12 +100,12 @@ export default function remarkRemoveCjkBreaks({
     afterBreak?: string;
   }[];
 } = {}) {
-  const charGroup = cjkChars;
+  const charGroup = [...cjkChars];
   if (includeSquaredLatinAbbrs) charGroup.push(...squaredLatinAbbrChars);
   if (includeHangul) charGroup.push('\\p{scx=Hangul}');
 
   let pattern = `[${charGroup.join('')}]`;
-  if (includeEmoji) pattern = `${pattern}|${emojiPattern}`;
+  if (includeEmoji) pattern = `(?:${pattern}|\\p{RGI_Emoji})`;
 
   const regexpPairs = additionalRegexpPairs ?? [
     { beforeBreak: undefined, afterBreak: undefined },
@@ -140,7 +117,7 @@ export default function remarkRemoveCjkBreaks({
 
     return new RegExp(
       `(${pattern + beforeBreak})(?:\r\n|\r|\n)(${pattern + afterBreak})`,
-      'gu',
+      'gv',
     );
   });
 

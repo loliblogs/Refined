@@ -4,8 +4,6 @@ date: 2018-04-26
 categories: 算法
 tags: [无向图任意点对最大流]
 ---
-import PostLink from '@/components/PostLink.astro';
-
 ## 注意！
 
 * 在边很多的时候用邻接矩阵，边很少时要用前向星
@@ -95,5 +93,5 @@ Gomory-Hutree 是一颗代表了所有源目节点对间的最小割的树。
 
 ## 模板题
 
-* <PostLink id="solution-code2864.mdx" collection="oi" text="[ZJOI2011]最小割" />
-* <PostLink id="solution-code4604.mdx" collection="oi" text="[CQOI2016]不同的最小割" />
+* :postlink[最小割]{id="oi/solution-code2864.md"}
+* :postlink[[CQOI2016]不同的最小割]{id="oi/solution-code4604.md"}

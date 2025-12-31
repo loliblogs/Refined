@@ -2,6 +2,7 @@ import { visitParents } from 'unist-util-visit-parents';
 import { u } from 'unist-builder';
 import { h } from 'hastscript';
 import type { Root } from 'mdast';
+import { postlinkMap } from './postlink-integration';
 
 export default function remarkDirectiveRehype() {
   return function (tree: Root) {
@@ -59,6 +60,41 @@ export default function remarkDirectiveRehype() {
           node.data.hProperties = { id: 'more' };
           node.children = [];
           break;
+        case 'postlink': {
+          // :postlink[显示文本]{id="oi/article.md" anchor="section"}
+          // id 格式：collection/filename，如 "oi/solution-CF1000A.md" 或 "post/readme.mdx"
+          if (node.type === 'containerDirective') {
+            node.data.hProperties.class = 'hidden';
+            console.warn('postlink directive should be a leaf (::) or text (:) directive');
+            break;
+          }
+
+          const id = node.attributes?.id;
+          const anchor = node.attributes?.anchor;
+
+          if (!id) {
+            node.data.hProperties.class = 'hidden';
+            console.warn('postlink directive should have an id attribute');
+            break;
+          }
+
+          // id 直接作为 key 查找
+          const url = postlinkMap[id];
+
+          if (!url) {
+            node.data.hName = 'span';
+            node.data.hProperties = { class: 'text-admonition-caution' };
+            node.children = [u('text', { value: `[postlink: not found ${id}]` })];
+            console.warn(`postlink directive: not found ${id}`);
+            break;
+          }
+
+          // 生成链接
+          const href = anchor ? `${url}#${anchor}` : url;
+          node.data.hName = 'a';
+          node.data.hProperties = { href };
+          break;
+        }
         default:
           console.warn(`Unknown directive: ${node.name}`);
           break;

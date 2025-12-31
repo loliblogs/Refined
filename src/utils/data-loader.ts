@@ -79,12 +79,6 @@ export async function getCategorySystem(collection: CollectionName) {
   return system;
 }
 
-export async function getSlugById(id: string, collection: CollectionName): Promise<string | undefined> {
-  const data = await initializeDataOnce(collection);
-  const post = data.postMap.get(id);
-  return post?.slug;
-}
-
 /**
  * 核心加载函数（支持多collection）
  * "数据即状态" - Map的存在性就是状态，不需要initialized标志

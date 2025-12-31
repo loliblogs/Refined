@@ -53,7 +53,6 @@ export interface SiteConfig {
   description: string;                        // 站点描述（SEO）
   keywords: string;                           // 关键词（SEO）
   language: string;                           // 语言代码（如 zh-CN）
-  basePath: string;                           // 基础路径（如 '' 或 'oi'）
 
   // ========== 分页配置 ==========
   pagination: {

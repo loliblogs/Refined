@@ -4,9 +4,7 @@ date: 2018-04-28
 categories: 题解
 tags: [树的prufer编码]
 ---
-import PostLink from '@/components/PostLink.astro';
-
-详见 <PostLink id="prufer-encoding.mdx" collection="oi" text="Prufer编码例题" anchor="题目分析" />
+详见 :postlink[Prufer编码例题]{id="oi/prufer-encoding.md" anchor="题目分析"}
 
 ::more
 

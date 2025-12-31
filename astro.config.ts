@@ -10,6 +10,7 @@ import rehypeSanitize from './src/plugins/rehype-sanitize';
 import remarkDirectiveRehype from './src/plugins/remark-directive-rehype';
 import remarkRemoveCjkBreaks from './src/plugins/remark-remove-cjk-breaks';
 import buildSearch from './src/plugins/build-search';
+import postlinkIntegration from './src/plugins/postlink-integration';
 
 import remarkDirective from 'remark-directive';
 import remarkEmoji from 'remark-emoji';
@@ -31,7 +32,7 @@ export default defineConfig({
   prefetch: {
     prefetchAll: true,
   },
-  integrations: [expressiveCode(), preact(), mdx(), db(), playformCompress({
+  integrations: [postlinkIntegration(), expressiveCode(), preact(), mdx({ optimize: true }), db(), playformCompress({
     CSS: false,
     HTML: true,
     JSON: true,
@@ -48,7 +49,7 @@ export default defineConfig({
       sourcemap: true, // 开源项目，随便看！
     },
     optimizeDeps: {
-      include: ['argon2-browser/dist/argon2-bundled.min.js'],
+      include: ['argon2-browser/dist/argon2-bundled.min.js', 'giscus'],
     },
     css: {
       transformer: 'lightningcss',
