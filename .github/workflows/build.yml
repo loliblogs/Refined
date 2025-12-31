@@ -37,7 +37,8 @@ jobs:
           restore-keys: astro-build-
 
       - run: pnpm install --frozen-lockfile --production
-      - run: pnpm build
+      # Use build:full when commit message contains [full]
+      - run: ${{ contains(github.event.head_commit.message, '[full]') && 'pnpm build:full' || 'pnpm build' }}
         env:
           ASTRO_DB_REMOTE_URL: ${{ secrets.ASTRO_DB_REMOTE_URL }}
           SECRET_ENCRYPTION_PASSWORD: ${{ secrets.SECRET_ENCRYPTION_PASSWORD }}
