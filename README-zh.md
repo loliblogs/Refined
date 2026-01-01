@@ -53,7 +53,7 @@ pnpm sync
 | `pnpm dev`             | 在 `localhost:3000` 启动本地开发服务器        |
 | `pnpm dev:full`        | 以完全冷启动（无缓存）启动开发服务器                  |
 | `pnpm build`           | 构建生产站点到 `./dist/`                   |
-| `pnpm build:full`      | 完整清理构建到 `./dist/` 并重新生成 Pagefind 索引 |
+| `pnpm build:full`      | 完整清理构建（忽略缓存）到 `./dist/`              |
 | `pnpm sync`            | 同步 Astro 生成的类型                      |
 | `pnpm preview`         | 在本地 `localhost:4321` 预览构建产物         |
 | `pnpm typecheck`       | 通过 Astro 运行类型检查（包含 `.astro` 文件！）    |
@@ -61,6 +61,12 @@ pnpm sync
 | `pnpm lint:fix`        | 自动修复可修复的 ESLint 问题                  |
 | `pnpm astro ...`       | 运行 `astro add`、`astro db` 等 CLI 命令  |
 | `pnpm astro -- --help` | 查看 Astro CLI 帮助                     |
+
+**CI 说明：** GitHub Actions 工作流会自动检测提交信息中的 `[full]` 并运行 `pnpm build:full` 而非 `pnpm build`。这很少需要——仅用于边界情况，例如 `.md` 与 `.mdx` 之间重命名导致旧缓存引发构建失败时：
+
+```bash
+git commit -m "refactor: migrate files from mdx to md [full]"
+```
 
 ## 🌐 浏览器支持
 
@@ -98,6 +104,7 @@ pnpm sync
     │   └── pages/
     ├── config/
     │   ├── site.config.tsx
+    │   ├── paths.config.ts
     │   └── comments.config.tsx
     ├── content/
     │   ├── post/
@@ -236,16 +243,33 @@ console.log('代码块会被语法高亮');
 - Astro 指南：[MDX 集成](https://docs.astro.build/en/guides/integrations-guide/mdx/)
 - MDX 官方文档：[mdxjs.com/docs](https://mdxjs.com/docs/)
 
+## 🔗 跨文章链接
+
+使用 `:postlink` 指令在文章之间创建链接。这是一个 remark 指令（而非 MDX 组件），因此在 `.md` 和 `.mdx` 文件中均可使用，无需导入 JSX。
+
+```md
+详情请参阅 :postlink[我的另一篇文章]{id="oi/example-post.md"}。
+
+带锚点的链接：:postlink[章节链接]{id="post/guide.md" anchor="setup"}
+```
+
+`id` 属性使用 `<集合>/<文件名>` 格式，文件名需包含扩展名。
+
+底层实现原理：
+
+1. **构建时 slug 映射**（`src/plugins/postlink-integration.ts`）：一个 Astro 集成在 `astro:config:setup` 钩子（任何内容处理之前）运行。它扫描 `src/content` 下的所有 `.md/.mdx` 文件，使用 `gray-matter` 解析 frontmatter，通过 `github-slugger` 计算 slug（或使用 frontmatter 中的自定义 `slug`），并构建查找表：`{ "oi/article.md": "/oi/post/article", ... }`。该映射作为模块级变量导出。
+
+2. **指令转换**（`src/plugins/remark-directive-rehype.ts`）：在 Markdown 处理期间，remark 插件拦截 `:postlink` 指令，从预构建的映射中查找 URL，并将节点转换为 `<a href="...">` 元素。若 id 未找到，则渲染为警告提示。
+
+为什么使用指令而非 MDX 组件？MDX 会将所有内容编译为 JSX AST，即使是纯 Markdown 文件也是如此，这会很慢。使用 remark 指令，纯 `.md` 文件保持快速（无需 JSX 编译），且同一语法在两种格式中通用。这一方案将 MDX 转换时间从每个文件约 2600ms 降至约 50ms。
+
 ## ⚙ 配置
 
-从 `astro.config.ts` 开始。将 `site` 设置为你的站点规范 URL。本项目已支持非根 base（例如 `base: '/blog/'`）。集合子路径由 `src/config/site.config.tsx` 中每个集合的 `basePath` 管理。
+从 `astro.config.ts` 开始。将 `site` 设置为你的站点规范 URL。本项目已支持非根 base（例如 `base: '/blog/'`）。集合 URL 路径在 `src/config/paths.config.ts` 中定义。
 
-重要规则：
+主要配置位于 `src/config/site.config.tsx`。它为每个集合（例如 `post` 与 `oi`）提供设置，包括站点标识（标题、副标题、描述、语言）、导航菜单、分页、全局评论开关、favicon 链接，以及对加密内容的默认提示文案。该文件内注释非常详尽——先快速浏览顶部关键选项，完整参数请参考内联注释。
 
-- `basePath` 必须为裸段值，不要包含前导或后缀斜杠。主博客使用 `''`（空字符串），分区示例使用 `'oi'`（不是 `/oi`，也不是 `oi/`）。
-- 路径拼接规则：`import.meta.env.BASE_URL` + `basePath`。例如 `base = '/blog/'` 且 `basePath = 'oi'`，最终 URL 为 `/blog/oi/...`。
-
-主要配置位于 `src/config/site.config.tsx`。它为每个集合（例如 `post` 与 `oi`）提供设置，包括站点标识（标题、副标题、描述、语言）、导航菜单、分页、集合级 `basePath`、全局评论开关、favicon 链接，以及对加密内容的默认提示文案。该文件内注释非常详尽——先快速浏览顶部关键选项，完整参数请参考内联注释。
+集合 URL 路径集中在 `src/config/paths.config.ts`。该文件定义 `COLLECTION_PATHS`（将集合映射到其 URL 段，如 `post` → `'post'`、`oi` → `'oi/post'`）和 `BASE_PATHS`（集合根路径）。添加新集合或更改 URL 结构时修改此文件。路径配置被有意与 `site.config.tsx` 分离，是因为 Astro 集成（如 postlink slug 映射器）需要在构建时导入路径定义，而不能引入主站配置中的 React/JSX 依赖。
 
 评论系统通过 `src/config/comments.config.tsx` 接入。尽管文件名叫 config，它实际上是一个组件入口：你可以将其替换为任意评论提供方（Giscus、Disqus、Gitalk，或自定义组件）。文章页会渲染它，并遵循 `site.config.tsx` 中的 `comments` 开关；使用 `getSiteConfig()` 的 `language` 值为小部件做本地化。如果替换提供方，请保持默认导出为一个 React 组件。
 

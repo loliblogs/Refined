@@ -51,7 +51,7 @@ const sortedGroups = Object.entries(groupedTags).sort(([a], [b]) => {
 <div class={className}>
   {sortedGroups.map(([letter, letterTags]) => (
     <div class="mb-6">
-      <h3 class="mb-2 border-b border-hover pb-1 text-xl font-bold text-primary">
+      <h3 class="border-b border-hover pb-3 text-xl font-bold text-primary">
         {letter}
         {' '}
         (
@@ -62,13 +62,18 @@ const sortedGroups = Object.entries(groupedTags).sort(([a], [b]) => {
       <ul class="list-none p-0">
         {letterTags.map(tag => (
           <li class={`
-            border-b border-hover px-4 py-3 transition-colors duration-200
-            hover:bg-hover
+            group rounded-lg border-b border-hover px-4 py-3 transition
+            duration-200 ease-out
+            hover:bg-hover hover:shadow-sm
           `}
           >
             <a
               href={getTagUrl(tag.path, collection)}
-              class="block text-inherit no-underline"
+              class={`
+                block text-inherit no-underline transition-transform
+                duration-200 ease-out
+                group-hover:translate-x-1
+              `}
             >
               <div class="flex items-center gap-2">
                 <span class="font-medium text-primary">

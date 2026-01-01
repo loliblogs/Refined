@@ -53,7 +53,7 @@ More commands are listed in the table below.
 | `pnpm dev`             | Starts local dev server at `localhost:3000`                 |
 | `pnpm dev:full`        | Starts dev server with a full cold start (no cache)         |
 | `pnpm build`           | Build your production site to `./dist/`                     |
-| `pnpm build:full`      | Full clean build to `./dist/` and regenerate Pagefind index |
+| `pnpm build:full`      | Full clean build (ignores cache) to `./dist/`               |
 | `pnpm sync`            | Synchronize Astro-generated types                           |
 | `pnpm preview`         | Preview your build locally at `localhost:4321`              |
 | `pnpm typecheck`       | Run type checks via Astro (Including .astro files!)         |
@@ -61,6 +61,12 @@ More commands are listed in the table below.
 | `pnpm lint:fix`        | Automatically fix fixable ESLint issues                     |
 | `pnpm astro ...`       | Run CLI commands like `astro add`, `astro db`               |
 | `pnpm astro -- --help` | Get help using the Astro CLI                                |
+
+**CI note:** The GitHub Actions workflow automatically detects `[full]` in commit messages and runs `pnpm build:full` instead of `pnpm build`. This is rarely needed—only for edge cases like renaming files between `.md` and `.mdx` where stale cache causes build failures:
+
+```bash
+git commit -m "refactor: migrate files from mdx to md [full]"
+```
 
 ## 🌐 Browser Support
 
@@ -98,6 +104,7 @@ Inside your Astro project, you'll see the following folders and files:
     │   └── pages/
     ├── config/
     │   ├── site.config.tsx
+    │   ├── paths.config.ts
     │   └── comments.config.tsx
     ├── content/
     │   ├── post/
@@ -236,16 +243,33 @@ Learn more:
 - Astro guide: [MDX integration](https://docs.astro.build/en/guides/integrations-guide/mdx/)
 - MDX official docs: [mdxjs.com/docs](https://mdxjs.com/docs/)
 
+## 🔗 Cross-Post Links
+
+Use the `:postlink` directive to link between posts. This is a remark directive (not an MDX component), so it works in both `.md` and `.mdx` files without requiring JSX imports.
+
+```md
+Check out :postlink[my other article]{id="oi/example-post.md"} for details.
+
+With custom anchor: :postlink[section link]{id="post/guide.md" anchor="setup"}
+```
+
+The `id` attribute uses the format `<collection>/<filename>` where filename includes the extension.
+
+How it works under the hood:
+
+1. **Build-time slug mapping** (`src/plugins/postlink-integration.ts`): An Astro integration runs at `astro:config:setup` (before any content is processed). It scans all `.md/.mdx` files under `src/content`, parses frontmatter with `gray-matter`, computes slugs using `github-slugger` (or uses custom `slug` from frontmatter), and builds a lookup table: `{ "oi/article.md": "/oi/post/article", ... }`. This map is exported as a module-level variable.
+
+2. **Directive transformation** (`src/plugins/remark-directive-rehype.ts`): During Markdown processing, the remark plugin intercepts `:postlink` directives, looks up the URL from the pre-built map, and transforms the node into an `<a href="...">` element. If the id is not found, it renders a warning span instead.
+
+Why a directive instead of an MDX component? MDX compiles all content to JSX AST, which is slow for files that don't actually use JSX features. By using a remark directive, plain `.md` files stay fast (no JSX compilation), and the same syntax works uniformly across both formats. This approach reduced MDX transform time from ~2600ms to ~50ms per file.
+
 ## ⚙ Configuration
 
-Start with `astro.config.ts`. Set `site` to your canonical URL. This project now supports non-root bases (for example `base: '/blog/'`). Per-collection subpaths are handled via `basePath` in `src/config/site.config.tsx`.
+Start with `astro.config.ts`. Set `site` to your canonical URL. This project supports non-root bases (for example `base: '/blog/'`). Per-collection URL paths are defined in `src/config/paths.config.ts`.
 
-Important rules for `basePath`:
+The primary configuration lives in `src/config/site.config.tsx`. It provides per‑collection settings (e.g., `post` and `oi`) including site identity (title, subtitle, description, language), navigation menu, pagination, a global comments toggle, favicon links, and sensible defaults for encrypted content prompts. The file is heavily documented—skim the top for key options and consult the inline comments for the complete list.
 
-- Provide a bare segment without leading or trailing slashes. Use `''` (empty) for the main blog, and for sections use values like `'oi'` (not `/oi` and not `oi/`).
-- Paths are composed as: `import.meta.env.BASE_URL` + `basePath`. For example, with `base = '/blog/'` and `basePath = 'oi'`, URLs become `/blog/oi/...`.
-
-The primary configuration lives in `src/config/site.config.tsx`. It provides per‑collection settings (e.g., `post` and `oi`) including site identity (title, subtitle, description, language), navigation menu, pagination, the collection‑level `basePath`, a global comments toggle, favicon links, and sensible defaults for encrypted content prompts. The file is heavily documented—skim the top for key options and consult the inline comments for the complete list.
+Collection URL paths are centralized in `src/config/paths.config.ts`. This file defines `COLLECTION_PATHS` (mapping collections to their URL segments like `post` → `'post'`, `oi` → `'oi/post'`) and `BASE_PATHS` (for collection root paths). Modify these when adding new collections or changing URL structures. Path config is intentionally separated from `site.config.tsx` because Astro integrations (like the postlink slug mapper) need to import path definitions at build time without pulling in React/JSX dependencies from the main site config.
 
 Comments are wired through `src/config/comments.config.tsx`. Despite the name, this file is a component entry point, not a rigid schema: you can replace its contents with any comment provider (Giscus, Disqus, Gitalk, or a custom widget). It is rendered by the post page and respects `comments` in `site.config.tsx`; use the site’s `language` from `getSiteConfig()` to localize your widget. If you swap providers, keep the default export as a React component.
 
