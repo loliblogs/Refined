@@ -62,7 +62,7 @@ pnpm sync
 | `pnpm astro ...`       | 运行 `astro add`、`astro db` 等 CLI 命令  |
 | `pnpm astro -- --help` | 查看 Astro CLI 帮助                     |
 
-**CI 说明：** GitHub Actions 工作流会自动检测提交信息中的 `[full]` 并运行 `pnpm build:full` 而非 `pnpm build`。这很少需要——仅用于边界情况，例如 `.md` 与 `.mdx` 之间重命名导致旧缓存引发构建失败时：
+**CI 说明：** GitHub Actions 工作流会检测提交标题（首行）中的 `[full]` 并运行 `pnpm build:full` 而非 `pnpm build`。这很少需要——仅用于边界情况，例如 `.md` 与 `.mdx` 之间重命名导致旧缓存引发构建失败时：
 
 ```bash
 git commit -m "refactor: migrate files from mdx to md [full]"

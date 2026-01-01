@@ -37,8 +37,17 @@ jobs:
           restore-keys: astro-build-
 
       - run: pnpm install --frozen-lockfile --production
-      # Use build:full when commit message contains [full]
-      - run: ${{ contains(github.event.head_commit.message, '[full]') && 'pnpm build:full' || 'pnpm build' }}
+
+      # Use build:full when commit title (first line) contains [full]
+      - name: Detect [full] in commit title
+        run: |
+          if git log -1 --pretty=%s | grep -q '\[full\]'; then
+            echo "BUILD_CMD=pnpm build:full" >> $GITHUB_ENV
+          else
+            echo "BUILD_CMD=pnpm build" >> $GITHUB_ENV
+          fi
+
+      - run: ${{ env.BUILD_CMD }}
         env:
           ASTRO_DB_REMOTE_URL: ${{ secrets.ASTRO_DB_REMOTE_URL }}
           SECRET_ENCRYPTION_PASSWORD: ${{ secrets.SECRET_ENCRYPTION_PASSWORD }}

@@ -62,7 +62,7 @@ More commands are listed in the table below.
 | `pnpm astro ...`       | Run CLI commands like `astro add`, `astro db`               |
 | `pnpm astro -- --help` | Get help using the Astro CLI                                |
 
-**CI note:** The GitHub Actions workflow automatically detects `[full]` in commit messages and runs `pnpm build:full` instead of `pnpm build`. This is rarely needed—only for edge cases like renaming files between `.md` and `.mdx` where stale cache causes build failures:
+**CI note:** The GitHub Actions workflow detects `[full]` in the commit title (first line) and runs `pnpm build:full` instead of `pnpm build`. This is rarely needed—only for edge cases like renaming files between `.md` and `.mdx` where stale cache causes build failures:
 
 ```bash
 git commit -m "refactor: migrate files from mdx to md [full]"
