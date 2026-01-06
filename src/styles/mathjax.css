@@ -6,6 +6,11 @@ mjx-container[display] {
   font-size: 1.25em;
 }
 
+/* workaround for regression introduced by https://github.com/mathjax/MathJax-src/pull/1356 */
+mjx-stretchy-v > mjx-ext {
+  white-space: normal !important;
+}
+
 @font-face /* MJX-NCM-ZERO */ {
   font-family: MJX-NCM-ZERO;
   font-display: swap;
