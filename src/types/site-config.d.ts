@@ -90,7 +90,10 @@ export interface SiteConfig {
   }[];
 
   // ========== 其他配置 ==========
-  animationOld: string;
+  animationOld: {
+    name: string;
+    minAnimationMs: number;
+  };
   animationNew: TransitionAnimationValue;
   comments: boolean;                           // 评论开关
   analytics?: (() => JSX.Element) | undefined; // 统计分析组件（可选）

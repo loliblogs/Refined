@@ -155,14 +155,26 @@ const Analytics = config.analytics;
     <script
       is:inline
       define:vars={{
-        animationOld: config.animationOld,
+        animationOld: config.animationOld.name,
+        minAnimationMs: config.animationOld.minAnimationMs,
       }}
     >
-      document.addEventListener('astro:before-preparation', () => {
+      document.addEventListener('astro:before-preparation', (e) => {
+        // 立即开始退出动画
         const aside = document.getElementById('aside-inner');
         const content = document.getElementById('content');
         aside?.classList.add(animationOld);
         content?.classList.add(animationOld);
+
+        // 劫持 loader：并行执行 fetch + 最小等待时间
+        // 这样既不阻塞网络请求，又保证动画至少播放指定时间
+        const originalLoader = e.loader;
+        e.loader = async () => {
+          await Promise.all([
+            originalLoader(),
+            new Promise(resolve => setTimeout(resolve, minAnimationMs)),
+          ]);
+        };
       });
     </script>
     {/* eslint-enable @stylistic/jsx-one-expression-per-line */}

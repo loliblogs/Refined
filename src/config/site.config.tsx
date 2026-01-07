@@ -24,7 +24,10 @@ import type { CollectionName } from '@/types/content';
  */
 
 // 动画配置
-const animationOld = 'animate-[fade-out-up_0.2s_ease-out_forwards]';
+const animationOld = {
+  name: 'animate-[fade-out-up_0.2s_ease-out_forwards]',
+  minAnimationMs: 100,
+};
 const animationNew = {
   old: [],
   new: {
