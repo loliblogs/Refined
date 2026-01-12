@@ -98,7 +98,6 @@ Inside your Astro project, you'll see the following folders and files:
 │   └── config.ts
 └── src/
     ├── content.config.ts
-    ├── env.d.ts
     ├── assets/
     ├── components/
     │   └── pages/

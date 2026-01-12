@@ -98,7 +98,6 @@ git commit -m "refactor: migrate files from mdx to md [full]"
 │   └── config.ts
 └── src/
     ├── content.config.ts
-    ├── env.d.ts
     ├── assets/
     ├── components/
     │   └── pages/

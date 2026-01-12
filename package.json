@@ -27,7 +27,7 @@
     "@astrojs/mdx": "^4.3.13",
     "@astrojs/preact": "^4.1.3",
     "@astrojs/rss": "^4.0.14",
-    "@astrojs/sitemap": "^3.6.0",
+    "@astrojs/sitemap": "^3.6.1",
     "@astrojs/ts-plugin": "^1.10.6",
     "@babel/preset-typescript": "^7.28.5",
     "@expressive-code/plugin-collapsible-sections": "^0.41.5",
@@ -39,12 +39,12 @@
     "@pagefind/default-ui": "^1.4.0",
     "@phosphor-icons/core": "^2.1.1",
     "@phosphor-icons/react": "^2.1.10",
-    "@playform/compress": "^0.2.0",
+    "@playform/compress": "^0.2.1",
     "@preact/compat": "^18.3.1",
     "@tailwindcss/vite": "^4.1.18",
     "argon2": "^0.44.0",
     "argon2-browser": "^1.18.0",
-    "astro": "^5.16.6",
+    "astro": "^5.16.8",
     "astro-expressive-code": "^0.41.5",
     "cheerio": "^1.1.2",
     "chroma-js": "^3.2.0",
@@ -61,7 +61,7 @@
     "micromark-extension-math": "^3.1.0",
     "overlayscrollbars": "^2.13.0",
     "pagefind": "^1.4.0",
-    "preact": "^10.28.1",
+    "preact": "^10.28.2",
     "react": "npm:@preact/compat",
     "react-dom": "npm:@preact/compat",
     "rehype": "^13.0.2",
@@ -78,16 +78,16 @@
     "unified": "^11.0.5",
     "unist-builder": "^4.0.0",
     "unist-util-visit-parents": "^6.0.2",
-    "vite": "^7.3.0",
+    "vite": "^7.3.1",
     "wordcloud": "^1.2.3",
-    "zustand": "^5.0.9"
+    "zustand": "^5.0.10"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.6",
     "@astrojs/language-server": "^2.16.2",
     "@eslint/css": "^0.14.1",
     "@eslint/js": "^9.39.2",
-    "@stylistic/eslint-plugin": "^5.6.1",
+    "@stylistic/eslint-plugin": "^5.7.0",
     "@tailwindcss/language-server": "^0.14.29",
     "@types/argon2-browser": "^1.18.4",
     "@types/chroma-js": "^3.1.2",
@@ -95,8 +95,8 @@
     "@types/hast": "^3.0.4",
     "@types/mathjax": "^0.0.40",
     "@types/mdast": "^4.0.4",
-    "@types/node": "^25.0.3",
-    "@types/react": "^19.2.7",
+    "@types/node": "^25.0.6",
+    "@types/react": "^19.2.8",
     "@types/react-dom": "^19.2.3",
     "@types/wordcloud": "^1.2.2",
     "@typescript-eslint/parser": "^8.52.0",
@@ -120,7 +120,7 @@
   "pnpm": {
     "overrides": {
       "html-minifier-terser": "npm:html-minifier-next",
-      "vite": "^7.3.0"
+      "vite": "^7.3.1"
     },
     "onlyBuiltDependencies": [
       "argon2",
@@ -139,5 +139,5 @@
       "remark-gfm"
     ]
   },
-  "packageManager": "pnpm@10.27.0"
+  "packageManager": "pnpm@10.28.0"
 }
