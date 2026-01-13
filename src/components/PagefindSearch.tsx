@@ -18,11 +18,6 @@ const PagefindSearch: FC = () => {
     const manager = getInstanceManager();
     const instance = manager.getInstance('default');
 
-    // 如果有初始查询，设置并触发搜索
-    if (initialQuery) {
-      instance.triggerSearch(initialQuery);
-    }
-
     // 监听搜索框变化，更新URL
     const handleInput = (term: unknown) => {
       if (typeof term !== 'string') return;
@@ -40,7 +35,10 @@ const PagefindSearch: FC = () => {
       window.history.replaceState({}, '', newUrl);
     };
 
-    instance.on('search', handleInput);
+    void instance.triggerLoad().then(() => {
+      instance.on('search', handleInput);
+    });
+    instance.triggerSearch(initialQuery);
 
     return () => {
       manager.removeInstance('default');
