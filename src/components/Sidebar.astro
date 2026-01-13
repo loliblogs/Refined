@@ -45,11 +45,12 @@ const hasTocSlot = Astro.slots.has('default');
   <div
     id="aside-inner"
     class={`
-      relative flex h-full w-full flex-col
+      relative flex size-full flex-col
       max-lg:w-4/5 max-lg:max-w-sm max-lg:min-w-aside-min
       max-lg:-translate-x-full max-lg:bg-surface-aside
       max-lg:transition-transform max-lg:duration-300 max-lg:ease-in-out
-      max-lg:will-change-transform max-lg:in-[.aside-panel-show]:translate-x-0
+      max-lg:will-change-transform
+      max-lg:in-[.aside-panel-show]:translate-x-0
     `}
   >
     {/* 阅读进度条 - 固定在 aside 顶部 */}

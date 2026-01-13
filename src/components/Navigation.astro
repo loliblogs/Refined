@@ -35,7 +35,7 @@ const homePath = getBasePath(collection);
     <button
       id="open-panel"
       class={`
-        m-0 flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center
+        m-0 flex size-11 shrink-0 cursor-pointer items-center justify-center
         border-none bg-transparent p-0 text-primary transition-colors
         duration-100 ease-in-out outline-none
         hover:bg-active
@@ -49,9 +49,9 @@ const homePath = getBasePath(collection);
     <a
       href={homePath}
       class={`
-        m-0 flex h-11 min-w-0 flex-1 items-center justify-center overflow-hidden
-        text-center text-2xl font-bold text-ellipsis whitespace-nowrap
-        text-primary no-underline transition-colors duration-100 ease-in-out
+        m-0 flex h-11 min-w-0 flex-1 items-center justify-center truncate
+        text-center text-2xl font-bold text-primary no-underline
+        transition-colors duration-100 ease-in-out
         hover:text-secondary
       `}
     >
@@ -60,7 +60,7 @@ const homePath = getBasePath(collection);
     <button
       id="open-menus"
       class={`
-        m-0 flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center
+        m-0 flex size-11 shrink-0 cursor-pointer items-center justify-center
         border-none bg-transparent p-0 text-primary transition-colors
         duration-100 ease-in-out outline-none
         hover:bg-active
@@ -110,7 +110,7 @@ const homePath = getBasePath(collection);
                 ease-in-out
                 hover:bg-active
                 max-lg:inline-block max-lg:h-11 max-lg:px-5 max-lg:align-top
-                max-lg:text-base max-lg:leading-11
+                max-lg:text-base/11
               `}
               href={item.path}
               data-path={item.path}
@@ -118,7 +118,7 @@ const homePath = getBasePath(collection);
             >
               <span
                 class={`
-                  inline-block overflow-hidden text-ellipsis whitespace-nowrap
+                  inline-block truncate
                   max-lg:inline max-lg:text-inherit
                 `}
               >

@@ -75,14 +75,11 @@ const config = getSiteConfig(collection);
   </div>
 
   <MathJax cacheKey={`author-meta-${collection}`}>
-    <div class="text-2xl leading-10 text-primary">{config.author.name}</div>
+    <div class="text-2xl/10 text-primary">{config.author.name}</div>
     {config.author.work && (
-      <div class="text-base leading-10 text-secondary">{config.author.work}</div>
+      <div class="text-base/10 text-secondary">{config.author.work}</div>
     )}
-    <div class={`
-      mt-2 flex items-center justify-center text-sm leading-8 text-secondary
-    `}
-    >
+    <div class="mt-2 flex items-center justify-center text-sm/8 text-secondary">
       <MapPinIcon size="1rem" weight="regular" />
       <span class="ml-1">{config.author.location}</span>
     </div>

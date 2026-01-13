@@ -95,7 +95,7 @@ const TagCloud: FC<Props> = ({
   return (
     <div
       ref={cloudRef}
-      className="relative h-full min-h-64 w-full"
+      className="relative size-full min-h-64"
     />
   );
 };

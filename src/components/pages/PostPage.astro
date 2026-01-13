@@ -53,7 +53,7 @@ const pageContext = {
   <article>
     <header class="mb-8 border-b border-line pb-4">
       <h1 class={`
-        mb-4 text-4xl leading-tight font-normal text-primary
+        mb-4 text-4xl/tight font-normal text-primary
         max-lg:text-3xl
       `}
       >
@@ -168,7 +168,7 @@ const pageContext = {
               type="password"
               id="decrypt-password"
               class={`
-                w-60 rounded border border-line px-3 py-2 transition-colors
+                w-60 rounded-sm border border-line px-3 py-2 transition-colors
                 duration-200
                 focus:border-link focus:outline-none
               `}
@@ -182,8 +182,8 @@ const pageContext = {
               id="decrypt-button"
               type="button"
               class={`
-                relative flex w-18 items-center justify-center rounded bg-link
-                text-white transition-colors duration-200
+                relative flex w-18 items-center justify-center rounded-sm
+                bg-link text-white transition-colors duration-200
                 hover:bg-link-hover
                 disabled:cursor-not-allowed disabled:opacity-50
               `}

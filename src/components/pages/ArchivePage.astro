@@ -87,7 +87,7 @@ const buttonClass = 'rounded-md border px-3 py-1 text-sm transition-colors hover
       >
         {/* 轨道背景 */}
         <div class={`
-          absolute top-1/2 h-1 w-full -translate-y-1/2 rounded bg-muted
+          absolute top-1/2 h-1 w-full -translate-y-1/2 rounded-sm bg-muted
         `}
         >
         </div>
@@ -95,7 +95,7 @@ const buttonClass = 'rounded-md border px-3 py-1 text-sm transition-colors hover
         {/* 选中范围 */}
         <div class={`
           absolute top-1/2 left-(--slider-start) h-1 w-(--slider-width)
-          -translate-y-1/2 rounded bg-primary
+          -translate-y-1/2 rounded-sm bg-primary
         `}
         >
         </div>
@@ -103,9 +103,9 @@ const buttonClass = 'rounded-md border px-3 py-1 text-sm transition-colors hover
         {/* 起始滑块 */}
         <div
           class={`
-            absolute top-1/2 left-(--slider-start) z-20 h-4 w-4 -translate-x-1/2
-            -translate-y-1/2 cursor-grab touch-none rounded-full bg-primary
-            shadow-md transition-transform
+            absolute top-1/2 left-(--slider-start) z-20 size-4 -translate-1/2
+            cursor-grab touch-none rounded-full bg-primary shadow-md
+            transition-transform
             hover:scale-110
             focus:ring-2 focus:ring-primary focus:ring-offset-2
             focus:outline-none
@@ -125,9 +125,9 @@ const buttonClass = 'rounded-md border px-3 py-1 text-sm transition-colors hover
         {/* 结束滑块 */}
         <div
           class={`
-            absolute top-1/2 left-(--slider-end) z-10 h-4 w-4 -translate-x-1/2
-            -translate-y-1/2 cursor-grab touch-none rounded-full bg-primary
-            shadow-md transition-transform
+            absolute top-1/2 left-(--slider-end) z-10 size-4 -translate-1/2
+            cursor-grab touch-none rounded-full bg-primary shadow-md
+            transition-transform
             hover:scale-110
             focus:ring-2 focus:ring-primary focus:ring-offset-2
             focus:outline-none
@@ -193,7 +193,7 @@ const buttonClass = 'rounded-md border px-3 py-1 text-sm transition-colors hover
             type="date"
             data-role="input-start"
             value={formatDate(new Date(minTime))}
-            class="rounded border bg-surface px-2 py-1 text-sm"
+            class="rounded-sm border bg-surface px-2 py-1 text-sm"
             aria-label="开始日期输入"
           />
           <span class="text-sm">~</span>
@@ -201,7 +201,7 @@ const buttonClass = 'rounded-md border px-3 py-1 text-sm transition-colors hover
             type="date"
             data-role="input-end"
             value={formatDate(new Date(maxTime))}
-            class="rounded border bg-surface px-2 py-1 text-sm"
+            class="rounded-sm border bg-surface px-2 py-1 text-sm"
             aria-label="结束日期输入"
           />
         </div>
