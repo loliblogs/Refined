@@ -66,6 +66,7 @@
 :root {
   /* Base font size for responsive scaling */
   --base-font-size: clamp(1rem, 0.85rem + 0.15vw, 1.25rem);
+  --base-zoom: calc(var(--base-font-size) / 1rem);
   
   /* 
    * 视口高度统一管理 - "消除特殊情况" - Linus
@@ -93,6 +94,10 @@
   --color-highlight: #fff3bf;
   --color-code: #d9d9d9;
   --color-kbd: #e9e9e9;
+
+  --color-skeleton: #f2f2f2;       
+  --color-skeleton-shine: #ffffff;
+  --color-outline-focus: #0366d666;
 
   /* Admonition colors - GitHub-style */
   --color-admonition-note: #0969da;
@@ -133,6 +138,10 @@
     --color-highlight: #5a4a1a;
     --color-code: #4a4e54;
     --color-kbd: #393c42;
+
+    --color-skeleton: #383b40;     
+    --color-skeleton-shine: #45484d;
+    --color-outline-focus: #ff7b7266;
 
     /* Admonition colors for dark mode */
     --color-admonition-note: #58a6ff;

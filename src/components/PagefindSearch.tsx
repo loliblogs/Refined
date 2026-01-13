@@ -3,76 +3,49 @@
  * 使用Pagefind自带的UI组件
  */
 
+import '@pagefind/component-ui';
+
 import { useEffect, type FC } from 'react';
-import { PagefindUI } from '@pagefind/default-ui';
+import { getInstanceManager } from '@pagefind/component-ui';
 
-interface PagefindSearchProps {
-  pagePath?: string;
-  bundlePath?: string;
-}
-
-const PagefindSearch: FC<PagefindSearchProps> = ({ pagePath = '', bundlePath = '' }) => {
+const PagefindSearch: FC = () => {
   useEffect(() => {
     // 从URL获取初始查询
+    const pathname = window.location.pathname;
     const params = new URLSearchParams(window.location.search);
     const initialQuery = params.get('q') ?? '';
 
-    const pagefindUI = new PagefindUI({
-      element: '#pagefind-ui',
-      showSubResults: true,
-      showImages: false,
-      resetStyles: false,
-      bundlePath: bundlePath,
-    });
+    const manager = getInstanceManager();
+    const instance = manager.getInstance('default');
 
     // 如果有初始查询，设置并触发搜索
     if (initialQuery) {
-      // PagefindUI提供的API来设置初始值
-      pagefindUI.triggerSearch(initialQuery);
+      instance.triggerSearch(initialQuery);
     }
 
     // 监听搜索框变化，更新URL
-    const handleInput = (e: Event) => {
-      const value = (e.target as HTMLInputElement).value;
+    const handleInput = (term: unknown) => {
+      if (typeof term !== 'string') return;
+
       const params = new URLSearchParams(window.location.search);
 
-      if (value) {
-        params.set('q', value);
+      if (term) {
+        params.set('q', term);
       } else {
         params.delete('q');
       }
 
       // 更新URL但不刷新页面
-      const newUrl = `${pagePath}${params.toString() ? '?' + params.toString() : ''}`;
+      const newUrl = `${pathname}${params.toString() ? '?' + params.toString() : ''}`;
       window.history.replaceState({}, '', newUrl);
     };
 
-    // 等待DOM元素出现后添加事件监听
-    const observer = new MutationObserver(() => {
-      const searchInput = document.querySelector('.pagefind-ui__search-input');
-      if (searchInput instanceof HTMLInputElement) {
-        searchInput.addEventListener('input', handleInput);
-        observer.disconnect();
-      }
-    });
-
-    const pagefindElement = document.getElementById('pagefind-ui');
-    if (pagefindElement) {
-      observer.observe(pagefindElement, {
-        childList: true,
-        subtree: true,
-      });
-    }
+    instance.on('search', handleInput);
 
     return () => {
-      observer.disconnect();
-      const searchInput = document.querySelector('.pagefind-ui__search-input');
-      if (searchInput instanceof HTMLInputElement) {
-        searchInput.removeEventListener('input', handleInput);
-      }
-      pagefindUI.destroy();
+      manager.removeInstance('default');
     };
-  }, [pagePath, bundlePath]);
+  }, []);
 
   return null;
 };

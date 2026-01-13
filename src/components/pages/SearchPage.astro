@@ -3,7 +3,7 @@
  * 搜索页面组件 - 支持多collection
  * 完全兼容原始search.astro的行为
  */
-import '@pagefind/default-ui/css/ui.css';
+import '@pagefind/component-ui/css';
 
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { getSearchBundlePath, getSearchUrl } from '@/utils/collection-paths';
@@ -30,10 +30,25 @@ const pageContext = {
   <div class="mb-8">
     <h1 class="text-3xl font-bold">搜索</h1>
   </div>
-  <div id="pagefind-ui" />
-  <PagefindSearch
-    pagePath={pageContext.path}
-    bundlePath={getSearchBundlePath(collection)}
-    client:only="react"
+  <pagefind-config
+    bundle-path={getSearchBundlePath(collection)}
+    base-url="/"
+    preload="true"
+    faceted="true"
   />
+  <div class="flex flex-col gap-4">
+    <div class="[zoom:var(--pf-summary-zoom)]">
+      <pagefind-summary />
+    </div>
+    <div class="[zoom:var(--pf-zoom)]">
+      <pagefind-input />
+    </div>
+    <div class="[zoom:var(--pf-zoom)]">
+      <pagefind-keyboard-hints />
+    </div>
+    <div class="[zoom:var(--pf-zoom)]">
+      <pagefind-results />
+    </div>
+  </div>
+  <PagefindSearch client:only="react" />
 </BaseLayout>

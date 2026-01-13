@@ -1,18 +1,24 @@
 /* Pagefind UI 自定义样式覆盖 */
-/* 必须在 @pagefind/default-ui/css/ui.css 之后加载 */
+/* 必须在 @pagefind/component-ui/css 之后加载 */
 
 :root {
-  /* 根据HTML的font-size缩放 */
-  /*noinspection Annotator*/
-  --pagefind-ui-scale: calc(var(--base-font-size) / 1rem);
-  --pagefind-ui-primary: var(--color-link);
-  --pagefind-ui-text: var(--color-primary);
-  --pagefind-ui-background: var(--color-bg);
-  --pagefind-ui-border: var(--color-border);
-  --pagefind-ui-tag: var(--color-hover);
-  --pagefind-ui-border-width: 0.0625rem;
-  --pagefind-ui-border-radius: 0.5rem;
-  --pagefind-ui-image-border-radius: 0.5rem;
-  --pagefind-ui-image-box-ratio: 3 / 2;
-  --pagefind-ui-font: var(--font-sans);
+  --pf-text: var(--color-primary);
+  --pf-text-secondary: var(--color-secondary);
+  --pf-text-muted: var(--color-muted);
+  --pf-background: var(--color-bg);
+  --pf-border: var(--color-border);
+  --pf-border-focus: var(--color-link);
+  --pf-skeleton: var(--color-skeleton);
+  --pf-skeleton-shine: var(--color-skeleton-shine);
+  --pf-hover: var(--color-hover);
+  --pf-mark: var(--color-link-hover);
+
+  --pf-outline-focus: var(--color-outline-focus);
+
+  --pf-font: var(--font-sans);
+
+  /* 14px -> 1rem */
+  --pf-zoom: calc(var(--base-zoom) * 16 / 14);
+  /* 12px -> 1rem */
+  --pf-summary-zoom: calc(var(--base-zoom) * 16 / 12);
 }
