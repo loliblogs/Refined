@@ -1,0 +1,40 @@
+/**
+ * 无 JS 环境下恢复滚动条
+ * 使用 :root 中的 --scrollbar-* 变量，与 os-theme-modern 共用
+ * 特异性需要高于 OverlayScrollbars：
+ * - scrollbar-width: (0,2,0) → 我们用 (0,2,1)
+ * - ::-webkit-scrollbar: (0,2,1) → 我们用 (0,2,2)
+ */
+
+/* Firefox 等标准浏览器 */
+html [data-overlayscrollbars-initialize]:not([data-overlayscrollbars-viewport]) {
+  scrollbar-width: thin !important;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track) !important;
+}
+
+/* Webkit 浏览器 */
+html [data-overlayscrollbars-initialize]:not([data-overlayscrollbars-viewport])::-webkit-scrollbar {
+  appearance: auto !important;
+  display: block !important;
+  width: var(--scrollbar-size-hover) !important;
+  height: var(--scrollbar-size-hover) !important;
+  background: var(--scrollbar-track) !important;
+}
+
+html [data-overlayscrollbars-initialize]:not([data-overlayscrollbars-viewport])::-webkit-scrollbar-track {
+  background: var(--scrollbar-track) !important;
+}
+
+html [data-overlayscrollbars-initialize]:not([data-overlayscrollbars-viewport])::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb) !important;
+  border-radius: var(--scrollbar-thumb-radius) !important;
+}
+
+html [data-overlayscrollbars-initialize]:not([data-overlayscrollbars-viewport])::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover) !important;
+}
+
+html [data-overlayscrollbars-initialize]:not([data-overlayscrollbars-viewport])::-webkit-scrollbar-corner {
+  appearance: auto !important;
+  background: var(--scrollbar-track) !important;
+}

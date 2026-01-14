@@ -32,20 +32,17 @@ const homePath = getBasePath(collection);
       max-lg:flex
     `}
   >
-    <button
-      id="open-panel"
+    <label
+      for="sidebar-toggle"
       class={`
         m-0 flex size-11 shrink-0 cursor-pointer items-center justify-center
-        border-none bg-transparent p-0 text-primary transition-colors
-        duration-100 ease-in-out outline-none
+        bg-transparent text-primary transition-colors duration-100 ease-in-out
         hover:bg-active
-        focus:bg-active
       `}
       aria-label="打开侧边栏"
-      type="button"
     >
       <FilesIcon size="1.25rem" weight="regular" />
-    </button>
+    </label>
     <a
       href={homePath}
       class={`
@@ -57,20 +54,17 @@ const homePath = getBasePath(collection);
     >
       {config.title}
     </a>
-    <button
-      id="open-menus"
+    <label
+      for="menu-toggle"
       class={`
         m-0 flex size-11 shrink-0 cursor-pointer items-center justify-center
-        border-none bg-transparent p-0 text-primary transition-colors
-        duration-100 ease-in-out outline-none
+        bg-transparent text-primary transition-colors duration-100 ease-in-out
         hover:bg-active
-        focus:bg-active
       `}
       aria-label="切换菜单"
-      type="button"
     >
       <ListIcon size="1.25rem" weight="regular" />
-    </button>
+    </label>
   </div>
 
   {/* 菜单项 */}
@@ -81,16 +75,16 @@ const homePath = getBasePath(collection);
         flex h-full flex-col justify-center
         max-lg:h-0 max-lg:overflow-hidden max-lg:opacity-0
         max-lg:transition-[height_0.35s_cubic-bezier(0.4,0,0.2,1),opacity_0.25s_ease-out]
-        [&.no-transition]:transition-none!
-        max-lg:[&.show]:h-11! max-lg:[&.show]:opacity-100!
-        max-lg:[&.show]:transition-[height_0.35s_cubic-bezier(0.4,0,0.2,1),opacity_0.25s_ease-in_0.1s]
+        max-lg:group-has-[#menu-toggle:checked]/menu:h-11!
+        max-lg:group-has-[#menu-toggle:checked]/menu:opacity-100!
+        max-lg:group-has-[#menu-toggle:checked]/menu:transition-[height_0.35s_cubic-bezier(0.4,0,0.2,1),opacity_0.25s_ease-in_0.1s]
       `}
     >
       <div
         class={`
           flex max-h-full flex-col overflow-y-auto
-          max-lg:flex-nowrap max-lg:justify-center max-lg:overflow-x-auto
-          max-lg:overflow-y-hidden max-lg:text-center max-lg:whitespace-nowrap
+          max-lg:block max-lg:overflow-x-auto max-lg:overflow-y-hidden
+          max-lg:text-center max-lg:whitespace-nowrap
         `}
         data-overlayscrollbars-initialize
         data-nav-menu-scroll
