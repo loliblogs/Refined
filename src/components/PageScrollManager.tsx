@@ -24,9 +24,9 @@ const PageScrollManager: FC = () => {
 
     // 导航栏隐藏状态管理 - 全局状态
     const nav = document.getElementById('nav');
-    const navMenu = document.getElementById('nav-menu');
-    const aside = document.getElementById('aside');
-    const openMenus = document.getElementById('open-menus');
+    const navMobileBar = document.getElementById('nav-mobile-bar');
+    const sidebarToggle = document.querySelector<HTMLInputElement>('#sidebar-toggle');
+    const menuToggle = document.querySelector<HTMLInputElement>('#menu-toggle');
     let scrollbar: HTMLElement | null = null;
     let lastScrollY = 0;
     let hideAmount = 0;
@@ -217,14 +217,13 @@ const PageScrollManager: FC = () => {
         return;
       }
 
-      // aside 展开时，只更新 lastScrollY，不改变 hideAmount 和 transform
-      if (aside?.classList.contains('aside-panel-show')) return;
-
-      // 一旦滚动，就关闭菜单
-      if (navMenu?.classList.contains('show')) {
-        navMenu.classList.remove('show');
-        openMenus?.blur();
+      // 滚动时关闭菜单
+      if (menuToggle?.checked) {
+        menuToggle.checked = false;
       }
+
+      // sidebar 展开时，只更新 lastScrollY，不改变导航栏位置
+      if (sidebarToggle?.checked) return;
 
       if (scrollTop <= 0) {
         hideAmount = 0;
@@ -270,7 +269,7 @@ const PageScrollManager: FC = () => {
 
           const handleUpdated = () => {
             const oldHeight = navHeight;
-            navHeight = nav?.offsetHeight ?? 0;
+            navHeight = navMobileBar?.offsetHeight ?? 0;
 
             if (oldHeight !== navHeight) {
               hideAmount = 0;

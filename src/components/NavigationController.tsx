@@ -34,24 +34,24 @@ const NavigationController = () => {
 
     highlightCurrentNav();
 
-    // 渐进增强：遮罩上滚轮时关闭菜单（让滚动穿透到底层内容）
-    document.getElementById('nav-menu-mask')?.addEventListener(
-      'wheel',
-      () => {
-        if (menuToggle) menuToggle.checked = false;
-      },
-      { signal, passive: true },
-    );
+    // 关闭所有面板
+    const closeAllPanels = () => {
+      if (menuToggle) menuToggle.checked = false;
+      if (sidebarToggle) sidebarToggle.checked = false;
+    };
+
+    // 渐进增强：遮罩上滚轮/滑动时关闭（让滚动穿透到底层内容）
+    const navMenuMask = document.getElementById('nav-menu-mask');
+    navMenuMask?.addEventListener('wheel', closeAllPanels, { signal, passive: true });
+    navMenuMask?.addEventListener('touchmove', closeAllPanels, { signal, passive: true });
+
+    // Escape 键关闭所有面板
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeAllPanels();
+    }, { signal });
 
     // View Transition 开始前关闭所有面板
-    document.addEventListener(
-      'astro:before-preparation',
-      () => {
-        if (menuToggle) menuToggle.checked = false;
-        if (sidebarToggle) sidebarToggle.checked = false;
-      },
-      { signal },
-    );
+    document.addEventListener('astro:before-preparation', closeAllPanels, { signal });
 
     return () => {
       controller.abort();

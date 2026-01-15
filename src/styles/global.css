@@ -191,6 +191,12 @@ html {
   font-size: var(--base-font-size);
 }
 
+/*
+ * 平滑滚动 - 渐进增强
+ * initialize: 无 JS 时滚动容器保持原位，锚点跳转的降级方案
+ * viewport: OverlayScrollbars 接管滚动后创建的实际容器
+ */
+[data-overlayscrollbars-initialize],
 [data-overlayscrollbars-viewport] {
   scroll-behavior: smooth;
 }

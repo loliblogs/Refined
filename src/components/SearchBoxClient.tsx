@@ -33,6 +33,7 @@ const SearchBoxClient: FC<SearchBoxClientProps> = ({
   const lastHighlightRef = useRef<HTMLElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const dropdownRef = useRef<HTMLElement | null>(null);
+  const sidebarToggleRef = useRef<HTMLInputElement | null>(null);
 
   // 搜索文章内容 - 优化版本，使用正则表达式避免重复toLowerCase
   const findDOMMatches = (searchKeyword: string): LocalMatch[] => {
@@ -128,6 +129,11 @@ const SearchBoxClient: FC<SearchBoxClientProps> = ({
 
   // 滚动到结果
   const scrollToResult = (result: LocalMatch) => {
+    // 关闭移动端sidebar
+    if (sidebarToggleRef.current) {
+      sidebarToggleRef.current.checked = false;
+    }
+
     result.element.scrollIntoView({
       behavior: 'auto',
       block: 'center',
@@ -278,6 +284,7 @@ const SearchBoxClient: FC<SearchBoxClientProps> = ({
 
     inputRef.current = input;
     dropdownRef.current = dropdown;
+    sidebarToggleRef.current = document.querySelector<HTMLInputElement>('#sidebar-toggle');
   }, []);
 
   // 绑定事件处理器 - 需要依赖状态更新
