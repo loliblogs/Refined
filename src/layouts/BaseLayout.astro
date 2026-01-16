@@ -99,13 +99,13 @@ const Analytics = config.analytics;
       <header
         id="header"
         class={`
-          group/menu group/sidebar fixed inset-y-0 left-0 flex w-header
+          fixed inset-y-0 left-0 flex w-header
           max-lg:static max-lg:h-0 max-lg:w-full
         `}
       >
         {/* 纯 CSS 控制面板的隐藏 checkbox */}
-        <input type="checkbox" id="menu-toggle" class="sr-only" aria-hidden="true" />
-        <input type="checkbox" id="sidebar-toggle" class="sr-only" aria-hidden="true" />
+        <input type="checkbox" id="menu-toggle" class="peer/menu sr-only" aria-hidden="true" />
+        <input type="checkbox" id="sidebar-toggle" class="peer/sidebar sr-only" aria-hidden="true" />
 
         {/* 菜单透明遮罩 - 纯 CSS 点击关闭，z-9 低于 nav 的 z-10 */}
         <label
@@ -114,7 +114,7 @@ const Analytics = config.analytics;
           class={`
             pointer-events-none fixed inset-0 z-9 hidden bg-transparent
             max-lg:block
-            max-lg:group-has-[#menu-toggle:checked]/menu:pointer-events-auto
+            max-lg:peer-checked/menu:pointer-events-auto
             lg:hidden
           `}
           aria-label="关闭菜单"
