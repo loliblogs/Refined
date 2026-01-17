@@ -26,6 +26,24 @@ function isNavActive(path: string, recursive: boolean): boolean {
 }
 ---
 
+{/* 纯 CSS 控制面板的隐藏 checkbox */}
+<input type="checkbox" id="menu-toggle" class="peer/menu sr-only" aria-label="切换菜单" />
+<input type="checkbox" id="sidebar-toggle" class="peer/sidebar sr-only" aria-label="切换侧边栏" />
+
+{/* 菜单透明遮罩 - 纯 CSS 点击关闭，z-9 低于 nav 的 z-10 */}
+<label
+  for="menu-toggle"
+  id="nav-menu-mask"
+  class={`
+    pointer-events-none fixed inset-0 z-9 hidden bg-transparent
+    max-lg:block
+    max-lg:peer-checked/menu:pointer-events-auto
+    lg:hidden
+  `}
+>
+  <span class="sr-only">关闭菜单</span>
+</label>
+
 <nav
   id="nav"
   class={`
@@ -48,10 +66,12 @@ function isNavActive(path: string, recursive: boolean): boolean {
         m-0 flex size-11 shrink-0 cursor-pointer items-center justify-center
         bg-transparent text-primary transition-colors duration-100 ease-in-out
         hover:bg-active
+        [#sidebar-toggle:focus-visible~#nav_&]:ring-2
+        [#sidebar-toggle:focus-visible~#nav_&]:ring-primary
       `}
-      aria-label="打开侧边栏"
     >
       <FilesIcon size="1.25rem" weight="regular" />
+      <span class="sr-only">打开侧边栏</span>
     </label>
     <a
       href={homePath}
@@ -70,10 +90,12 @@ function isNavActive(path: string, recursive: boolean): boolean {
         m-0 flex size-11 shrink-0 cursor-pointer items-center justify-center
         bg-transparent text-primary transition-colors duration-100 ease-in-out
         hover:bg-active
+        [#menu-toggle:focus-visible~#nav_&]:ring-2
+        [#menu-toggle:focus-visible~#nav_&]:ring-primary
       `}
-      aria-label="切换菜单"
     >
       <ListIcon size="1.25rem" weight="regular" />
+      <span class="sr-only">切换菜单</span>
     </label>
   </div>
 
@@ -104,9 +126,11 @@ function isNavActive(path: string, recursive: boolean): boolean {
       data-nav-menu-scroll
     >
       {Object.entries(config.menu).map(([label, navItem]) => {
-        const relativePath = typeof navItem === 'object' ? navItem.path : navItem;
+        const isObject = typeof navItem === 'object';
+        const relativePath = isObject ? navItem.path : navItem;
         const path = getFullPath(relativePath);
-        const recursive = typeof navItem !== 'object' || navItem.recursive !== false;
+        const ariaLabel = isObject ? navItem.ariaLabel : undefined;
+        const recursive = !isObject || navItem.recursive !== false;
 
         return (
           <a
@@ -122,6 +146,7 @@ function isNavActive(path: string, recursive: boolean): boolean {
               { 'bg-active': isNavActive(path, recursive) },
             ]}
             href={path}
+            aria-label={ariaLabel}
           >
             <span
               class={`

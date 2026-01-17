@@ -102,7 +102,8 @@ git commit -m "refactor: migrate files from mdx to md [full]"
     ├── components/
     │   └── pages/
     ├── config/
-    │   ├── site.config.tsx
+    │   ├── base.config.tsx
+    │   ├── site.config.ts
     │   ├── paths.config.ts
     │   └── comments.config.tsx
     ├── content/
@@ -266,11 +267,11 @@ console.log('代码块会被语法高亮');
 
 从 `astro.config.ts` 开始。将 `site` 设置为你的站点规范 URL。本项目已支持非根 base（例如 `base: '/blog/'`）。集合 URL 路径在 `src/config/paths.config.ts` 中定义。
 
-主要配置位于 `src/config/site.config.tsx`。它为每个集合（例如 `post` 与 `oi`）提供设置，包括站点标识（标题、副标题、描述、语言）、导航菜单、分页、全局评论开关、favicon 链接，以及对加密内容的默认提示文案。该文件内注释非常详尽——先快速浏览顶部关键选项，完整参数请参考内联注释。
+主要配置位于 `src/config/base.config.tsx`（含 JSX 组件的原始配置）与 `src/config/site.config.ts`（处理 MathJax 的入口）。它为每个集合（例如 `post` 与 `oi`）提供设置，包括站点标识（标题、副标题、描述）、导航菜单、分页、全局评论开关、favicon 链接，以及对加密内容的默认提示文案。该文件内注释非常详尽——先快速浏览顶部关键选项，完整参数请参考内联注释。
 
-集合 URL 路径集中在 `src/config/paths.config.ts`。该文件定义 `COLLECTION_PATHS`（将集合映射到其 URL 段，如 `post` → `'post'`、`oi` → `'oi/post'`）和 `BASE_PATHS`（集合根路径）。添加新集合或更改 URL 结构时修改此文件。路径配置被有意与 `site.config.tsx` 分离，是因为 Astro 集成（如 postlink slug 映射器）需要在构建时导入路径定义，而不能引入主站配置中的 React/JSX 依赖。
+集合 URL 路径集中在 `src/config/paths.config.ts`。该文件定义 `COLLECTION_PATHS`（将集合映射到其 URL 段，如 `post` → `'post'`、`oi` → `'oi/post'`）和 `BASE_PATHS`（集合根路径）。添加新集合或更改 URL 结构时修改此文件。路径配置被有意与站点配置分离，是因为 Astro 集成（如 postlink slug 映射器）需要在构建时导入路径定义，而不能引入主站配置中的 React/JSX 依赖。
 
-评论系统通过 `src/config/comments.config.tsx` 接入。尽管文件名叫 config，它实际上是一个组件入口：你可以将其替换为任意评论提供方（Giscus、Disqus、Gitalk，或自定义组件）。文章页会渲染它，并遵循 `site.config.tsx` 中的 `comments` 开关；使用 `getSiteConfig()` 的 `language` 值为小部件做本地化。如果替换提供方，请保持默认导出为一个 React 组件。
+评论系统通过 `src/config/comments.config.tsx` 接入。尽管文件名叫 config，它实际上是一个组件入口：你可以将其替换为任意评论提供方（Giscus、Disqus、Gitalk，或自定义组件）。文章页会渲染它，并遵循站点配置中的 `comments` 开关。如果替换提供方，请保持默认导出为一个 React 组件。
 
 ## 🔐 加密
 
@@ -286,7 +287,7 @@ title: 加密示例
 date: 2025-09-15
 encrypted: true
 # 可选的 UI 文案；两者都是可选项，未设置则回退到
-# src/config/site.config.tsx 中配置的站点默认值
+# src/config/base.config.tsx 中配置的站点默认值
 prompt: 该内容已受保护，请输入密码以查看。
 hint: 你收到的私密密码。
 ---
@@ -314,7 +315,7 @@ SECRET_ENCRYPTION_SALT='another-strong-random-string-or-base64'
 
 数学渲染分两层进行。对于 Markdown/MDX 内容，数学公式在 remark/rehype 阶段被解析并通过 `src/plugins` 中的自定义流水线转换为静态 HTML。`remark-math.ts` 插件与官方行为一致并做了一个小扩展：当一段单行内联公式被足够多的 `$` 定界符包裹（可通过 `flowSingleLineMinDelimiter` 配置）时，会被提升为展示模式，并在生成节点上设置 `math-display` 类名。`rehype-mathjax.ts` 在外部行为与上游保持一致，但改为基于 MathJax v4 实现；它将数学内容（包括围栏 \`\`\`math 代码块）转换为 HTML，注入生成的样式表但不包含字体 URL，并将字体的 @font-face CSS 下放到 `src/styles/mathjax.css`（由 `src/styles/global.css` 引入）以便打包。
 
-对于导航与侧边栏等 UI 外框，标题、摘要或生成列表中也可能出现数学公式。这些由 `src/utils/mathjax-singleton.ts` 中的单例渲染器处理。它按需惰性初始化单个 MathJax 实例，在生产环境缓存处理结果，并应用与内容流水线一致的字体 CSS 清理，使 UI 外框与内容的渲染一致。
+对于导航与侧边栏等 UI 外框，标题、菜单标签中也可能出现数学公式。这些在构建时由 `src/utils/mathjax-processor.ts`（在 `src/config/site.config.ts` 中调用）处理。每个集合使用独立的处理器实例以确保 CSS 隔离，并应用与内容流水线一致的字体 CSS 清理，使 UI 外框与内容的渲染一致。
 
 ## 👀 想了解更多？
 
@@ -322,7 +323,7 @@ SECRET_ENCRYPTION_SALT='another-strong-random-string-or-base64'
 
 这是一个个人项目。这里的“个人”意味着优先满足作者自身使用的“够用”，而非通用主题。为保持代码体量小、可读、易维护，以下请求会被有意排除在范围之外：
 
-- 不提供 i18n 或多语言路由。`language` 字段仅用于内置 UI 文案本地化。
+- 不提供 i18n 或多语言路由。站点硬编码为 `zh-CN`。
 - 不提供 MathJax 的功能开关；公式流水线是内置的。若需禁用请自行修改代码。
 - 不提供插件系统、主题预设矩阵或面面俱到的开关；默认值是有主观取舍的。
 - 不提供多集合管理的脚手架/界面；集合的定义、添加与移除均遵循相同的基于 Schema 的手动过程，且不在范围内。

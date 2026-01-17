@@ -44,8 +44,9 @@ const hasTocSlot = Astro.slots.has('default');
       max-lg:[#sidebar-toggle:checked~#aside_&]:pointer-events-auto
       max-lg:[#sidebar-toggle:checked~#aside_&]:opacity-100
     `}
-    aria-label="关闭侧边栏"
-  />
+  >
+    <span class="sr-only">关闭侧边栏</span>
+  </label>
 
   <div
     id="aside-inner"

@@ -48,11 +48,7 @@ const pageContext = {
       </a>
       {showComments && (
         <section class="mt-12 border-t border-line pt-8">
-          <Comments
-            collection={collection}
-            term={`/special-page${pageContext.path}`}
-            client:load
-          />
+          <Comments term={`/special-page${pageContext.path}`} client:load />
         </section>
       )}
     </div>

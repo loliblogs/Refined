@@ -3,17 +3,13 @@
  * 使用 giscus web component 懒加载
  */
 
-import type { CollectionName } from '@/types/content';
-import { getSiteConfig } from './site.config';
 import { useEffect } from 'react';
 import { commentsStore } from '@/stores/state';
 
 /**
  * 默认评论组件 - 懒加载版本
  */
-export default function Comments({ collection, term }: { collection: CollectionName; term?: string }) {
-  const config = getSiteConfig(collection);
-
+export default function Comments({ term }: { term?: string }) {
   useEffect(() => {
     // 订阅评论加载状态（即使组件晚挂载也能收到通知）
     const unsubscribe = commentsStore.subscribe(
@@ -45,7 +41,7 @@ export default function Comments({ collection, term }: { collection: CollectionN
         emitMetadata="0"
         inputPosition="top"
         theme="preferred_color_scheme"
-        lang={config.language}
+        lang="zh-CN"
       />
     </div>
   );

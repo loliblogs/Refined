@@ -1,11 +1,13 @@
 /**
- * 站点配置文件
+ * 站点基础配置文件
  * 从 Hexo Concise 主题迁移的配置
  *
  * 使用方法：
  * 1. 直接修改此文件中的配置项
  * 2. 所有更改会在开发服务器重启后生效
  * 3. 配置项都有详细的注释说明
+ *
+ * 注意：此文件不包含 MathJax 处理逻辑，处理后的配置请从 site.config.ts 导入
  */
 
 import { GithubLogoIcon, LinuxLogoIcon, SteamLogoIcon, SubwayIcon } from '@phosphor-icons/react';
@@ -14,9 +16,7 @@ import avatarImg from '@/assets/avatar.jpg';
 import faviconUrl from '@/assets/favicon-32x32.png?url&no-inline';
 import faviconUrl192 from '@/assets/favicon-192x192.png?url&no-inline';
 import faviconUrl180 from '@/assets/favicon-180x180.png?url&no-inline';
-import { createMathProcessor } from '@/utils/mathjax-processor';
-import type { ProcessedSiteConfig, SiteConfig } from '@/types/site-config';
-import type { CollectionName } from '@/types/content';
+import type { SiteConfig } from '@/types/site-config';
 
 /**
  * ==========================================
@@ -39,13 +39,12 @@ const animationNew = {
 };
 
 // Post Collection 配置（默认博客）
-const postConfig: SiteConfig = {
+export const postConfig: SiteConfig = {
   // ========== 站点基本信息 ==========
   title: 'loli\'s diary',                           // 站点标题
   subtitle: 'loli\'s diary about learning and design with Astro', // 副标题
   description: '关于学习和生活的日记碎碎念，记录在各种实验和实践中的经历和思考，进行一些案例分析和分享',      // 站点描述（SEO）
   keywords: 'blog, design, learning, life, diary, thinking',       // 关键词（SEO）
-  language: 'zh-CN',                          // 语言
 
   // ========== 分页配置 ==========
   // 各页面的每页文章数配置
@@ -59,7 +58,7 @@ const postConfig: SiteConfig = {
   // 导航菜单（可自定义添加或删除）
   menu: {
     首页: '/',
-    '$\\mathcal{OI}$': '/oi',
+    '$\\mathcal{OI}$': { path: '/oi', ariaLabel: 'OI' },
     分类: '/category',
     标签: '/tag',
     归档: '/archive',
@@ -179,13 +178,12 @@ const postConfig: SiteConfig = {
 } as const satisfies SiteConfig;
 
 // OI Collection 配置
-const oiConfig: SiteConfig = {
+export const oiConfig: SiteConfig = {
   // ========== 站点基本信息 ==========
   title: 'loli\'s OI log',                              // 站点标题
   subtitle: 'lolifamily\'s log about competitive programming with Astro',              // 副标题
   description: '关于OI学习的记录，记录题解和部分算法上思考',     // 站点描述（SEO）
   keywords: 'OI, ACM, algorithm, competitive programming', // 关键词（SEO）
-  language: 'zh-CN',                          // 语言
 
   // ========== 分页配置 ==========
   // 各页面的每页文章数配置
@@ -194,7 +192,7 @@ const oiConfig: SiteConfig = {
   // ========== 导航菜单 ==========
   // OI专属导航菜单
   menu: {
-    '$\\mathcal{OI}$首页': { path: '/oi', recursive: false },
+    '$\\mathcal{OI}$首页': { path: '/oi', recursive: false, ariaLabel: 'OI 首页' },
     返回博客: '/',
     分类: '/oi/category',
     标签: '/oi/tag',
@@ -239,58 +237,3 @@ const oiConfig: SiteConfig = {
   // 目录配置
   tocEmptyText: '本题解没有目录',              // 无目录时的提示文字
 } as const satisfies SiteConfig;
-
-/**
- * ==========================================
- * MathJax 预处理
- * ==========================================
- */
-
-/**
- * 处理配置中可能包含数学公式的字段
- * 每个 collection 使用独立的 processor，保证 CSS 隔离
- */
-async function processConfigMath(config: SiteConfig): Promise<ProcessedSiteConfig> {
-  const proc = createMathProcessor();
-
-  // 处理 menu labels
-  const menuEntries = await Promise.all(
-    Object.entries(config.menu).map(async ([label, path]) => [
-      await proc.process(label),
-      path,
-    ] as const),
-  );
-
-  // 处理 author 信息
-  const author = {
-    ...config.author,
-    name: await proc.process(config.author.name),
-    work: await proc.process(config.author.work),
-    location: await proc.process(config.author.location),
-  };
-
-  // 所有处理完成，获取 CSS
-  return {
-    ...config,
-    menu: Object.fromEntries(menuEntries),
-    author,
-    mathCSS: proc.getCSS(),
-  };
-}
-
-/**
- * ==========================================
- * 导出配置
- * ==========================================
- */
-
-// 配置映射（各 collection 独立处理，CSS 隔离）
-const configMap = {
-  post: await processConfigMath(postConfig),
-  oi: await processConfigMath(oiConfig),
-} as const;
-
-// 获取完整配置（支持 collection 参数）
-export function getSiteConfig(collection: CollectionName): ProcessedSiteConfig {
-  return configMap[collection];
-}

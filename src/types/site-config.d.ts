@@ -35,12 +35,17 @@ export type ValidPath = `/${string}` | `http://${string}` | `https://${string}` 
  *   '关于': {                             // 对象格式，精确匹配
  *     path: '/about',
  *     recursive: false
+ *   },
+ *   '$\\mathcal{OI}$': {                  // LaTeX 标签需要 ariaLabel
+ *     path: '/oi',
+ *     ariaLabel: 'OI'
  *   }
  * }
  */
 export type NavItem = ValidPath | {
   path: ValidPath;
   recursive?: boolean;  // 是否递归匹配子路径，默认true
+  ariaLabel?: string;   // 无障碍标签，用于 LaTeX 等非纯文本标签
 };
 
 /**
@@ -52,7 +57,6 @@ export interface SiteConfig {
   subtitle?: string;                          // 副标题（可选）
   description: string;                        // 站点描述（SEO）
   keywords: string;                           // 关键词（SEO）
-  language: string;                           // 语言代码（如 zh-CN）
 
   // ========== 分页配置 ==========
   pagination: {

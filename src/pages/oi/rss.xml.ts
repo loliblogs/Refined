@@ -46,7 +46,7 @@ export const GET: APIRoute = async (context) => {
     site: new URL(getBasePath('oi'), context.site),
     items,
     customData: `
-      <language>${config.language}</language>
+      <language>zh-CN</language>
       <copyright>Copyright ${new Date().getFullYear()}</copyright>
       <ttl>60</ttl>
       <lastBuildDate>${new Date().toISOString()}</lastBuildDate>

@@ -1,5 +1,4 @@
 ---
-import { getSiteConfig } from '@/config/site.config';
 import styles from '@/styles/global.css?url';
 
 import Footer from '@/components/Footer.astro';
@@ -13,11 +12,10 @@ const {
   pageContext,
 } = Astro.props;
 
-const config = getSiteConfig(pageContext.collection);
 ---
 
 <!DOCTYPE html>
-<html lang={config.language} class="h-full scroll-smooth">
+<html lang="zh-CN" class="h-full scroll-smooth">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />

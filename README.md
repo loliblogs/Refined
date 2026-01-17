@@ -102,7 +102,8 @@ Inside your Astro project, you'll see the following folders and files:
     ├── components/
     │   └── pages/
     ├── config/
-    │   ├── site.config.tsx
+    │   ├── base.config.tsx
+    │   ├── site.config.ts
     │   ├── paths.config.ts
     │   └── comments.config.tsx
     ├── content/
@@ -266,11 +267,11 @@ Why a directive instead of an MDX component? MDX compiles all content to JSX AST
 
 Start with `astro.config.ts`. Set `site` to your canonical URL. This project supports non-root bases (for example `base: '/blog/'`). Per-collection URL paths are defined in `src/config/paths.config.ts`.
 
-The primary configuration lives in `src/config/site.config.tsx`. It provides per‑collection settings (e.g., `post` and `oi`) including site identity (title, subtitle, description, language), navigation menu, pagination, a global comments toggle, favicon links, and sensible defaults for encrypted content prompts. The file is heavily documented—skim the top for key options and consult the inline comments for the complete list.
+The primary configuration lives in `src/config/base.config.tsx` (raw config with JSX components) and `src/config/site.config.ts` (entry point that processes MathJax). It provides per‑collection settings (e.g., `post` and `oi`) including site identity (title, subtitle, description), navigation menu, pagination, a global comments toggle, favicon links, and sensible defaults for encrypted content prompts. The file is heavily documented—skim the top for key options and consult the inline comments for the complete list.
 
-Collection URL paths are centralized in `src/config/paths.config.ts`. This file defines `COLLECTION_PATHS` (mapping collections to their URL segments like `post` → `'post'`, `oi` → `'oi/post'`) and `BASE_PATHS` (for collection root paths). Modify these when adding new collections or changing URL structures. Path config is intentionally separated from `site.config.tsx` because Astro integrations (like the postlink slug mapper) need to import path definitions at build time without pulling in React/JSX dependencies from the main site config.
+Collection URL paths are centralized in `src/config/paths.config.ts`. This file defines `COLLECTION_PATHS` (mapping collections to their URL segments like `post` → `'post'`, `oi` → `'oi/post'`) and `BASE_PATHS` (for collection root paths). Modify these when adding new collections or changing URL structures. Path config is intentionally separated from site config because Astro integrations (like the postlink slug mapper) need to import path definitions at build time without pulling in React/JSX dependencies from the main site config.
 
-Comments are wired through `src/config/comments.config.tsx`. Despite the name, this file is a component entry point, not a rigid schema: you can replace its contents with any comment provider (Giscus, Disqus, Gitalk, or a custom widget). It is rendered by the post page and respects `comments` in `site.config.tsx`; use the site’s `language` from `getSiteConfig()` to localize your widget. If you swap providers, keep the default export as a React component.
+Comments are wired through `src/config/comments.config.tsx`. Despite the name, this file is a component entry point, not a rigid schema: you can replace its contents with any comment provider (Giscus, Disqus, Gitalk, or a custom widget). It is rendered by the post page and respects `comments` in site config. If you swap providers, keep the default export as a React component.
 
 ## 🔐 Encryption
 
@@ -286,7 +287,7 @@ title: Encrypted Example
 date: 2025-09-15
 encrypted: true
 # Optional UI text; both fields are optional and fall back to site defaults
-# defined in src/config/site.config.tsx
+# defined in src/config/base.config.tsx
 prompt: This content is protected. Enter the password to view.
 hint: The password you received privately.
 ---
@@ -314,7 +315,7 @@ For local development, place these in `.env` (the `.env.example` file is just a 
 
 Math rendering is handled in two layers. For Markdown/MDX content, math is parsed at the remark/rehype stage and converted to static HTML using a customized pipeline in `src/plugins`. The remark plugin `remark-math.ts` mirrors the official plugin and adds one small extension: when a single‑line inline math segment is wrapped by sufficiently wide `$` delimiters (configurable via `flowSingleLineMinDelimiter`), it is promoted to display mode by setting the resulting node’s class to `math-display`. The rehype plugin `rehype-mathjax.ts` keeps the same external behavior as upstream but is re‑implemented on top of MathJax v4; it converts math (including fenced \`\`\`math code blocks) to HTML, injects the generated stylesheet without font URLs, and defers font‑face CSS to `src/styles/mathjax.css` (imported by `src/styles/global.css`) for easier bundling.
 
-For UI chrome like the Navigation and Sidebar, math may appear in dynamic strings (titles, excerpts, or generated lists). Those are processed by a singleton renderer in `src/utils/mathjax-singleton.ts`. It lazily initializes a single MathJax instance, caches processed HTML in production, and applies the same font‑CSS cleanup so that UI chrome matches the content pipeline.
+For UI chrome like the Navigation and Sidebar, math may appear in dynamic strings (titles, menu labels). Those are processed at build time by `src/utils/mathjax-processor.ts` (called from `src/config/site.config.ts`). Each collection gets its own processor instance to ensure CSS isolation, and the same font‑CSS cleanup is applied so that UI chrome matches the content pipeline.
 
 ## 👀 Want to learn more?
 
@@ -322,7 +323,7 @@ Check the [Astro documentation](https://docs.astro.build) or join the [Astro Dis
 
 This is a personal project. Here, “personal” means good‑enough for my own use rather than a general‑purpose theme. To keep the code small, readable, and easy to maintain, some requests are intentionally out of scope:
 
-- No i18n or multi‑locale routing. The `language` field only localizes built‑in UI text.
+- No i18n or multi‑locale routing. The site is hardcoded to `zh-CN`.
 - No feature toggle for MathJax; the math pipeline is built‑in. Disabling it requires code edits.
 - No plugin system, theme preset matrix, or exhaustive switches; defaults are opinionated.
 - No multi‑collection management scaffolding/UI; defining, adding, and removing collections follow the same manual, schema‑based pattern and are out of scope.
