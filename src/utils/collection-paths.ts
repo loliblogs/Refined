@@ -13,6 +13,20 @@ import { getBasePath as getBasePathConfig } from '@/config/paths.config';
 import type { CollectionName } from '@/types/content';
 
 /**
+ * 获取完整路径（包含 base）
+ */
+export function getFullPath(path: string): string {
+  return posix.join(globalBase, path);
+}
+
+/**
+ * 判断路径是否为站点根路径
+ */
+export function isRootPath(path: string): boolean {
+  return path === globalBase;
+}
+
+/**
  * 获取collection的基础路径（包含 base）
  */
 export function getBasePath(collection: CollectionName): string {

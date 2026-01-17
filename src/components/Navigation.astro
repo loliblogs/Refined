@@ -3,9 +3,8 @@ import { FilesIcon, ListIcon } from '@phosphor-icons/react';
 
 import { getSiteConfig } from '@/config/site.config';
 import type { CollectionName } from '@/types/content';
-import { getBasePath } from '@/utils/collection-paths';
+import { getBasePath, getFullPath, isRootPath } from '@/utils/collection-paths';
 
-import MathJax from './MathJax.astro';
 import NavigationController from './NavigationController';
 
 interface Props {
@@ -15,6 +14,16 @@ interface Props {
 const { collection = 'post' } = Astro.props;
 const config = getSiteConfig(collection);
 const homePath = getBasePath(collection);
+const currentPath = Astro.url.pathname;
+
+// 静态计算导航项是否激活
+function isNavActive(path: string, recursive: boolean): boolean {
+  if (recursive) {
+    return currentPath === path
+      || (!isRootPath(path) && currentPath.startsWith(`${path}/`));
+  }
+  return currentPath === path;
+}
 ---
 
 <nav
@@ -73,62 +82,59 @@ const homePath = getBasePath(collection);
     * 任意值语法：Tailwind 不支持 group-peer-checked/{name} 命名变体，
     * 需要用 [#menu-toggle:checked~#nav_&] 精确匹配 checkbox 状态
     */}
-  <MathJax cacheKey={`nav-menu-${collection}`}>
+  {/* menu labels 已在配置层预处理，直接使用 set:html */}
+  <div
+    id="nav-menu"
+    class={`
+      flex h-full flex-col justify-center
+      max-lg:h-0 max-lg:overflow-hidden max-lg:opacity-0
+      max-lg:transition-[height_0.35s_cubic-bezier(0.4,0,0.2,1),opacity_0.25s_ease-out]
+      max-lg:[#menu-toggle:checked~#nav_&]:h-11
+      max-lg:[#menu-toggle:checked~#nav_&]:opacity-100
+      max-lg:[#menu-toggle:checked~#nav_&]:transition-[height_0.35s_cubic-bezier(0.4,0,0.2,1),opacity_0.25s_ease-in_0.1s]
+    `}
+  >
     <div
-      id="nav-menu"
       class={`
-        flex h-full flex-col justify-center
-        max-lg:h-0 max-lg:overflow-hidden max-lg:opacity-0
-        max-lg:transition-[height_0.35s_cubic-bezier(0.4,0,0.2,1),opacity_0.25s_ease-out]
-        max-lg:[#menu-toggle:checked~#nav_&]:h-11
-        max-lg:[#menu-toggle:checked~#nav_&]:opacity-100
-        max-lg:[#menu-toggle:checked~#nav_&]:transition-[height_0.35s_cubic-bezier(0.4,0,0.2,1),opacity_0.25s_ease-in_0.1s]
+        flex max-h-full flex-col overflow-y-auto
+        max-lg:block max-lg:overflow-x-auto max-lg:overflow-y-hidden
+        max-lg:text-center max-lg:whitespace-nowrap
       `}
+      data-overlayscrollbars-initialize
+      data-nav-menu-scroll
     >
-      <div
-        class={`
-          flex max-h-full flex-col overflow-y-auto
-          max-lg:block max-lg:overflow-x-auto max-lg:overflow-y-hidden
-          max-lg:text-center max-lg:whitespace-nowrap
-        `}
-        data-overlayscrollbars-initialize
-        data-nav-menu-scroll
-      >
-        {Object.entries(config.menu).map(([label, navItem]) => {
-        // 统一处理为对象格式
-          const item = typeof navItem === 'object'
-            ? { ...navItem, recursive: navItem.recursive ?? true }
-            : { path: navItem, recursive: true };
+      {Object.entries(config.menu).map(([label, navItem]) => {
+        const relativePath = typeof navItem === 'object' ? navItem.path : navItem;
+        const path = getFullPath(relativePath);
+        const recursive = typeof navItem !== 'object' || navItem.recursive !== false;
 
-          return (
-            <a
-              data-nav-item
-              class={`
+        return (
+          <a
+            class:list={[
+              `
                 flex h-nav-height shrink-0 items-center justify-center
                 text-primary no-underline transition-colors duration-100
                 ease-in-out
                 hover:bg-active
                 max-lg:inline-block max-lg:h-11 max-lg:px-5 max-lg:align-top
                 max-lg:text-base/11
+              `,
+              { 'bg-active': isNavActive(path, recursive) },
+            ]}
+            href={path}
+          >
+            <span
+              class={`
+                inline-block truncate
+                max-lg:inline max-lg:text-inherit
               `}
-              href={item.path}
-              data-path={item.path}
-              data-recursive={item.recursive.toString()}
-            >
-              <span
-                class={`
-                  inline-block truncate
-                  max-lg:inline max-lg:text-inherit
-                `}
-              >
-                {label}
-              </span>
-            </a>
-          );
-        })}
-      </div>
+              set:html={label}
+            />
+          </a>
+        );
+      })}
     </div>
-  </MathJax>
+  </div>
 </nav>
 
 <NavigationController client:idle />

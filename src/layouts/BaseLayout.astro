@@ -77,6 +77,9 @@ const Analytics = config.analytics;
     <meta name="theme-color" content="#2b2e32" media="(prefers-color-scheme: dark)" />
     <meta name="color-scheme" content="light dark" />
 
+    {/* MathJax CSS - 配置层预处理的样式 */}
+    {config.mathCSS && <style set:html={config.mathCSS} />}
+
     {/* 重定向 */}
     {pageContext.redirect && (
       <meta

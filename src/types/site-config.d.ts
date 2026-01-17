@@ -104,3 +104,11 @@ export interface SiteConfig {
   passwordPrompt?: string;                     // 全局加密内容提示
   tocEmptyText?: string;                       // 无目录时的提示文字
 }
+
+/**
+ * 处理后的站点配置 - 包含 MathJax 预处理的结果
+ * menu labels 和 author 信息已转换为 HTML
+ */
+export interface ProcessedSiteConfig extends SiteConfig {
+  mathCSS: string;                            // 该 collection 的 MathJax CSS
+}

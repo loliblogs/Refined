@@ -1,14 +1,14 @@
-mjx-container {
+html mjx-container {
   font-size: 1.125em;
 }
 
-mjx-container[display] {
+html mjx-container[display] {
   font-size: 1.25em;
 }
 
 /* workaround for regression introduced by https://github.com/mathjax/MathJax-src/pull/1356 */
-mjx-stretchy-v > mjx-ext {
-  white-space: normal !important;
+html mjx-stretchy-v > mjx-ext {
+  white-space: normal;
 }
 
 @font-face /* MJX-NCM-ZERO */ {

@@ -9,6 +9,7 @@ import { MathJaxNewcmFont } from '@mathjax/mathjax-newcm-font/js/chtml.js';
 import { mathjax } from '@mathjax/src/js/mathjax.js';
 import { RegisterHTMLHandler } from '@mathjax/src/js/handlers/html.js';
 import { liteAdaptor } from '@mathjax/src/js/adaptors/liteAdaptor.js';
+import { AssistiveMmlHandler } from '@mathjax/src/js/a11y/assistive-mml.js';
 
 import '@mathjax/src/js/util/asyncLoad/esm.js';
 
@@ -37,7 +38,7 @@ const input = new TeX({
 });
 
 const adaptor = liteAdaptor();
-RegisterHTMLHandler(adaptor);
+AssistiveMmlHandler(RegisterHTMLHandler(adaptor));
 
 // 转换 LiteElement 到 hast Element
 function fromLiteElement(liteElement: LiteElement): Element {
@@ -69,12 +70,11 @@ export default function rehypeMathJax() {
           return [fromLiteElement(liteElement as LiteElement)];
         },
 
-        styleSheet: async () => {
+        styleSheet: () => {
           if (!currentDocument || !currentOutput) {
             return null;
           }
 
-          await currentDocument.renderPromise();
           const styleSheet = currentOutput.styleSheet(currentDocument);
 
           return fromLiteElement(styleSheet);
@@ -119,7 +119,7 @@ export default function rehypeMathJax() {
     await Promise.all(processList);
 
     // 添加样式表
-    const styleElement = await mathProcessor.styleSheet();
+    const styleElement = mathProcessor.styleSheet();
 
     if (styleElement) {
       styleElement.properties.id = undefined;

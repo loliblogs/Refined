@@ -14,7 +14,8 @@ import avatarImg from '@/assets/avatar.jpg';
 import faviconUrl from '@/assets/favicon-32x32.png?url&no-inline';
 import faviconUrl192 from '@/assets/favicon-192x192.png?url&no-inline';
 import faviconUrl180 from '@/assets/favicon-180x180.png?url&no-inline';
-import type { SiteConfig } from '@/types/site-config';
+import { createMathProcessor } from '@/utils/mathjax-processor';
+import type { ProcessedSiteConfig, SiteConfig } from '@/types/site-config';
 import type { CollectionName } from '@/types/content';
 
 /**
@@ -58,7 +59,7 @@ const postConfig: SiteConfig = {
   // 导航菜单（可自定义添加或删除）
   menu: {
     首页: '/',
-    OI: '/oi',
+    '$\\mathcal{OI}$': '/oi',
     分类: '/category',
     标签: '/tag',
     归档: '/archive',
@@ -74,7 +75,7 @@ const postConfig: SiteConfig = {
   // 侧边栏作者信息
   author: {
     name: 'lolifamily',                         // 显示名称
-    work: 'Learning & Design Enthusiast',       // 职业/简介
+    work: 'Learning &amp; $\\LaTeX$ Enthusiast', // 职业/简介
     location: 'Chongqing, China',           // 所在地
     avatar: {                              // 头像组件
       src: avatarImg,
@@ -193,7 +194,7 @@ const oiConfig: SiteConfig = {
   // ========== 导航菜单 ==========
   // OI专属导航菜单
   menu: {
-    OI首页: { path: '/oi', recursive: false },
+    '$\\mathcal{OI}$首页': { path: '/oi', recursive: false },
     返回博客: '/',
     分类: '/oi/category',
     标签: '/oi/tag',
@@ -241,17 +242,55 @@ const oiConfig: SiteConfig = {
 
 /**
  * ==========================================
+ * MathJax 预处理
+ * ==========================================
+ */
+
+/**
+ * 处理配置中可能包含数学公式的字段
+ * 每个 collection 使用独立的 processor，保证 CSS 隔离
+ */
+async function processConfigMath(config: SiteConfig): Promise<ProcessedSiteConfig> {
+  const proc = createMathProcessor();
+
+  // 处理 menu labels
+  const menuEntries = await Promise.all(
+    Object.entries(config.menu).map(async ([label, path]) => [
+      await proc.process(label),
+      path,
+    ] as const),
+  );
+
+  // 处理 author 信息
+  const author = {
+    ...config.author,
+    name: await proc.process(config.author.name),
+    work: await proc.process(config.author.work),
+    location: await proc.process(config.author.location),
+  };
+
+  // 所有处理完成，获取 CSS
+  return {
+    ...config,
+    menu: Object.fromEntries(menuEntries),
+    author,
+    mathCSS: proc.getCSS(),
+  };
+}
+
+/**
+ * ==========================================
  * 导出配置
  * ==========================================
  */
 
-// 配置映射
+// 配置映射（各 collection 独立处理，CSS 隔离）
 const configMap = {
-  post: postConfig,
-  oi: oiConfig,
+  post: await processConfigMath(postConfig),
+  oi: await processConfigMath(oiConfig),
 } as const;
 
-// 获取完整配置（支持collection参数）
-export function getSiteConfig(collection: CollectionName): SiteConfig {
+// 获取完整配置（支持 collection 参数）
+export function getSiteConfig(collection: CollectionName): ProcessedSiteConfig {
   return configMap[collection];
 }

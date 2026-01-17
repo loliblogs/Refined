@@ -7,7 +7,6 @@ import { IdentificationCardIcon, MapPinIcon } from '@phosphor-icons/react';
 import { getSiteConfig } from '@/config/site.config';
 import type { CollectionName } from '@/types/content';
 
-import MathJax from './MathJax.astro';
 import SocialLinks from './SocialLinks.astro';
 
 import { Picture } from 'astro:assets';
@@ -74,16 +73,15 @@ const config = getSiteConfig(collection);
     </a>
   </div>
 
-  <MathJax cacheKey={`author-meta-${collection}`}>
-    <div class="text-2xl/10 text-primary">{config.author.name}</div>
-    {config.author.work && (
-      <div class="text-base/10 text-secondary">{config.author.work}</div>
-    )}
-    <div class="mt-2 flex items-center justify-center text-sm/8 text-secondary">
-      <MapPinIcon size="1rem" weight="regular" />
-      <span class="ml-1">{config.author.location}</span>
-    </div>
-  </MathJax>
+  {/* author 信息已在配置层预处理，直接使用 set:html */}
+  <div class="text-2xl/10 text-primary" set:html={config.author.name} />
+  {config.author.work && (
+    <div class="text-base/10 text-secondary" set:html={config.author.work} />
+  )}
+  <div class="mt-2 flex items-center justify-center text-sm/8 text-secondary">
+    <MapPinIcon size="1rem" weight="regular" />
+    <span class="ml-1" set:html={config.author.location} />
+  </div>
 
   {config.links.length > 0 && (
     <SocialLinks links={config.links} />

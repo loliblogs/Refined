@@ -1,5 +1,9 @@
 import { useEffect } from 'react';
 
+/**
+ * 导航控制器 - 仅处理交互逻辑
+ * 高亮逻辑已移至 Navigation.astro 静态计算
+ */
 const NavigationController = () => {
   useEffect(() => {
     const controller = new AbortController();
@@ -8,31 +12,6 @@ const NavigationController = () => {
     // 缓存 checkbox 元素
     const menuToggle = document.getElementById('menu-toggle') as HTMLInputElement | null;
     const sidebarToggle = document.getElementById('sidebar-toggle') as HTMLInputElement | null;
-
-    // 高亮当前页面
-    const highlightCurrentNav = () => {
-      const currentPath = window.location.pathname;
-
-      document.querySelectorAll('[data-nav-item]').forEach((item) => {
-        const navPath = item.getAttribute('data-path');
-        const recursive = item.getAttribute('data-recursive') !== 'false';
-        if (!navPath) return;
-
-        let isActive: boolean;
-        if (recursive) {
-          isActive = currentPath === navPath
-            || (navPath === '/' ? false : currentPath.startsWith(navPath + '/'));
-        } else {
-          isActive = currentPath === navPath;
-        }
-
-        if (isActive) {
-          item.classList.add('bg-active');
-        }
-      });
-    };
-
-    highlightCurrentNav();
 
     // 关闭所有面板
     const closeAllPanels = () => {
