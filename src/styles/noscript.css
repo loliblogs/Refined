@@ -38,3 +38,11 @@ html [data-overlayscrollbars-initialize]:not([data-overlayscrollbars-viewport]):
   appearance: auto !important;
   background: var(--scrollbar-track) !important;
 }
+
+/*
+ * 无 JS 时启用平滑滚动
+ * 此时 OverlayScrollbars 不会初始化，不存在打断问题
+ */
+[data-overlayscrollbars-initialize] {
+  scroll-behavior: smooth;
+}

@@ -131,31 +131,17 @@ const PageScrollManager: FC = () => {
 
       links.forEach((link) => {
         const id = link.getAttribute('data-toc-id');
-        if (id) {
-          tocLinks.set(id, link);
-          const heading = document.getElementById(id);
-          if (heading) {
-            headingElements.push({ id, element: heading });
-          }
+        if (!id) return;
 
-          // 阻止默认跳转行为，手动滚动到目标位置
-          link.addEventListener('click', (e) => {
-            e.preventDefault();
-            heading?.scrollIntoView();
-          });
+        const heading = document.getElementById(id);
+        if (heading) {
+          tocLinks.set(id, link);
+          headingElements.push({ id, element: heading });
         }
       });
 
       // 重置索引
       lastIndex = 0;
-    }
-
-    function fixLastScrollY() {
-      const hash = window.location.hash;
-      if (hash) {
-        const element = document.getElementById(hash.slice(1));
-        element?.scrollIntoView({ behavior: 'instant' });
-      }
     }
 
     // TOC 高亮查找函数 - 使用全局状态
@@ -283,7 +269,6 @@ const PageScrollManager: FC = () => {
           };
 
           // 初始化 TOC 数据
-          fixLastScrollY();
           initTocHighlight();
           handleUpdated();
 

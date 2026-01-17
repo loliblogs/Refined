@@ -60,28 +60,30 @@ export interface MathProcessor {
  */
 export function createMathProcessor(): MathProcessor {
   const output = new CHTML<LiteElement, unknown, unknown>({ fontData: MathJaxNewcmFont });
-  let lastDoc: MathDocument<LiteElement, unknown, unknown> | null = null;
 
   return {
     /**
      * 处理混合内容（普通文本 + 数学公式）
      * 每次创建新 document，复用 output（CSS 累积在 output 中）
+     * 注意：使用局部变量避免并发调用时的 race condition
      */
     async process(text: string): Promise<string> {
       if (!hasMathSymbols(text)) return text;
 
       // 用 mathjax.document 处理混合内容，扫描并渲染 $...$ 包裹的公式
-      lastDoc = mathjax.document(text, { InputJax: input, OutputJax: output });
-      await lastDoc.renderPromise();
-      return lastDoc.adaptor.innerHTML(lastDoc.adaptor.body(lastDoc.document));
+      const doc = mathjax.document(text, { InputJax: input, OutputJax: output });
+      await doc.renderPromise();
+      return doc.adaptor.innerHTML(doc.adaptor.body(doc.document));
     },
 
     /**
      * 获取累积的 CSS（所有 process 调用完成后调用）
+     * CSS 累积在 output 中，创建空 document 仅用于调用 styleSheet
      */
     getCSS(): string {
-      if (!lastDoc) return '';
-      const styleSheet = output.styleSheet(lastDoc);
+      const emptyDoc = mathjax.document('', { InputJax: input, OutputJax: output }) as
+        MathDocument<LiteElement, unknown, unknown>;
+      const styleSheet = output.styleSheet(emptyDoc);
       return adaptor.textContent(styleSheet).replace(FONT_CLEANUP_REGEX, '');
     },
   };

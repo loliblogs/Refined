@@ -192,11 +192,14 @@ html {
 }
 
 /*
- * 平滑滚动 - 渐进增强
- * initialize: 无 JS 时滚动容器保持原位，锚点跳转的降级方案
- * viewport: OverlayScrollbars 接管滚动后创建的实际容器
+ * 平滑滚动 - 仅在 OverlayScrollbars 初始化完成后启用
+ *
+ * 为什么不在 initialize 上设置？
+ * initialize 是初始化前的容器，若设置 smooth，用户点击锚点后
+ * OverlayScrollbars 初始化会打断正在进行的平滑滚动，导致跳转失败。
+ *
+ * 无 JS 时的 smooth 由 noscript.css 处理（不会有初始化打断问题）
  */
-[data-overlayscrollbars-initialize],
 [data-overlayscrollbars-viewport] {
   scroll-behavior: smooth;
 }
