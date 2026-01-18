@@ -328,6 +328,7 @@ const SearchBoxClient: FC<SearchBoxClientProps> = ({
           break;
 
         case 'Escape':
+          e.stopPropagation();
           setKeyword('');
           setShowDropdown(false);
           setLocalResults([]);
