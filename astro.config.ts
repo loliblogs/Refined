@@ -32,7 +32,7 @@ export default defineConfig({
   prefetch: {
     prefetchAll: true,
   },
-  integrations: [postlinkIntegration(), expressiveCode(), preact(), mdx({ optimize: true }), db(), playformCompress({
+  integrations: [postlinkIntegration(), expressiveCode(), preact({ compat: true }), mdx({ optimize: true }), db(), playformCompress({
     CSS: false,
     HTML: true,
     JSON: true,
@@ -47,6 +47,24 @@ export default defineConfig({
       minify: 'terser',
       cssMinify: 'lightningcss',
       sourcemap: true, // 开源项目，随便看！
+      rollupOptions: {
+        output: {
+          // 合并 preact 运行时、状态管理到单一 chunk，减少关键路径串行深度
+          manualChunks(id) {
+            const runtimePatterns = [
+              'node_modules/preact',
+              'node_modules/@preact',
+              'node_modules/zustand',
+              '@astrojs/preact/dist/client',
+              'src/stores/state',
+            ];
+
+            return runtimePatterns.some(p => id.includes(p))
+              ? 'runtime'
+              : undefined;
+          },
+        },
+      },
     },
     optimizeDeps: {
       include: ['argon2-browser/dist/argon2-bundled.min.js', 'giscus'],

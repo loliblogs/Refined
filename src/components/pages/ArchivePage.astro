@@ -81,36 +81,35 @@ const buttonClass = 'rounded-md border px-3 py-1 text-sm transition-colors hover
       <div
         class="relative h-5 select-none"
         data-role="track"
-        style="--slider-start:0%;--slider-end:100%;--slider-width:100%;"
         role="group"
         aria-label="时间范围选择器"
       >
         {/* 轨道背景 */}
-        <div class={`
+        <div class="
           absolute top-1/2 h-1 w-full -translate-y-1/2 rounded-sm bg-muted
-        `}
+        "
         >
         </div>
 
         {/* 选中范围 */}
-        <div class={`
-          absolute top-1/2 left-(--slider-start) h-1 w-(--slider-width)
+        <div class="
+          absolute top-1/2 left-(--slider-start,0%) h-1 w-(--slider-width,100%)
           -translate-y-1/2 rounded-sm bg-primary
-        `}
+        "
         >
         </div>
 
         {/* 起始滑块 */}
         <div
-          class={`
-            absolute top-1/2 left-(--slider-start) z-20 size-4 -translate-1/2
+          class="
+            absolute top-1/2 left-(--slider-start,0%) z-20 size-4 -translate-1/2
             cursor-grab touch-none rounded-full bg-primary shadow-md
             transition-transform
             hover:scale-110
             focus:ring-2 focus:ring-primary focus:ring-offset-2
             focus:outline-none
             active:scale-125 active:cursor-grabbing
-          `}
+          "
           data-role="thumb-start"
           role="slider"
           aria-label="开始日期"
@@ -124,15 +123,15 @@ const buttonClass = 'rounded-md border px-3 py-1 text-sm transition-colors hover
 
         {/* 结束滑块 */}
         <div
-          class={`
-            absolute top-1/2 left-(--slider-end) z-10 size-4 -translate-1/2
+          class="
+            absolute top-1/2 left-(--slider-end,100%) z-10 size-4 -translate-1/2
             cursor-grab touch-none rounded-full bg-primary shadow-md
             transition-transform
             hover:scale-110
             focus:ring-2 focus:ring-primary focus:ring-offset-2
             focus:outline-none
             active:scale-125 active:cursor-grabbing
-          `}
+          "
           data-role="thumb-end"
           role="slider"
           aria-label="结束日期"
@@ -184,10 +183,10 @@ const buttonClass = 'rounded-md border px-3 py-1 text-sm transition-colors hover
         </summary>
         <div
           data-role="custom-panel"
-          class={`
+          class="
             absolute top-full right-0 z-50 mt-2 flex items-center gap-2
             rounded-lg border bg-surface p-3 whitespace-nowrap shadow-lg
-          `}
+          "
         >
           <input
             type="date"
@@ -239,10 +238,10 @@ const buttonClass = 'rounded-md border px-3 py-1 text-sm transition-colors hover
                 </span>
                 <a
                   href={getPostUrl(post.slug, collection)}
-                  class={`
+                  class="
                     text-secondary transition-colors
                     hover:text-primary
-                  `}
+                  "
                 >
                   {post.title}
                 </a>

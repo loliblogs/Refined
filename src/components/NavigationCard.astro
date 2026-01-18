@@ -40,11 +40,11 @@ const label = direction === 'prev' ? '上一篇' : '下一篇';
     { 'flex-row-reverse': direction === 'next' },
   ]}
   >
-    <span class={`
+    <span class="
       flex size-10 shrink-0 items-center justify-center rounded-full bg-hover
       transition-transform duration-200
       group-hover:scale-110
-    `}
+    "
     >
       <span class="text-primary">
         <Icon size="1.25rem" weight="bold" />
@@ -65,10 +65,10 @@ const label = direction === 'prev' ? '上一篇' : '下一篇';
   </div>
 
   {/* 文章标题 */}
-  <h1 class={`
+  <h1 class="
     mb-2 text-xl font-semibold text-primary transition-colors duration-200
     group-hover:text-link
-  `}
+  "
   >
     {post.title}
   </h1>
@@ -85,11 +85,11 @@ const label = direction === 'prev' ? '上一篇' : '下一篇';
     <div class="mt-2">
       <div class="flex flex-wrap gap-2">
         {post.tags.slice(0, 3).map(tag => (
-          <span class={`
+          <span class="
             rounded-md bg-surface-aside px-2.5 py-1 text-xs font-medium
             text-secondary transition-colors duration-200
             group-hover:bg-primary/10 group-hover:text-primary
-          `}
+          "
           >
             #
             {tag}

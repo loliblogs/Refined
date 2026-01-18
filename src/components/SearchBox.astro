@@ -19,11 +19,11 @@ const {
     <input
       type="search"
       id="search-input"
-      class={`
+      class="
         peer box-border block h-9 w-full appearance-none rounded-md border
         border-line bg-surface px-3 py-2 text-sm text-muted
         focus:ring-2 focus:ring-line focus:outline-none
-      `}
+      "
       placeholder=" "
       aria-label={placeholder}
       autocomplete="off"
@@ -32,12 +32,12 @@ const {
 
     {/* 占位符层：图标 + 文字 */}
     <div
-      class={`
+      class="
         pointer-events-none absolute top-0 right-3 left-2 flex h-9 items-center
         gap-2 text-muted transition-opacity duration-200
         peer-focus:opacity-0
         peer-[:not(:placeholder-shown)]:opacity-0
-      `}
+      "
     >
       <MagnifyingGlassIcon size="1rem" />
       <span class="text-sm">{placeholder}</span>
@@ -45,10 +45,10 @@ const {
 
     {/* 搜索结果浮层 - 永久存在，通过hidden控制显示 */}
     <div
-      class={`
+      class="
         absolute inset-x-0 top-full left-0 z-50 mt-2 hidden overflow-hidden
         rounded-md border border-line bg-surface shadow-lg
-      `}
+      "
       data-search-dropdown
     >
       {/* 全站搜索选项 - 预渲染完整结构 */}
@@ -56,12 +56,12 @@ const {
         href={`${searchUrl}?q=`}
         data-index="0"
         data-global-search
-        class={`
+        class="
           items-center gap-2 border-b border-line px-4 py-3 font-medium
           transition-colors
           hover:bg-muted/10
           active:bg-muted/20
-        `}
+        "
       >
         <MagnifyingGlassIcon size="1rem" weight="bold" />
         <span class="mr-auto gap-0" data-search-keyword></span>
@@ -70,10 +70,10 @@ const {
 
       {/* 本地搜索结果容器 */}
       <div
-        class={`
+        class="
           max-h-[min(var(--search-space),max(calc(var(--search-space)*0.4),var(--search-min-h)))]
           overflow-x-hidden overflow-y-auto
-        `}
+        "
         data-overlayscrollbars-initialize
         data-searchresults-container
       >

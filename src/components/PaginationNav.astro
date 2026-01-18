@@ -85,33 +85,33 @@ const nextUrl = currentPage === lastPage ? undefined : getPageUrl(currentPage + 
       ? (
           <a
             href={prevUrl}
-            class={`
+            class="
               flex items-center rounded-sm px-3 py-2 text-primary
               transition-colors
               hover:bg-hover
-            `}
+            "
             aria-label={prevText}
           >
             <ArrowLeftIcon size="1rem" />
-            <span class={`
+            <span class="
               ml-1 hidden
               sm:inline
-            `}
+            "
             >
               {prevText}
             </span>
           </a>
         )
       : (
-          <span class={`
+          <span class="
             flex cursor-not-allowed items-center px-3 py-2 text-muted
-          `}
+          "
           >
             <ArrowLeftIcon size="1rem" />
-            <span class={`
+            <span class="
               ml-1 hidden
               sm:inline
-            `}
+            "
             >
               {prevText}
             </span>
@@ -135,10 +135,10 @@ const nextUrl = currentPage === lastPage ? undefined : getPageUrl(currentPage + 
 
         return isActive
           ? (
-              <span class={`
+              <span class="
                 rounded-sm bg-active px-3 py-2 font-semibold text-primary ring-1
                 ring-border select-none
-              `}
+              "
               >
                 {pageNum}
               </span>
@@ -146,10 +146,10 @@ const nextUrl = currentPage === lastPage ? undefined : getPageUrl(currentPage + 
           : (
               <a
                 href={url}
-                class={`
+                class="
                   rounded-sm px-3 py-2 text-primary transition-colors
                   hover:bg-hover
-                `}
+                "
                 aria-label={`第 ${pageNum} 页`}
               >
                 {pageNum}
@@ -163,17 +163,17 @@ const nextUrl = currentPage === lastPage ? undefined : getPageUrl(currentPage + 
       ? (
           <a
             href={nextUrl}
-            class={`
+            class="
               flex items-center rounded-sm px-3 py-2 text-primary
               transition-colors
               hover:bg-hover
-            `}
+            "
             aria-label={nextText}
           >
-            <span class={`
+            <span class="
               mr-1 hidden
               sm:inline
-            `}
+            "
             >
               {nextText}
             </span>
@@ -181,14 +181,14 @@ const nextUrl = currentPage === lastPage ? undefined : getPageUrl(currentPage + 
           </a>
         )
       : (
-          <span class={`
+          <span class="
             flex cursor-not-allowed items-center px-3 py-2 text-muted
-          `}
+          "
           >
-            <span class={`
+            <span class="
               mr-1 hidden
               sm:inline
-            `}
+            "
             >
               {nextText}
             </span>

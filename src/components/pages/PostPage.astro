@@ -52,10 +52,10 @@ const pageContext = {
 >
   <article>
     <header class="mb-8 border-b border-line pb-4">
-      <h1 class={`
+      <h1 class="
         mb-4 text-4xl/tight font-normal text-primary
         max-lg:text-3xl
-      `}
+      "
       >
         {post.title}
       </h1>
@@ -65,10 +65,10 @@ const pageContext = {
           <CalendarIcon size="1rem" weight="fill" />
           <a
             href={`${getArchiveUrl(collection)}?focus=${formatDate(post.date)}`}
-            class={`
+            class="
               transition-colors
               hover:text-primary
-            `}
+            "
           >
             <time datetime={post.date.toISOString()}>
               {formatDate(post.date)}
@@ -95,10 +95,10 @@ const pageContext = {
             <FolderIcon size="1rem" weight="fill" />
             <a
               href={getCategoryUrl(firstCategory, collection)}
-              class={`
+              class="
                 transition-colors
                 hover:text-primary
-              `}
+              "
             >
               {firstCategory}
             </a>
@@ -111,11 +111,11 @@ const pageContext = {
           {post.tags.map(tag => (
             <a
               href={getTagUrl(tag, collection)}
-              class={`
+              class="
                 inline-flex items-center gap-1 rounded-full bg-surface-aside
                 px-2.5 py-1 text-xs text-muted transition-colors duration-200
                 hover:bg-hover hover:text-primary
-              `}
+              "
             >
               <TagIcon size="0.75rem" weight="fill" />
               {tag}
@@ -167,11 +167,11 @@ const pageContext = {
             <input
               type="password"
               id="decrypt-password"
-              class={`
+              class="
                 w-60 rounded-sm border border-line px-3 py-2 transition-colors
                 duration-200
                 focus:border-link focus:outline-none
-              `}
+              "
               placeholder={post.encryption.hint}
               autocomplete="off"
               aria-describedby="decrypt-prompt"
@@ -181,22 +181,22 @@ const pageContext = {
             <button
               id="decrypt-button"
               type="button"
-              class={`
+              class="
                 relative flex w-18 items-center justify-center rounded-sm
                 bg-link text-white transition-colors duration-200
                 hover:bg-link-hover
                 disabled:cursor-not-allowed disabled:opacity-50
-              `}
+              "
               aria-controls="markdown-body"
               aria-describedby="decrypt-prompt"
             >
               <span id="button-text">解锁</span>
               <span
                 id="button-loading"
-                class={`
+                class="
                   absolute inset-0 hidden animate-spin items-center
                   justify-center
-                `}
+                "
               >
                 <CircleNotchIcon size="1.25rem" weight="bold" />
               </span>
@@ -219,10 +219,10 @@ const pageContext = {
 
     <footer class="border-t border-line/50 pt-12">
       <nav>
-        <div class={`
+        <div class="
           grid grid-cols-2 gap-12
           max-lg:grid-cols-1 max-lg:gap-8
-        `}
+        "
         >
           {prevPost
             ? (

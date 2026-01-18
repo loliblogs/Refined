@@ -90,18 +90,18 @@ const pageTitle = `标签: ${tag.name}`;
   {childTags.length > 0 && (
     <section class="mb-8">
       <h2 class="mb-4 text-xl font-bold">子标签</h2>
-      <div class={`
+      <div class="
         grid grid-cols-4 gap-4
         max-lg:grid-cols-2
-      `}
+      "
       >
         {childTags.map(child => (
           <a
             href={getTagUrl(child.path, collection)}
-            class={`
+            class="
               rounded-sm border p-4 transition
               hover:bg-hover
-            `}
+            "
           >
             <h3 class="font-semibold">{child.name}</h3>
             {/* 子标签显示包含其子标签的总文章数 */}

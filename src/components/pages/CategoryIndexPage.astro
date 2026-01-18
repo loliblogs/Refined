@@ -52,18 +52,18 @@ const pageContext = {
   {/* 热门分类 */}
   <section class="mb-12">
     <h2 class="mb-4 text-2xl font-bold">热门分类</h2>
-    <div class={`
+    <div class="
       grid grid-cols-5 gap-4
       max-lg:grid-cols-2
-    `}
+    "
     >
       {popularCategories.map(category => (
         <a
           href={getCategoryUrl(category.path, collection)}
-          class={`
+          class="
             rounded-sm border p-4 text-center transition
             hover:bg-hover
-          `}
+          "
         >
           <div class="font-medium">{category.name}</div>
           <div class="mt-1 text-sm text-secondary">
@@ -86,10 +86,10 @@ const pageContext = {
         <div class="mb-4">
           <a
             href={getCategoryUrl(category.path, collection)}
-            class={`
+            class="
               text-lg font-semibold transition
               hover:text-link
-            `}
+            "
           >
             {category.name}
             {' '}
@@ -105,10 +105,10 @@ const pageContext = {
                 <div>
                   <a
                     href={getCategoryUrl(child.path, collection)}
-                    class={`
+                    class="
                       text-primary transition
                       hover:text-link
-                    `}
+                    "
                   >
                     {child.name}
                     {' '}

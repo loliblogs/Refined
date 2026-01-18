@@ -15,18 +15,18 @@ const { posts, showExcerpt = true, collection = 'post' } = Astro.props;
 ---
 <div class="space-y-6">
   {posts.map(post => (
-    <article class={`
+    <article class="
       border-b pb-6
       last:border-b-0
-    `}
+    "
     >
       <h2 class="mb-2 text-2xl font-bold">
         <a
           href={getPostUrl(post.slug, collection)}
-          class={`
+          class="
             text-primary transition
             hover:text-link
-          `}
+          "
         >
           {post.title}
         </a>
@@ -54,10 +54,10 @@ const { posts, showExcerpt = true, collection = 'post' } = Astro.props;
         {post.tags.map(tag => (
           <a
             href={getTagUrl(tag, collection)}
-            class={`
+            class="
               rounded-sm bg-active px-2 py-1 text-xs text-muted transition
               hover:bg-hover hover:text-primary
-            `}
+            "
           >
             #
             {tag}

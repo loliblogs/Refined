@@ -21,20 +21,20 @@ const { links } = Astro.props;
         const CustomIcon = link.icon;
         return (
           <a
-            class={`
+            class="
               mx-2 inline-block text-muted transition-colors duration-200
               hover:text-primary
-            `}
+            "
             href={link.url}
             target="_blank"
             rel="noopener noreferrer"
             title={link.title}
             aria-label={link.title ?? link.url}
           >
-            <div class={`
+            <div class="
               transition-colors duration-200
               hover:text-primary
-            `}
+            "
             >
               <CustomIcon />
             </div>

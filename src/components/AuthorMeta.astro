@@ -24,11 +24,11 @@ const config = getSiteConfig(collection);
   <div class="flex justify-center pb-6">
     <a href={config.author.avatar.href} class="group">
       <div
-        class={`
+        class="
           relative overflow-hidden rounded-full transition-transform
           duration-200 ease-in-out
           group-hover:scale-110
-        `}
+        "
       >
         <Picture
           src={config.author.avatar.src}
@@ -51,20 +51,20 @@ const config = getSiteConfig(collection);
           priority
         />
         <div
-          class={`
+          class="
             pointer-events-none absolute inset-0 flex items-center
             justify-center bg-black/0
             transition-[background-color,backdrop-filter] duration-200
             ease-in-out
             group-hover:bg-black/20 group-hover:backdrop-blur-[2px]
-          `}
+          "
         >
           <span
-            class={`
+            class="
               text-white opacity-0 drop-shadow-md transition-opacity
               duration-200 ease-in-out
               group-hover:opacity-100
-            `}
+            "
           >
             <IdentificationCardIcon size="3rem" weight="duotone" />
           </span>

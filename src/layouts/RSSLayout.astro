@@ -29,20 +29,17 @@ const {
 
   <body class="min-h-screen bg-surface font-sans leading-relaxed text-primary">
     {/* 顶部导航栏 */}
-    <nav class={`
-      fixed top-0 right-0 left-0 h-16 border-b border-line bg-surface-nav
-    `}
-    >
-      <div class={`
+    <nav class="fixed inset-x-0 top-0 h-16 border-b border-line bg-surface-nav">
+      <div class="
         mx-auto flex h-full max-w-content-max items-center justify-between px-4
-      `}
+      "
       >
         <a
           href="/"
-          class={`
+          class="
             text-xl font-semibold transition-colors
             hover:text-red
-          `}
+          "
         >
           <xsl:attribute name="href">
             <xsl:value-of select="rss/channel/link" />
@@ -52,10 +49,10 @@ const {
         <div class="flex items-center gap-4">
           <a
             href="/"
-            class={`
+            class="
               transition-colors
               hover:text-red
-            `}
+            "
           >
             <xsl:attribute name="href">
               <xsl:value-of select="rss/channel/link" />
@@ -80,10 +77,10 @@ const {
           </p>
           <div class="flex flex-col gap-2">
             <p class="text-sm text-muted">订阅此 RSS Feed：</p>
-            <div class={`
+            <div class="
               w-full cursor-text overflow-x-auto rounded-sm bg-hover px-3 py-2
               font-mono text-sm select-all
-            `}
+            "
             >
               <xsl:value-of select="rss/channel/link" />
               <span>/rss.xml</span>
@@ -94,18 +91,18 @@ const {
         {/* 文章列表 */}
         <div class="space-y-4">
           <xsl:for-each select="rss/channel/item">
-            <article class={`
+            <article class="
               rounded-lg border border-line bg-surface p-6 transition-colors
               hover:border-primary
-            `}
+            "
             >
               <h2 class="mb-2 text-xl font-semibold">
                 <a
                   href="/"
-                  class={`
+                  class="
                     text-primary transition-colors
                     hover:text-red
-                  `}
+                  "
                 >
                   <xsl:attribute name="href">
                     <xsl:value-of select="link" />

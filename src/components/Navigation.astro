@@ -34,65 +34,65 @@ function isNavActive(path: string, recursive: boolean): boolean {
 <label
   for="menu-toggle"
   id="nav-menu-mask"
-  class={`
+  class="
     pointer-events-none fixed inset-0 z-9 hidden bg-transparent
     max-lg:block
     max-lg:peer-checked/menu:pointer-events-auto
     lg:hidden
-  `}
+  "
 >
   <span class="sr-only">关闭菜单</span>
 </label>
 
 <nav
   id="nav"
-  class={`
+  class="
     relative h-full w-nav shrink-0 bg-nav
     max-lg:fixed max-lg:z-10 max-lg:h-auto max-lg:w-full
     max-lg:peer-checked/menu:z-10
-  `}
+  "
 >
   {/* 移动端顶部栏 */}
   <div
     id="nav-mobile-bar"
-    class={`
+    class="
       hidden h-11 items-center justify-center bg-nav
       max-lg:flex
-    `}
+    "
   >
     <label
       for="sidebar-toggle"
-      class={`
+      class="
         m-0 flex size-11 shrink-0 cursor-pointer items-center justify-center
         bg-transparent text-primary transition-colors duration-100 ease-in-out
         hover:bg-active
         [#sidebar-toggle:focus-visible~#nav_&]:ring-2
         [#sidebar-toggle:focus-visible~#nav_&]:ring-primary
-      `}
+      "
     >
       <FilesIcon size="1.25rem" weight="regular" />
       <span class="sr-only">打开侧边栏</span>
     </label>
     <a
       href={homePath}
-      class={`
+      class="
         m-0 flex h-11 min-w-0 flex-1 items-center justify-center truncate
         text-center text-2xl font-bold text-primary no-underline
         transition-colors duration-100 ease-in-out
         hover:text-secondary
-      `}
+      "
     >
       {config.title}
     </a>
     <label
       for="menu-toggle"
-      class={`
+      class="
         m-0 flex size-11 shrink-0 cursor-pointer items-center justify-center
         bg-transparent text-primary transition-colors duration-100 ease-in-out
         hover:bg-active
         [#menu-toggle:focus-visible~#nav_&]:ring-2
         [#menu-toggle:focus-visible~#nav_&]:ring-primary
-      `}
+      "
     >
       <ListIcon size="1.25rem" weight="regular" />
       <span class="sr-only">切换菜单</span>
@@ -107,21 +107,21 @@ function isNavActive(path: string, recursive: boolean): boolean {
   {/* menu labels 已在配置层预处理，直接使用 set:html */}
   <div
     id="nav-menu"
-    class={`
+    class="
       flex h-full flex-col justify-center
       max-lg:h-0 max-lg:overflow-hidden max-lg:opacity-0
       max-lg:transition-[height_0.35s_cubic-bezier(0.4,0,0.2,1),opacity_0.25s_ease-out]
       max-lg:[#menu-toggle:checked~#nav_&]:h-11
       max-lg:[#menu-toggle:checked~#nav_&]:opacity-100
       max-lg:[#menu-toggle:checked~#nav_&]:transition-[height_0.35s_cubic-bezier(0.4,0,0.2,1),opacity_0.25s_ease-in_0.1s]
-    `}
+    "
   >
     <div
-      class={`
+      class="
         flex max-h-full flex-col overflow-y-auto
         max-lg:block max-lg:overflow-x-auto max-lg:overflow-y-hidden
         max-lg:text-center max-lg:whitespace-nowrap
-      `}
+      "
       data-overlayscrollbars-initialize
       data-nav-menu-scroll
     >
@@ -149,10 +149,10 @@ function isNavActive(path: string, recursive: boolean): boolean {
             aria-label={ariaLabel}
           >
             <span
-              class={`
+              class="
                 inline-block truncate
                 max-lg:inline max-lg:text-inherit
-              `}
+              "
               set:html={label}
             />
           </a>

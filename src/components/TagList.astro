@@ -61,19 +61,19 @@ const sortedGroups = Object.entries(groupedTags).sort(([a], [b]) => {
 
       <ul class="list-none p-0">
         {letterTags.map(tag => (
-          <li class={`
+          <li class="
             group rounded-lg border-b border-hover px-4 py-3 transition
             duration-200 ease-out
             hover:bg-hover hover:shadow-sm
-          `}
+          "
           >
             <a
               href={getTagUrl(tag.path, collection)}
-              class={`
+              class="
                 block text-inherit no-underline transition-transform
                 duration-200 ease-out
                 group-hover:translate-x-1
-              `}
+              "
             >
               <div class="flex items-center gap-2">
                 <span class="font-medium text-primary">
@@ -81,9 +81,9 @@ const sortedGroups = Object.entries(groupedTags).sort(([a], [b]) => {
                 </span>
 
                 {showPostCount && (
-                  <span class={`
+                  <span class="
                     rounded-sm bg-hover px-1.5 py-0.5 text-sm text-secondary
-                  `}
+                  "
                   >
                     {tag.postIds.size}
                   </span>

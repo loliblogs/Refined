@@ -27,64 +27,64 @@ const hasTocSlot = Astro.slots.has('default');
   */}
 <aside
   id="aside"
-  class={`
+  class="
     relative h-full w-aside border-r border-line bg-surface-aside
     max-lg:pointer-events-none max-lg:fixed max-lg:top-0 max-lg:left-0
     max-lg:z-90 max-lg:block max-lg:w-full max-lg:bg-transparent
     max-lg:peer-checked/sidebar:pointer-events-auto
-  `}
+  "
 >
   <label
     for="sidebar-toggle"
     id="aside-mask"
-    class={`
+    class="
       hidden cursor-pointer
       max-lg:pointer-events-none max-lg:absolute max-lg:inset-0 max-lg:block
       max-lg:bg-overlay max-lg:opacity-0 max-lg:transition-opacity
       max-lg:[#sidebar-toggle:checked~#aside_&]:pointer-events-auto
       max-lg:[#sidebar-toggle:checked~#aside_&]:opacity-100
-    `}
+    "
   >
     <span class="sr-only">关闭侧边栏</span>
   </label>
 
   <div
     id="aside-inner"
-    class={`
+    class="
       relative flex size-full flex-col
       max-lg:w-4/5 max-lg:max-w-sm max-lg:min-w-aside-min
       max-lg:-translate-x-full max-lg:bg-surface-aside
       max-lg:transition-transform max-lg:duration-300 max-lg:ease-in-out
       max-lg:will-change-transform
       max-lg:[#sidebar-toggle:checked~#aside_&]:translate-x-0
-    `}
+    "
   >
     {/* 阅读进度条 - 固定在 aside 顶部 */}
     <div
       id="reading-progress-container"
-      class={`
+      class="
         pointer-events-none absolute inset-x-0 top-0 h-1 bg-border/30 opacity-0
         transition-opacity duration-300 will-change-[opacity]
-      `}
+      "
       aria-hidden="true"
     >
       <div
         id="reading-progress-bar"
-        class={`
+        class="
           h-full w-(--progress,0%) origin-left bg-linear-to-r from-primary
           to-secondary transition-[width] duration-150 ease-out
           will-change-[width]
-        `}
+        "
       />
     </div>
 
     {/* Mobile close button will be added via JavaScript */}
 
     {/* 搜索框区域 - 统一放在顶部，不滚动 */}
-    <div class={`
+    <div class="
       shrink-0 px-6 pt-8 pb-4
       max-lg:p-4
-    `}
+    "
     >
       <SearchBox
         placeholder="搜索"
@@ -101,10 +101,10 @@ const hasTocSlot = Astro.slots.has('default');
             data-overlayscrollbars-initialize
             data-toc-container
           >
-            <div class={`
+            <div class="
               h-full px-6
               max-lg:px-4
-            `}
+            "
             >
               {/* 使用来自 PostPage 的插槽内容（可能是明文 TOC 或加密占位） */}
               <slot />
@@ -121,18 +121,18 @@ const hasTocSlot = Astro.slots.has('default');
             >
               <div class="flex h-full flex-col">
                 <div class="min-h-0 shrink grow basis-0" aria-hidden="true" />
-                <div class={`
+                <div class="
                   shrink-0 px-6
                   max-lg:px-4
-                `}
+                "
                 >
                   <AuthorMeta collection={collection} />
                 </div>
                 <div
-                  class={`
+                  class="
                     min-h-0 shrink grow basis-25
                     max-lg:basis-17
-                  `}
+                  "
                   aria-hidden="true"
                 />
               </div>

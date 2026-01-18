@@ -96,18 +96,18 @@ const pageTitle = `分类: ${category.name}`;
   {subcategories.length > 0 && (
     <section class="mb-8">
       <h2 class="mb-4 text-xl font-bold">子分类</h2>
-      <div class={`
+      <div class="
         grid grid-cols-4 gap-4
         max-lg:grid-cols-2
-      `}
+      "
       >
         {subcategories.map(child => (
           <a
             href={getCategoryUrl(child.path, collection)}
-            class={`
+            class="
               rounded-sm border p-4 transition
               hover:bg-hover
-            `}
+            "
           >
             <h3 class="font-semibold">{child.name}</h3>
             {/* 子分类显示包含其子分类的总文章数 */}
@@ -142,10 +142,10 @@ const pageTitle = `分类: ${category.name}`;
         {siblingCategories.map(sibling => (
           <a
             href={getCategoryUrl(sibling.path, collection)}
-            class={`
+            class="
               rounded-sm border px-3 py-1 transition
               hover:bg-hover
-            `}
+            "
           >
             {sibling.name}
             {' '}
