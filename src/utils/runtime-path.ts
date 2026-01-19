@@ -27,6 +27,9 @@ let cachedPath: string | null | undefined;
  * @returns 形如 `/_astro/runtime.abc123.js` 的路径，不存在时返回 null
  */
 export default async function getRuntimePath(): Promise<string | null> {
+  // dev 模式下 Vite 即时编译，不需要 modulepreload
+  if (import.meta.env.DEV) return null;
+
   if (cachedPath !== undefined) return cachedPath;
 
   const files = await readdir(astroDir);

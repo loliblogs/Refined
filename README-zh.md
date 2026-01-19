@@ -89,10 +89,11 @@ git commit -m "refactor: migrate files from mdx to md [full]"
 ├── eslint.config.ts
 ├── ec.config.mjs
 ├── tsconfig.json
-├── pagefind.yaml
 ├── package.json
 ├── pnpm-lock.yaml
 ├── pnpm-workspace.yaml
+├── .env.example
+├── .env                  (已 gitignore，从 .env.example 复制)
 ├── public/
 ├── db/
 │   └── config.ts

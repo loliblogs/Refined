@@ -112,6 +112,29 @@ const runtimePath = await getRuntimePath();
           max-lg:static max-lg:h-0 max-lg:w-full
         "
       >
+        {/*
+          * 控制 checkbox 放在 header 级别：
+          * 1. 确保遮罩层 z-index 不被子组件 stacking context 限制
+          * 2. CSS 兄弟选择器 ~ 可以跨组件选择 nav/aside 内的元素
+          * 3. Tailwind 不支持跨组件的 peer 变体，需用任意值语法 [#id:checked~#target_&]
+          */}
+        <input type="checkbox" id="sidebar-toggle" class="sr-only" aria-label="切换侧边栏" />
+        <input type="checkbox" id="menu-toggle" class="sr-only" aria-label="切换菜单" />
+
+        {/* 菜单透明遮罩 - 必须在 nav 外部才能正确覆盖全屏 */}
+        <label
+          for="menu-toggle"
+          id="nav-menu-mask"
+          class="
+            pointer-events-none fixed inset-0 z-9 hidden bg-transparent
+            max-lg:block
+            lg:hidden
+            max-lg:[#menu-toggle:checked~&]:pointer-events-auto
+          "
+        >
+          <span class="sr-only">关闭菜单</span>
+        </label>
+
         <Navigation
           transition:name="navigation"
           collection={pageContext.collection}

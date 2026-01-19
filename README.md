@@ -89,10 +89,11 @@ Inside your Astro project, you'll see the following folders and files:
 ├── eslint.config.ts
 ├── ec.config.mjs
 ├── tsconfig.json
-├── pagefind.yaml
 ├── package.json
 ├── pnpm-lock.yaml
 ├── pnpm-workspace.yaml
+├── .env.example
+├── .env                  (gitignored, copy from .env.example)
 ├── public/
 ├── db/
 │   └── config.ts

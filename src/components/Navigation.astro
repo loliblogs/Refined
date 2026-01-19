@@ -26,30 +26,11 @@ function isNavActive(path: string, recursive: boolean): boolean {
 }
 ---
 
-{/* 纯 CSS 控制面板的隐藏 checkbox */}
-<input type="checkbox" id="menu-toggle" class="peer/menu sr-only" aria-label="切换菜单" />
-<input type="checkbox" id="sidebar-toggle" class="peer/sidebar sr-only" aria-label="切换侧边栏" />
-
-{/* 菜单透明遮罩 - 纯 CSS 点击关闭，z-9 低于 nav 的 z-10 */}
-<label
-  for="menu-toggle"
-  id="nav-menu-mask"
-  class="
-    pointer-events-none fixed inset-0 z-9 hidden bg-transparent
-    max-lg:block
-    max-lg:peer-checked/menu:pointer-events-auto
-    lg:hidden
-  "
->
-  <span class="sr-only">关闭菜单</span>
-</label>
-
 <nav
   id="nav"
   class="
     relative h-full w-nav shrink-0 bg-nav
     max-lg:fixed max-lg:z-10 max-lg:h-auto max-lg:w-full
-    max-lg:peer-checked/menu:z-10
   "
 >
   {/* 移动端顶部栏 */}
@@ -99,12 +80,7 @@ function isNavActive(path: string, recursive: boolean): boolean {
     </label>
   </div>
 
-  {/*
-    * 菜单项
-    * 任意值语法：Tailwind 不支持 group-peer-checked/{name} 命名变体，
-    * 需要用 [#menu-toggle:checked~#nav_&] 精确匹配 checkbox 状态
-    */}
-  {/* menu labels 已在配置层预处理，直接使用 set:html */}
+  {/* 菜单项 - menu labels 已在配置层预处理，直接使用 set:html */}
   <div
     id="nav-menu"
     class="
