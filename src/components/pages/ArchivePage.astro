@@ -208,7 +208,7 @@ const buttonClass = 'rounded-md border px-3 py-1 text-sm transition-colors hover
     </div>
 
     {/* 列表（SSR 全量） */}
-    <div class="space-y-6" data-role="list">
+    <div class="space-y-6 contain-content" data-role="list">
       {Array.from(monthGroups, ([yearMonthKey, posts]) => (
         <section data-role="section" data-ym={yearMonthKey}>
           <h2

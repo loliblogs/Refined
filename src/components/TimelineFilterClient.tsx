@@ -10,6 +10,19 @@ interface DateRange {
   endDate: Date;
 }
 
+interface CachedItem {
+  el: HTMLElement;
+  timestamp: number;
+  hidden: boolean;
+}
+
+interface CachedSection {
+  el: HTMLElement;
+  ym: number;
+  items: CachedItem[];
+  hidden: boolean;
+}
+
 interface TimelineElements {
   track: HTMLDivElement;
   thumbStart: HTMLDivElement;
@@ -19,7 +32,7 @@ interface TimelineElements {
   labelStart: HTMLElement;
   labelEnd: HTMLElement;
   presets: HTMLElement;
-  sections: HTMLElement[];
+  sections: CachedSection[];
   emptyState: HTMLElement;
   visibleCount: HTMLElement;
   customSummary: HTMLElement;
@@ -106,18 +119,30 @@ function queryTimelineElements(timeline: HTMLElement): TimelineElements | null {
   const labelStart = timeline.querySelector<HTMLElement>('[data-role="label-start"]');
   const labelEnd = timeline.querySelector<HTMLElement>('[data-role="label-end"]');
   const presets = timeline.querySelector<HTMLElement>('[data-role="presets"]');
-  const sections = Array.from(timeline.querySelectorAll<HTMLElement>('[data-role="section"]'));
+  const sectionEls = timeline.querySelectorAll<HTMLElement>('[data-role="section"]');
   const emptyState = timeline.querySelector<HTMLElement>('[data-role="empty"]');
   const visibleCount = timeline.querySelector<HTMLElement>('[data-role="count-visible"]');
   const customSummary = timeline.querySelector<HTMLElement>('[data-role="custom"] > summary');
   const customDetails = customSummary?.closest('details') as HTMLDetailsElement | null;
 
   if (!track || !thumbStart || !thumbEnd || !inputStart || !inputEnd || !labelStart
-    || !labelEnd || !presets || sections.length === 0 || !emptyState || !visibleCount
+    || !labelEnd || !presets || sectionEls.length === 0 || !emptyState || !visibleCount
     || !customSummary || !customDetails) {
     console.error('TimelineFilterClient: missing required elements');
     return null;
   }
+
+  // 一次性缓存所有 section 的 items、ym、timestamp、hidden，后续零 DOM 读操作
+  const sections: CachedSection[] = Array.from(sectionEls, el => ({
+    el,
+    ym: Number(el.dataset.ym),
+    hidden: false,
+    items: Array.from(el.querySelectorAll<HTMLElement>('[data-role="item"]'), itemEl => ({
+      el: itemEl,
+      timestamp: Number(itemEl.dataset.timestamp),
+      hidden: false,
+    })),
+  }));
 
   return {
     track,
@@ -215,8 +240,10 @@ function syncRangeToView(
  * - 完全在范围外的月份：O(1) 隐藏
  * - 完全在范围内的月份：O(1) 显示
  * - 边界月份：O(items) 逐项检查
+ * - 使用缓存的 hidden 状态，零 DOM 读操作，纯内存比较
+ * - 只在状态变化时才写 classList
  */
-function filterSectionsByRange(sections: HTMLElement[], range: DateRange): number {
+function filterSectionsByRange(sections: CachedSection[], range: DateRange): number {
   const startTime = range.startDate.getTime();
   const endTime = range.endDate.getTime();
   const startYM = getYearMonth(range.startDate);
@@ -225,33 +252,47 @@ function filterSectionsByRange(sections: HTMLElement[], range: DateRange): numbe
   let visibleItemCount = 0;
 
   for (const section of sections) {
-    const sectionYM = Number(section.dataset.ym);
-    const items = section.querySelectorAll<HTMLElement>('[data-role="item"]');
+    const { el, ym, items } = section;
 
-    if (sectionYM < startYM || sectionYM > endYM) {
+    if (ym < startYM || ym > endYM) {
       // 范围外 - 隐藏所有
-      section.classList.add('hidden');
-      for (const item of items) {
-        item.classList.add('hidden');
+      if (!section.hidden) {
+        section.hidden = true;
+        el.classList.add('hidden');
+        for (const item of items) {
+          item.hidden = true;
+          item.el.classList.add('hidden');
+        }
       }
-    } else if (sectionYM === startYM || sectionYM === endYM) {
+    } else if (ym === startYM || ym === endYM) {
       // 边界月份 - 逐项检查
       let hasVisible = false;
       for (const item of items) {
-        const timestamp = Number(item.dataset.timestamp);
-        const isVisible = !Number.isNaN(timestamp) && timestamp >= startTime && timestamp <= endTime;
-        item.classList.toggle('hidden', !isVisible);
-        if (isVisible) {
+        const shouldShow = !Number.isNaN(item.timestamp)
+          && item.timestamp >= startTime
+          && item.timestamp <= endTime;
+        if (shouldShow !== !item.hidden) {
+          item.hidden = !shouldShow;
+          item.el.classList.toggle('hidden', !shouldShow);
+        }
+        if (shouldShow) {
           visibleItemCount++;
           hasVisible = true;
         }
       }
-      section.classList.toggle('hidden', !hasVisible);
+      if (hasVisible !== !section.hidden) {
+        section.hidden = !hasVisible;
+        el.classList.toggle('hidden', !hasVisible);
+      }
     } else {
       // 范围内 - 显示所有
-      section.classList.remove('hidden');
-      for (const item of items) {
-        item.classList.remove('hidden');
+      if (section.hidden) {
+        section.hidden = false;
+        el.classList.remove('hidden');
+        for (const item of items) {
+          item.hidden = false;
+          item.el.classList.remove('hidden');
+        }
       }
       visibleItemCount += items.length;
     }
@@ -281,21 +322,20 @@ function highlightFocusedItem(elements: TimelineElements, range: DateRange): voi
 
   if (focusTime < startTime || focusTime > endTime) return;
 
-  // 查找最接近的可见项
+  // 查找最接近的可见项（使用缓存的 hidden 状态，零 DOM 读操作）
   let closestItem: HTMLElement | null = null;
   let smallestDiff = Infinity;
 
   for (const section of elements.sections) {
-    if (section.classList.contains('hidden')) continue;
+    if (section.hidden) continue;
 
-    for (const item of section.querySelectorAll<HTMLElement>('[data-role="item"]')) {
-      if (item.classList.contains('hidden')) continue;
-      const timestamp = Number(item.dataset.timestamp);
-      if (Number.isNaN(timestamp)) continue;
-      const diff = Math.abs(timestamp - focusTime);
+    for (const item of section.items) {
+      if (item.hidden) continue;
+      if (Number.isNaN(item.timestamp)) continue;
+      const diff = Math.abs(item.timestamp - focusTime);
       if (diff < smallestDiff) {
         smallestDiff = diff;
-        closestItem = item;
+        closestItem = item.el;
       }
     }
   }
@@ -317,7 +357,7 @@ function setupDragHandlers(
   thumb: HTMLDivElement,
   whichThumb: 'start' | 'end',
   elements: TimelineElements,
-  currentRange: { startDate: Date; endDate: Date },
+  state: { range: DateRange },
   updateRange: (range: DateRange) => void,
   minTime: number,
   maxTime: number,
@@ -338,7 +378,8 @@ function setupDragHandlers(
 
       const percent = Math.max(0, Math.min(100, ((clientX - trackRect.left) / trackRect.width) * 100));
       const newDate = percentToDate(percent, minTime, maxTime);
-      const newRange = computeNewRange(whichThumb, newDate, currentRange);
+      // 读取 state.range 而非闭包捕获的旧值
+      const newRange = computeNewRange(whichThumb, newDate, state.range);
       updateRange(newRange);
     };
 
@@ -357,22 +398,22 @@ function setupDragHandlers(
 
 function setupDateInputs(
   elements: TimelineElements,
-  currentRange: { startDate: Date; endDate: Date },
+  state: { range: DateRange },
   updateRange: (range: DateRange) => void,
   signal: AbortSignal,
 ): void {
   const handleStartChange = (e: Event) => {
     const value = (e.target as HTMLInputElement).value;
     const date = parseDate(value);
-    if (!date || date.getFullYear() < 1000 || date > currentRange.endDate) return;
-    updateRange({ startDate: date, endDate: currentRange.endDate });
+    if (!date || date.getFullYear() < 1000 || date > state.range.endDate) return;
+    updateRange({ startDate: date, endDate: state.range.endDate });
   };
 
   const handleEndChange = (e: Event) => {
     const value = (e.target as HTMLInputElement).value;
     const date = parseDate(value);
-    if (!date || date.getFullYear() < 1000 || date < currentRange.startDate) return;
-    updateRange({ startDate: currentRange.startDate, endDate: date });
+    if (!date || date.getFullYear() < 1000 || date < state.range.startDate) return;
+    updateRange({ startDate: state.range.startDate, endDate: date });
   };
 
   elements.inputStart.addEventListener('change', handleStartChange, { signal });
@@ -427,7 +468,7 @@ function setupPresetButtons(
 
 function setupKeyboardControl(
   elements: TimelineElements,
-  currentRange: { startDate: Date; endDate: Date },
+  state: { range: DateRange },
   updateRange: (range: DateRange) => void,
   minTime: number,
   maxTime: number,
@@ -446,11 +487,11 @@ function setupKeyboardControl(
     e.preventDefault();
 
     const whichThumb = isStart ? 'start' : 'end';
-    const currentDate = isStart ? currentRange.startDate : currentRange.endDate;
+    const currentDate = isStart ? state.range.startDate : state.range.endDate;
     const currentPercent = dateToPercent(currentDate, minTime, maxTime);
     const newPercent = Math.max(0, Math.min(100, currentPercent + delta));
     const newDate = percentToDate(newPercent, minTime, maxTime);
-    const newRange = computeNewRange(whichThumb, newDate, currentRange);
+    const newRange = computeNewRange(whichThumb, newDate, state.range);
 
     updateRange(newRange);
   };
@@ -499,32 +540,33 @@ export default function TimelineFilterClient() {
     const maxTime = Number(timeline.getAttribute('data-max-time'));
 
     // ------------------------------------------------------------------------
-    // 2. 状态初始化
+    // 2. 状态初始化（使用可变容器解决闭包陈旧问题）
     // ------------------------------------------------------------------------
 
     const controller = new AbortController();
     const { signal } = controller;
 
-    let currentRange: DateRange = initializeRangeFromUrl(minTime, maxTime);
+    // 可变容器：所有处理器读取 state.range，永远是最新值
+    const state = { range: initializeRangeFromUrl(minTime, maxTime) };
     let rafId: number | null = null;
 
     // 初始渲染
-    updateSliderVisuals(elements, currentRange, minTime, maxTime);
-    syncRangeToView(elements, currentRange);
-    highlightFocusedItem(elements, currentRange);
+    updateSliderVisuals(elements, state.range, minTime, maxTime);
+    syncRangeToView(elements, state.range);
+    highlightFocusedItem(elements, state.range);
 
     // ------------------------------------------------------------------------
     // 3. 核心更新函数（视觉立即，DOM 节流）
     // ------------------------------------------------------------------------
 
     const updateRange = (newRange: DateRange) => {
-      currentRange = newRange;
-      updateSliderVisuals(elements, currentRange, minTime, maxTime);
+      state.range = newRange;
+      updateSliderVisuals(elements, state.range, minTime, maxTime);
 
       // RAF 节流 DOM 更新
       if (rafId) cancelAnimationFrame(rafId);
       rafId = requestAnimationFrame(() => {
-        syncRangeToView(elements, currentRange);
+        syncRangeToView(elements, state.range);
         rafId = null;
       });
     };
@@ -533,11 +575,11 @@ export default function TimelineFilterClient() {
     // 4. 事件绑定
     // ------------------------------------------------------------------------
 
-    setupDragHandlers(elements.thumbStart, 'start', elements, currentRange, updateRange, minTime, maxTime, signal);
-    setupDragHandlers(elements.thumbEnd, 'end', elements, currentRange, updateRange, minTime, maxTime, signal);
-    setupDateInputs(elements, currentRange, updateRange, signal);
+    setupDragHandlers(elements.thumbStart, 'start', elements, state, updateRange, minTime, maxTime, signal);
+    setupDragHandlers(elements.thumbEnd, 'end', elements, state, updateRange, minTime, maxTime, signal);
+    setupDateInputs(elements, state, updateRange, signal);
     setupPresetButtons(elements, updateRange, minTime, maxTime, signal);
-    setupKeyboardControl(elements, currentRange, updateRange, minTime, maxTime, signal);
+    setupKeyboardControl(elements, state, updateRange, minTime, maxTime, signal);
     setupCustomPanelClose(elements, signal);
 
     // ------------------------------------------------------------------------
