@@ -77,6 +77,7 @@ git commit -m "refactor: migrate files from mdx to md [full]"
 Notes:
 - Windows: Works on Windows 7 and newer. Use the latest Chrome/Firefox available for Win7.
 - Android: Chrome requires Android 6.0+; Firefox works on Android 5.0+.
+- **Encrypted post decryption**: Requires Safari 16+ (iOS 16+) due to SIMD instructions in Argon2 WASM.
 
 ## 🚀 Project Structure
 

@@ -9,15 +9,16 @@ const ahk2 = JSON.parse(fs.readFileSync('src/syntaxes/ahk2.tmLanguage.json', 'ut
 export default defineEcConfig({
   themes: ['gruvbox-dark-medium', 'gruvbox-light-hard'],
   plugins: [pluginCollapsibleSections(), pluginLineNumbers()],
+  defaultProps: {
+    showLineNumbers: true,
+    wrap: true,
+  },
+  useThemedSelectionColors: true,
   shiki: {
     langs: [ahk2],
     langAlias: {
       ahk2: 'autohotkey2',
     },
-  },
-  defaultProps: {
-    showLineNumbers: true,
-    wrap: true,
   },
   styleOverrides: {
     borderColor: 'var(--color-border)',

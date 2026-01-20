@@ -67,7 +67,7 @@ export default defineConfig({
       },
     },
     optimizeDeps: {
-      include: ['argon2-browser/dist/argon2-bundled.min.js', 'giscus'],
+      include: ['@phi-ag/argon2', '@phi-ag/argon2/fetch', 'giscus'],
     },
     css: {
       transformer: 'lightningcss',

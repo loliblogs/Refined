@@ -3,7 +3,7 @@
  * 一个函数搞定所有：有缓存返回缓存，没缓存算完存起来返回
  */
 
-import argon2 from 'argon2';
+import { hash as argon2Hash } from '@node-rs/argon2';
 import { z } from 'astro:content';
 import { getSecret } from 'astro:env/server';
 import { db, eq, Argon2Cache } from 'astro:db';
@@ -98,18 +98,23 @@ async function computeFreshKey(
   cacheKey: string,
   password: string,
 ): Promise<{ derivedKey: string; salt: string; hashedPassword: string }> {
-  const saltBuffer = crypto.randomBytes(32);
-  const salt = saltBuffer.toString('base64');
-
-  const derivedKey = await argon2.hash(password, {
-    type: argon2.argon2id,
-    salt: saltBuffer,
+  // @node-rs/argon2 自动生成 salt，从返回的 encoded string 解析
+  const encoded = await argon2Hash(password, {
+    algorithm: 2,       // Argon2id
+    version: 1,         // V0x13 (19)
     memoryCost: 65536,  // 64MB
     timeCost: 3,
     parallelism: 1,
-    hashLength: 32,
-    raw: true,
+    outputLen: 32,
   });
+
+  // 解析 PHC 格式: $argon2id$v=19$m=65536,t=3,p=1$<salt>$<hash>
+  const parts = encoded.split('$');
+  if (!parts[4] || !parts[5]) {
+    throw new Error('Invalid PHC format from argon2');
+  }
+  const salt = parts[4];
+  const derivedKey = parts[5];
 
   const hashedPassword = crypto.createHmac('sha256', envHashTag)
     .update(cacheKey)
@@ -118,7 +123,7 @@ async function computeFreshKey(
     .digest('hex');
 
   return {
-    derivedKey: derivedKey.toString('base64'),
+    derivedKey,
     salt,
     hashedPassword,
   };

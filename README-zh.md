@@ -77,6 +77,7 @@ git commit -m "refactor: migrate files from mdx to md [full]"
 说明：
 - Windows：支持 Windows 7 及以上版本。建议在 Win7 上使用可安装的最新版 Chrome/Firefox。
 - Android：Chrome 需 Android 6.0+；Firefox 在 Android 5.0+ 即可。
+- **加密文章解密**：需要 Safari 16+（iOS 16+），因为 Argon2 WASM 使用了 SIMD 指令。
 
 ## 🚀 项目结构
 
