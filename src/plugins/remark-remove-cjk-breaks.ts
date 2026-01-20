@@ -2,6 +2,7 @@
  * https://github.com/gatsbyjs/gatsby/blob/main/packages/gatsby-remark-remove-cjk-breaks/src/index.js
  */
 
+import { visit } from 'unist-util-visit';
 import { visitParents } from 'unist-util-visit-parents';
 import type { Root } from 'mdast';
 
@@ -127,7 +128,7 @@ export default function remarkRemoveCjkBreaks({
   const punctAfterMathRegex = new RegExp(`^[\\s\\r\\n]+(${punctPattern})`, 'u');
 
   return function (tree: Root) {
-    visitParents(tree, 'text', (node) => {
+    visit(tree, 'text', (node) => {
       for (const regItem of regexpItems) {
         node.value = node.value.replace(regItem, '$1$2');
       }

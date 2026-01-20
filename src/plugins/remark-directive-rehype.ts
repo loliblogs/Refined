@@ -1,4 +1,4 @@
-import { visitParents } from 'unist-util-visit-parents';
+import { visit } from 'unist-util-visit';
 import { u } from 'unist-builder';
 import { h } from 'hastscript';
 import type { Root } from 'mdast';
@@ -6,7 +6,10 @@ import { postlinkMap } from './postlink-integration';
 
 export default function remarkDirectiveRehype() {
   return function (tree: Root) {
-    visitParents(tree, ['containerDirective', 'leafDirective', 'textDirective'] as const, (node) => {
+    visit(tree, ['containerDirective', 'leafDirective', 'textDirective'] as const, (node) => {
+      // TODO: unist-util-visit 类型收窄未发版，临时守卫
+      if (!('name' in node)) return;
+
       node.data ??= {};
       node.data.hProperties ??= {};
 

@@ -9,13 +9,13 @@ import rehypeMathJax from './src/plugins/rehype-mathjax';
 import rehypeSanitize from './src/plugins/rehype-sanitize';
 import remarkDirectiveRehype from './src/plugins/remark-directive-rehype';
 import remarkRemoveCjkBreaks from './src/plugins/remark-remove-cjk-breaks';
+import remarkPangu from './src/plugins/remark-pangu';
 import buildSearch from './src/plugins/build-search';
 import postlinkIntegration from './src/plugins/postlink-integration';
 
 import remarkDirective from 'remark-directive';
 import remarkEmoji from 'remark-emoji';
 import remarkGithubAdmonitionsToDirectives from 'remark-github-admonitions-to-directives';
-import remarkPangu from 'remark-pangu';
 import { remarkDefinitionList, defListHastHandlers } from 'remark-definition-list';
 
 import expressiveCode from 'astro-expressive-code';

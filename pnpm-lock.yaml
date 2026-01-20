@@ -126,6 +126,9 @@ importers:
       pagefind:
         specifier: ^1.5.0-beta.1
         version: 1.5.0-beta.1
+      pangu:
+        specifier: ^7.2.0
+        version: 7.2.0
       preact:
         specifier: ^10.28.2
         version: 10.28.2
@@ -153,9 +156,6 @@ importers:
       remark-github-admonitions-to-directives:
         specifier: ^2.1.0
         version: 2.1.0
-      remark-pangu:
-        specifier: ^2.2.0
-        version: 2.2.0
       sharp:
         specifier: ^0.34.5
         version: 0.34.5
@@ -174,6 +174,9 @@ importers:
       unist-builder:
         specifier: ^4.0.0
         version: 4.0.0
+      unist-util-visit:
+        specifier: ^5.0.0
+        version: 5.0.0
       unist-util-visit-parents:
         specifier: ^6.0.2
         version: 6.0.2
@@ -4076,8 +4079,9 @@ packages:
     resolution: {integrity: sha512-TOOP7e1C7Nd82wWFu2P5ElIFbNLiqdrKlBz6/BpyeJ6t17NtldrQyPmsBiHsv+eu7E6uXo7lG9MYsUcLMk+6ew==}
     hasBin: true
 
-  pangu@4.0.7:
-    resolution: {integrity: sha512-weZKJIwwy5gjt4STGVUH9bix3BGk7wZ2ahtIypwe3e/mllsrIZIvtfLx1dPX56GcpZFOCFKmeqI1qVuB9enRzA==}
+  pangu@7.2.0:
+    resolution: {integrity: sha512-ak81fYnTD36UvRxp6yNmCyV8T/s9dtv/OS9LjTNwh3TMo5i1OhtLmFDxyw1rTZWAnfrj/00gtl883+RE2r+4tA==}
+    engines: {node: '>=18.0.0'}
     hasBin: true
 
   param-case@3.0.4:
@@ -4324,10 +4328,6 @@ packages:
 
   remark-mdx@3.1.0:
     resolution: {integrity: sha512-Ngl/H3YXyBV9RcRNdlYsZujAmhsxwzxpDzpDEhFBVAGthS4GDgnctpDjgFl/ULx5UEDzqtW1cyBSNKqYYrqLBA==}
-
-  remark-pangu@2.2.0:
-    resolution: {integrity: sha512-3h2UiRIbnEQR+IxYPhQ5SMbAZPobIV8ddza8U1hJLsfLranbv/cdFiwnZEgMOJYKmi+9XHLMxrAIipmIsLrzPg==}
-    engines: {node: '>=10'}
 
   remark-parse@11.0.0:
     resolution: {integrity: sha512-FCxlKLNGknS5ba/1lmpYijMUzX2esxW5xQqjWxw2eHFfS2MSdaHVINFmhjo+qN1WhZhNimq0dZATN9pH0IDrpA==}
@@ -4856,9 +4856,6 @@ packages:
   unist-util-inspect@8.1.0:
     resolution: {integrity: sha512-mOlg8Mp33pR0eeFpo5d2902ojqFFOKMMG2hF8bmH7ZlhnmjFgh0NI3/ZDwdaBJNbvrS7LZFVrBVtIE9KZ9s7vQ==}
 
-  unist-util-is@4.1.0:
-    resolution: {integrity: sha512-ZOQSsnce92GrxSqlnEEseX0gi7GH9zTJZ0p9dtu87WRb/37mMPO2Ilx1s/t9vBHrFhbgweUwb+t7cIn5dxPhZg==}
-
   unist-util-is@6.0.0:
     resolution: {integrity: sha512-2qCTHimwdxLfz+YzdGfkqNlH0tLi9xjTnHddPmJwtIG9MGsdbutfTc4P+haPD7l7Cjxf/WZj+we5qfVPvvxfYw==}
 
@@ -4880,14 +4877,8 @@ packages:
   unist-util-visit-children@3.0.0:
     resolution: {integrity: sha512-RgmdTfSBOg04sdPcpTSD1jzoNBjt9a80/ZCzp5cI9n1qPzLZWF9YdvWGN2zmTumP1HWhXKdUWexjy/Wy/lJ7tA==}
 
-  unist-util-visit-parents@3.1.1:
-    resolution: {integrity: sha512-1KROIZWo6bcMrZEwiH2UrXDyalAa0uqzWCxCJj6lPOvTve2WkfgCytoDTPaMnodXh1WrXOq0haVYHj99ynJlsg==}
-
   unist-util-visit-parents@6.0.2:
     resolution: {integrity: sha512-goh1s1TBrqSqukSc8wrjwWhL0hiJxgA8m4kFxGlQ+8FYQ3C/m11FcTs4YYem7V664AhHVvgoQLk890Ssdsr2IQ==}
-
-  unist-util-visit@2.0.3:
-    resolution: {integrity: sha512-iJ4/RczbJMkD0712mGktuGpm/U4By4FfDonL7N/9tATGIF4imikjOuagyMY53tnZq3NP6BcmlrHhEKAfGWjh7Q==}
 
   unist-util-visit@5.0.0:
     resolution: {integrity: sha512-MR04uvD+07cwl/yhVuVWAtw+3GOR/knlL55Nd/wAdblk27GCVt3lqpTivy/tkJcZoNPzTwS1Y+KMojlLDhoTzg==}
@@ -10018,7 +10009,7 @@ snapshots:
       '@pagefind/linux-x64': 1.5.0-beta.1
       '@pagefind/windows-x64': 1.5.0-beta.1
 
-  pangu@4.0.7: {}
+  pangu@7.2.0: {}
 
   param-case@3.0.4:
     dependencies:
@@ -10352,12 +10343,6 @@ snapshots:
       micromark-extension-mdxjs: 3.0.0
     transitivePeerDependencies:
       - supports-color
-
-  remark-pangu@2.2.0:
-    dependencies:
-      pangu: 4.0.7
-      unist-util-is: 4.1.0
-      unist-util-visit: 2.0.3
 
   remark-parse@11.0.0:
     dependencies:
@@ -11032,8 +11017,6 @@ snapshots:
     dependencies:
       '@types/unist': 3.0.3
 
-  unist-util-is@4.1.0: {}
-
   unist-util-is@6.0.0:
     dependencies:
       '@types/unist': 3.0.3
@@ -11064,21 +11047,10 @@ snapshots:
     dependencies:
       '@types/unist': 3.0.3
 
-  unist-util-visit-parents@3.1.1:
-    dependencies:
-      '@types/unist': 2.0.11
-      unist-util-is: 4.1.0
-
   unist-util-visit-parents@6.0.2:
     dependencies:
       '@types/unist': 3.0.3
       unist-util-is: 6.0.0
-
-  unist-util-visit@2.0.3:
-    dependencies:
-      '@types/unist': 2.0.11
-      unist-util-is: 4.1.0
-      unist-util-visit-parents: 3.1.1
 
   unist-util-visit@5.0.0:
     dependencies:
