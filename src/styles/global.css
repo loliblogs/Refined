@@ -53,7 +53,13 @@
   --spacing-content-max: 50rem;   /* 800px - content max width */
 
   --leading-markdown: 1.8;
-  
+
+  /* 字体定义 - Tailwind v4 @theme 声明 */
+  --font-sans: var(--font-sans);
+
+  /* 响应式根字号 */
+  --text-root: var(--base-font-size);
+
   /* 搜索框动态高度 - 使用CSS变量计算 */
   --search-min-h: 25rem;
   --search-space: var(--viewport-height-search); /* 使用统一的视口高度变量 */
@@ -182,13 +188,6 @@
     --viewport-height: 100dvh;
     --viewport-height-search: calc(100dvh - 9rem);
   }
-}
-
-html {
-  font-family: var(--font-sans), serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  font-size: var(--base-font-size);
 }
 
 /*

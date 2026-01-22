@@ -148,6 +148,13 @@
   color: inherit;
   padding: 0 0.25em;
   border-radius: 0.25em;
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+[data-markdown] mark > * {
+  print-color-adjust: economy;
+  -webkit-print-color-adjust: economy;
 }
 
 /* Blockquote - 基础样式（独立圆角竖线）*/
@@ -177,6 +184,8 @@
   width: 0.25em;
   background-color: var(--color-border);
   border-radius: 0.25em;
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
 }
 
 /* Admonitions - 只覆盖文字颜色 */
@@ -203,6 +212,8 @@
   mask-size: 100%;
   mask-repeat: no-repeat;
   mask-position: center;
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
 }
 
 [data-markdown] blockquote[data-directive-type="note"]::before {

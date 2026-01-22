@@ -47,7 +47,7 @@ const runtimePath = await getRuntimePath();
 ---
 
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" class="font-sans text-root antialiased" data-overlayscrollbars-initialize>
   <head>
     <meta charset="UTF-8" />
     <title>{fullTitle}</title>
@@ -103,13 +103,18 @@ const runtimePath = await getRuntimePath();
     </noscript>
   </head>
 
-  <body class="bg-surface font-sans leading-relaxed text-primary">
-    <main class="flex h-viewport-height flex-col">
+  <body class="bg-surface leading-relaxed text-primary">
+    <main class="
+      flex h-viewport-height flex-col
+      print:h-auto
+    "
+    >
       <header
         id="header"
         class="
           fixed inset-y-0 left-0 flex w-header
           max-lg:static max-lg:h-0 max-lg:w-full
+          print:static print:h-auto print:w-full
         "
       >
         {/*
@@ -129,6 +134,7 @@ const runtimePath = await getRuntimePath();
             pointer-events-none fixed inset-0 z-9 hidden bg-transparent
             max-lg:block
             lg:hidden
+            print:hidden
             max-lg:[#menu-toggle:checked~&]:pointer-events-auto
           "
         >
@@ -163,6 +169,7 @@ const runtimePath = await getRuntimePath();
         class="
           ml-header flex min-h-0 flex-1 overflow-y-auto px-8 pt-8 pb-2
           max-lg:ml-0 max-lg:px-4 max-lg:pt-17 max-lg:pb-1.5
+          print:ml-0 print:pt-2
         "
         transition:name="content"
         transition:animate={config.animationNew}
@@ -170,7 +177,10 @@ const runtimePath = await getRuntimePath();
       >
         <div
           id="wrapper"
-          class="mx-auto flex min-h-full w-full max-w-content-max flex-col"
+          class="
+            mx-auto flex min-h-full w-full max-w-content-max flex-col
+            print:max-w-none
+          "
         >
           <div class="grow">
             <slot />
