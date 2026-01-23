@@ -4,7 +4,6 @@
 @import "./mathjax.css";
 @import "./jetbrains-mono.css";
 @import "./typography.css";
-@import "./toc.css";
 
 /* Tailwind CSS v4 Theme Configuration */
 @theme {
@@ -306,8 +305,15 @@
   padding-inline: 1.75ch;
 }
 
+/* 打印模式 - 暗色模式下使用纯黑背景 */
+@media print and (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #000000;
+  }
+}
+
 /* 尊重用户的动画偏好设置 - 无障碍支持 */
-@media (prefers-reduced-motion: reduce) {
+@media (prefers-reduced-motion: reduce), (update: slow) {
   *,
   *::before,
   *::after {

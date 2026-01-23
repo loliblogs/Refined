@@ -66,7 +66,11 @@ const buttonClass = 'rounded-md border px-3 py-1 text-sm transition-colors hover
 ---
 
 <BaseLayout title="归档" pageContext={pageContext}>
-  <div class="mb-8">
+  <div class="
+    mb-8
+    print:mb-3
+  "
+  >
     <h1 class="text-3xl font-bold">文章归档</h1>
   </div>
 
@@ -77,9 +81,16 @@ const buttonClass = 'rounded-md border px-3 py-1 text-sm transition-colors hover
     data-max-time={maxTime}
   >
     {/* 滑块 */}
-    <div class="mb-2 px-4">
+    <div class="
+      mb-2 px-4
+      print:px-0
+    "
+    >
       <div
-        class="relative h-5 select-none"
+        class="
+          relative h-5 select-none
+          print:hidden
+        "
         data-role="track"
         role="group"
         aria-label="时间范围选择器"
@@ -145,14 +156,38 @@ const buttonClass = 'rounded-md border px-3 py-1 text-sm transition-colors hover
       </div>
 
       {/* 范围与统计 */}
-      <div class="mt-1 flex items-center justify-center text-sm text-primary" aria-live="polite" aria-atomic="true">
-        <span class="mr-1 font-medium">
+      <div
+        class="
+          mt-1 flex items-center justify-center text-sm text-primary
+          print:justify-start print:text-secondary
+        "
+        aria-live="polite"
+        aria-atomic="true"
+      >
+        <span class="
+          mr-1 font-medium
+          print:mr-0 print:font-normal
+        "
+        >
           <span data-role="label-start">{formatDate(new Date(minTime))}</span>
-          ~
+          {' ~ '}
           <span data-role="label-end">{formatDate(new Date(maxTime))}</span>
         </span>
+        <span class="
+          hidden
+          print:inline
+        "
+        >
+          ，
+        </span>
         <span class="flex items-center gap-1" aria-live="polite" aria-atomic="true">
-          <span class="text-muted"><DotIcon size="1rem" weight="regular" /></span>
+          <span class="
+            text-muted
+            print:hidden
+          "
+          >
+            <DotIcon size="1rem" weight="bold" />
+          </span>
           显示
           <span data-role="count-visible">{timelinePosts.length}</span>
           /
@@ -163,7 +198,11 @@ const buttonClass = 'rounded-md border px-3 py-1 text-sm transition-colors hover
     </div>
 
     {/* 预设 + 自定义 */}
-    <div class="mt-3 mb-4 flex items-center justify-center gap-2 border-b pb-4">
+    <div class="
+      mt-3 flex items-center justify-center gap-2
+      print:hidden
+    "
+    >
       {/* 预设 */}
       <div class="flex gap-1" data-role="presets">
         <button data-preset="all" class={buttonClass}>全部</button>
@@ -206,6 +245,8 @@ const buttonClass = 'rounded-md border px-3 py-1 text-sm transition-colors hover
         </div>
       </details>
     </div>
+
+    <div class="mb-4 border-b pb-4" />
 
     {/* 列表（SSR 全量） */}
     <div class="space-y-6 contain-content" data-role="list">
@@ -250,7 +291,15 @@ const buttonClass = 'rounded-md border px-3 py-1 text-sm transition-colors hover
           </ol>
         </section>
       ))}
-      <div class="hidden py-8 text-center text-secondary" data-role="empty">该时间范围内没有文章</div>
+      <div
+        class:list={[
+          'py-8 text-center text-secondary',
+          { hidden: timelinePosts.length > 0 },
+        ]}
+        data-role="empty"
+      >
+        该时间范围内没有文章
+      </div>
     </div>
   </div>
 

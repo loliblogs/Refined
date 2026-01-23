@@ -83,7 +83,11 @@ const showComments = page.data.comments ?? config.comments;
 
     {/* 评论区 */}
     {showComments && (
-      <section class="mt-12 border-t border-line pt-8">
+      <section class="
+        mt-12 border-t border-line pt-8
+        print:hidden
+      "
+      >
         <Comments client:load />
       </section>
     )}

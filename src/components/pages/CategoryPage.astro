@@ -148,10 +148,14 @@ const pageTitle = `分类: ${category.name}`;
             "
           >
             {sibling.name}
-            {' '}
-            (
-            {sibling.count}
-            )
+            <span class="
+              inline-flex text-muted
+              before:content-['(']
+              after:content-[')']
+            "
+            >
+              {sibling.count}
+            </span>
           </a>
         ))}
       </div>

@@ -47,7 +47,11 @@ const pageContext = {
         返回首页
       </a>
       {showComments && (
-        <section class="mt-12 border-t border-line pt-8">
+        <section class="
+          mt-12 border-t border-line pt-8
+          print:hidden
+        "
+        >
           <Comments term={`/special-page${pageContext.path}`} client:load />
         </section>
       )}

@@ -3,7 +3,7 @@ title: 测试深层标签
 description: 用于测试多级标签系统的空列表处理
 date: 2024-01-25
 author: Test
-category: test
+category: test/category/deep
 tag: [a/b/c, x/y/z, frontend/react/hooks/advanced/patterns]
 sticky: -1
 ---

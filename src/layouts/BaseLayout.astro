@@ -169,7 +169,7 @@ const runtimePath = await getRuntimePath();
         class="
           ml-header flex min-h-0 flex-1 overflow-y-auto px-8 pt-8 pb-2
           max-lg:ml-0 max-lg:px-4 max-lg:pt-17 max-lg:pb-1.5
-          print:ml-0 print:pt-2
+          print:ml-0 print:pt-4
         "
         transition:name="content"
         transition:animate={config.animationNew}
@@ -179,7 +179,7 @@ const runtimePath = await getRuntimePath();
           id="wrapper"
           class="
             mx-auto flex min-h-full w-full max-w-content-max flex-col
-            print:max-w-none
+            print:min-h-0 print:max-w-none
           "
         >
           <div class="grow">

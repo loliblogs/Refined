@@ -217,7 +217,11 @@ const pageContext = {
       </div>
     )}
 
-    <footer class="border-t border-line/50 pt-12">
+    <footer class="
+      border-t border-line/50 pt-12
+      print:hidden
+    "
+    >
       <nav>
         <div class="
           grid grid-cols-2 gap-12
@@ -257,7 +261,11 @@ const pageContext = {
 
   {/* 评论区 */}
   {showComments && (
-    <section class="mt-12 border-t border-line pt-8">
+    <section class="
+      mt-12 border-t border-line pt-8
+      print:hidden
+    "
+    >
       <Comments client:load />
     </section>
   )}

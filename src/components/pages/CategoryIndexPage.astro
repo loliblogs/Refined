@@ -3,6 +3,8 @@
  * 分类索引页面组件 - 支持多collection
  * 完全兼容原始category/index.astro的行为
  */
+import { FolderOpenIcon, FolderIcon } from '@phosphor-icons/react';
+
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { getCategorySystem } from '@/utils/data-loader';
 import { getCategoryUrl, getCategoryIndexUrl } from '@/utils/collection-paths';
@@ -81,42 +83,53 @@ const pageContext = {
       例如 Frontend(25) 包含了其所有子分类 React(15) Vue(10) 的文章总和 */}
   <section class="mb-12">
     <h2 class="mb-4 text-2xl font-bold">分类目录</h2>
-    <div class="rounded-lg bg-hover p-6">
+    <div class="space-y-3">
       {topCategories.map(category => (
-        <div class="mb-4">
+        <div>
           <a
             href={getCategoryUrl(category.path, collection)}
             class="
-              text-lg font-semibold transition
+              flex items-center gap-2 text-lg font-semibold transition
               hover:text-link
             "
           >
+            <span class="mr-0.5 text-secondary">
+              <FolderOpenIcon size="1.25em" weight="duotone" />
+            </span>
             {category.name}
-            {' '}
-            {/* 包含子分类的总文章数 */}
-            (
-            {category.count}
-            )
+            <span class="
+              inline-flex font-normal text-muted
+              before:content-['(']
+              after:content-[')']
+            "
+            >
+              {category.count}
+            </span>
           </a>
 
           {category.childNodes.size > 0 && (
-            <div class="mt-2 ml-6 space-y-2">
+            <div class="mt-2 ml-6 space-y-3">
               {Array.from(category.childNodes).map(child => (
-                <div>
-                  <a
-                    href={getCategoryUrl(child.path, collection)}
-                    class="
-                      text-primary transition
-                      hover:text-link
-                    "
+                <a
+                  href={getCategoryUrl(child.path, collection)}
+                  class="
+                    flex items-center gap-2 text-lg text-primary transition
+                    hover:text-link
+                  "
+                >
+                  <span class="mr-0.5 text-muted">
+                    <FolderIcon size="1.25em" weight="duotone" />
+                  </span>
+                  {child.name}
+                  <span class="
+                    inline-flex text-muted
+                    before:content-['(']
+                    after:content-[')']
+                  "
                   >
-                    {child.name}
-                    {' '}
-                    (
                     {child.count}
-                    )
-                  </a>
-                </div>
+                  </span>
+                </a>
               ))}
             </div>
           )}
@@ -126,7 +139,7 @@ const pageContext = {
   </section>
 
   {/* 统计信息 */}
-  <aside class="mt-12 rounded-lg bg-hover p-6">
+  <aside class="mt-12 rounded-lg bg-hover p-6 ring-2 ring-hover ring-inset">
     <h3 class="mb-2 text-lg font-bold">统计信息</h3>
     <ul class="space-y-1 text-sm">
       <li>
