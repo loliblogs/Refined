@@ -189,19 +189,6 @@
   }
 }
 
-/*
- * 平滑滚动 - 仅在 OverlayScrollbars 初始化完成后启用
- *
- * 为什么不在 initialize 上设置？
- * initialize 是初始化前的容器，若设置 smooth，用户点击锚点后
- * OverlayScrollbars 初始化会打断正在进行的平滑滚动，导致跳转失败。
- *
- * 无 JS 时的 smooth 由 noscript.css 处理（不会有初始化打断问题）
- */
-[data-overlayscrollbars-viewport] {
-  scroll-behavior: smooth;
-}
-
 /* Animation keyframes */
 @keyframes fade-in-down {
   from {
@@ -300,9 +287,43 @@
   --os-handle-perpendicular-size-active: 100%;
 }
 
+/*
+ * 平滑滚动 - 仅在 OverlayScrollbars 初始化完成后启用
+ *
+ * 为什么不在 initialize 上设置？
+ * initialize 是初始化前的容器，若设置 smooth，用户点击锚点后
+ * OverlayScrollbars 初始化会打断正在进行的平滑滚动，导致跳转失败。
+ *
+ * 无 JS 时的 smooth 由 noscript.css 处理（不会有初始化打断问题）
+ */
+ [data-overlayscrollbars-viewport] {
+  scroll-behavior: smooth;
+}
+
 /* Code blocks - 行号间距 */
 .expressive-code .ec-line .gutter .ln {
   padding-inline: 1.75ch;
+}
+
+@media print {
+  /*
+   * OverlayScrollbars 打印重置
+   * - host/padding: flex → block, hidden → visible
+   * - viewport: relative → static（允许跨页），重置 JS inline style
+   */
+  html [data-overlayscrollbars~="host"],
+  html [data-overlayscrollbars-padding] {
+    display: block !important;
+    overflow: visible !important;
+  }
+
+  html [data-overlayscrollbars-viewport] {
+    position: static !important;
+    overflow: visible !important;
+    width: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
 }
 
 /* 打印模式 - 暗色模式下使用纯黑背景 */

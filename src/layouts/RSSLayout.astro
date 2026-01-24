@@ -19,19 +19,23 @@ const {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>
-      <xsl:value-of select="rss/channel/title" />
-      {' '}
-      - RSS Feed
-    </title>
+    <title>RSS Feed</title>
     <link rel="stylesheet" href={styles} />
   </head>
 
-  <body class="min-h-screen bg-surface font-sans leading-relaxed text-primary">
+  <body class="
+    min-h-viewport-height bg-surface font-sans leading-relaxed text-primary
+  "
+  >
     {/* 顶部导航栏 */}
-    <nav class="fixed inset-x-0 top-0 h-16 border-b border-line bg-surface-nav">
+    <nav class="
+      fixed inset-x-0 top-0 z-10 h-16 border-b border-line bg-surface-nav
+      print:hidden
+    "
+    >
       <div class="
         mx-auto flex h-full max-w-content-max items-center justify-between px-4
+        print:max-w-none
       "
       >
         <a
@@ -66,9 +70,17 @@ const {
     {/* 主内容区 */}
     <main>
       {/* 文章列表 */}
-      <div class="mx-auto max-w-content-max p-4 pt-20">
+      <div class="
+        mx-auto max-w-content-max p-4 pt-20
+        print:max-w-none print:pt-4
+      "
+      >
         {/* RSS 信息 */}
-        <div class="mb-4 rounded-lg bg-surface-aside p-6">
+        <div class="
+          mb-4 rounded-lg bg-surface-aside p-6 ring-2 ring-surface-aside
+          ring-inset
+        "
+        >
           <h1 class="mb-3 text-2xl font-semibold text-primary">
             <xsl:value-of select="rss/channel/title" />
           </h1>
@@ -79,7 +91,7 @@ const {
             <p class="text-sm text-muted">订阅此 RSS Feed：</p>
             <div class="
               w-full cursor-text overflow-x-auto rounded-sm bg-hover px-3 py-2
-              font-mono text-sm select-all
+              font-mono text-sm ring-2 ring-hover select-all ring-inset
             "
             >
               <xsl:value-of select="rss/channel/link" />
@@ -92,7 +104,8 @@ const {
         <div class="space-y-4">
           <xsl:for-each select="rss/channel/item">
             <article class="
-              rounded-lg border border-line bg-surface p-6 transition-colors
+              relative rounded-lg border border-line bg-surface p-6
+              transition-colors
               hover:border-primary
             "
             >
@@ -101,6 +114,7 @@ const {
                   href="/"
                   class="
                     text-primary transition-colors
+                    after:absolute after:inset-0
                     hover:text-red
                   "
                 >
@@ -111,7 +125,10 @@ const {
                 </a>
               </h2>
 
-              <div class="mb-3 flex flex-wrap gap-3 text-sm text-secondary">
+              <div class="
+                relative mb-3 flex flex-wrap gap-3 text-sm text-secondary
+              "
+              >
                 <span>
                   <xsl:value-of select="substring(pubDate, 1, 16)" />
                 </span>
@@ -126,7 +143,7 @@ const {
                 </xsl:if>
               </div>
 
-              <p class="leading-relaxed text-secondary">
+              <p class="relative leading-relaxed text-secondary">
                 <xsl:value-of select="description" />
               </p>
             </article>
