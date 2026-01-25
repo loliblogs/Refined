@@ -4,7 +4,6 @@
  */
 
 import { useEffect, useState, useRef, type FC } from 'react';
-import { clsx } from 'clsx/lite';
 
 interface SearchBoxClientProps {
   searchUrl?: string;
@@ -34,11 +33,20 @@ const SearchBoxClient: FC<SearchBoxClientProps> = ({
   const inputRef = useRef<HTMLInputElement | null>(null);
   const dropdownRef = useRef<HTMLElement | null>(null);
   const sidebarToggleRef = useRef<HTMLInputElement | null>(null);
+  const contentRef = useRef<Element | null>(null);
+  const resultsWrapperRef = useRef<Element | null>(null);
+  const globalSearchRef = useRef<HTMLAnchorElement | null>(null);
+  const keywordSpanRef = useRef<Element | null>(null);
+  const containerRef = useRef<Element | null>(null);
+  const lastSelectedRef = useRef<HTMLElement | null>(null);
+
+  // 用 ref 存储最新状态，避免事件监听器重复绑定
+  const stateRef = useRef({ showDropdown, localResults, selectedIndex, keyword });
 
   // 搜索文章内容 - 优化版本，使用正则表达式避免重复toLowerCase
   const findDOMMatches = (searchKeyword: string): LocalMatch[] => {
-    const article = document.querySelector('article');
-    if (!article || !searchKeyword.trim()) return [];
+    const content = contentRef.current;
+    if (!content || !searchKeyword.trim()) return [];
 
     const matches: LocalMatch[] = [];
     const keywordLen = searchKeyword.length;
@@ -49,11 +57,11 @@ const SearchBoxClient: FC<SearchBoxClientProps> = ({
 
     // 优化的TreeWalker过滤器 - 跳过太短的文本节点
     const walker = document.createTreeWalker(
-      article,
+      content,
       NodeFilter.SHOW_TEXT,
       (node: Node) => {
         const parent = node.parentElement;
-        if (parent?.closest('script, style')) {
+        if (parent?.closest('script, style, iframe, [aria-hidden="true"]')) {
           return NodeFilter.FILTER_REJECT;
         }
         // 跳过比关键词还短的文本节点
@@ -152,11 +160,41 @@ const SearchBoxClient: FC<SearchBoxClientProps> = ({
     }
   };
 
-  // 更新DOM中的搜索结果
+  // 只更新选中样式，不重建 DOM（只操作 last 和 current 两个元素）
+  const updateSelectedStyles = (idx: number) => {
+    const contentWrapper = resultsWrapperRef.current;
+    const globalSearch = globalSearchRef.current;
+    if (!contentWrapper) return;
+
+    // 清除上一个选中项的样式（检查元素是否还在 DOM 中）
+    if (lastSelectedRef.current?.isConnected) {
+      lastSelectedRef.current.classList.remove('bg-muted/20');
+      lastSelectedRef.current.classList.add('hover:bg-muted/10', 'active:bg-muted/20');
+    }
+
+    // 找到新选中的元素
+    let current: HTMLElement | null = null;
+    if (idx === 0 && globalSearch && !globalSearch.classList.contains('hidden')) {
+      current = globalSearch;
+    } else if (idx > 0) {
+      current = contentWrapper.querySelector(`[data-index="${idx}"]`);
+    }
+
+    // 应用选中样式
+    if (current) {
+      current.classList.remove('hover:bg-muted/10', 'active:bg-muted/20');
+      current.classList.add('bg-muted/20');
+      lastSelectedRef.current = current;
+    } else {
+      lastSelectedRef.current = null;
+    }
+  };
+
+  // 重建搜索结果 DOM（仅当内容变化时调用）
   const updateResultsDOM = () => {
-    const contentWrapper = document.querySelector('[data-search-results-wrapper]');
-    const globalSearch = document.querySelector<HTMLAnchorElement>('[data-global-search]');
-    const keywordSpan = document.querySelector('[data-search-keyword]');
+    const contentWrapper = resultsWrapperRef.current;
+    const globalSearch = globalSearchRef.current;
+    const keywordSpan = keywordSpanRef.current;
 
     if (!contentWrapper) return;
 
@@ -167,15 +205,7 @@ const SearchBoxClient: FC<SearchBoxClientProps> = ({
 
       // 移除hidden并添加flex布局
       globalSearch.classList.remove('hidden');
-      globalSearch.classList.add('flex');
-
-      // 更新全站搜索的选中样式 - 需要清理所有可能的样式类
-      globalSearch.classList.remove('bg-muted/20', 'hover:bg-muted/10', 'active:bg-muted/20');
-      if (selectedIndex === 0) {
-        globalSearch.classList.add('bg-muted/20');
-      } else {
-        globalSearch.classList.add('hover:bg-muted/10', 'active:bg-muted/20');
-      }
+      globalSearch.classList.add('flex', 'hover:bg-muted/10', 'active:bg-muted/20');
 
       // 绑定鼠标悬停事件
       globalSearch.onmouseenter = () => {
@@ -186,6 +216,9 @@ const SearchBoxClient: FC<SearchBoxClientProps> = ({
       globalSearch.classList.add('hidden');
       globalSearch.classList.remove('flex');
     }
+
+    // 重置选中状态
+    lastSelectedRef.current = null;
 
     // 直接操作wrapper，不管OverlayScrollbars的结构
     contentWrapper.replaceChildren();
@@ -202,20 +235,12 @@ const SearchBoxClient: FC<SearchBoxClientProps> = ({
         const button = document.createElement('button');
         button.type = 'button';
         button.setAttribute('data-index', String(index + 1));
-        button.className = clsx(
-          'w-full px-4 py-3 text-left',
-          `
-            border-b border-line/50
-            last:border-0
-          `,
-          'transition-colors',
-          selectedIndex === index + 1
-            ? 'bg-muted/20'
-            : `
-              hover:bg-muted/10
-              active:bg-muted/20
-            `,
-        );
+        button.className = `
+          w-full border-b border-line/50 px-4 py-3 text-left transition-colors
+          last:border-0
+          hover:bg-muted/10
+          active:bg-muted/20
+        `;
 
         // 使用 DOM API 创建内容，避免 innerHTML
         const titleDiv = document.createElement('div');
@@ -240,6 +265,8 @@ const SearchBoxClient: FC<SearchBoxClientProps> = ({
       });
 
       contentWrapper.replaceChildren(fragment);
+      // DOM 重建后立即应用选中样式
+      updateSelectedStyles(selectedIndex);
     } else if (keyword.trim()) {
       const noResultDiv = document.createElement('div');
       noResultDiv.className = 'px-4 py-8 text-center text-muted';
@@ -285,9 +312,22 @@ const SearchBoxClient: FC<SearchBoxClientProps> = ({
     inputRef.current = input;
     dropdownRef.current = dropdown;
     sidebarToggleRef.current = document.querySelector<HTMLInputElement>('#sidebar-toggle');
+    // 优先使用 pagefind 标记的内容区域，避免搜到标题、侧边栏等
+    contentRef.current = document.querySelector('[data-pagefind-body]')
+      ?? document.querySelector('#content');
+    // 缓存搜索结果相关 DOM
+    resultsWrapperRef.current = document.querySelector('[data-search-results-wrapper]');
+    globalSearchRef.current = document.querySelector('[data-global-search]');
+    keywordSpanRef.current = document.querySelector('[data-search-keyword]');
+    containerRef.current = document.querySelector('[data-search-container]');
   }, []);
 
-  // 绑定事件处理器 - 需要依赖状态更新
+  // 同步状态到 ref，让事件处理器能读到最新值
+  useEffect(() => {
+    stateRef.current = { showDropdown, localResults, selectedIndex, keyword };
+  }, [showDropdown, localResults, selectedIndex, keyword]);
+
+  // 绑定事件处理器 - 只在 mount 时绑定一次
   useEffect(() => {
     const input = inputRef.current;
     if (!input) return;
@@ -298,11 +338,12 @@ const SearchBoxClient: FC<SearchBoxClientProps> = ({
       handleInput(value);
     };
 
-    // 键盘事件处理 - 在这里定义以访问最新状态
+    // 键盘事件处理 - 通过 stateRef 访问最新状态
     const handleKeyDownEvent = (e: KeyboardEvent) => {
-      if (!showDropdown) return;
+      const { showDropdown: show, localResults: results, selectedIndex: idx, keyword: kw } = stateRef.current;
+      if (!show) return;
 
-      const totalItems = localResults.length + 1; // +1 for global search
+      const totalItems = results.length + 1; // +1 for global search
 
       switch (e.key) {
         case 'ArrowDown':
@@ -317,10 +358,10 @@ const SearchBoxClient: FC<SearchBoxClientProps> = ({
 
         case 'Enter':
           e.preventDefault();
-          if (selectedIndex === 0) {
-            window.location.href = `${searchUrl}?q=${encodeURIComponent(keyword)}`;
+          if (idx === 0) {
+            window.location.href = `${searchUrl}?q=${encodeURIComponent(kw)}`;
           } else {
-            const targetResult = localResults[selectedIndex - 1];
+            const targetResult = results[idx - 1];
             if (targetResult) {
               scrollToResult(targetResult);
             }
@@ -341,9 +382,9 @@ const SearchBoxClient: FC<SearchBoxClientProps> = ({
       }
     };
 
-    // 点击外部关闭
+    // 点击外部关闭 - 使用缓存的 containerRef
     const handleClickOutside = (e: MouseEvent) => {
-      const container = document.querySelector('[data-search-container]');
+      const container = containerRef.current;
       if (container && !container.contains(e.target as Node)) {
         setShowDropdown(false);
         setSelectedIndex(0);
@@ -360,7 +401,7 @@ const SearchBoxClient: FC<SearchBoxClientProps> = ({
       input.removeEventListener('keydown', handleKeyDownEvent);
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [showDropdown, localResults, selectedIndex, keyword, searchUrl]);
+  }, [searchUrl]);
 
   // 更新下拉框显示状态
   useEffect(() => {
@@ -373,16 +414,23 @@ const SearchBoxClient: FC<SearchBoxClientProps> = ({
     }
   }, [showDropdown, keyword]);
 
-  // 更新搜索结果
+  // 更新搜索结果 DOM（内容变化时重建）
   useEffect(() => {
     updateResultsDOM();
-  }, [localResults, isSearching, selectedIndex, keyword, searchUrl]);
+  }, [localResults, isSearching, keyword, searchUrl]);
+
+  // 更新选中样式（只操作两个元素，不重建 DOM）
+  useEffect(() => {
+    updateSelectedStyles(selectedIndex);
+  }, [selectedIndex]);
 
   // 选中项滚动
   useEffect(() => {
     if (!showDropdown || !dropdownRef.current) return;
 
-    const element = dropdownRef.current.querySelector(`[data-index="${selectedIndex}"]`);
+    // 全局搜索固定在顶部不滚动，选中它时滚动第一个结果项到顶部
+    const targetIndex = selectedIndex === 0 ? 1 : selectedIndex;
+    const element = dropdownRef.current.querySelector(`[data-index="${targetIndex}"]`);
     element?.scrollIntoView({ block: 'nearest' });
   }, [selectedIndex, showDropdown]);
 

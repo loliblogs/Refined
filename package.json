@@ -48,7 +48,6 @@
     "astro-expressive-code": "^0.41.6",
     "cheerio": "^1.2.0",
     "chroma-js": "^3.2.0",
-    "clsx": "^2.1.1",
     "giscus": "^1.6.0",
     "github-slugger": "^2.0.0",
     "globby": "^16.1.0",

@@ -87,9 +87,6 @@ importers:
       chroma-js:
         specifier: ^3.2.0
         version: 3.2.0
-      clsx:
-        specifier: ^2.1.1
-        version: 2.1.1
       giscus:
         specifier: ^1.6.0
         version: 1.6.0
@@ -2721,10 +2718,6 @@ packages:
 
   entities@6.0.1:
     resolution: {integrity: sha512-aN97NXWF6AWBTahfVOIrB/NShkzi5H7F9r1s9mD3cDj4Ko5f2qhhVoYMibXF7GlLveb/D2ioWay8lxI97Ven3g==}
-    engines: {node: '>=0.12'}
-
-  entities@7.0.0:
-    resolution: {integrity: sha512-FDWG5cmEYf2Z00IkYRhbFrwIwvdFKH07uV8dvNy0omp/Qb1xcyCWp2UDtcwJF4QZZvk0sLudP6/hAu42TaqVhQ==}
     engines: {node: '>=0.12'}
 
   entities@7.0.1:
@@ -8145,8 +8138,6 @@ snapshots:
 
   entities@6.0.1: {}
 
-  entities@7.0.0: {}
-
   entities@7.0.1: {}
 
   env-paths@3.0.0:
@@ -9007,7 +8998,7 @@ snapshots:
       '@types/relateurl': 0.2.33
       change-case: 4.1.2
       commander: 14.0.2
-      entities: 7.0.0
+      entities: 7.0.1
       lightningcss: 1.30.2
       relateurl: 0.2.7
       terser: 5.46.0
