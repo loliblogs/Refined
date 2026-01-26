@@ -391,15 +391,37 @@ const SearchBoxClient: FC<SearchBoxClientProps> = ({
       }
     };
 
+    // 全局快捷键聚焦搜索框：/、Ctrl+K、Ctrl+/
+    const handleGlobalKeyDown = (e: KeyboardEvent) => {
+      const mod = e.ctrlKey || e.metaKey;
+      const isSlash = e.key === '/' && !mod && !e.altKey;
+      const isModK = e.key === 'k' && mod && !e.altKey;
+      const isModSlash = e.key === '/' && mod && !e.altKey;
+
+      if (!isSlash && !isModK && !isModSlash) return;
+
+      // 单独 "/" 忽略：焦点在输入框/可编辑区域/Pagefind 结果列表内
+      if (isSlash
+        && e.target instanceof HTMLElement
+        && e.target.closest('input, textarea, select, [contenteditable="true"], pagefind-results')) {
+        return;
+      }
+
+      e.preventDefault();
+      input.focus();
+    };
+
     // 绑定事件
     input.addEventListener('input', handleInputEvent);
     input.addEventListener('keydown', handleKeyDownEvent);
     document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('keydown', handleGlobalKeyDown);
 
     return () => {
       input.removeEventListener('input', handleInputEvent);
       input.removeEventListener('keydown', handleKeyDownEvent);
       document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleGlobalKeyDown);
     };
   }, [searchUrl]);
 

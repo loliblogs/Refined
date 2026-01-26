@@ -3,8 +3,6 @@
  * 使用Pagefind自带的UI组件
  */
 
-import '@pagefind/component-ui';
-
 import { useEffect, type FC } from 'react';
 import { getInstanceManager } from '@pagefind/component-ui';
 
