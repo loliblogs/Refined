@@ -1,4 +1,6 @@
 ---
+import { CalendarIcon, UserIcon } from '@phosphor-icons/react';
+
 import { formatDate } from '@/utils/date-helpers';
 import type { Post, CollectionName } from '@/types/content';
 import { getPostUrl, getTagUrl } from '@/utils/collection-paths';
@@ -33,14 +35,17 @@ const { posts, showExcerpt = true, collection = 'post' } = Astro.props;
       </h2>
 
       <div class="mb-3 flex items-center gap-4 text-sm text-secondary">
-        <time datetime={post.date.toISOString()}>
-          {formatDate(post.date)}
-        </time>
+        <div class="flex items-center gap-1.5">
+          <CalendarIcon size="1rem" weight="fill" />
+          <time datetime={post.date.toISOString()}>
+            {formatDate(post.date)}
+          </time>
+        </div>
 
-        <span>
-          作者:
-          {post.author}
-        </span>
+        <div class="flex items-center gap-1.5">
+          <UserIcon size="1rem" weight="fill" />
+          <span>{post.author}</span>
+        </div>
       </div>
 
       {showExcerpt && post.excerptSource.type === 'fixed'
@@ -55,8 +60,9 @@ const { posts, showExcerpt = true, collection = 'post' } = Astro.props;
           <a
             href={getTagUrl(tag, collection)}
             class="
-              rounded-sm bg-active px-2 py-1 text-xs text-muted transition
-              hover:bg-hover hover:text-primary
+              rounded-sm bg-hover px-2 py-1 text-xs text-secondary ring-2
+              ring-hover transition ring-inset
+              hover:text-primary
             "
           >
             #

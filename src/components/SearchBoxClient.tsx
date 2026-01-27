@@ -340,6 +340,21 @@ const SearchBoxClient: FC<SearchBoxClientProps> = ({
 
     // 键盘事件处理 - 通过 stateRef 访问最新状态
     const handleKeyDownEvent = (e: KeyboardEvent) => {
+      // Escape 始终可用：清空并 blur（不管下拉框是否显示）
+      if (e.key === 'Escape') {
+        e.stopPropagation();
+        setKeyword('');
+        setShowDropdown(false);
+        setLocalResults([]);
+        setSelectedIndex(0);
+        if (inputRef.current) {
+          inputRef.current.value = '';
+          inputRef.current.blur();
+        }
+        return;
+      }
+
+      // 以下快捷键仅在下拉框显示时生效
       const { showDropdown: show, localResults: results, selectedIndex: idx, keyword: kw } = stateRef.current;
       if (!show) return;
 
@@ -365,18 +380,6 @@ const SearchBoxClient: FC<SearchBoxClientProps> = ({
             if (targetResult) {
               scrollToResult(targetResult);
             }
-          }
-          break;
-
-        case 'Escape':
-          e.stopPropagation();
-          setKeyword('');
-          setShowDropdown(false);
-          setLocalResults([]);
-          setSelectedIndex(0);
-          if (inputRef.current) {
-            inputRef.current.value = '';
-            inputRef.current.blur();
           }
           break;
       }

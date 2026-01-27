@@ -9,6 +9,40 @@ const stringArrayField = z.union([z.array(z.string()), z.string()])
   .default([]);
 
 /**
+ * 判断是否为小写品牌词（不应首字母大写）
+ * npm、pnpm 及其衍生词（如 npm-cli、pnpm-workspace）保持小写
+ */
+const isLowercaseBrand = (s: string): boolean =>
+  s.startsWith('npm') || s.startsWith('pnpm');
+
+/**
+ * 标准化分类/标签名称
+ * 规则：
+ * 1. 已有大写字母 → 保持原样（用户写的 FFmpeg、JavaScript 等）
+ * 2. 全小写但是品牌词 → 保持原样（npm、pnpm 等）
+ * 3. 全小写且非品牌词 → 首字母大写（frontend → Frontend）
+ */
+const normalizeName = (segment: string): string => {
+  // 已有大写字母，保持原样
+  if (segment !== segment.toLowerCase()) {
+    return segment;
+  }
+  // 小写品牌词，保持原样
+  if (isLowercaseBrand(segment)) {
+    return segment;
+  }
+  // 全小写且非品牌词，首字母大写
+  return segment.charAt(0).toUpperCase() + segment.slice(1);
+};
+
+/**
+ * 处理分类/标签路径
+ * 对每个路径段应用标准化规则
+ */
+const processPath = (path: string): string =>
+  path.split('/').map(normalizeName).join('/');
+
+/**
  * 共享的内容 schema - Hexo风格
  *
  * 设计原则：
@@ -44,8 +78,10 @@ const contentSchema = z.object({
 
   return {
     ...rest,
-    category: [...data.category, ...categories],
-    tag: [...data.tag, ...tags],
+    // 标准化名称（首字母大写，品牌词除外）
+    // URL 生成时会自动转小写，无需存储 slug
+    category: [...data.category, ...categories].map(processPath),
+    tag: [...data.tag, ...tags].map(processPath),
   };
 });
 

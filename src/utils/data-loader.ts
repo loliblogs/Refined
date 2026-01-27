@@ -199,6 +199,7 @@ async function initializeDataOnce(collection: CollectionName = 'post'): Promise<
   const categorySystem = new TaxonomySystem();
   tagSystems.set(collection, tagSystem);
   categorySystems.set(collection, categorySystem);
+  // 传入显示名，TaxonomySystem 内部会将 path 转小写
   tagSystem.initializeFromPosts(processedPosts, post => post.tags);
   categorySystem.initializeFromPosts(processedPosts, post => post.category);
 
@@ -209,22 +210,24 @@ async function initializeDataOnce(collection: CollectionName = 'post'): Promise<
 
   // 一次遍历，分配所有文章到对应的标签和分类
   for (const post of indexPosts) {
-    // 处理标签
-    for (const tagPath of post.tags) {
-      let tagPosts = tagPostsMap.get(tagPath);
+    // 处理标签（key 用小写，与 TaxonomyNode.path 匹配）
+    for (const tag of post.tags) {
+      const key = tag.toLowerCase();
+      let tagPosts = tagPostsMap.get(key);
       if (!tagPosts) {
         tagPosts = [];
-        tagPostsMap.set(tagPath, tagPosts);
+        tagPostsMap.set(key, tagPosts);
       }
       tagPosts.push(post);
     }
 
-    // 处理分类
-    for (const categoryPath of post.category) {
-      let categoryPosts = categoryPostsMap.get(categoryPath);
+    // 处理分类（key 用小写，与 TaxonomyNode.path 匹配）
+    for (const category of post.category) {
+      const key = category.toLowerCase();
+      let categoryPosts = categoryPostsMap.get(key);
       if (!categoryPosts) {
         categoryPosts = [];
-        categoryPostsMap.set(categoryPath, categoryPosts);
+        categoryPostsMap.set(key, categoryPosts);
       }
       categoryPosts.push(post);
     }

@@ -50,24 +50,27 @@ export function getCategoryIndexUrl(collection: CollectionName): string {
 }
 
 /**
- * 生成分类URL
+ * 生成分类URL（强制小写）
  */
 export function getCategoryUrl(category: string, collection: CollectionName): string {
   const basePath = getBasePath(collection);
-  return posix.join(basePath, 'category', category);
+  return posix.join(basePath, 'category', category.toLowerCase());
 }
 
 /**
- * 生成标签URL
+ * 生成标签索引URL
  */
 export function getTagIndexUrl(collection: CollectionName): string {
   const basePath = getBasePath(collection);
   return posix.join(basePath, 'tag');
 }
 
+/**
+ * 生成标签URL（强制小写）
+ */
 export function getTagUrl(tag: string, collection: CollectionName): string {
   const basePath = getBasePath(collection);
-  return posix.join(basePath, 'tag', tag);
+  return posix.join(basePath, 'tag', tag.toLowerCase());
 }
 
 /**

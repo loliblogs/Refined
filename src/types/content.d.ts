@@ -44,10 +44,10 @@ export interface Post {
   author: string;  // 现在是必需的（默认使用站点配置的作者）
 
   // 分类（支持多分类，每个分类支持多级路径）
-  category: string[];  // 必需（默认空数组）
+  category: string[];  // 显示用，URL 生成时自动转小写
 
   // 标签（支持多级路径）
-  tags: string[];  // 必需（默认空数组）
+  tags: string[];  // 显示用，URL 生成时自动转小写
 
   // 文章元数据
   sticky: number;  // 必需（默认 0）

@@ -33,6 +33,7 @@ export class TaxonomySystem {
 
   /**
    * 从路径构建节点树（极简版）
+   * 注意：segment 保持原样作为 name（显示用），path 强制小写（URL 用）
    */
   protected buildFromPath(path: string, posts: Post[] = []): void {
     const segments = path.split('/').filter(Boolean);
@@ -42,7 +43,9 @@ export class TaxonomySystem {
     let parentNode: TaxonomyNode | undefined;
 
     segments.forEach((segment, i) => {
-      currentPath = currentPath ? `${currentPath}/${segment}` : segment;
+      // path 强制小写，用于 URL
+      const segmentLower = segment.toLowerCase();
+      currentPath = currentPath ? `${currentPath}/${segmentLower}` : segmentLower;
 
       let node = this.nodes.get(currentPath);
       if (!node) {
