@@ -3,7 +3,7 @@
  * 使用 giscus web component 懒加载
  */
 
-import { useEffect } from 'react';
+import { useEffect } from 'preact/hooks';
 import { commentsStore } from '@/stores/state';
 
 /**

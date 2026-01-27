@@ -2,7 +2,8 @@
 /**
  * 作者信息组件 - 匹配 Concise 主题样式
  */
-import { IdentificationCardIcon, MapPinIcon } from '@phosphor-icons/react';
+import IdentificationCardDuotone from '@phosphor-icons/core/assets/duotone/identification-card-duotone.svg';
+import MapPin from '@phosphor-icons/core/assets/regular/map-pin.svg';
 
 import { getSiteConfig } from '@/config/site.config';
 import type { CollectionName } from '@/types/content';
@@ -67,7 +68,7 @@ const config = getSiteConfig(collection);
               group-hover:opacity-100
             "
           >
-            <IdentificationCardIcon size="3rem" weight="duotone" />
+            <IdentificationCardDuotone width="3rem" height="3rem" />
           </span>
         </div>
       </div>
@@ -80,7 +81,7 @@ const config = getSiteConfig(collection);
     <div class="text-base/10 text-secondary" set:html={config.author.work} />
   )}
   <div class="mt-2 flex items-center justify-center text-sm/8 text-secondary">
-    <MapPinIcon size="1rem" weight="regular" />
+    <MapPin width="1rem" height="1rem" />
     <span class="ml-1" set:html={config.author.location} />
   </div>
 

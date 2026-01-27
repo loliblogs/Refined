@@ -1,7 +1,7 @@
 import type { ISetConfigMessage } from 'giscus';
 
-declare module 'react' {
-  declare namespace JSX {
+declare module 'preact' {
+  namespace JSX {
     interface IntrinsicElements {
       'giscus-widget': ISetConfigMessage.setConfig;
     }

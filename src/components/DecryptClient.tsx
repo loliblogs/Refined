@@ -3,7 +3,8 @@
  * 重构目标：拆分 165 行 useEffect → 职责清晰的多个函数
  */
 
-import { useEffect, useRef, type RefObject } from 'react';
+import { useEffect, useRef } from 'preact/hooks';
+import type { RefObject } from 'preact';
 import argon2Worker from '@/utils/argon2-worker?worker';
 
 import type { EncryptedPayload, Argon2WorkerMessage, Argon2WorkerResponse } from '@/types/encryption';

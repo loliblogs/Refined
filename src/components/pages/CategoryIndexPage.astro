@@ -3,7 +3,8 @@
  * 分类索引页面组件 - 支持多collection
  * 完全兼容原始category/index.astro的行为
  */
-import { FolderOpenIcon, FolderIcon } from '@phosphor-icons/react';
+import FolderOpenDuotone from '@phosphor-icons/core/assets/duotone/folder-open-duotone.svg';
+import FolderDuotone from '@phosphor-icons/core/assets/duotone/folder-duotone.svg';
 
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { getCategorySystem } from '@/utils/data-loader';
@@ -94,7 +95,7 @@ const pageContext = {
             "
           >
             <span class="mr-0.5 text-secondary">
-              <FolderOpenIcon size="1.25em" weight="duotone" />
+              <FolderOpenDuotone width="1.25em" height="1.25em" />
             </span>
             {category.name}
             <span class="
@@ -118,7 +119,7 @@ const pageContext = {
                   "
                 >
                   <span class="mr-0.5 text-muted">
-                    <FolderIcon size="1.25em" weight="duotone" />
+                    <FolderDuotone width="1.25em" height="1.25em" />
                   </span>
                   {child.name}
                   <span class="

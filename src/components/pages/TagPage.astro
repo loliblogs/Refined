@@ -135,7 +135,7 @@ const pageTitle = `标签: ${tag.name}`;
       <div class="min-h-72 rounded-lg bg-hover p-4">
         <TagCloud
           tags={relatedTags.map(t => [t.name, t.count, getTagUrl(t.path, collection)])}
-          client:only="react"
+          client:only="preact"
         />
       </div>
     </aside>

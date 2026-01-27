@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect } from 'preact/hooks';
 import mediumZoom from 'medium-zoom-next';
 import { decryptStore } from '@/stores/state';
 

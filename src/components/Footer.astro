@@ -1,5 +1,7 @@
 ---
-import { CopyrightIcon, LineVerticalIcon, XIcon } from '@phosphor-icons/react';
+import Copyright from '@phosphor-icons/core/assets/regular/copyright.svg';
+import LineVerticalBold from '@phosphor-icons/core/assets/bold/line-vertical-bold.svg';
+import XBold from '@phosphor-icons/core/assets/bold/x-bold.svg';
 
 import { getSiteConfig } from '@/config/site.config';
 
@@ -27,12 +29,12 @@ const CustomFooter = config.footer;
 >
   <div class="flex flex-wrap items-center justify-center gap-1">
     <span class="flex items-center gap-1">
-      <CopyrightIcon size="0.75rem" weight="regular" />
+      <Copyright width="0.75rem" height="0.75rem" />
       <span>{currentYear}</span>
       <span>{config.title}</span>
     </span>
     <span>
-      <LineVerticalIcon size="1rem" weight="bold" />
+      <LineVerticalBold width="1rem" height="1rem" />
     </span>
     <a
       href="https://astro.build"
@@ -45,7 +47,7 @@ const CustomFooter = config.footer;
     >
       <span class="underline">Astro</span>
     </a>
-    <span><XIcon size="0.75rem" weight="bold" /></span>
+    <span><XBold width="0.75rem" height="0.75rem" /></span>
     <a
       href="https://github.com/loliblogs/Refined"
       target="_blank"
@@ -59,7 +61,7 @@ const CustomFooter = config.footer;
     </a>
     {CustomFooter && (
       <span>
-        <LineVerticalIcon size="1rem" weight="bold" />
+        <LineVerticalBold width="1rem" height="1rem" />
       </span>
       <CustomFooter />
     )}

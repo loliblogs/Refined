@@ -5,7 +5,7 @@
  * 通过类型系统强制路径格式，避免运行时检查
  */
 
-import type { JSX } from 'react';
+import type { JSX } from 'preact';
 import type { TransitionAnimationValue } from 'astro';
 
 /**
@@ -88,7 +88,7 @@ export interface SiteConfig {
 
   // ========== 社交链接 ==========
   links: {
-    icon: () => JSX.Element;                   // 图标组件
+    icon: string;                              // SVG 字符串（?raw 导入）
     url: string;                               // 链接地址
     title?: string;                            // 标题（可选）
   }[];

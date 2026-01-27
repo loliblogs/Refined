@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect } from 'preact/hooks';
 
 /**
  * 导航控制器 - 仅处理交互逻辑

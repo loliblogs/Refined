@@ -1,5 +1,6 @@
 ---
-import { CalendarIcon, UserIcon } from '@phosphor-icons/react';
+import CalendarFill from '@phosphor-icons/core/assets/fill/calendar-fill.svg';
+import UserFill from '@phosphor-icons/core/assets/fill/user-fill.svg';
 
 import { formatDate } from '@/utils/date-helpers';
 import type { Post, CollectionName } from '@/types/content';
@@ -36,14 +37,14 @@ const { posts, showExcerpt = true, collection = 'post' } = Astro.props;
 
       <div class="mb-3 flex items-center gap-4 text-sm text-secondary">
         <div class="flex items-center gap-1.5">
-          <CalendarIcon size="1rem" weight="fill" />
+          <CalendarFill width="1rem" height="1rem" />
           <time datetime={post.date.toISOString()}>
             {formatDate(post.date)}
           </time>
         </div>
 
         <div class="flex items-center gap-1.5">
-          <UserIcon size="1rem" weight="fill" />
+          <UserFill width="1rem" height="1rem" />
           <span>{post.author}</span>
         </div>
       </div>

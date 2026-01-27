@@ -1,5 +1,7 @@
 ---
-import { DotsThreeIcon, ArrowLeftIcon, ArrowRightIcon } from '@phosphor-icons/react';
+import DotsThree from '@phosphor-icons/core/assets/regular/dots-three.svg';
+import ArrowLeft from '@phosphor-icons/core/assets/regular/arrow-left.svg';
+import ArrowRight from '@phosphor-icons/core/assets/regular/arrow-right.svg';
 import { posix } from 'node:path';
 
 interface Props {
@@ -92,7 +94,7 @@ const nextUrl = currentPage === lastPage ? undefined : getPageUrl(currentPage + 
             "
             aria-label={prevText}
           >
-            <ArrowLeftIcon size="1rem" />
+            <ArrowLeft width="1rem" height="1rem" />
             <span class="
               ml-1 hidden
               sm:inline
@@ -107,7 +109,7 @@ const nextUrl = currentPage === lastPage ? undefined : getPageUrl(currentPage + 
             flex cursor-not-allowed items-center px-3 py-2 text-muted
           "
           >
-            <ArrowLeftIcon size="1rem" />
+            <ArrowLeft width="1rem" height="1rem" />
             <span class="
               ml-1 hidden
               sm:inline
@@ -124,7 +126,7 @@ const nextUrl = currentPage === lastPage ? undefined : getPageUrl(currentPage + 
         if (typeof pageNum === 'string') {
           return (
             <span class="p-2 text-muted select-none">
-              <DotsThreeIcon size="1rem" />
+              <DotsThree width="1rem" height="1rem" />
             </span>
           );
         }
@@ -177,7 +179,7 @@ const nextUrl = currentPage === lastPage ? undefined : getPageUrl(currentPage + 
             >
               {nextText}
             </span>
-            <ArrowRightIcon size="1rem" />
+            <ArrowRight width="1rem" height="1rem" />
           </a>
         )
       : (
@@ -192,7 +194,7 @@ const nextUrl = currentPage === lastPage ? undefined : getPageUrl(currentPage + 
             >
               {nextText}
             </span>
-            <ArrowRightIcon size="1rem" />
+            <ArrowRight width="1rem" height="1rem" />
           </span>
         )}
   </nav>

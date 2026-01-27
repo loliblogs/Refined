@@ -3,7 +3,8 @@
  * 使用Pagefind自带的UI组件
  */
 
-import { useEffect, type FC } from 'react';
+import { useEffect } from 'preact/hooks';
+import type { FunctionComponent as FC } from 'preact';
 import { getInstanceManager } from '@pagefind/component-ui';
 
 const PagefindSearch: FC = () => {

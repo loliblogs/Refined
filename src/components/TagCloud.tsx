@@ -1,4 +1,5 @@
-import { useEffect, useRef, type FC } from 'react';
+import { useEffect, useRef } from 'preact/hooks';
+import type { FunctionComponent as FC } from 'preact';
 import chroma from 'chroma-js';
 import WordCloud from 'wordcloud';
 

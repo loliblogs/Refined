@@ -1,5 +1,6 @@
 ---
-import { FilesIcon, ListIcon } from '@phosphor-icons/react';
+import Files from '@phosphor-icons/core/assets/regular/files.svg';
+import List from '@phosphor-icons/core/assets/regular/list.svg';
 
 import { getSiteConfig } from '@/config/site.config';
 import type { CollectionName } from '@/types/content';
@@ -53,7 +54,7 @@ function isNavActive(path: string, recursive: boolean): boolean {
         [#sidebar-toggle:focus-visible~#nav_&]:ring-primary
       "
     >
-      <FilesIcon size="1.25rem" weight="regular" />
+      <Files width="1.25rem" height="1.25rem" />
       <span class="sr-only">打开侧边栏</span>
     </label>
     <a
@@ -77,7 +78,7 @@ function isNavActive(path: string, recursive: boolean): boolean {
         [#menu-toggle:focus-visible~#nav_&]:ring-primary
       "
     >
-      <ListIcon size="1.25rem" weight="regular" />
+      <List width="1.25rem" height="1.25rem" />
       <span class="sr-only">切换菜单</span>
     </label>
   </div>

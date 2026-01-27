@@ -278,9 +278,9 @@ console.log('代码块会被语法高亮');
 
 主要配置位于 `src/config/base.config.tsx`（含 JSX 组件的原始配置）与 `src/config/site.config.ts`（处理 MathJax 的入口）。它为每个集合（例如 `post` 与 `oi`）提供设置，包括站点标识（标题、副标题、描述）、导航菜单、分页、全局评论开关、favicon 链接，以及对加密内容的默认提示文案。该文件内注释非常详尽——先快速浏览顶部关键选项，完整参数请参考内联注释。
 
-集合 URL 路径集中在 `src/config/paths.config.ts`。该文件定义 `COLLECTION_PATHS`（将集合映射到其 URL 段，如 `post` → `'post'`、`oi` → `'oi/post'`）和 `BASE_PATHS`（集合根路径）。添加新集合或更改 URL 结构时修改此文件。路径配置被有意与站点配置分离，是因为 Astro 集成（如 postlink slug 映射器）需要在构建时导入路径定义，而不能引入主站配置中的 React/JSX 依赖。
+集合 URL 路径集中在 `src/config/paths.config.ts`。该文件定义 `COLLECTION_PATHS`（将集合映射到其 URL 段，如 `post` → `'post'`、`oi` → `'oi/post'`）和 `BASE_PATHS`（集合根路径）。添加新集合或更改 URL 结构时修改此文件。路径配置被有意与站点配置分离，是因为 Astro 集成（如 postlink slug 映射器）需要在构建时导入路径定义，而不能引入主站配置中的 Preact/JSX 依赖。
 
-评论系统通过 `src/config/comments.config.tsx` 接入。尽管文件名叫 config，它实际上是一个组件入口：你可以将其替换为任意评论提供方（Giscus、Disqus、Gitalk，或自定义组件）。文章页会渲染它，并遵循站点配置中的 `comments` 开关。如果替换提供方，请保持默认导出为一个 React 组件。
+评论系统通过 `src/config/comments.config.tsx` 接入。尽管文件名叫 config，它实际上是一个组件入口：你可以将其替换为任意评论提供方（Giscus、Disqus、Gitalk，或自定义组件）。文章页会渲染它，并遵循站点配置中的 `comments` 开关。如果替换提供方，请保持默认导出为一个 Preact 组件。
 
 ## 🔐 加密
 

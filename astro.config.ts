@@ -32,7 +32,7 @@ export default defineConfig({
   prefetch: {
     prefetchAll: true,
   },
-  integrations: [postlinkIntegration(), expressiveCode(), preact({ compat: true }), mdx({ optimize: true }), db(), playformCompress({
+  integrations: [postlinkIntegration(), expressiveCode(), preact(), mdx({ optimize: true }), db(), playformCompress({
     CSS: false,
     HTML: true,
     JSON: true,
@@ -53,7 +53,6 @@ export default defineConfig({
           manualChunks(id) {
             const runtimePatterns = [
               'node_modules/preact',
-              'node_modules/@preact',
               'node_modules/zustand',
               '@astrojs/preact/dist/client',
               'src/stores/state',
@@ -122,5 +121,6 @@ export default defineConfig({
     staticImportMetaEnv: true,
     headingIdCompat: true,
     contentIntellisense: true,
+    svgo: true,
   },
 });

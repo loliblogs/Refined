@@ -10,7 +10,10 @@
  * 注意：此文件不包含 MathJax 处理逻辑，处理后的配置请从 site.config.ts 导入
  */
 
-import { GithubLogoIcon, LinuxLogoIcon, SteamLogoIcon, SubwayIcon } from '@phosphor-icons/react';
+import GithubLogoIcon from '@phosphor-icons/core/assets/duotone/github-logo-duotone.svg?raw';
+import LinuxLogoIcon from '@phosphor-icons/core/assets/duotone/linux-logo-duotone.svg?raw';
+import SteamLogoIcon from '@phosphor-icons/core/assets/duotone/steam-logo-duotone.svg?raw';
+import SubwayIcon from '@phosphor-icons/core/assets/duotone/subway-duotone.svg?raw';
 
 import avatarImg from '@/assets/avatar.jpg';
 import faviconUrl from '@/assets/favicon-32x32.png?url&no-inline';
@@ -86,25 +89,25 @@ export const postConfig: SiteConfig = {
   },
 
   // ========== 社交链接 ==========
-  // 社交链接（必须提供 JSX 元素）
+  // 社交链接（SVG 字符串，通过 ?raw 导入）
   links: [
     {
-      icon: () => <GithubLogoIcon size="2.5rem" weight="duotone" />,
+      icon: GithubLogoIcon,
       url: 'https://github.com/lolifamily',
       title: 'GitHub',
     },
     {
-      icon: () => <LinuxLogoIcon size="2.5rem" weight="duotone" />,
+      icon: LinuxLogoIcon,
       url: 'https://linux.do/u/charliez0/summary',
       title: 'LinuxDo',
     },
     {
-      icon: () => <SteamLogoIcon size="2.5rem" weight="duotone" />,
+      icon: SteamLogoIcon,
       url: 'https://steamcommunity.com/id/charliez0sp',
       title: 'Steam',
     },
     {
-      icon: () => <SubwayIcon size="2.5rem" weight="duotone" />,
+      icon: SubwayIcon,
       url: 'https://www.travellings.cn/go.html',
       title: 'Travelling',
     },

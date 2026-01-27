@@ -1,5 +1,7 @@
 ---
-import { MagnifyingGlassIcon, ArrowSquareOutIcon } from '@phosphor-icons/react';
+import MagnifyingGlass from '@phosphor-icons/core/assets/regular/magnifying-glass.svg';
+import MagnifyingGlassBold from '@phosphor-icons/core/assets/bold/magnifying-glass-bold.svg';
+import ArrowSquareOut from '@phosphor-icons/core/assets/regular/arrow-square-out.svg';
 import SearchBoxClient from './SearchBoxClient';
 
 export interface Props {
@@ -39,7 +41,7 @@ const {
         peer-[:not(:placeholder-shown)]:opacity-0
       "
     >
-      <MagnifyingGlassIcon size="1rem" />
+      <MagnifyingGlass width="1rem" height="1rem" />
       <span class="text-sm">{placeholder}</span>
     </div>
 
@@ -63,9 +65,9 @@ const {
           active:bg-muted/20
         "
       >
-        <MagnifyingGlassIcon size="1rem" weight="bold" />
+        <MagnifyingGlassBold width="1rem" height="1rem" />
         <span class="mr-auto gap-0" data-search-keyword></span>
-        <ArrowSquareOutIcon size="1rem" />
+        <ArrowSquareOut width="1rem" height="1rem" />
       </a>
 
       {/* 本地搜索结果容器 */}

@@ -1,5 +1,7 @@
 ---
-import { CalendarIcon, TagIcon, ArrowClockwiseIcon } from '@phosphor-icons/react';
+import Calendar from '@phosphor-icons/core/assets/regular/calendar.svg';
+import Tag from '@phosphor-icons/core/assets/regular/tag.svg';
+import ArrowClockwise from '@phosphor-icons/core/assets/regular/arrow-clockwise.svg';
 
 import { getSiteConfig } from '@/config/site.config';
 import type { Post } from '@/types/content';
@@ -77,7 +79,7 @@ const excerptLink = config.excerpt_link;
           hover:text-primary
         "
       >
-        <CalendarIcon size="1rem" weight="regular" />
+        <Calendar width="1rem" height="1rem" />
         <time datetime={post.date.toISOString()} class="ml-1.5">
           {formatDate(post.date)}
         </time>
@@ -90,7 +92,7 @@ const excerptLink = config.excerpt_link;
             duration-200
           "
         >
-          <ArrowClockwiseIcon size="1rem" weight="regular" />
+          <ArrowClockwise width="1rem" height="1rem" />
           <time datetime={post.updated.toISOString()} class="ml-1.5">
             {formatDate(post.updated)}
           </time>
@@ -100,7 +102,7 @@ const excerptLink = config.excerpt_link;
       {/* 标签 */}
       {post.tags.length > 0 && (
         <div class="flex list-none items-center overflow-hidden text-muted">
-          <TagIcon size="1rem" weight="regular" />
+          <Tag width="1rem" height="1rem" />
           {post.tags.map((tag, tagIndex) => (
             <>
               <a

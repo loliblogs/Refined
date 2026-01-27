@@ -1,4 +1,5 @@
-import { useEffect, type FC } from 'react';
+import { useEffect } from 'preact/hooks';
+import type { FunctionComponent as FC } from 'preact';
 import { OverlayScrollbars, ClickScrollPlugin } from 'overlayscrollbars';
 import type { PartialOptions } from 'overlayscrollbars';
 import { decryptStore, commentsStore } from '@/stores/state';

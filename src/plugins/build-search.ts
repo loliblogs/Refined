@@ -22,7 +22,7 @@ async function buildSearchIndex(config: SearchConfig) {
     ignore: config.exclude,
   });
 
-  for (const file of files) {
+  await Promise.all(files.map(async (file) => {
     // build.format 为 file 时，只有根目录的文件名会出现 index.html
     const url = file === 'index.html' ? '' : file.replace(/\.html$/, '');
     const fullUrl = path.posix.join('/', config.urlPrefix, url);
@@ -30,7 +30,7 @@ async function buildSearchIndex(config: SearchConfig) {
     const content = await fs.readFile(sourcePath, 'utf-8');
 
     await index.addHTMLFile({ url: fullUrl, content });
-  }
+  }));
 
   await index.writeFiles({
     outputPath: path.join(config.sourceDir, 'pagefind'),
@@ -41,15 +41,16 @@ export default {
   name: 'build-search',
   hooks: {
     'astro:build:done': async ({ logger }) => {
+      const exclude = ['tag/**', 'category/**', 'page/**'];
       await buildSearchIndex({
         sourceDir: 'dist',
         urlPrefix: '',
-        exclude: ['**/oi/**'],
+        exclude: ['oi/**', ...exclude],
       });
       await buildSearchIndex({
         sourceDir: 'dist/oi',
         urlPrefix: 'oi',
-        exclude: [],
+        exclude,
       });
       logger.info('Search index built successfully');
     },

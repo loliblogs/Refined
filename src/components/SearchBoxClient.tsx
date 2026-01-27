@@ -3,7 +3,8 @@
  * 不渲染DOM，只增强已存在的静态HTML
  */
 
-import { useEffect, useState, useRef, type FC } from 'react';
+import { useEffect, useState, useRef } from 'preact/hooks';
+import type { FunctionComponent as FC } from 'preact';
 
 interface SearchBoxClientProps {
   searchUrl?: string;
