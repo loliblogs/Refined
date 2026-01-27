@@ -160,6 +160,13 @@ tags:
   - react/hooks
   - kubernetes/networking
 
+# 分类/标签名称会自动标准化用于显示：
+#   - 已有大写字母 → 保持原样（FFmpeg、JavaScript）
+#   - 小写品牌词 → 保持原样（npm、pnpm、npm-cli）
+#   - 其他全小写 → 首字母大写（frontend → Frontend）
+# URL 始终为小写，与显示名称无关。
+# 品牌词列表：以 "npm" 或 "pnpm" 开头的字符串。
+
 # 草稿在生产环境会被渲染，但不会进入索引/列表（如首页、归档）。
 draft: false
 
@@ -205,7 +212,7 @@ Read-more 标记（使用以下其中一种）：
 
 关于本项目支持的完整 Markdown 语法与特性，请查看在线示例：[Markdown 语法指南](https://blog.lolifamily.js.org/post/markdown-example)
 
-以上 frontmatter 与 `src/content.config.ts` 中的 Zod Schema 一一对应。日期会被强制转换为 `Date`。分类与标签既可为单个字符串，也可为数组；在处理过程中会归一化为数组，每个字符串都可表示多级路径（例如 `前端/React`）。草稿在生产环境仍会渲染，但不会出现在首页、归档等索引型页面。`sticky` 为可选（默认 0），用于控制置顶与列表排序：数值越大越靠前；负数则显式置底。
+以上 frontmatter 与 `src/content.config.ts` 中的 Zod Schema 一一对应。日期会被强制转换为 `Date`。分类与标签既可为单个字符串，也可为数组；在处理过程中会归一化为数组，每个字符串都可表示多级路径（例如 `前端/React`）。显示名称会自动首字母大写（如 `frontend` 变为 `Frontend`），除非已包含大写字母或属于公认品牌词（如 `npm`、`pnpm`）；URL 始终生成为小写以避免产生重复分类。草稿在生产环境仍会渲染，但不会出现在首页、归档等索引型页面。`sticky` 为可选（默认 0），用于控制置顶与列表排序：数值越大越靠前；负数则显式置底。
 
 ## 🧩 MDX（Markdown + JSX）
 

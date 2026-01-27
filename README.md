@@ -160,6 +160,13 @@ tags:
   - react/hooks
   - kubernetes/networking
 
+# Category/tag names are auto-normalized for display:
+#   - Already has uppercase → kept as-is (FFmpeg, JavaScript)
+#   - Lowercase brand words → kept as-is (npm, pnpm, npm-cli)
+#   - Other lowercase → capitalized (frontend → Frontend)
+# URLs are always lowercase regardless of display name.
+# Brand word list: strings starting with "npm" or "pnpm".
+
 # Draft posts are rendered but excluded from production indexes/lists (e.g., home, archive).
 draft: false
 
@@ -205,7 +212,7 @@ Legacy syntax that only works in `.md` files; not supported in `.mdx` due to MDX
 
 For a comprehensive guide to Markdown syntax and features supported in this project, see the live example: [Markdown Syntax Guide](https://blog.lolifamily.js.org/post/markdown-example)
 
-This frontmatter maps directly to the Zod schemas in `src/content.config.ts`. Dates are coerced to `Date`. Categories and tags accept either a single string or an array; during processing they are normalized to arrays, and each string may represent a multi-level path such as `Frontend/React`. Draft entries still render but are hidden from index-style pages (like the home and archives) in production. `sticky` is optional (default 0). It controls pinning and sort priority in lists: larger values appear earlier; negative values explicitly sink to the bottom.
+This frontmatter maps directly to the Zod schemas in `src/content.config.ts`. Dates are coerced to `Date`. Categories and tags accept either a single string or an array; during processing they are normalized to arrays, and each string may represent a multi-level path such as `Frontend/React`. Display names are auto-capitalized (e.g., `frontend` becomes `Frontend`) unless they already contain uppercase letters or are recognized brand words like `npm` and `pnpm`; URLs are always generated in lowercase to prevent duplicate taxonomies. Draft entries still render but are hidden from index-style pages (like the home and archives) in production. `sticky` is optional (default 0). It controls pinning and sort priority in lists: larger values appear earlier; negative values explicitly sink to the bottom.
 
 ## 🧩 MDX (Markdown + JSX)
 

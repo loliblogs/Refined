@@ -168,7 +168,6 @@ jobs:
         if: |
           steps.domestic.outcome == 'failure' || steps.cloudflare_workers.outcome == 'failure' ||
           steps.cloudflare_pages.outcome == 'failure' || steps.vercel.outcome == 'failure' ||
-          steps.netlify.outcome == 'failure' ||
           steps.github.outcome == 'failure' || steps.gitlab.outcome == 'failure' ||
           steps.bitbucket.outcome == 'failure'
         run: exit 1
