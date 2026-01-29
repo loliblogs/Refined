@@ -46,9 +46,9 @@
 - 项目使用typescript-eslint和stylistic超级严格模式，外加extends astro/tsconfigs/strictest，请严格遵循语法规范，不允许尝试修改任何lint选项或在用户明确许可前使用eslint-disable等语句。
 - 除非特别需要，项目中不允许出现js/mjs/jsx实现，必须ts/tsx实现
 - 如果不需要客户端代码，请始终编写astro文件，astro文件可以在编译的时候使用客户端组件，如果需要客户端代码，请始终将客户端部分编写tsx文件，并配置合理的client指令。尽量编写渐进式的设计，即把渲染的html部分放在astro里，tsx只保留client:only的脚本逻辑。
-- 所有图标资源请使用@phosphor-icons下的react组件或者core里面的svg文件，如果是其他资源请从src import后插入，图标清单可以从node\_modules/@phosphor-icons/core/src/dist/icons.d.ts读取。
+- 所有图标资源请使用@phosphor-icons/core里面的svg文件，astro文件直接导入作为组件使用（支持width/height等原生SVG属性），tsx文件使用?raw导入为字符串。图标清单可以从node\_modules/@phosphor-icons/core/assets/\*/目录读取，目录名对应weight（regular/bold/fill/duotone等）。
 - astro项目是SSG为主的项目，用户不需要考虑dev server的延迟，不需要考虑dev server中实时更新的问题，只需要考虑build速度和最终的效果。
-- render函数有缓存，只有文章内容改变或者astro config修改才会刷新缓存。
+- Astro Content Collections：.md 有预渲染缓存（rendered 字段），.mdx 需运行时渲染；通过 `render()` 从 `astro:content` 获取 Content 组件；每次 `<Content />` 创建新实例，框架无跨实例缓存。
 - 除非用户明确要求请不要使用MCP服务器中的截屏功能，你应该使用执行js脚本的方式计算得到对应的答案，如果MCP返回长度过长也代表执行成功，请缩小输出范围后重试指令。
 - 请始终使用中文回答我问题和编写代码注释。
 - class类名不允许任何形式的拼接，单行不允许过长，如有必要请编写多行的单字符串，如果一定需要拼接，astro文件请使用class:list语法，tsx文件请使用clsx/lite，注意不允许使用clsx主包！

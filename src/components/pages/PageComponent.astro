@@ -3,7 +3,7 @@
  * 独立页面组件 - 用于page和oiPage集合
  * 极简设计：标题 + 可选日期 + 内容
  */
-import type { CollectionEntry } from 'astro:content';
+import { render, type CollectionEntry } from 'astro:content';
 
 import CalendarFill from '@phosphor-icons/core/assets/fill/calendar-fill.svg';
 import ArrowClockwiseFill from '@phosphor-icons/core/assets/fill/arrow-clockwise-fill.svg';
@@ -22,7 +22,7 @@ interface Props {
 }
 
 const { page, collection } = Astro.props;
-const { Content } = await page.render();
+const { Content } = await render(page);
 
 // 页面上下文
 const pageContext = {

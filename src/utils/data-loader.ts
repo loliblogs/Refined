@@ -6,7 +6,7 @@
  * 3. 保持向后兼容（默认使用post）
  */
 
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 
 import { getSiteConfig } from '@/config/site.config';
 import type { Post, CollectionName, ExcerptSource } from '@/types/content';
@@ -134,6 +134,9 @@ async function initializeDataOnce(collection: CollectionName = 'post'): Promise<
       encryption = false as const;
     }
 
+    // 预获取 Content 组件（Astro 5 方式：render() 很快，只返回组件引用）
+    const { Content } = await render(post);
+
     // 构造完整 Post 对象
     processedPosts.push({
       id: post.id,
@@ -149,7 +152,7 @@ async function initializeDataOnce(collection: CollectionName = 'post'): Promise<
       draft: post.data.draft,
       sticky: post.data.sticky,
       collection,
-      render: post.render,
+      Content,
       excerptSource,
       encryption,
     });

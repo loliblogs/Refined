@@ -2,6 +2,11 @@
 /**
  * 目录导航组件 - 从 slot 内容中提取标题并渲染目录
  * 极简设计：只用缩进区分层级，h2 带圆圈序号
+ *
+ * 为什么用 slot + cheerio 而不是 render() 返回的 headings？
+ * headings 是从 markdown 源文件直接提取的原始文本，
+ * 标题中的行内代码、数学公式等未经处理（如 `code` 和 $formula$ 会原样保留）。
+ * 必须从渲染后的 HTML 提取，才能得到正确的、已处理的标题内容。
  */
 
 import * as cheerio from 'cheerio';

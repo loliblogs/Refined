@@ -1,0 +1,43 @@
+---
+/**
+ * 缓存内容组件 - 避免重复渲染
+ *
+ * 工作原理：
+ * 1. 第一次调用：渲染 slot 内容，存入全局缓存，输出 HTML
+ * 2. 后续调用：直接从缓存读取 HTML，不渲染 slot（slot 惰性求值）
+ *
+ * 注意：dev 模式下跳过缓存，确保热更新正常工作
+ *
+ * 使用方式：
+ * <CachedContent cacheKey={post.id}>
+ *   <Content />
+ * </CachedContent>
+ */
+
+import { contentCache } from '@/utils/content-cache';
+
+interface Props {
+  cacheKey: string;
+}
+
+const { cacheKey } = Astro.props;
+
+// dev 模式跳过缓存
+const isDev = import.meta.env.DEV;
+
+let html: string;
+if (isDev) {
+  // dev 模式：始终渲染，不缓存
+  html = await Astro.slots.render('default');
+} else {
+  // prod 模式：使用缓存
+  const cached = contentCache.get(cacheKey);
+  if (cached) {
+    html = cached;
+  } else {
+    html = await Astro.slots.render('default');
+    contentCache.set(cacheKey, html);
+  }
+}
+---
+<Fragment set:html={html} />

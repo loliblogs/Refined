@@ -9,6 +9,7 @@ import { getPostUrl, getTagUrl, getArchiveUrl } from '@/utils/collection-paths';
 import { formatDate } from '@/utils/date-helpers';
 
 import ExcerptExtractor from './ExcerptExtractor.astro';
+import CachedContent from './CachedContent.astro';
 
 export interface Props {
   post: Post;
@@ -33,7 +34,7 @@ const needsReadMore = post.excerptSource.type === 'generated'
 // 获取Content组件（只在需要时）
 const shouldRenderContent = showExcerpt && !excerptText;
 const Content = shouldRenderContent
-  ? (await post.render()).Content
+  ? post.Content
   : null;
 
 // 使用动态路径生成（消除硬编码）
@@ -135,7 +136,9 @@ const excerptLink = config.excerpt_link;
           : Content && (
             <div data-markdown>
               <ExcerptExtractor>
-                <Content />
+                <CachedContent cacheKey={post.id}>
+                  <Content />
+                </CachedContent>
               </ExcerptExtractor>
             </div>
           )}

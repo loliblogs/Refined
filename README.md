@@ -134,6 +134,8 @@ Astro uses file-based routing: any .astro, .md, .mdx, or .ts file under `src/pag
 
 Content Collections are defined in `src/content.config.ts` via `defineCollection` and Zod schemas; each collection maps to a folder under `src/content/<collection>` where Markdown/MDX entries provide frontmatter validated at dev/build time. Strong types are generated for safe access and can be synchronized with `pnpm sync`, and content is queried with utilities like `getCollection('post')` in pages and components.
 
+Content rendering is optimized in `src/utils/data-loader.ts`: it pre-fetches the `Content` component for each post using Astro's `render()` at load time, so page templates receive a ready-to-use component rather than calling `render()` themselves. Additionally, `src/components/CachedContent.astro` caches rendered HTML during build, avoiding duplicate renders when the same content appears multiple times (e.g., article body and table of contents). This cache is skipped in dev mode to preserve hot-reload behavior.
+
 This project keeps routes thin in `src/pages`, implements reusable page templates under `src/components/pages`, shares layout chrome in `src/layouts`, centralizes site settings in `src/config`, and places rendering and taxonomy helpers in `src/utils`. Put only unreferenced files in `public`; any asset imported from code or Markdown (including images) can live under `src` (for example `src/assets`) and will be compressed and bundled. In Markdown/MDX, images can be referenced via relative paths or imports; any import-resolvable alias works, including `@/` which maps to `src` (configured in `tsconfig.json`).
 
 ## 📝 Frontmatter
@@ -288,6 +290,8 @@ Encrypted posts use a password‑derived key to protect the rendered HTML. On th
 
 Implementation lives in `src/utils/encrypt-processor.ts` and `src/components/EncryptWrapper.astro` for server‑side encryption, `src/utils/argon2-worker.ts` and `src/components/DecryptClient.tsx` for client‑side derivation and decryption, `src/utils/argon2-cache.ts` for server key derivation and caching, and `db/config.ts` for the Astro DB table that stores encrypted derived keys and metadata. The post page integrates these pieces in `src/components/pages/PostPage.astro`.
 
+The Argon2 cache is a build‑time optimization only—losing it simply means recalculating keys (a few seconds of CPU time), with no data loss. The cache uses a local SQLite file (`file:.cache/persist.db`) with file‑level encryption via `encryptionKey` in the database URL. The additional AES‑GCM layer (derived from `SECRET_ENCRYPTION_PASSWORD` and `SECRET_ENCRYPTION_SALT`) is a conservative defense‑in‑depth measure; in practice, the file‑level encryption already protects the cache at rest. Do not configure a true remote database for this cache—latency and network reliability would defeat the purpose.
+
 To mark a post as protected, set encryption fields in frontmatter. The password itself is never stored in content; instead, secrets supply it at build or runtime.
 
 ```md
@@ -313,7 +317,8 @@ Server‑side secrets are read with `getSecret()` and must be provided via envir
 #   oi:binary-search.md       → src/content/oi/binary-search.md
 SECRET_PASSWORDS='{"post:encrypted-test.mdx":"change-me","oi:binary-search.md":"change-me-too"}'
 
-# Used to derive an AES-GCM key (via HKDF) for encrypting cached derived keys.
+# Defense-in-depth: derives an AES-GCM key for encrypting cached keys.
+# The cache DB already has file-level encryption; this adds a second layer.
 SECRET_ENCRYPTION_PASSWORD='please-generate-a-strong-random-string'
 SECRET_ENCRYPTION_SALT='another-strong-random-string-or-base64'
 ```

@@ -21,6 +21,7 @@ import EncryptWrapper from '../EncryptWrapper.astro';
 import DecryptClient from '../DecryptClient';
 import NavigationCard from '../NavigationCard.astro';
 import TableOfContents from '../TableOfContents.astro';
+import CachedContent from '../CachedContent.astro';
 
 import type { CollectionName, Post } from '@/types/content';
 
@@ -32,7 +33,7 @@ interface Props {
 }
 
 const { post, prevPost, nextPost, collection = 'post' } = Astro.props;
-const { Content } = await post.render();
+const { Content } = post;
 
 // 提取第一个分类（如果存在）
 const firstCategory = post.category[0];
@@ -146,11 +147,15 @@ const pageContext = {
       {post.encryption
         ? (
             <EncryptWrapper derivedKey={post.encryption.derivedKey} salt={post.encryption.salt}>
-              <Content />
+              <CachedContent cacheKey={post.id}>
+                <Content />
+              </CachedContent>
             </EncryptWrapper>
           )
         : (
-            <Content />
+            <CachedContent cacheKey={post.id}>
+              <Content />
+            </CachedContent>
           )}
     </div>
 
@@ -295,7 +300,9 @@ const pageContext = {
             <div class="hidden" data-toc-encrypted>
               <EncryptWrapper derivedKey={post.encryption.derivedKey} salt={post.encryption.salt}>
                 <TableOfContents emptyText={tocEmptyText}>
-                  <Content />
+                  <CachedContent cacheKey={post.id}>
+                    <Content />
+                  </CachedContent>
                 </TableOfContents>
               </EncryptWrapper>
             </div>
@@ -303,7 +310,9 @@ const pageContext = {
         )
       : (
           <TableOfContents emptyText={tocEmptyText}>
-            <Content />
+            <CachedContent cacheKey={post.id}>
+              <Content />
+            </CachedContent>
           </TableOfContents>
         )}
   </Fragment>

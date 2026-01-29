@@ -134,6 +134,8 @@ Astro 使用基于文件的路由：`src/pages` 下的任意 `.astro`、`.md`、
 
 内容集合（Content Collections）在 `src/content.config.ts` 中通过 `defineCollection` 与 Zod Schema 定义；每个集合对应 `src/content/<collection>` 下的一个文件夹，其中的 Markdown/MDX 条目在开发/构建时会根据前置字段（frontmatter）进行校验。项目会生成强类型以安全访问，并可通过 `pnpm sync` 同步；在页面或组件中使用 `getCollection('post')` 等工具进行内容查询。
 
+内容渲染通过 `src/utils/data-loader.ts` 优化：它在加载时使用 Astro 的 `render()` 为每篇文章预获取 `Content` 组件，页面模板直接使用该组件而非自行调用 `render()`。此外，`src/components/CachedContent.astro` 在构建时缓存渲染后的 HTML，避免同一内容多次出现时（如文章主体与目录）重复渲染。该缓存在 dev 模式下跳过以保证热更新正常。
+
 本项目将 `src/pages` 下的路由保持精简；可复用的页面模板放在 `src/components/pages`；布局外框放在 `src/layouts`；站点级设置集中在 `src/config`；渲染与分类体系（taxonomy）相关的工具位于 `src/utils`。仅将未被代码引用的文件放入 `public`；任何在代码或 Markdown 中可以被导入的均放在 `src`（例如 `src/assets`）下，并会被压缩与打包。在 Markdown/MDX 中，图片可通过相对路径或导入引用；任何可由 import 解析的别名都生效，包括映射到 `src` 的 `@/`（在 `tsconfig.json` 中配置）。
 
 ## 📝 Frontmatter
@@ -313,12 +315,15 @@ hint: 你收到的私密密码。
 #   oi:binary-search.md       → src/content/oi/binary-search.md
 SECRET_PASSWORDS='{"post:encrypted-test.mdx":"change-me","oi:binary-search.md":"change-me-too"}'
 
-# 用于通过 HKDF 派生 AES-GCM 密钥，加密缓存的派生密钥。
+# 纵深防御：派生 AES-GCM 密钥用于加密缓存的密钥。
+# 缓存数据库已有文件级加密；这是额外的一层防护。
 SECRET_ENCRYPTION_PASSWORD='please-generate-a-strong-random-string'
 SECRET_ENCRYPTION_SALT='another-strong-random-string-or-base64'
 ```
 
 本地开发时，将上述变量置于 `.env`（`.env.example` 仅为模板，不会被加载）。在 Cloudflare Pages 上，请以相同名称配置项目机密（例如使用 `wrangler pages secret put SECRET_PASSWORDS`，另外两个同理）。密钥与密码不会发送至浏览器；仅加密后的有效载荷会下发，且解密在客户端由用户输入的密码完成。
+
+Argon2 缓存只是一个构建期优化——丢失它仅意味着重新计算密钥（几秒钟的 CPU 时间），不会有数据丢失。缓存使用本地 SQLite 文件（`file:.cache/persist.db`），通过数据库 URL 中的 `encryptionKey` 实现文件级加密。额外的 AES-GCM 层（由 `SECRET_ENCRYPTION_PASSWORD` 与 `SECRET_ENCRYPTION_SALT` 派生）是一种保守的纵深防御措施；实际上文件级加密已足够保护静态缓存数据。不要为此缓存配置真正的远程数据库——延迟和网络可靠性会使其失去意义。
 
 ## 🧮 MathJax
 

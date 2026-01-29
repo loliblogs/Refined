@@ -4,35 +4,31 @@
  */
 
 import { hash as argon2Hash } from '@node-rs/argon2';
-import { z } from 'astro:content';
-import { getSecret } from 'astro:env/server';
+import { z } from 'astro/zod';
+import {
+  SECRET_PASSWORDS,
+  SECRET_ENCRYPTION_PASSWORD,
+  SECRET_ENCRYPTION_SALT,
+} from 'astro:env/server';
 import { db, eq, Argon2Cache } from 'astro:db';
 import crypto from 'node:crypto';
 
+// 环境变量校验由 astro.config.ts 的 env.schema 处理
 const PasswordEntry = z.record(z.string(), z.string()).default({});
-
-const envPasswordMap = getSecret('SECRET_PASSWORDS') ?? '{}';
-const passwordMap = PasswordEntry.parse(JSON.parse(envPasswordMap));
-
-const envEncryptionPassword = getSecret('SECRET_ENCRYPTION_PASSWORD');
-const envEncryptionSalt = getSecret('SECRET_ENCRYPTION_SALT');
-
-if (!envEncryptionPassword || !envEncryptionSalt) {
-  throw new Error('SECRET_ENCRYPTION_PASSWORD or SECRET_ENCRYPTION_SALT is not set');
-}
+const passwordMap = PasswordEntry.parse(JSON.parse(SECRET_PASSWORDS));
 
 const envEncryptionKey = Buffer.from(crypto.hkdfSync(
   'sha256',
-  envEncryptionPassword,
-  envEncryptionSalt,
+  SECRET_ENCRYPTION_PASSWORD,
+  SECRET_ENCRYPTION_SALT,
   Buffer.from('argon2-cache:key'),
   32,
 ));
 
 const envHashTag = Buffer.from(crypto.hkdfSync(
   'sha256',
-  envEncryptionPassword,
-  envEncryptionSalt,
+  SECRET_ENCRYPTION_PASSWORD,
+  SECRET_ENCRYPTION_SALT,
   Buffer.from('argon2-cache:hash'),
   32,
 ));
