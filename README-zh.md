@@ -72,7 +72,7 @@ git commit -m "refactor: migrate files from mdx to md [full]"
 
 - Chrome 99+
 - Firefox 97+
-- Safari 15+（iOS 15+）
+- Safari 15.4+（iOS 15+）
 
 说明：
 - Windows：支持 Windows 7 及以上版本。建议在 Win7 上使用可安装的最新版 Chrome/Firefox。

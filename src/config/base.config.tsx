@@ -81,7 +81,7 @@ export const postConfig: SiteConfig = {
     location: 'Chongqing, China',           // 所在地
     avatar: {                              // 头像组件
       src: avatarImg,
-      alt: 'lolifamily',
+      alt: 'lolifamily\'s avatar',
       width: 180,                          // 尺寸在配置中定义
       height: 180,
       href: '/about',

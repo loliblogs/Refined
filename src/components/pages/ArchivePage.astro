@@ -63,7 +63,7 @@ const pageContext = {
 };
 
 // 复用的样式
-const buttonClass = 'rounded-md border px-3 py-1 text-sm transition-colors hover:bg-hover';
+const buttonClass = 'rounded-md border border-line px-3 py-1 text-sm transition-colors hover:bg-hover';
 ---
 
 <BaseLayout title="归档" pageContext={pageContext}>
@@ -213,7 +213,7 @@ const buttonClass = 'rounded-md border px-3 py-1 text-sm transition-colors hover
         <button data-preset="last-6m" class={buttonClass}>最近6月</button>
       </div>
 
-      <div class="mx-2 h-6 border-l border-border"></div>
+      <div class="mx-2 h-6 border-l border-soft"></div>
 
       {/* 自定义 */}
       <details class="relative" data-role="custom">
@@ -225,14 +225,15 @@ const buttonClass = 'rounded-md border px-3 py-1 text-sm transition-colors hover
           data-role="custom-panel"
           class="
             absolute top-full right-0 z-50 mt-2 flex items-center gap-2
-            rounded-lg border bg-surface p-3 whitespace-nowrap shadow-lg
+            rounded-lg border border-line bg-surface p-3 whitespace-nowrap
+            shadow-lg
           "
         >
           <input
             type="date"
             data-role="input-start"
             value={formatDate(new Date(minTime))}
-            class="rounded-sm border bg-surface px-2 py-1 text-sm"
+            class="rounded-sm border border-line bg-surface px-2 py-1 text-sm"
             aria-label="开始日期输入"
           />
           <span class="text-sm">~</span>
@@ -240,14 +241,14 @@ const buttonClass = 'rounded-md border px-3 py-1 text-sm transition-colors hover
             type="date"
             data-role="input-end"
             value={formatDate(new Date(maxTime))}
-            class="rounded-sm border bg-surface px-2 py-1 text-sm"
+            class="rounded-sm border border-line bg-surface px-2 py-1 text-sm"
             aria-label="结束日期输入"
           />
         </div>
       </details>
     </div>
 
-    <div class="mb-4 border-b pb-4" />
+    <div class="mb-4 border-b border-line pb-4" />
 
     {/* 列表（SSR 全量） */}
     <div class="space-y-6 contain-content" data-role="list">

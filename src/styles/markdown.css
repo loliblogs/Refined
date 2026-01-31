@@ -17,7 +17,7 @@
 /* GitHub-style heading borders - 用 em 保持与字体的比例 */
 [data-markdown] :is(h1, h2) {
   padding-bottom: 0.25em;
-  border-bottom: 0.0625rem solid var(--color-border);
+  border-bottom: 1px solid var(--color-line);
 }
 
 [data-markdown] span#more {
@@ -49,7 +49,7 @@
 
 /* Abbreviations */
 [data-markdown] abbr {
-  border-bottom: 0.0625rem dotted var(--color-secondary);
+  border-bottom: 1px dotted var(--color-secondary);
   cursor: help;
   text-decoration: none;
 }
@@ -135,11 +135,11 @@
   color: var(--color-primary);
   padding: 0.125em 0.375em;
   background: linear-gradient(180deg, var(--color-kbd) 0%, var(--color-code) 100%);
-  border: 0.0625rem solid var(--color-border);
+  border: 1px solid var(--color-soft);
   border-radius: 0.25em;
   box-shadow:
-    0 0.125em 0 var(--color-border),
-    inset 0 -0.0625em 0 var(--color-border);
+    0 2px 0 var(--color-soft),
+    inset 0 -1px 0 var(--color-soft);
 }
 
 /* Highlight mark */
@@ -182,7 +182,7 @@
   top: 0;
   bottom: 0;
   width: 0.25em;
-  background-color: var(--color-border);
+  background-color: var(--color-line);
   border-radius: 0.25em;
   print-color-adjust: exact;
   -webkit-print-color-adjust: exact;
@@ -287,7 +287,7 @@
 [data-markdown] table th,
 [data-markdown] table td {
   padding: 0.375em 0.75em;
-  border: 0.0625rem solid var(--color-border);
+  border: 1px solid var(--color-line);
 }
 
 [data-markdown] table th {
@@ -324,7 +324,7 @@
 [data-markdown] .footnotes {
   margin-top: 3em;
   padding-top: 1em;
-  border-top: 0.125rem solid var(--color-border);
+  border-top: 2px solid var(--color-line);
   font-size: 0.875rem;
   color: var(--color-secondary);
 }
@@ -364,7 +364,7 @@
 /* Horizontal rule */
 [data-markdown] hr {
   border: none;
-  border-top: 0.0625rem solid var(--color-border);
+  border-top: 1px solid var(--color-line);
   margin: 2em 0;
 }
 

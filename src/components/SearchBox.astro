@@ -15,7 +15,7 @@ const {
 } = Astro.props;
 ---
 
-<div class="relative w-full" data-search-container>
+<search class="relative w-full" data-search-container>
   <div class="relative">
     {/* 输入框 - 完全匹配原版 */}
     <input
@@ -23,7 +23,7 @@ const {
       id="search-input"
       class="
         peer box-border block h-9 w-full appearance-none rounded-md border
-        border-line bg-surface px-3 py-2 text-sm text-muted
+        border-line bg-surface px-3 py-2 text-sm text-primary
         focus:ring-2 focus:ring-line focus:outline-none
       "
       placeholder=" "
@@ -86,7 +86,7 @@ const {
       </div>
     </div>
   </div>
-</div>
+</search>
 
 {/* 客户端增强 - 只负责交互逻辑，不渲染任何DOM */}
 <SearchBoxClient

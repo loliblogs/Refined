@@ -42,9 +42,6 @@ importers:
       '@fontsource-variable/jetbrains-mono':
         specifier: ^5.2.8
         version: 5.2.8
-      '@fontsource-variable/noto-serif-sc':
-        specifier: ^5.2.10
-        version: 5.2.10
       '@mathjax/mathjax-newcm-font':
         specifier: ^4.1.0
         version: 4.1.0
@@ -898,9 +895,6 @@ packages:
 
   '@fontsource-variable/jetbrains-mono@5.2.8':
     resolution: {integrity: sha512-WBA9elru6Jdp5df2mES55wuOO0WIrn3kpXnI4+W2ek5u3ZgLS9XS4gmIlcQhiZOWEKl95meYdvK7xI+ETLCq/Q==}
-
-  '@fontsource-variable/noto-serif-sc@5.2.10':
-    resolution: {integrity: sha512-TRhuDxWAnqUUtRZFCy8aoJB3/7HsuCaW/4B3wBTE0hzE8QVapklTjE2aY7s/wXWFXHLdflYNroloZoXekoKClw==}
 
   '@humanfs/core@0.19.1':
     resolution: {integrity: sha512-5DyQ4+1JEUzejeK1JGICcideyfUbGixgS9jNgex5nqkW+cY7WZhxBigmieN5Qnw9ZosSNVC9KQKyb+GUaGyKUA==}
@@ -3150,8 +3144,8 @@ packages:
   html-escaper@3.0.3:
     resolution: {integrity: sha512-RuMffC89BOWQoY0WKGpIhn5gX3iI54O6nRA0yC124NYVtzjmFWBIiFd8M0x+ZdX0P9R4lADg1mgP8C7PxGOWuQ==}
 
-  html-minifier-next@4.19.0:
-    resolution: {integrity: sha512-ZJTXOi/MsCusH4PGX7uWietqddp6Cq0BYFEdSE1gEzO8oP2rTNHM6ZPM1/A7SOOkdPOsUENsnsa+s/ioPh62Xw==}
+  html-minifier-next@4.19.1:
+    resolution: {integrity: sha512-2TdfFp9L4nKVCc4/sglWJGBh8DnILl/HEsEdKGhk+19OCUXHb1p4Qf9uDEO/EDlKuioLqR0OqBCjL9yOlv0zeA==}
     hasBin: true
     peerDependencies:
       '@swc/core': ^1.15.7
@@ -5975,8 +5969,6 @@ snapshots:
 
   '@fontsource-variable/jetbrains-mono@5.2.8': {}
 
-  '@fontsource-variable/noto-serif-sc@5.2.10': {}
-
   '@humanfs/core@0.19.1': {}
 
   '@humanfs/node@0.16.7':
@@ -6436,7 +6428,7 @@ snapshots:
       csso: 5.0.5
       deepmerge-ts: 7.1.5
       fast-glob: 3.3.3
-      html-minifier-terser: html-minifier-next@4.19.0(@swc/core@1.15.8)
+      html-minifier-terser: html-minifier-next@4.19.1(@swc/core@1.15.8)
       kleur: 4.1.5
       lightningcss: 1.30.2
       sharp: 0.34.5
@@ -8709,7 +8701,7 @@ snapshots:
 
   html-escaper@3.0.3: {}
 
-  html-minifier-next@4.19.0(@swc/core@1.15.8):
+  html-minifier-next@4.19.1(@swc/core@1.15.8):
     dependencies:
       '@types/relateurl': 0.2.33
       change-case: 4.1.2

@@ -24,7 +24,7 @@ const hasTocSlot = Astro.slots.has('default');
 <aside
   id="aside"
   class="
-    relative h-full w-aside border-r border-line bg-surface-aside
+    relative h-full w-aside border-x border-soft bg-surface-aside
     max-lg:pointer-events-none max-lg:fixed max-lg:top-0 max-lg:left-0
     max-lg:z-90 max-lg:block max-lg:w-full max-lg:border-0 max-lg:bg-transparent
     print:hidden
@@ -59,7 +59,7 @@ const hasTocSlot = Astro.slots.has('default');
     <div
       id="reading-progress-container"
       class="
-        pointer-events-none absolute inset-x-0 top-0 h-1 bg-border/30 opacity-0
+        pointer-events-none absolute inset-x-0 top-0 h-1 bg-soft/30 opacity-0
         transition-opacity duration-300 will-change-[opacity]
       "
       aria-hidden="true"

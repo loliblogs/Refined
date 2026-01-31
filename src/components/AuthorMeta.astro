@@ -21,7 +21,7 @@ const { collection = 'post' } = Astro.props;
 const config = getSiteConfig(collection);
 ---
 
-<div class="w-full text-center leading-8 text-primary">
+<address class="w-full text-center leading-8 text-primary not-italic">
   <div class="flex justify-center pb-6">
     <a href={config.author.avatar.href} class="group">
       <div
@@ -76,16 +76,16 @@ const config = getSiteConfig(collection);
   </div>
 
   {/* author 信息已在配置层预处理，直接使用 set:html */}
-  <div class="text-2xl/10 text-primary" set:html={config.author.name} />
+  <p class="text-2xl/10 text-primary" set:html={config.author.name} />
   {config.author.work && (
-    <div class="text-base/10 text-secondary" set:html={config.author.work} />
+    <p class="text-base/10 text-secondary" set:html={config.author.work} />
   )}
   <div class="mt-2 flex items-center justify-center text-sm/8 text-secondary">
     <MapPin width="1rem" height="1rem" />
-    <span class="ml-1" set:html={config.author.location} />
+    <p class="ml-1" set:html={config.author.location} />
   </div>
 
   {config.links.length > 0 && (
     <SocialLinks links={config.links} />
   )}
-</div>
+</address>

@@ -5,8 +5,8 @@
   --pf-text: var(--color-primary);
   --pf-text-secondary: var(--color-secondary);
   --pf-text-muted: var(--color-muted);
-  --pf-background: var(--color-bg);
-  --pf-border: var(--color-border);
+  --pf-background: var(--color-surface);
+  --pf-border: var(--color-line);
   --pf-border-focus: var(--color-link);
   --pf-skeleton: var(--color-skeleton);
   --pf-skeleton-shine: var(--color-skeleton-shine);

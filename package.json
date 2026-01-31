@@ -33,7 +33,6 @@
     "@expressive-code/plugin-collapsible-sections": "^0.41.6",
     "@expressive-code/plugin-line-numbers": "^0.41.6",
     "@fontsource-variable/jetbrains-mono": "^5.2.8",
-    "@fontsource-variable/noto-serif-sc": "^5.2.10",
     "@mathjax/mathjax-newcm-font": "^4.1.0",
     "@mathjax/src": "^4.1.0",
     "@node-rs/argon2": "^2.0.2",

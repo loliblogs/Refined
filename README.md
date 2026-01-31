@@ -72,7 +72,7 @@ git commit -m "refactor: migrate files from mdx to md [full]"
 
 - Chrome 99+
 - Firefox 97+
-- Safari 15+ (iOS 15+)
+- Safari 15.4+ (iOS 15+)
 
 Notes:
 - Windows: Works on Windows 7 and newer. Use the latest Chrome/Firefox available for Win7.

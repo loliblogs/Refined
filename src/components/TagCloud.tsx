@@ -3,8 +3,6 @@ import type { FunctionComponent as FC } from 'preact';
 import chroma from 'chroma-js';
 import WordCloud from 'wordcloud';
 
-import '@fontsource-variable/noto-serif-sc';
-
 export interface Props {
   tags: [string, number, string][];
 }
@@ -42,7 +40,7 @@ const TagCloud: FC<Props> = ({ tags }) => {
         if (weight === 0) return 24;
         return 24 + Math.log(weight / minWeight) * factor;
       },
-      fontFamily: 'Noto Serif SC Variable',
+      fontFamily: '\'Times New Roman\', \'Nimbus Roman\', \'Noto Serif SC\', \'Noto Serif CJK SC\', SimSun, \'Songti SC\', serif',
       color: generateAdaptiveColor,
       rotateRatio: 0,
       backgroundColor: 'transparent',
@@ -81,17 +79,10 @@ const TagCloud: FC<Props> = ({ tags }) => {
       // 首次 timeoutId 为 0 立即执行，后续 debounce 200ms
       timeoutId = window.setTimeout(handleResize, timeoutId ? 200 : 0);
     });
+    observer.observe(cloudRef.current); // 监听大小变化
 
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-
-    // 初次渲染
-    void document.fonts.load('16px Noto Serif SC Variable', '标签云TagCloud')
-      .then(() => {
-        if (!cloudRef.current) return;
-
-        observer.observe(cloudRef.current); // 监听大小变化
-        mediaQuery.addEventListener('change', handleMedia); // 监听主题变化并重绘
-      });
+    mediaQuery.addEventListener('change', handleMedia); // 监听主题变化并重绘
 
     return () => {
       clearTimeout(timeoutId);

@@ -47,6 +47,7 @@ export default defineConfig({
     build: {
       minify: 'terser',
       cssMinify: 'lightningcss',
+      target: ['chrome99', 'edge99', 'firefox97', 'safari15'],
       sourcemap: true, // 开源项目，随便看！
       rollupOptions: {
         output: {
