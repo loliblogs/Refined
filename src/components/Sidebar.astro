@@ -22,7 +22,7 @@ const hasTocSlot = Astro.slots.has('default');
 ---
 
 <aside
-  id="aside"
+  data-aside
   class="
     relative h-full w-aside border-x border-soft bg-surface-aside
     max-lg:pointer-events-none max-lg:fixed max-lg:top-0 max-lg:left-0
@@ -30,34 +30,34 @@ const hasTocSlot = Astro.slots.has('default');
     print:hidden
   "
 >
+  {/* aside-mask */}
   <label
-    for="sidebar-toggle"
-    id="aside-mask"
+    for="--sidebar-toggle"
     class="
       hidden cursor-pointer
       max-lg:pointer-events-none max-lg:absolute max-lg:inset-0 max-lg:block
       max-lg:bg-overlay max-lg:opacity-0 max-lg:transition-opacity
-      max-lg:[#sidebar-toggle:checked~#aside_&]:pointer-events-auto
-      max-lg:[#sidebar-toggle:checked~#aside_&]:opacity-100
+      max-lg:[#--sidebar-toggle:checked~[data-aside]_&]:pointer-events-auto
+      max-lg:[#--sidebar-toggle:checked~[data-aside]_&]:opacity-100
     "
   >
     <span class="sr-only">关闭侧边栏</span>
   </label>
 
   <div
-    id="aside-inner"
+    data-aside-inner
     class="
       relative flex size-full flex-col
       max-lg:pointer-events-auto max-lg:w-4/5 max-lg:max-w-sm
       max-lg:min-w-aside-min max-lg:-translate-x-full max-lg:bg-surface-aside
       max-lg:transition-transform max-lg:duration-300 max-lg:ease-in-out
       max-lg:will-change-transform
-      max-lg:[#sidebar-toggle:checked~#aside_&]:translate-x-0
+      max-lg:[#--sidebar-toggle:checked~[data-aside]_&]:translate-x-0
     "
   >
     {/* 阅读进度条 - 固定在 aside 顶部 */}
     <div
-      id="reading-progress-container"
+      data-reading-progress-container
       class="
         pointer-events-none absolute inset-x-0 top-0 h-1 bg-soft/30 opacity-0
         transition-opacity duration-300 will-change-[opacity]
@@ -65,7 +65,7 @@ const hasTocSlot = Astro.slots.has('default');
       aria-hidden="true"
     >
       <div
-        id="reading-progress-bar"
+        data-reading-progress-bar
         class="
           h-full w-(--progress,0%) origin-left bg-linear-to-r from-primary
           to-secondary transition-[width] duration-150 ease-out

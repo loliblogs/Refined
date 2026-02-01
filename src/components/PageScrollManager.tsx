@@ -11,11 +11,11 @@ const PageScrollManager: FC = () => {
     const instances = new Map<Element, OverlayScrollbars>();
 
     // 缓存进度条元素
-    const progressContainer = document.getElementById('reading-progress-container');
-    const progressBar = document.getElementById('reading-progress-bar');
+    const progressContainer = document.querySelector<HTMLElement>('[data-reading-progress-container]');
+    const progressBar = document.querySelector<HTMLElement>('[data-reading-progress-bar]');
 
     // 评论区元素引用（用于可见性检测）
-    const commentsSection = document.getElementById('comments-section');
+    const commentsSection = document.querySelector<HTMLElement>('[data-comments-section]');
 
     // TOC 高亮状态管理 - 全局状态
     let currentActiveId = '';
@@ -24,10 +24,10 @@ const PageScrollManager: FC = () => {
     let lastIndex = 0;
 
     // 导航栏隐藏状态管理 - 全局状态
-    const nav = document.getElementById('nav');
-    const navMobileBar = document.getElementById('nav-mobile-bar');
-    const sidebarToggle = document.querySelector<HTMLInputElement>('#sidebar-toggle');
-    const menuToggle = document.querySelector<HTMLInputElement>('#menu-toggle');
+    const nav = document.querySelector<HTMLElement>('[data-nav]');
+    const navMobileBar = document.querySelector<HTMLElement>('[data-nav-mobile-bar]');
+    const sidebarToggle = document.querySelector<HTMLInputElement>('#--sidebar-toggle');
+    const menuToggle = document.querySelector<HTMLInputElement>('#--menu-toggle');
     let scrollbar: HTMLElement | null = null;
     let lastScrollY = 0;
     let hideAmount = 0;
@@ -121,7 +121,7 @@ const PageScrollManager: FC = () => {
 
     // 初始化 TOC 高亮
     function initTocHighlight() {
-      const tocContainer = document.querySelector('#toc');
+      const tocContainer = document.querySelector('[data-toc]');
       if (!tocContainer) return;
 
       // 重新收集 TOC 链接和标题
@@ -226,83 +226,90 @@ const PageScrollManager: FC = () => {
       }
     }
 
-    // 初始化元素
-    function initElement(element: Element | null, enableProgress = false) {
+    // 通用滚动条初始化
+    function initScrollbar(element: Element | null) {
       if (element && !instances.has(element) && element instanceof HTMLElement) {
         const instance = OverlayScrollbars(element, config);
         instances.set(element, instance);
-
-        // 为 content 元素启用进度条、评论区检测和 TOC 高亮
-        if (enableProgress) {
-          const { viewport } = instance.elements();
-
-          // 获取滚动条元素（OverlayScrollbars 初始化后才存在）
-          scrollbar = element.querySelector<HTMLElement>('#content > .os-scrollbar-vertical');
-
-          const handleScroll = () => {
-            // TOC 高亮更新（同步执行，因为很快）
-            const activeId = findActiveHeading(viewport);
-            updateActiveHeading(activeId); // 即使是空字符串也要处理，用于清除高亮
-
-            // 导航栏渐进式隐藏
-            updateNavbarHide(viewport);
-
-            // 其他更新（异步执行）
-            requestAnimationFrame(() => {
-              updateReadingProgress(viewport);
-              checkGiscusVisibility(viewport);
-            });
-          };
-
-          const handleUpdated = () => {
-            const oldHeight = navHeight;
-            navHeight = navMobileBar?.offsetHeight ?? 0;
-
-            if (oldHeight !== navHeight) {
-              hideAmount = 0;
-              if (nav) {
-                nav.style.transform = '';
-              }
-              lastScrollY = viewport.scrollTop;
-            }
-
-            handleScroll();
-          };
-
-          // 初始化 TOC 数据
-          initTocHighlight();
-          handleUpdated();
-
-          instance.on('scroll', handleScroll); // 监听滚动事件
-          instance.on('updated', handleUpdated); // 监听视口变化
-
-          // 订阅内容解密状态（使用 Zustand store）
-          const unsubscribeDecrypt = decryptStore.subscribe(
-            state => state.isDecrypted,
-            (isDecrypted) => {
-              if (isDecrypted) {
-                initTocHighlight();
-                handleScroll();
-              }
-            },
-            { fireImmediately: true },  // 立即检查当前值（处理晚到的情况）
-          );
-
-          // 保存清理函数
-          return () => {
-            unsubscribeDecrypt();
-          };
-        }
       }
-      return null;
+    }
+
+    // content 专属滚动条初始化
+    function initContentScrollbar(): (() => void) | null {
+      const target = document.querySelector<HTMLElement>('[data-content]');
+      const viewport = document.querySelector<HTMLElement>('[data-content-viewport]');
+      if (!target || !viewport) return null;
+
+      // 使用预定义的 viewport 元素，避免 DOM 操作导致的卡顿
+      const instance = OverlayScrollbars({
+        target,
+        elements: { viewport },
+      }, config);
+      instances.set(target, instance);
+
+      // 获取滚动条元素
+      scrollbar = target.querySelector<HTMLElement>('.os-scrollbar-vertical');
+
+      const handleScroll = () => {
+        // TOC 高亮更新（同步执行，因为很快）
+        const activeId = findActiveHeading(viewport);
+        updateActiveHeading(activeId); // 即使是空字符串也要处理，用于清除高亮
+
+        // 导航栏渐进式隐藏
+        updateNavbarHide(viewport);
+
+        // 其他更新（异步执行）
+        requestAnimationFrame(() => {
+          updateReadingProgress(viewport);
+          checkGiscusVisibility(viewport);
+        });
+      };
+
+      const handleUpdated = () => {
+        const oldHeight = navHeight;
+        navHeight = navMobileBar?.offsetHeight ?? 0;
+
+        if (oldHeight !== navHeight) {
+          hideAmount = 0;
+          if (nav) {
+            nav.style.transform = '';
+          }
+          lastScrollY = viewport.scrollTop;
+        }
+
+        handleScroll();
+      };
+
+      // 初始化 TOC 数据
+      initTocHighlight();
+      handleUpdated();
+
+      instance.on('scroll', handleScroll);
+      instance.on('updated', handleUpdated);
+
+      // 订阅内容解密状态
+      const unsubscribeDecrypt = decryptStore.subscribe(
+        state => state.isDecrypted,
+        (isDecrypted) => {
+          if (isDecrypted) {
+            initTocHighlight();
+            handleScroll();
+          }
+        },
+        { fireImmediately: true },
+      );
+
+      return () => {
+        unsubscribeDecrypt();
+      };
     }
 
     // 初始化所有滚动区域
-    const cleanup = initElement(document.getElementById('content'), true);  // 启用进度条
-    initElement(document.querySelector('[data-toc-container]'));
-    initElement(document.querySelector('[data-searchresults-container]'));
-    initElement(document.querySelector('[data-nav-menu-scroll]'));
-    initElement(document.querySelector('[data-authmeta-container]'));
+    const contentCleanup = initContentScrollbar();
+    initScrollbar(document.querySelector('[data-toc-container]'));
+    initScrollbar(document.querySelector('[data-searchresults-container]'));
+    initScrollbar(document.querySelector('[data-nav-menu-scroll]'));
+    initScrollbar(document.querySelector('[data-authmeta-container]'));
 
     // 清理
     return () => {
@@ -312,7 +319,7 @@ const PageScrollManager: FC = () => {
           instance.destroy();
         }
       });
-      cleanup?.();
+      contentCleanup?.();
     };
   }, []);
 

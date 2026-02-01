@@ -28,7 +28,7 @@ function isNavActive(path: string, recursive: boolean): boolean {
 ---
 
 <nav
-  id="nav"
+  data-nav
   class="
     relative h-full w-nav shrink-0 bg-surface-nav
     max-lg:fixed max-lg:z-10 max-lg:h-auto max-lg:w-full
@@ -37,7 +37,7 @@ function isNavActive(path: string, recursive: boolean): boolean {
 >
   {/* 移动端顶部栏 */}
   <div
-    id="nav-mobile-bar"
+    data-nav-mobile-bar
     class="
       hidden h-11 items-center justify-center bg-surface-nav
       max-lg:flex
@@ -45,13 +45,13 @@ function isNavActive(path: string, recursive: boolean): boolean {
     "
   >
     <label
-      for="sidebar-toggle"
+      for="--sidebar-toggle"
       class="
         m-0 flex size-11 shrink-0 cursor-pointer items-center justify-center
         bg-transparent text-primary transition-colors duration-100 ease-in-out
         hover:bg-active
-        [#sidebar-toggle:focus-visible~#nav_&]:ring-2
-        [#sidebar-toggle:focus-visible~#nav_&]:ring-primary
+        [#--sidebar-toggle:focus-visible~[data-nav]_&]:ring-2
+        [#--sidebar-toggle:focus-visible~[data-nav]_&]:ring-primary
       "
     >
       <Files width="1.25rem" height="1.25rem" />
@@ -69,13 +69,13 @@ function isNavActive(path: string, recursive: boolean): boolean {
       {config.title}
     </a>
     <label
-      for="menu-toggle"
+      for="--menu-toggle"
       class="
         m-0 flex size-11 shrink-0 cursor-pointer items-center justify-center
         bg-transparent text-primary transition-colors duration-100 ease-in-out
         hover:bg-active
-        [#menu-toggle:focus-visible~#nav_&]:ring-2
-        [#menu-toggle:focus-visible~#nav_&]:ring-primary
+        [#--menu-toggle:focus-visible~[data-nav]_&]:ring-2
+        [#--menu-toggle:focus-visible~[data-nav]_&]:ring-primary
       "
     >
       <List width="1.25rem" height="1.25rem" />
@@ -83,18 +83,17 @@ function isNavActive(path: string, recursive: boolean): boolean {
     </label>
   </div>
 
-  {/* 菜单项 - menu labels 已在配置层预处理，直接使用 set:html */}
+  {/* nav-menu: 菜单项 - menu labels 已在配置层预处理，直接使用 set:html */}
   <div
-    id="nav-menu"
     class="
       flex h-full flex-col justify-center
       max-lg:h-0 max-lg:overflow-hidden max-lg:opacity-0
       max-lg:transition-[height_0.35s_cubic-bezier(0.4,0,0.2,1),opacity_0.25s_ease-out]
       print:h-auto print:justify-start
-      max-lg:[#menu-toggle:checked~#nav_&]:h-11
-      max-lg:[#menu-toggle:checked~#nav_&]:opacity-100
-      max-lg:[#menu-toggle:checked~#nav_&]:transition-[height_0.35s_cubic-bezier(0.4,0,0.2,1),opacity_0.25s_ease-in_0.1s]
-      print:max-lg:[#menu-toggle:not(:checked)~#nav_&]:h-0
+      max-lg:[#--menu-toggle:checked~[data-nav]_&]:h-11
+      max-lg:[#--menu-toggle:checked~[data-nav]_&]:opacity-100
+      max-lg:[#--menu-toggle:checked~[data-nav]_&]:transition-[height_0.35s_cubic-bezier(0.4,0,0.2,1),opacity_0.25s_ease-in_0.1s]
+      print:max-lg:[#--menu-toggle:not(:checked)~[data-nav]_&]:h-0
     "
   >
     <div

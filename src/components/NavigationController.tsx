@@ -10,8 +10,8 @@ const NavigationController = () => {
     const { signal } = controller;
 
     // 缓存 checkbox 元素
-    const menuToggle = document.getElementById('menu-toggle') as HTMLInputElement | null;
-    const sidebarToggle = document.getElementById('sidebar-toggle') as HTMLInputElement | null;
+    const menuToggle = document.querySelector<HTMLInputElement>('#--menu-toggle');
+    const sidebarToggle = document.querySelector<HTMLInputElement>('#--sidebar-toggle');
 
     // 关闭所有面板
     const closeAllPanels = () => {
@@ -20,7 +20,7 @@ const NavigationController = () => {
     };
 
     // 渐进增强：遮罩上滚轮/滑动时关闭（让滚动穿透到底层内容）
-    const navMenuMask = document.getElementById('nav-menu-mask');
+    const navMenuMask = document.querySelector('[data-nav-menu-mask]');
     navMenuMask?.addEventListener('wheel', closeAllPanels, { signal, passive: true });
     navMenuMask?.addEventListener('touchmove', closeAllPanels, { signal, passive: true });
 

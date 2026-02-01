@@ -110,7 +110,6 @@ const runtimePath = await getRuntimePath();
     "
     >
       <header
-        id="header"
         class="
           fixed inset-y-0 left-0 flex w-header
           max-lg:static max-lg:h-0 max-lg:w-full
@@ -123,19 +122,19 @@ const runtimePath = await getRuntimePath();
           * 2. CSS 兄弟选择器 ~ 可以跨组件选择 nav/aside 内的元素
           * 3. Tailwind 不支持跨组件的 peer 变体，需用任意值语法 [#id:checked~#target_&]
           */}
-        <input type="checkbox" id="sidebar-toggle" class="sr-only" aria-label="切换侧边栏" />
-        <input type="checkbox" id="menu-toggle" class="sr-only" aria-label="切换菜单" />
+        <input type="checkbox" id="--sidebar-toggle" class="sr-only" aria-label="切换侧边栏" />
+        <input type="checkbox" id="--menu-toggle" class="sr-only" aria-label="切换菜单" />
 
         {/* 菜单透明遮罩 - 必须在 nav 外部才能正确覆盖全屏 */}
         <label
-          for="menu-toggle"
-          id="nav-menu-mask"
+          for="--menu-toggle"
+          data-nav-menu-mask
           class="
             pointer-events-none fixed inset-0 z-9 hidden bg-transparent
             max-lg:block
             lg:hidden
             print:hidden
-            max-lg:[#menu-toggle:checked~&]:pointer-events-auto
+            max-lg:[#--menu-toggle:checked~&]:pointer-events-auto
           "
         >
           <span class="sr-only">关闭菜单</span>
@@ -165,28 +164,35 @@ const runtimePath = await getRuntimePath();
             )}
       </header>
       <div
-        id="content"
+        data-content
         class="
-          ml-header flex min-h-0 flex-1 overflow-y-auto px-8 pt-8 pb-2
-          max-lg:ml-0 max-lg:px-4 max-lg:pt-17 max-lg:pb-1.5
-          print:ml-0 print:pt-4
+          ml-header min-h-0 flex-1
+          max-lg:ml-0
+          print:ml-0
         "
         transition:name="content"
         transition:animate={config.animationNew}
-        data-overlayscrollbars-initialize
       >
         <div
-          id="wrapper"
-          class="
-            mx-auto flex min-h-full w-full max-w-content-max flex-col
-            print:min-h-0 print:max-w-none
-          "
+          data-content-viewport
+          class="flex h-full overflow-y-auto"
+          data-overlayscrollbars-initialize
         >
-          <div class="grow">
-            <slot />
-          </div>
-          <div class="mt-auto">
-            <Footer transition:name="footer" pageContext={pageContext} />
+          {/* wrapper */}
+          <div
+            class="
+              mx-auto flex min-h-full w-full max-w-content-max flex-col px-8
+              pt-8 pb-2
+              max-lg:px-4 max-lg:pt-17 max-lg:pb-1.5
+              print:min-h-0 print:max-w-none print:pt-4
+            "
+          >
+            <div class="grow">
+              <slot />
+            </div>
+            <div class="mt-auto">
+              <Footer transition:name="footer" pageContext={pageContext} />
+            </div>
           </div>
         </div>
         <MediumZoom client:idle />
@@ -209,8 +215,8 @@ const runtimePath = await getRuntimePath();
     >
       document.addEventListener('astro:before-preparation', (e) => {
         // 立即开始退出动画
-        const aside = document.getElementById('aside-inner');
-        const content = document.getElementById('content');
+        const aside = document.querySelector('[data-aside-inner]');
+        const content = document.querySelector('[data-content]');
         aside?.classList.add(animationOld);
         content?.classList.add(animationOld);
 

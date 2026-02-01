@@ -136,7 +136,7 @@ const pageContext = {
 
     {/* 文章主体 - 加密时隐藏且不被pagefind索引 */}
     <div
-      id="markdown-body"
+      id="--article-body"
       data-markdown
       class:list={[
         'my-8 leading-markdown',
@@ -200,7 +200,7 @@ const pageContext = {
                 hover:bg-link-hover
                 disabled:cursor-not-allowed disabled:opacity-50
               "
-              aria-controls="markdown-body"
+              aria-controls="--article-body"
               aria-describedby="decrypt-prompt"
             >
               <span id="button-text">解锁</span>

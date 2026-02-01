@@ -128,6 +128,7 @@ export default defineConfig({
     enabled: false,
   },
   experimental: {
+    clientPrerender: true,
     staticImportMetaEnv: true,
     headingIdCompat: true,
     contentIntellisense: true,

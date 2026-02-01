@@ -312,10 +312,10 @@ const SearchBoxClient: FC<SearchBoxClientProps> = ({
 
     inputRef.current = input;
     dropdownRef.current = dropdown;
-    sidebarToggleRef.current = document.querySelector<HTMLInputElement>('#sidebar-toggle');
+    sidebarToggleRef.current = document.querySelector<HTMLInputElement>('#--sidebar-toggle');
     // 优先使用 pagefind 标记的内容区域，避免搜到标题、侧边栏等
     contentRef.current = document.querySelector('[data-pagefind-body]')
-      ?? document.querySelector('#content');
+      ?? document.querySelector('[data-content]');
     // 缓存搜索结果相关 DOM
     resultsWrapperRef.current = document.querySelector('[data-search-results-wrapper]');
     globalSearchRef.current = document.querySelector('[data-global-search]');

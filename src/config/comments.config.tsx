@@ -28,7 +28,7 @@ export default function Comments({ term }: { term?: string }) {
   }, []);
 
   return (
-    <div id="comments-section" className="min-h-80">
+    <div data-comments-section className="min-h-80">
       <giscus-widget
         repo="loliblogs/discussion"
         repoId="R_kgDOPgBpfA"

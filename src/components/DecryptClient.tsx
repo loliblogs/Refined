@@ -86,7 +86,7 @@ function applyTocToDOM(html: string, tocWrapper: HTMLElement): void {
   const fragment = range.createContextualFragment(html);
   tocWrapper.replaceWith(fragment);
 
-  document.getElementById('toc')?.classList.add('animate-[fade-in_0.6s_ease-out]');
+  document.querySelector('[data-toc]')?.classList.add('animate-[fade-in_0.6s_ease-out]');
 }
 
 // === DOM 查询层 ===
