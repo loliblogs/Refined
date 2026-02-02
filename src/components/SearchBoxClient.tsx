@@ -3,8 +3,10 @@
  * 不渲染DOM，只增强已存在的静态HTML
  */
 
-import { useEffect, useState, useRef } from 'preact/hooks';
+import { useEffect, useState, useRef, useCallback } from 'preact/hooks';
 import type { FunctionComponent as FC } from 'preact';
+
+import { decryptStore } from '@/stores/state';
 
 interface SearchBoxClientProps {
   searchUrl?: string;
@@ -136,6 +138,17 @@ const SearchBoxClient: FC<SearchBoxClientProps> = ({
     }, duration);
   };
 
+  // 清空搜索状态和输入框
+  const clearSearch = useCallback(() => {
+    setKeyword('');
+    setShowDropdown(false);
+    setLocalResults([]);
+    setSelectedIndex(0);
+    if (inputRef.current) {
+      inputRef.current.value = '';
+    }
+  }, []);
+
   // 滚动到结果
   const scrollToResult = (result: LocalMatch) => {
     // 关闭移动端sidebar
@@ -148,17 +161,7 @@ const SearchBoxClient: FC<SearchBoxClientProps> = ({
       block: 'center',
     });
     highlightElement(result.element);
-
-    // 清空搜索状态
-    setKeyword('');
-    setShowDropdown(false);
-    setLocalResults([]);
-    setSelectedIndex(0);
-
-    // 清空输入框
-    if (inputRef.current) {
-      inputRef.current.value = '';
-    }
+    clearSearch();
   };
 
   // 只更新选中样式，不重建 DOM（只操作 last 和 current 两个元素）
@@ -323,6 +326,20 @@ const SearchBoxClient: FC<SearchBoxClientProps> = ({
     containerRef.current = document.querySelector('[data-search-container]');
   }, []);
 
+  // 监听解密状态：解密后清空搜索并刷新内容引用
+  useEffect(() => {
+    return decryptStore.subscribe(
+      state => state.isDecrypted,
+      (isDecrypted) => {
+        if (isDecrypted) {
+          clearSearch();
+          // 解密后文章主体会添加 data-pagefind-body，重新获取引用
+          contentRef.current = document.querySelector('[data-pagefind-body]');
+        }
+      },
+    );
+  }, [clearSearch]);
+
   // 同步状态到 ref，让事件处理器能读到最新值
   useEffect(() => {
     stateRef.current = { showDropdown, localResults, selectedIndex, keyword };
@@ -344,14 +361,8 @@ const SearchBoxClient: FC<SearchBoxClientProps> = ({
       // Escape 始终可用：清空并 blur（不管下拉框是否显示）
       if (e.key === 'Escape') {
         e.stopPropagation();
-        setKeyword('');
-        setShowDropdown(false);
-        setLocalResults([]);
-        setSelectedIndex(0);
-        if (inputRef.current) {
-          inputRef.current.value = '';
-          inputRef.current.blur();
-        }
+        clearSearch();
+        inputRef.current?.blur();
         return;
       }
 

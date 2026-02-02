@@ -291,7 +291,12 @@
   scroll-behavior: smooth;
 }
 
-/* Code blocks - 行号间距 */
+/* 代码块 - 内容隔离 */
+.expressive-code {
+  contain: content;
+}
+
+/* 代码块 - 行号间距 */
 .expressive-code .ec-line .gutter .ln {
   padding-inline: 1.75ch;
 }

@@ -131,10 +131,10 @@ const excerptLink = config.excerpt_link;
       <div class="mb-4 leading-relaxed text-secondary">
         {excerptText
           ? (
-              <p>{excerptText}</p>
+              <p {...(post.lang && { lang: post.lang })}>{excerptText}</p>
             )
           : Content && (
-            <div data-markdown>
+            <div data-markdown {...(post.lang && { lang: post.lang })}>
               <ExcerptExtractor>
                 <CachedContent cacheKey={post.id}>
                   <Content />

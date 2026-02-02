@@ -78,7 +78,12 @@ const showComments = page.data.comments ?? config.comments;
     </header>
 
     {/* 内容主体 - 直接渲染，可被pagefind索引 */}
-    <div data-markdown class="my-8 leading-markdown" data-pagefind-body>
+    <div
+      data-markdown
+      class="my-8 leading-markdown"
+      data-pagefind-body
+      {...(page.data.lang && { lang: page.data.lang })}
+    >
       <Content />
     </div>
 

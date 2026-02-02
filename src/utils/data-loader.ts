@@ -145,6 +145,7 @@ async function initializeDataOnce(collection: CollectionName = 'post'): Promise<
       description: finalDescription,
       date: post.data.date,
       updated: post.data.updated,
+      lang: post.data.lang,
       category: post.data.category,
       tags: post.data.tag,
       author: finalAuthor,

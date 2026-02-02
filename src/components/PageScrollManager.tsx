@@ -40,7 +40,8 @@ const PageScrollManager: FC = () => {
         clickScroll: true,
       },
       update: {
-        debounce: [0, 1000],
+        // 返回空对象，跳过 getMeasuredScrollCoordinates 的疯狂读写循环
+        flowDirectionStyles: () => ({}),
       },
     } satisfies PartialOptions;
 
@@ -244,7 +245,13 @@ const PageScrollManager: FC = () => {
       const instance = OverlayScrollbars({
         target,
         elements: { viewport },
-      }, config);
+      }, {
+        ...config,
+        overflow: {
+          x: 'hidden',
+          y: 'scroll',
+        },
+      });
       instances.set(target, instance);
 
       // 获取滚动条元素

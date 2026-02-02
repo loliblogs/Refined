@@ -57,6 +57,7 @@ const contentSchema = z.object({
   excerpt: z.string().optional(),
   date: z.coerce.date(),
   updated: z.coerce.date().optional(),
+  lang: z.string().optional(),
 
   // 标准字段
   category: stringArrayField,
@@ -91,6 +92,7 @@ const pageSchema = z.object({
   date: z.coerce.date().optional(),
   updated: z.coerce.date().optional(),
   description: z.string().optional(),
+  lang: z.string().optional(),
   comments: z.boolean().optional(),
 });
 

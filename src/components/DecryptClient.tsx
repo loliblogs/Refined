@@ -76,6 +76,9 @@ function applyContentToDOM(html: string, target: HTMLElement): void {
   target.replaceChildren(fragment);
   target.classList.remove('hidden');
   target.classList.add('animate-[fade-in_0.6s_ease-out]');
+  // 解密后：移除 aria-hidden，添加 data-pagefind-body 让页内搜索生效
+  target.removeAttribute('aria-hidden');
+  target.setAttribute('data-pagefind-body', '');
 }
 
 function applyTocToDOM(html: string, tocWrapper: HTMLElement): void {

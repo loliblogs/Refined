@@ -134,7 +134,7 @@ const pageContext = {
       )}
     </header>
 
-    {/* 文章主体 - 加密时隐藏且不被pagefind索引 */}
+    {/* 文章主体 - 加密时隐藏且不被pagefind索引，aria-hidden 阻止页内搜索 */}
     <div
       id="--article-body"
       data-markdown
@@ -142,7 +142,9 @@ const pageContext = {
         'my-8 leading-markdown',
         post.encryption && 'hidden',
       ]}
+      {...(post.lang && { lang: post.lang })}
       {...(!post.encryption && !post.draft && { 'data-pagefind-body': true })}
+      {...(post.encryption && { 'aria-hidden': 'true' })}
     >
       {post.encryption
         ? (
@@ -297,9 +299,9 @@ const pageContext = {
             </div>
 
             {/* 加密数据 - 隐藏，供解密使用 */}
-            <div class="hidden" data-toc-encrypted>
+            <div class="hidden" data-toc-encrypted aria-hidden="true">
               <EncryptWrapper derivedKey={post.encryption.derivedKey} salt={post.encryption.salt}>
-                <TableOfContents emptyText={tocEmptyText}>
+                <TableOfContents emptyText={tocEmptyText} lang={post.lang}>
                   <CachedContent cacheKey={post.id}>
                     <Content />
                   </CachedContent>
@@ -309,7 +311,7 @@ const pageContext = {
           </>
         )
       : (
-          <TableOfContents emptyText={tocEmptyText}>
+          <TableOfContents emptyText={tocEmptyText} lang={post.lang}>
             <CachedContent cacheKey={post.id}>
               <Content />
             </CachedContent>

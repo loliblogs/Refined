@@ -1,4 +1,4 @@
-[中文 README](./README-zh.md)
+[Chinese README](./README-zh.md)
 
 # Refined Starter Guide
 

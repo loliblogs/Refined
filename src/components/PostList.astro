@@ -51,7 +51,7 @@ const { posts, showExcerpt = true, collection = 'post' } = Astro.props;
 
       {showExcerpt && post.excerptSource.type === 'fixed'
         && (
-          <p class="mb-3 text-primary">
+          <p class="mb-3 text-primary" {...(post.lang && { lang: post.lang })}>
             {post.excerptSource.text}
           </p>
         )}

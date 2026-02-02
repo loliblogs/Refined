@@ -57,6 +57,9 @@ export interface Post {
   // SEO 相关
   description: string;  // 必需（没有则从内容自动生成）
 
+  // 语言标记（用于 HTML lang 属性，undefined 表示继承页面语言）
+  lang: string | undefined;
+
   // 摘要（新增，必选）
   excerptSource: ExcerptSource;
 
