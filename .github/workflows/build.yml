@@ -163,6 +163,9 @@ jobs:
           name: dist
           path: dist
 
+      - name: Prune pnpm store
+        run: pnpm store prune
+
       # Disabled Netlify detection because we were frequently hitting its rate limits.
       - name: Exit with error if any step failed
         if: |
