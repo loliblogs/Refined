@@ -5,6 +5,9 @@ import { globby } from 'globby';
 import fs from 'fs/promises';
 import path from 'path';
 
+const packageJSON = JSON.parse(await fs.readFile('node_modules/pagefind/package.json', 'utf-8')) as Record<string, unknown>;
+const version = packageJSON.version as string;
+
 interface SearchConfig {
   sourceDir: string;
   urlPrefix: string;
@@ -33,7 +36,7 @@ async function buildSearchIndex(config: SearchConfig) {
   }));
 
   await index.writeFiles({
-    outputPath: path.join(config.sourceDir, 'pagefind'),
+    outputPath: path.join(config.sourceDir, 'pagefind', version),
   });
 }
 

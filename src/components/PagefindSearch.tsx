@@ -34,10 +34,8 @@ const PagefindSearch: FC = () => {
       window.history.replaceState({}, '', newUrl);
     };
 
-    void instance.triggerLoad().then(() => {
-      instance.on('search', handleInput);
-    });
-    instance.triggerSearch(initialQuery);
+    if (initialQuery) instance.triggerSearch(initialQuery);
+    instance.on('search', handleInput);
 
     return () => {
       manager.removeInstance('default');

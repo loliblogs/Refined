@@ -12,6 +12,8 @@ import { base as globalBase } from 'astro:config/server';
 import { getBasePath as getBasePathConfig } from '@/config/paths.config';
 import type { CollectionName } from '@/types/content';
 
+import { version } from 'node_modules/pagefind/package.json';
+
 /**
  * 获取完整路径（包含 base）
  */
@@ -108,7 +110,7 @@ export function getSearchUrl(collection: CollectionName): string {
  */
 export function getSearchBundlePath(collection: CollectionName): string {
   const basePath = getBasePath(collection);
-  return posix.join(basePath, 'pagefind/');
+  return posix.join(basePath, 'pagefind', version, '/');
 }
 
 /**

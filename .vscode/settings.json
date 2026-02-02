@@ -4,7 +4,9 @@
   "files.associations": {
     "*.json": "jsonc",
     "*.json5": "jsonc",
-    "*.css": "tailwindcss"
+    "*.css": "tailwindcss",
+    "_headers": "plaintext",
+    "_redirects": "plaintext"
   },
   "tailwindCSS.classFunctions": ["clsx"],
   "astro.content-intellisense": true,

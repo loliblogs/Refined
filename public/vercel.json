@@ -70,6 +70,24 @@
           "value": "public, max-age=63072000, immutable"
         }
       ]
+    },
+    {
+      "source": "/pagefind/(?!pagefind-entry\\.json)(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=63072000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)/pagefind/(?!pagefind-entry\\.json)(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=63072000, immutable"
+        }
+      ]
     }
   ]
 }

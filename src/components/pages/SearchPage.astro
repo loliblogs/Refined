@@ -23,6 +23,7 @@ const pageContext = {
   path: getSearchUrl(collection),
   collection,
   noindex: true,
+  preloadSearch: true,
 };
 ---
 
@@ -33,7 +34,6 @@ const pageContext = {
   <pagefind-config
     bundle-path={getSearchBundlePath(collection)}
     base-url="/"
-    faceted="true"
   />
   <div class="flex flex-col gap-4">
     <div class="[zoom:var(--pf-summary-zoom)]">

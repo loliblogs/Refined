@@ -85,6 +85,7 @@ export interface PageContext {
   path: string;           // 当前页面路径
   collection: CollectionName; // 所属collection
   noindex?: boolean;         // 是否不索引（默认 false）
+  preloadSearch?: boolean;   // 是否预加载搜索资源（默认 false）
   redirect?: {
     to?: string;
     timeout: number;

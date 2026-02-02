@@ -7,7 +7,7 @@ import Navigation from '@/components/Navigation.astro';
 import Sidebar from '@/components/Sidebar.astro';
 import PageScrollManager from '@/components/PageScrollManager';
 import MediumZoom from '@/components/MediumZoom';
-import { getRssUrl, getSitemapIndexUrl } from '@/utils/collection-paths';
+import { getRssUrl, getSitemapIndexUrl, getSearchBundlePath } from '@/utils/collection-paths';
 import getRuntimePath from '@/utils/runtime-path';
 
 import type { PageContext } from '@/types/content';
@@ -61,6 +61,10 @@ const runtimePath = await getRuntimePath();
 
     {runtimePath && <link rel="modulepreload" href={runtimePath} />}
 
+    {pageContext.preloadSearch && (
+      <link rel="modulepreload" href={`${getSearchBundlePath(pageContext.collection)}pagefind.js`} crossorigin />
+    )}
+
     <ClientRouter />
 
     {/* 搜索引擎优化 */}
@@ -108,8 +112,8 @@ const runtimePath = await getRuntimePath();
     <div
       data-focus-trap
       tabindex="-1"
+      role="presentation"
       class="absolute size-0 overflow-hidden contain-strict"
-      aria-hidden="true"
     >
     </div>
     <main class="
