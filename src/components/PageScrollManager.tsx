@@ -32,6 +32,7 @@ const PageScrollManager: FC = () => {
     let lastScrollY = 0;
     let hideAmount = 0;
     let navHeight = 0;
+    let cachedMaxScroll = 0; // 缓存 scrollHeight - clientHeight，避免滚动时读取布局属性
 
     // 使用自定义主题 - 不再需要主题切换
     const config = {
@@ -45,24 +46,18 @@ const PageScrollManager: FC = () => {
       },
     } satisfies PartialOptions;
 
-    // 更新阅读进度
+    // 更新阅读进度（使用缓存的 maxScroll，避免读取布局属性）
     function updateReadingProgress(viewport: HTMLElement) {
       if (!progressContainer || !progressBar) return;
 
-      // 直接从 DOM 元素计算可滚动距离
-      const scrollTop = viewport.scrollTop;
-      const scrollHeight = viewport.scrollHeight;
-      const clientHeight = viewport.clientHeight;
-      const maxScroll = scrollHeight - clientHeight;
-
-      // 检查是否可滚动
-      const scrollable = maxScroll > 50;
+      const scrollTop = viewport.scrollTop; // scrollTop 不触发布局
+      const scrollable = cachedMaxScroll > 50;
 
       if (scrollable) {
         progressContainer.classList.remove('opacity-0', 'pointer-events-none');
         progressContainer.classList.add('opacity-100');
 
-        const scrollPercent = (scrollTop / maxScroll) * 100;
+        const scrollPercent = (scrollTop / cachedMaxScroll) * 100;
         progressBar.style.setProperty('--progress', `${Math.min(scrollPercent, 100)}%`);
       } else {
         progressContainer.classList.add('opacity-0', 'pointer-events-none');
@@ -241,6 +236,20 @@ const PageScrollManager: FC = () => {
       const viewport = document.querySelector<HTMLElement>('[data-content-viewport]');
       if (!target || !viewport) return null;
 
+      // 初始化前 focus 到 body 层级的 trap 元素
+      // 该元素不受 OverlayScrollbars DOM 操作影响，避免 focus() 触发累积的脏样式重算
+      // 仅当用户没有主动 focus 其他元素时才执行（避免打断用户操作）
+      const activeEl = document.activeElement;
+      if (!activeEl || activeEl === document.body || activeEl === document.documentElement) {
+        document.querySelector<HTMLElement>('[data-focus-trap]')?.focus();
+      }
+
+      // overflow-x: hidden 不需要水平滚动，禁用 scrollLeft setter 避免无意义的布局计算
+      Object.defineProperty(viewport, 'scrollLeft', {
+        get() { return 0; },
+        set() { /* empty */ },
+      });
+
       // 使用预定义的 viewport 元素，避免 DOM 操作导致的卡顿
       const instance = OverlayScrollbars({
         target,
@@ -276,6 +285,9 @@ const PageScrollManager: FC = () => {
         const oldHeight = navHeight;
         navHeight = navMobileBar?.offsetHeight ?? 0;
 
+        // 更新缓存的 maxScroll（只在 updated 时读取布局属性）
+        cachedMaxScroll = viewport.scrollHeight - viewport.clientHeight;
+
         if (oldHeight !== navHeight) {
           hideAmount = 0;
           if (nav) {
@@ -289,7 +301,9 @@ const PageScrollManager: FC = () => {
 
       // 初始化 TOC 数据
       initTocHighlight();
-      handleUpdated();
+
+      // 延迟到下一帧，让 OverlayScrollbars 的布局计算先完成，避免触发累积的脏布局重算
+      requestAnimationFrame(handleUpdated);
 
       instance.on('scroll', handleScroll);
       instance.on('updated', handleUpdated);

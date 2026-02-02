@@ -55,12 +55,12 @@ const hasTocSlot = Astro.slots.has('default');
       max-lg:[#--sidebar-toggle:checked~[data-aside]_&]:translate-x-0
     "
   >
-    {/* 阅读进度条 - 固定在 aside 顶部 */}
+    {/* 阅读进度条 - 固定在 aside 顶部，contain-strict 隔离避免触发外部布局重算 */}
     <div
       data-reading-progress-container
       class="
         pointer-events-none absolute inset-x-0 top-0 h-1 bg-soft/30 opacity-0
-        transition-opacity duration-300 will-change-[opacity]
+        transition-opacity duration-300 will-change-[opacity] contain-strict
       "
       aria-hidden="true"
     >

@@ -104,6 +104,14 @@ const runtimePath = await getRuntimePath();
   </head>
 
   <body class="bg-surface leading-relaxed text-primary">
+    {/* Focus trap: body 层级，永远不受 OverlayScrollbars DOM 操作影响，避免 focus() 触发脏样式重算 */}
+    <div
+      data-focus-trap
+      tabindex="-1"
+      class="absolute size-0 overflow-hidden contain-strict"
+      aria-hidden="true"
+    >
+    </div>
     <main class="
       flex h-viewport-height flex-col
       print:h-auto
