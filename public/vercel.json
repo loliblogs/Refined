@@ -72,7 +72,7 @@
       ]
     },
     {
-      "source": "/pagefind/(?!pagefind-entry\\.json)(.*)",
+      "source": "/pagefind/(.*)",
       "headers": [
         {
           "key": "Cache-Control",
@@ -81,7 +81,7 @@
       ]
     },
     {
-      "source": "/(.*)/pagefind/(?!pagefind-entry\\.json)(.*)",
+      "source": "/(.*)/pagefind/(.*)",
       "headers": [
         {
           "key": "Cache-Control",

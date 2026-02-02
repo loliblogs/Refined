@@ -16,7 +16,3 @@
   Cache-Control: public, max-age=63072000, immutable
 /*/pagefind/*
   Cache-Control: public, max-age=63072000, immutable
-/pagefind/pagefind-entry.json
-  Cache-Control: no-cache
-/*/pagefind/pagefind-entry.json
-  Cache-Control: no-cache
