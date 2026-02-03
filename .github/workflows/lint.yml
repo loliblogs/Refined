@@ -25,7 +25,7 @@ jobs:
           key: pnpm-cache-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: pnpm-cache-${{ runner.os }}-${{ runner.arch }}-
    
-      - run: pnpm install --frozen-lockfile
+      - run: pnpm install --frozen-lockfile --ignore-scripts
 
       - name: Typecheck
         id: typecheck
