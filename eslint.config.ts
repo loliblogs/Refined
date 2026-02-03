@@ -80,7 +80,6 @@ export default defineConfig(
     files: ['**/*.{js,jsx,cjs,mjs,ts,tsx,astro}'],
     plugins: {
       '@stylistic': stylistic,
-      // @ts-expect-error 上游类型定义不兼容 typescript-eslint Plugin 接口
       'better-tailwindcss': tailwindcss,
     },
     rules: {
