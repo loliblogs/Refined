@@ -9,18 +9,21 @@
  * 注意：dev 模式下跳过缓存，确保热更新正常工作
  *
  * 使用方式：
- * <CachedContent cacheKey={post.id}>
+ * <CachedContent collection={post.collection} cacheKey={post.id}>
  *   <Content />
  * </CachedContent>
  */
 
 import { contentCache } from '@/utils/content-cache';
+import type { CollectionName } from '@/types/content';
 
 interface Props {
+  collection: CollectionName;
   cacheKey: string;
 }
 
-const { cacheKey } = Astro.props;
+const { collection, cacheKey } = Astro.props;
+const fullKey = `${collection}:${cacheKey}`;
 
 // dev 模式跳过缓存
 const isDev = import.meta.env.DEV;
@@ -31,12 +34,12 @@ if (isDev) {
   html = await Astro.slots.render('default');
 } else {
   // prod 模式：使用缓存
-  const cached = contentCache.get(cacheKey);
+  const cached = contentCache.get(fullKey);
   if (cached) {
     html = cached;
   } else {
     html = await Astro.slots.render('default');
-    contentCache.set(cacheKey, html);
+    contentCache.set(fullKey, html);
   }
 }
 ---

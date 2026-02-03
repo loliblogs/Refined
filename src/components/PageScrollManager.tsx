@@ -2,7 +2,7 @@ import { useEffect } from 'preact/hooks';
 import type { FunctionComponent as FC } from 'preact';
 import { OverlayScrollbars, ClickScrollPlugin } from 'overlayscrollbars';
 import type { PartialOptions } from 'overlayscrollbars';
-import { decryptStore, commentsStore } from '@/stores/state';
+import { decryptStore } from '@/stores/state';
 
 OverlayScrollbars.plugin(ClickScrollPlugin);
 
@@ -13,9 +13,6 @@ const PageScrollManager: FC = () => {
     // 缓存进度条元素
     const progressContainer = document.querySelector<HTMLElement>('[data-reading-progress-container]');
     const progressBar = document.querySelector<HTMLElement>('[data-reading-progress-bar]');
-
-    // 评论区元素引用（用于可见性检测）
-    const commentsSection = document.querySelector<HTMLElement>('[data-comments-section]');
 
     // TOC 高亮状态管理 - 全局状态
     let currentActiveId = '';
@@ -62,29 +59,6 @@ const PageScrollManager: FC = () => {
       } else {
         progressContainer.classList.add('opacity-0', 'pointer-events-none');
         progressContainer.classList.remove('opacity-100');
-      }
-    }
-
-    // 检测评论区是否进入视口
-    function checkGiscusVisibility(viewport: HTMLElement) {
-      // 如果没有评论区或已经标记加载，直接返回
-      const currentState = commentsStore.getState();
-      if (!commentsSection || currentState.shouldLoad) return;
-
-      // 使用 getBoundingClientRect 获取相对于视口的准确位置
-      const viewportRect = viewport.getBoundingClientRect();
-      const commentsRect = commentsSection.getBoundingClientRect();
-
-      // 计算评论区相对于滚动容器的实际位置
-      // commentsRect.top - viewportRect.top = 评论区距离容器顶部的距离
-      const relativeTop = commentsRect.top - viewportRect.top;
-
-      // 当评论区即将进入视口时触发（提前一个视口高度加载）
-      // relativeTop < viewport.clientHeight 表示已经进入视口（不提前）
-      // relativeTop < viewport.clientHeight * 2 表示还有一个视口高度就进入（提前一个视口）
-      if (relativeTop < viewport.clientHeight * 2) {
-        // 标记应该加载评论（通知 Comments 组件）
-        commentsStore.setState({ shouldLoad: true });
       }
     }
 
@@ -274,10 +248,9 @@ const PageScrollManager: FC = () => {
         // 导航栏渐进式隐藏
         updateNavbarHide(viewport);
 
-        // 其他更新（异步执行）
+        // 阅读进度更新（异步执行）
         requestAnimationFrame(() => {
           updateReadingProgress(viewport);
-          checkGiscusVisibility(viewport);
         });
       };
 

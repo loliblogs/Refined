@@ -152,10 +152,7 @@ const runtimePath = await getRuntimePath();
           <span class="sr-only">关闭菜单</span>
         </label>
 
-        <Navigation
-          transition:name="navigation"
-          collection={pageContext.collection}
-        />
+        <Navigation collection={pageContext.collection} />
 
         {Astro.slots.has('sidebar')
           ? (
@@ -203,7 +200,7 @@ const runtimePath = await getRuntimePath();
               <slot />
             </div>
             <div class="mt-auto">
-              <Footer transition:name="footer" pageContext={pageContext} />
+              <Footer pageContext={pageContext} />
             </div>
           </div>
         </div>

@@ -45,6 +45,7 @@ export default defineConfig({
   }), buildSearch],
   vite: {
     build: {
+      reportCompressedSize: !process.env.CI, // CI 不需要 gzip 大小估算
       minify: 'terser',
       cssMinify: 'lightningcss',
       target: ['chrome99', 'edge99', 'firefox97', 'safari15'],

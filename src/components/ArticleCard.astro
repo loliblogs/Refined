@@ -136,7 +136,7 @@ const excerptLink = config.excerpt_link;
           : Content && (
             <div data-markdown {...(post.lang && { lang: post.lang })}>
               <ExcerptExtractor>
-                <CachedContent cacheKey={post.id}>
+                <CachedContent collection={post.collection} cacheKey={post.id}>
                   <Content />
                 </CachedContent>
               </ExcerptExtractor>

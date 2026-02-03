@@ -149,13 +149,13 @@ const pageContext = {
       {post.encryption
         ? (
             <EncryptWrapper derivedKey={post.encryption.derivedKey} salt={post.encryption.salt}>
-              <CachedContent cacheKey={post.id}>
+              <CachedContent collection={collection} cacheKey={post.id}>
                 <Content />
               </CachedContent>
             </EncryptWrapper>
           )
         : (
-            <CachedContent cacheKey={post.id}>
+            <CachedContent collection={collection} cacheKey={post.id}>
               <Content />
             </CachedContent>
           )}
@@ -281,7 +281,7 @@ const pageContext = {
       print:hidden
     "
     >
-      <Comments client:load />
+      <Comments client:visible />
     </section>
   )}
 
@@ -302,7 +302,7 @@ const pageContext = {
             <div class="hidden" data-toc-encrypted aria-hidden="true">
               <EncryptWrapper derivedKey={post.encryption.derivedKey} salt={post.encryption.salt}>
                 <TableOfContents emptyText={tocEmptyText} lang={post.lang}>
-                  <CachedContent cacheKey={post.id}>
+                  <CachedContent collection={collection} cacheKey={post.id}>
                     <Content />
                   </CachedContent>
                 </TableOfContents>
@@ -312,7 +312,7 @@ const pageContext = {
         )
       : (
           <TableOfContents emptyText={tocEmptyText} lang={post.lang}>
-            <CachedContent cacheKey={post.id}>
+            <CachedContent collection={collection} cacheKey={post.id}>
               <Content />
             </CachedContent>
           </TableOfContents>

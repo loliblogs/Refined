@@ -22,18 +22,3 @@ export const decryptStore = createStore(
     isDecrypted: false,
   })),
 );
-
-/**
- * 评论懒加载状态
- *
- * 使用场景：
- * - PageScrollManager 检测到评论区进入视口后设置为 true
- * - Comments 组件监听此状态（即使晚挂载也能收到），加载 giscus
- *
- * 关键特性：使用 fireImmediately 选项让晚到的订阅者立即收到当前值
- */
-export const commentsStore = createStore(
-  subscribeWithSelector(() => ({
-    shouldLoad: false,
-  })),
-);
