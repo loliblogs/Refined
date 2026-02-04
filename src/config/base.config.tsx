@@ -77,7 +77,7 @@ export const postConfig: SiteConfig = {
   // 侧边栏作者信息
   author: {
     name: 'lolifamily',                         // 显示名称
-    work: 'Learning &amp; $\\LaTeX$ Enthusiast', // 职业/简介
+    work: 'Tinkerer &amp; $\\LaTeX$ Geek', // 职业/简介
     location: 'Chongqing, China',           // 所在地
     avatar: {                              // 头像组件
       src: avatarImg,
@@ -210,7 +210,10 @@ export const oiConfig: SiteConfig = {
 
   // ========== 作者信息 ==========
   // 侧边栏作者信息（可以与主博客相同或不同）
-  author: postConfig.author,  // 复用主博客的作者信息
+  author: {
+    ...postConfig.author,
+    work: 'Researcher &amp; $\\LaTeX$ Enthusiast',
+  },
 
   // ========== 社交链接 ==========
   // 社交链接（复用主博客的）

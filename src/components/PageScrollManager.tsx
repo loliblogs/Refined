@@ -54,8 +54,8 @@ const PageScrollManager: FC = () => {
         progressContainer.classList.remove('opacity-0', 'pointer-events-none');
         progressContainer.classList.add('opacity-100');
 
-        const scrollPercent = (scrollTop / cachedMaxScroll) * 100;
-        progressBar.style.setProperty('--progress', `${Math.min(scrollPercent, 100)}%`);
+        const scrollRatio = scrollTop / cachedMaxScroll;
+        progressBar.style.setProperty('--progress', `${Math.min(scrollRatio, 1)}`);
       } else {
         progressContainer.classList.add('opacity-0', 'pointer-events-none');
         progressContainer.classList.remove('opacity-100');

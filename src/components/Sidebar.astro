@@ -30,19 +30,7 @@ const hasTocSlot = Astro.slots.has('default');
     print:hidden
   "
 >
-  {/* aside-mask */}
-  <label
-    for="--sidebar-toggle"
-    class="
-      hidden cursor-pointer
-      max-lg:pointer-events-none max-lg:absolute max-lg:inset-0 max-lg:block
-      max-lg:bg-overlay max-lg:opacity-0 max-lg:transition-opacity
-      max-lg:[#--sidebar-toggle:checked~[data-aside]_&]:pointer-events-auto
-      max-lg:[#--sidebar-toggle:checked~[data-aside]_&]:opacity-100
-    "
-  >
-    <span class="sr-only">关闭侧边栏</span>
-  </label>
+  {/* 遮罩已移至 BaseLayout 的 #--sidebar-toggle input，利用 input 自身作为点击目标 */}
 
   <div
     data-aside-inner
@@ -51,7 +39,6 @@ const hasTocSlot = Astro.slots.has('default');
       max-lg:pointer-events-auto max-lg:w-4/5 max-lg:max-w-sm
       max-lg:min-w-aside-min max-lg:-translate-x-full max-lg:bg-surface-aside
       max-lg:transition-transform max-lg:duration-300 max-lg:ease-in-out
-      max-lg:will-change-transform
       max-lg:[#--sidebar-toggle:checked~[data-aside]_&]:translate-x-0
     "
   >
@@ -60,16 +47,15 @@ const hasTocSlot = Astro.slots.has('default');
       data-reading-progress-container
       class="
         pointer-events-none absolute inset-x-0 top-0 h-1 bg-soft/30 opacity-0
-        transition-opacity duration-300 will-change-[opacity] contain-strict
+        transition-opacity duration-300 contain-strict
       "
       aria-hidden="true"
     >
       <div
         data-reading-progress-bar
         class="
-          h-full w-(--progress,0%) origin-left bg-linear-to-r from-primary
-          to-secondary transition-[width] duration-150 ease-out
-          will-change-[width]
+          h-full w-full origin-left scale-x-(--progress,0) bg-linear-to-r
+          from-primary to-secondary transition-transform duration-150 ease-out
         "
       />
     </div>

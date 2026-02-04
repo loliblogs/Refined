@@ -149,6 +149,7 @@ const excerptLink = config.excerpt_link;
         <div class="text-right">
           <a
             href={post.excerptSource.type === 'generated' ? `${postUrl}#more` : postUrl}
+            aria-label={`${excerptLink}: ${post.title}`}
             class="
               inline-block rounded-sm border border-line px-3 py-1.5 text-sm
               leading-none text-muted no-underline transition-colors
