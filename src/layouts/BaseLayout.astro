@@ -194,16 +194,15 @@ const runtimePath = await getRuntimePath();
       >
         <div
           data-content-viewport
-          class="flex h-full overflow-y-auto contain-content"
+          class="flex h-full flex-col overflow-y-auto contain-content"
           data-overlayscrollbars-initialize
         >
           {/* wrapper */}
           <div
             class="
-              mx-auto flex min-h-full w-full max-w-content-max flex-col px-8
-              pt-8 pb-2
+              mx-auto flex w-full max-w-content-max grow flex-col px-8 pt-8 pb-2
               max-lg:px-4 max-lg:pt-17 max-lg:pb-1.5
-              print:min-h-0 print:max-w-none print:pt-4
+              print:max-w-none print:grow-0 print:pt-4
             "
           >
             <div class="grow">
@@ -240,12 +239,13 @@ const runtimePath = await getRuntimePath();
         content?.classList.add(animationOld);
 
         // 劫持 loader：并行执行 fetch + 最小等待时间
-        // 这样既不阻塞网络请求，又保证动画至少播放指定时间
+        // reduced-motion 或 update:slow 用户不等待（动画类已用 motion-safe:update-fast: 前缀）
+        const skipAnimation = matchMedia('(prefers-reduced-motion: reduce), (update: slow)').matches;
         const originalLoader = e.loader;
         e.loader = async () => {
           await Promise.all([
             originalLoader(),
-            new Promise(resolve => setTimeout(resolve, minAnimationMs)),
+            !skipAnimation && new Promise(resolve => setTimeout(resolve, minAnimationMs)),
           ]);
         };
       });

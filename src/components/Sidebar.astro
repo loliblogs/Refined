@@ -38,7 +38,9 @@ const hasTocSlot = Astro.slots.has('default');
       relative flex size-full flex-col
       max-lg:pointer-events-auto max-lg:w-4/5 max-lg:max-w-sm
       max-lg:min-w-aside-min max-lg:-translate-x-full max-lg:bg-surface-aside
-      max-lg:transition-transform max-lg:duration-300 max-lg:ease-in-out
+      max-lg:motion-safe:update-fast:transition-transform
+      max-lg:motion-safe:update-fast:duration-300
+      max-lg:motion-safe:update-fast:ease-in-out
       max-lg:[#--sidebar-toggle:checked~[data-aside]_&]:translate-x-0
     "
   >

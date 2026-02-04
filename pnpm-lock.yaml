@@ -1069,8 +1069,8 @@ packages:
     resolution: {integrity: sha512-yzMTt9lEb8Gv7zRioUilSglI0c0smZ9k5D65677DLWLtWJaXIS3CqcGyUFByYKlnUj6TkjLVs54fBl6+TiGQDQ==}
     engines: {node: 20 || >=22}
 
-  '@isaacs/brace-expansion@5.0.0':
-    resolution: {integrity: sha512-ZT55BDLV0yv0RBm2czMiZ+SqCGO7AvmOM3G/w2xhVPH+te0aKgFjmBvGlL1dH+ql2tgGO3MVrbb3jCKyvpgnxA==}
+  '@isaacs/brace-expansion@5.0.1':
+    resolution: {integrity: sha512-WMz71T1JS624nWj2n2fnYAuPovhv7EUhk69R6i9dsVyzxt5eM3bjwvgk9L+APE1TRscGysAVMANkB0jh0LQZrQ==}
     engines: {node: 20 || >=22}
 
   '@isaacs/cliui@8.0.2':
@@ -1375,11 +1375,11 @@ packages:
       '@babel/core': 7.x
       vite: ^7.3.1
 
-  '@preact/signals-core@1.12.2':
-    resolution: {integrity: sha512-5Yf8h1Ke3SMHr15xl630KtwPTW4sYDFkkxS0vQ8UiQLWwZQnrF9IKaVG1mN5VcJz52EcWs2acsc/Npjha/7ysA==}
+  '@preact/signals-core@1.13.0':
+    resolution: {integrity: sha512-slT6XeTCAbdql61GVLlGU4x7XHI7kCZV5Um5uhE4zLX4ApgiiXc0UYFvVOKq06xcovzp7p+61l68oPi563ARKg==}
 
-  '@preact/signals@2.6.2':
-    resolution: {integrity: sha512-80PMfNS3d8t/J3cRNEJP14zRioWnavgqzX/+tsNGiCX6rpD26+eLkUQpa1sIeOERZMink+dAi34y0MJhg11LKQ==}
+  '@preact/signals@2.7.0':
+    resolution: {integrity: sha512-9rQ030JhUfdBO4xlFB6Iwc/rOBi9IFXaCgu8VrFMSjAJfubGRTTxBPsgSlAF5qmWdY3C91b9kBK09mpUOMh1Rw==}
     peerDependencies:
       preact: '>= 10.25.0 || >=11.0.0-0'
 
@@ -2982,10 +2982,11 @@ packages:
 
   glob@10.5.0:
     resolution: {integrity: sha512-DfXN8DfhJ7NH3Oe7cFmu3NCu1wKbkReJ8TorzSAFbSKrlNaQSKfIzqYqVY8zlbs2NLBbWpRiU52GX2PbaBVNkg==}
+    deprecated: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
     hasBin: true
 
-  glob@13.0.0:
-    resolution: {integrity: sha512-tvZgpqk6fz4BaNZ66ZsRaZnbHvP/jG3uKJvAZOwEVUL4RTA5nJeeLYfyN9/VA8NX/V3IBG+hkeuGpKjvELkVhA==}
+  glob@13.0.1:
+    resolution: {integrity: sha512-B7U/vJpE3DkJ5WXTgTpTRN63uV42DseiXXKMwG14LQBXmsdeIoHAPbU/MEo6II0k5ED74uc2ZGTC6MwHFQhF6w==}
     engines: {node: 20 || >=22}
 
   global-directory@4.0.1:
@@ -3123,8 +3124,8 @@ packages:
   html-escaper@3.0.3:
     resolution: {integrity: sha512-RuMffC89BOWQoY0WKGpIhn5gX3iI54O6nRA0yC124NYVtzjmFWBIiFd8M0x+ZdX0P9R4lADg1mgP8C7PxGOWuQ==}
 
-  html-minifier-next@5.0.1:
-    resolution: {integrity: sha512-fxw1tzNPb8ZmWLQyu+pjfyAhIVXncV1LYslhr4SXFcocZ4nUndESh24O7501c76sCsF8e1vhy17rskpM9jRwVw==}
+  html-minifier-next@5.0.3:
+    resolution: {integrity: sha512-K2yecumQe2XeH91TputfjSD4G1YEdBZfZt90On+c/8S2VNEKL20uAmmO6oaxNZSXZPsvqOE/gKuckT4nLCSJGw==}
     hasBin: true
     peerDependencies:
       '@swc/core': ^1.15.7
@@ -3867,8 +3868,8 @@ packages:
     resolution: {integrity: sha512-PXwfBhYu0hBCPw8Dn0E+WDYb7af3dSLVWKi3HGv84IdF4TyFoC0ysxFd0Goxw7nSv4T/PzEJQxsYsEiFCKo2BA==}
     engines: {node: '>=8.6'}
 
-  minimatch@10.1.1:
-    resolution: {integrity: sha512-enIvLvRAFZYXJzkCYG5RKmPfrFArdLv+R+lbQ53BmIMLIry74bjKzX6iHAm8WYamJkhSSEabrWN5D97XnKObjQ==}
+  minimatch@10.1.2:
+    resolution: {integrity: sha512-fu656aJ0n2kcXwsnwnv9g24tkU5uSmOlTjd6WyyaKm2Z+h1qmY6bAjrcaIxF/BslFqbZ8UBtbJi7KgQOZD2PTw==}
     engines: {node: 20 || >=22}
 
   minimatch@3.1.2:
@@ -5421,7 +5422,7 @@ snapshots:
   '@astrojs/preact@4.1.3(@babel/core@7.29.0)(@types/node@25.2.0)(jiti@2.6.1)(lightningcss@1.30.2)(preact@10.28.3)(rollup@4.57.1)(terser@5.46.0)(yaml@2.8.2)':
     dependencies:
       '@preact/preset-vite': 2.10.3(@babel/core@7.29.0)(preact@10.28.3)(rollup@4.57.1)(vite@7.3.1(@types/node@25.2.0)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.46.0)(yaml@2.8.2))
-      '@preact/signals': 2.6.2(preact@10.28.3)
+      '@preact/signals': 2.7.0(preact@10.28.3)
       preact: 10.28.3
       preact-render-to-string: 6.6.5(preact@10.28.3)
       vite: 7.3.1(@types/node@25.2.0)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.46.0)(yaml@2.8.2)
@@ -6100,7 +6101,7 @@ snapshots:
 
   '@isaacs/balanced-match@4.0.1': {}
 
-  '@isaacs/brace-expansion@5.0.0':
+  '@isaacs/brace-expansion@5.0.1':
     dependencies:
       '@isaacs/balanced-match': 4.0.1
 
@@ -6450,7 +6451,7 @@ snapshots:
       csso: 5.0.5
       deepmerge-ts: 7.1.5
       fast-glob: 3.3.3
-      html-minifier-terser: html-minifier-next@5.0.1(@swc/core@1.15.8)
+      html-minifier-terser: html-minifier-next@5.0.3(@swc/core@1.15.8)
       kleur: 4.1.5
       lightningcss: 1.30.2
       sharp: 0.34.5
@@ -6513,11 +6514,11 @@ snapshots:
       - rollup
       - supports-color
 
-  '@preact/signals-core@1.12.2': {}
+  '@preact/signals-core@1.13.0': {}
 
-  '@preact/signals@2.6.2(preact@10.28.3)':
+  '@preact/signals@2.7.0(preact@10.28.3)':
     dependencies:
-      '@preact/signals-core': 1.12.2
+      '@preact/signals-core': 1.13.0
       preact: 10.28.3
 
   '@prefresh/babel-plugin@0.5.2': {}
@@ -8391,9 +8392,9 @@ snapshots:
       package-json-from-dist: 1.0.1
       path-scurry: 1.11.1
 
-  glob@13.0.0:
+  glob@13.0.1:
     dependencies:
-      minimatch: 10.1.1
+      minimatch: 10.1.2
       minipass: 7.1.2
       path-scurry: 2.0.1
 
@@ -8679,7 +8680,7 @@ snapshots:
 
   html-escaper@3.0.3: {}
 
-  html-minifier-next@5.0.1(@swc/core@1.15.8):
+  html-minifier-next@5.0.3(@swc/core@1.15.8):
     dependencies:
       commander: 14.0.2
       entities: 7.0.1
@@ -9680,9 +9681,9 @@ snapshots:
       braces: 3.0.3
       picomatch: 2.3.1
 
-  minimatch@10.1.1:
+  minimatch@10.1.2:
     dependencies:
-      '@isaacs/brace-expansion': 5.0.0
+      '@isaacs/brace-expansion': 5.0.1
 
   minimatch@3.1.2:
     dependencies:
@@ -10283,7 +10284,7 @@ snapshots:
 
   rimraf@6.1.2:
     dependencies:
-      glob: 13.0.0
+      glob: 13.0.1
       package-json-from-dist: 1.0.1
 
   rollup@4.57.1:

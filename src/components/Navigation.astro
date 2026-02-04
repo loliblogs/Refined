@@ -88,11 +88,11 @@ function isNavActive(path: string, recursive: boolean): boolean {
     class="
       flex h-full flex-col justify-center
       max-lg:h-0 max-lg:overflow-hidden max-lg:opacity-0
-      max-lg:transition-[height_0.35s_cubic-bezier(0.4,0,0.2,1),opacity_0.25s_ease-out]
       print:h-auto print:justify-start
+      max-lg:motion-safe:update-fast:transition-[height_0.35s_cubic-bezier(0.4,0,0.2,1),opacity_0.25s_ease-out]
       max-lg:[#--menu-toggle:checked~[data-nav]_&]:h-11
       max-lg:[#--menu-toggle:checked~[data-nav]_&]:opacity-100
-      max-lg:[#--menu-toggle:checked~[data-nav]_&]:transition-[height_0.35s_cubic-bezier(0.4,0,0.2,1),opacity_0.25s_ease-in_0.1s]
+      max-lg:motion-safe:update-fast:[#--menu-toggle:checked~[data-nav]_&]:transition-[height_0.35s_cubic-bezier(0.4,0,0.2,1),opacity_0.25s_ease-in_0.1s]
       print:max-lg:[#--menu-toggle:not(:checked)~[data-nav]_&]:h-0
     "
   >

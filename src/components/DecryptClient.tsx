@@ -45,9 +45,9 @@ function base64ToUint8(b64: string): Uint8Array {
 }
 
 function shakeElement(el: HTMLElement): void {
-  el.classList.remove('animate-[shake_0.35s_ease-in-out]');
+  el.classList.remove('motion-safe:update-fast:animate-[shake_0.35s_ease-in-out]');
   void el.offsetHeight; // 强制 reflow
-  el.classList.add('animate-[shake_0.35s_ease-in-out]');
+  el.classList.add('motion-safe:update-fast:animate-[shake_0.35s_ease-in-out]');
 }
 
 // === 解密相关纯函数 ===
@@ -75,7 +75,7 @@ function applyContentToDOM(html: string, target: HTMLElement): void {
   const fragment = range.createContextualFragment(html);
   target.replaceChildren(fragment);
   target.classList.remove('hidden');
-  target.classList.add('animate-[fade-in_0.6s_ease-out]');
+  target.classList.add('motion-safe:update-fast:animate-[fade-in_0.6s_ease-out]');
   // 解密后：移除 aria-hidden，添加 data-pagefind-body 让页内搜索生效
   target.removeAttribute('aria-hidden');
   target.setAttribute('data-pagefind-body', '');
@@ -89,7 +89,7 @@ function applyTocToDOM(html: string, tocWrapper: HTMLElement): void {
   const fragment = range.createContextualFragment(html);
   tocWrapper.replaceWith(fragment);
 
-  document.querySelector('[data-toc]')?.classList.add('animate-[fade-in_0.6s_ease-out]');
+  document.querySelector('[data-toc]')?.classList.add('motion-safe:update-fast:animate-[fade-in_0.6s_ease-out]');
 }
 
 // === DOM 查询层 ===
@@ -285,17 +285,14 @@ async function executeDecryption(
 async function handleDecryptSuccess(dom: DecryptElements, workerRef: RefObject<Worker | null>): Promise<void> {
   const { decryptPanel } = dom;
 
-  decryptPanel.classList.add('animate-[fade-out-up_0.5s_ease-out_forwards]');
+  decryptPanel.classList.add('motion-safe:update-fast:animate-[fade-out-up_0.5s_ease-out_forwards]');
 
   workerRef.current?.terminate();
   workerRef.current = null;
 
-  await new Promise<void>((resolve) => {
-    decryptPanel.addEventListener('animationend', () => {
-      decryptPanel.remove();
-      resolve();
-    }, { once: true });
-  });
+  // 等待动画完成（reduced-motion 用户没有动画，立即返回）
+  await Promise.all(decryptPanel.getAnimations().map(a => a.finished));
+  decryptPanel.remove();
 }
 
 /**

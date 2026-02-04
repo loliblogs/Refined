@@ -5,6 +5,10 @@
 @import "./jetbrains-mono.css";
 @import "./typography.css";
 
+/* 自定义变体 - 无障碍支持 */
+@custom-variant update-fast (@media not (update: slow));
+@custom-variant transparency-reduce (@media (prefers-reduced-transparency: reduce));
+
 /* Tailwind CSS v4 Theme Configuration */
 @theme {
   /* Custom colors - Tailwind v4 需要在 @theme 中声明所有颜色 */
@@ -192,26 +196,6 @@
   }
 }
 
-@keyframes aside-fade-in-left {
-  from {
-    transform: translate3d(-100%, 0, 0);
-  }
-  to {
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-@keyframes aside-fade-in-right {
-  from {
-    opacity: 0;
-    transform: translate3d(-100%, 0, 0);
-  }
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
-}
-
 /* 解密动画 */
 @keyframes fade-in {
   from {
@@ -332,25 +316,8 @@
 
 /* 尊重用户的动画偏好设置 - 无障碍支持 */
 @media (prefers-reduced-motion: reduce), (update: slow) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+  * {
     scroll-behavior: auto !important;
-  }
-  
-  /* 保留关键状态变化，但移除动画效果 */
-  .content-animate {
-    transition: none !important;
-  }
-  
-  /* 禁用 View Transitions */
-  ::view-transition-group(*),
-  ::view-transition-old(*),
-  ::view-transition-new(*) {
-    animation: none !important;
   }
 }
 

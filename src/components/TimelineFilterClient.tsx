@@ -344,9 +344,9 @@ function highlightFocusedItem(elements: TimelineElements, range: DateRange): voi
 
   closestItem.scrollIntoView({ behavior: 'auto', block: 'center' });
   closestItem.classList.add('animate-[highlight-flash_2s_ease-in-out]');
-  window.setTimeout(() => {
+  closestItem.addEventListener('animationend', () => {
     closestItem.classList.remove('animate-[highlight-flash_2s_ease-in-out]');
-  }, 2000);
+  }, { once: true });
 }
 
 // ============================================================================

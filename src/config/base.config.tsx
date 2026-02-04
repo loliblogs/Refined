@@ -29,7 +29,7 @@ import type { SiteConfig } from '@/types/site-config';
 
 // 动画配置
 const animationOld = {
-  name: 'animate-[fade-out-up_0.2s_ease-out_forwards]',
+  name: 'motion-safe:update-fast:animate-[fade-out-up_0.2s_ease-out_forwards]',
   minAnimationMs: 100,
 };
 const animationNew = {
