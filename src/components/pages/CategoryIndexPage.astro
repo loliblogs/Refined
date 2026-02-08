@@ -64,12 +64,18 @@ const pageContext = {
         <a
           href={getCategoryUrl(category.path, collection)}
           class="
-            rounded-sm border p-4 text-center transition
+            group rounded-sm border p-4 text-center transition
             hover:bg-hover
+            forced-colors:transition-none
+            forced-colors:hover:text-[Highlight]
           "
         >
           <div class="font-medium">{category.name}</div>
-          <div class="mt-1 text-sm text-secondary">
+          <div class="
+            mt-1 text-sm text-secondary
+            forced-colors:group-hover:text-[Highlight]
+          "
+          >
             {category.count}
             {' '}
             篇
@@ -90,11 +96,17 @@ const pageContext = {
           <a
             href={getCategoryUrl(category.path, collection)}
             class="
-              flex items-center gap-2 text-lg font-semibold transition
+              group flex items-center gap-2 text-lg font-semibold transition
               hover:text-link
+              forced-colors:transition-none
+              forced-colors:hover:text-[Highlight]
             "
           >
-            <span class="mr-0.5 text-secondary">
+            <span class="
+              mr-0.5 text-secondary
+              forced-colors:group-hover:text-[Highlight]
+            "
+            >
               <FolderOpenDuotone width="1.25em" height="1.25em" />
             </span>
             {category.name}
@@ -102,6 +114,7 @@ const pageContext = {
               inline-flex font-normal text-muted
               before:content-['(']
               after:content-[')']
+              forced-colors:group-hover:text-[Highlight]
             "
             >
               {category.count}
@@ -114,11 +127,18 @@ const pageContext = {
                 <a
                   href={getCategoryUrl(child.path, collection)}
                   class="
-                    flex items-center gap-2 text-lg text-primary transition
+                    group flex items-center gap-2 text-lg text-primary
+                    transition
                     hover:text-link
+                    forced-colors:transition-none
+                    forced-colors:hover:text-[Highlight]
                   "
                 >
-                  <span class="mr-0.5 text-muted">
+                  <span class="
+                    mr-0.5 text-muted
+                    forced-colors:group-hover:text-[Highlight]
+                  "
+                  >
                     <FolderDuotone width="1.25em" height="1.25em" />
                   </span>
                   {child.name}
@@ -126,6 +146,7 @@ const pageContext = {
                     inline-flex text-muted
                     before:content-['(']
                     after:content-[')']
+                    forced-colors:group-hover:text-[Highlight]
                   "
                   >
                     {child.count}
@@ -140,7 +161,7 @@ const pageContext = {
   </section>
 
   {/* 统计信息 */}
-  <aside class="mt-12 rounded-lg bg-hover p-6 ring-2 ring-hover ring-inset">
+  <aside class="mt-12 rounded-lg border-2 border-hover bg-hover p-6">
     <h3 class="mb-2 text-lg font-bold">统计信息</h3>
     <ul class="space-y-1 text-sm">
       <li>

@@ -58,7 +58,9 @@ const excerptLink = config.excerpt_link;
         href={postUrl}
         class="
           text-primary no-underline transition-colors duration-200
-          hover:text-link-hover
+          hover:text-link
+          forced-colors:transition-none
+          forced-colors:hover:text-[Highlight]
         "
       >
         {post.title}
@@ -78,6 +80,8 @@ const excerptLink = config.excerpt_link;
           flex items-center text-muted no-underline transition-colors
           duration-200
           hover:text-primary
+          forced-colors:transition-none
+          forced-colors:hover:text-[Highlight]
         "
       >
         <Calendar width="1rem" height="1rem" />
@@ -111,6 +115,8 @@ const excerptLink = config.excerpt_link;
                 class="
                   ml-1.5 text-muted no-underline transition-colors
                   hover:text-primary
+                  forced-colors:transition-none
+                  forced-colors:hover:text-[Highlight]
                 "
               >
                 {tag}
@@ -155,6 +161,8 @@ const excerptLink = config.excerpt_link;
               leading-none text-muted no-underline transition-colors
               duration-300
               hover:bg-hover hover:no-underline
+              forced-colors:transition-none
+              forced-colors:hover:text-[Highlight]
             "
           >
             {excerptLink}

@@ -22,3 +22,13 @@
   /* 12px -> 1rem */
   --pf-summary-zoom: calc(var(--base-zoom) * 16 / 12);
 }
+
+@media (forced-colors: active) {
+  pagefind-results mark {
+    color: Highlight !important;
+  }
+
+  .pf-input-wrapper:before, .pf-searchbox-input-wrapper:before {
+    background-color: GrayText !important;
+  }
+}

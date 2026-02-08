@@ -42,7 +42,9 @@ const {
           href="/"
           class="
             text-xl font-semibold transition-colors
-            hover:text-red
+            hover:text-link
+            forced-colors:transition-none
+            forced-colors:hover:text-[Highlight]
           "
         >
           <xsl:attribute name="href">
@@ -55,7 +57,9 @@ const {
             href="/"
             class="
               transition-colors
-              hover:text-red
+              hover:text-link
+              forced-colors:transition-none
+              forced-colors:hover:text-[Highlight]
             "
           >
             <xsl:attribute name="href">
@@ -76,11 +80,7 @@ const {
       "
       >
         {/* RSS 信息 */}
-        <div class="
-          mb-4 rounded-lg bg-surface-aside p-6 ring-2 ring-surface-aside
-          ring-inset
-        "
-        >
+        <div class="mb-4 rounded-lg border border-line bg-surface-aside p-6">
           <h1 class="mb-3 text-2xl font-semibold text-primary">
             <xsl:value-of select="rss/channel/title" />
           </h1>
@@ -90,8 +90,9 @@ const {
           <div class="flex flex-col gap-2">
             <p class="text-sm text-muted">订阅此 RSS Feed：</p>
             <div class="
-              w-full cursor-text overflow-x-auto rounded-sm bg-hover px-3 py-2
-              font-mono text-sm ring-2 ring-hover select-all ring-inset
+              w-full cursor-text overflow-x-auto rounded-sm border border-hover
+              bg-hover px-3 py-2 font-mono text-sm select-all
+              forced-colors:text-[LinkText]
             "
             >
               <xsl:value-of select="rss/channel/link" />
@@ -107,15 +108,19 @@ const {
               relative rounded-lg border border-line bg-surface p-6
               transition-colors
               hover:border-primary
+              forced-colors:transition-none
+              forced-colors:hover:text-[Highlight]
             "
             >
               <h2 class="mb-2 text-xl font-semibold">
                 <a
                   href="/"
                   class="
-                    text-primary transition-colors
+                    text-link transition-colors
                     after:absolute after:inset-0
-                    hover:text-red
+                    hover:text-link-hover
+                    forced-colors:transition-none
+                    forced-colors:hover:text-[Highlight]
                   "
                 >
                   <xsl:attribute name="href">

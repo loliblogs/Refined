@@ -121,11 +121,45 @@ const runtimePath = await getRuntimePath();
       print:h-auto
     "
     >
+      <div
+        data-content
+        class="
+          ml-header min-h-0 flex-1
+          max-lg:ml-0
+          print:ml-0
+        "
+        transition:name="content"
+        transition:animate={config.animationNew}
+      >
+        <div
+          data-content-viewport
+          class="flex h-full flex-col overflow-y-auto contain-content"
+          data-overlayscrollbars-initialize
+        >
+          {/* wrapper */}
+          <div
+            class="
+              mx-auto flex w-full max-w-content-max grow flex-col px-8 pt-8 pb-2
+              max-lg:px-4 max-lg:pt-17 max-lg:pb-1.5
+              print:max-w-none print:grow-0 print:pt-4
+            "
+          >
+            <div class="grow">
+              <slot />
+            </div>
+            <div class="mt-auto">
+              <Footer pageContext={pageContext} />
+            </div>
+          </div>
+        </div>
+        <MediumZoom client:idle />
+        <PageScrollManager client:idle />
+      </div>
       <header
         class="
           fixed inset-y-0 left-0 flex w-header
           max-lg:static max-lg:h-0 max-lg:w-full
-          print:static print:h-auto print:w-full
+          print:static print:order-first print:h-auto print:w-full
         "
       >
         {/*
@@ -182,40 +216,6 @@ const runtimePath = await getRuntimePath();
               />
             )}
       </header>
-      <div
-        data-content
-        class="
-          ml-header min-h-0 flex-1
-          max-lg:ml-0
-          print:ml-0
-        "
-        transition:name="content"
-        transition:animate={config.animationNew}
-      >
-        <div
-          data-content-viewport
-          class="flex h-full flex-col overflow-y-auto contain-content"
-          data-overlayscrollbars-initialize
-        >
-          {/* wrapper */}
-          <div
-            class="
-              mx-auto flex w-full max-w-content-max grow flex-col px-8 pt-8 pb-2
-              max-lg:px-4 max-lg:pt-17 max-lg:pb-1.5
-              print:max-w-none print:grow-0 print:pt-4
-            "
-          >
-            <div class="grow">
-              <slot />
-            </div>
-            <div class="mt-auto">
-              <Footer pageContext={pageContext} />
-            </div>
-          </div>
-        </div>
-        <MediumZoom client:idle />
-        <PageScrollManager client:idle />
-      </div>
     </main>
     {Analytics && <Analytics />}
     {/*

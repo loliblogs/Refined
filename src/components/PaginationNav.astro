@@ -88,9 +88,11 @@ const nextUrl = currentPage === lastPage ? undefined : getPageUrl(currentPage + 
           <a
             href={prevUrl}
             class="
-              flex items-center rounded-sm px-3 py-2 text-primary
-              transition-colors
+              flex items-center rounded-sm border border-transparent px-3 py-2
+              text-primary transition-colors
               hover:bg-hover
+              forced-colors:transition-none
+              forced-colors:hover:text-[Highlight]
             "
             aria-label={prevText}
           >
@@ -106,7 +108,8 @@ const nextUrl = currentPage === lastPage ? undefined : getPageUrl(currentPage + 
         )
       : (
           <span class="
-            flex cursor-not-allowed items-center px-3 py-2 text-muted
+            flex cursor-not-allowed items-center border border-transparent px-3
+            py-2 text-muted
           "
           >
             <ArrowLeft width="1rem" height="1rem" />
@@ -138,8 +141,9 @@ const nextUrl = currentPage === lastPage ? undefined : getPageUrl(currentPage + 
         return isActive
           ? (
               <span class="
-                rounded-sm bg-active px-3 py-2 font-semibold text-primary ring-1
-                ring-soft select-none
+                rounded-sm border border-soft bg-active px-3 py-2 font-semibold
+                text-primary forced-color-adjust-none select-none
+                forced-colors:bg-[Highlight] forced-colors:text-[HighlightText]
               "
               >
                 {pageNum}
@@ -149,8 +153,11 @@ const nextUrl = currentPage === lastPage ? undefined : getPageUrl(currentPage + 
               <a
                 href={url}
                 class="
-                  rounded-sm px-3 py-2 text-primary transition-colors
+                  rounded-sm border border-transparent px-3 py-2 text-primary
+                  transition-colors
                   hover:bg-hover
+                  forced-colors:transition-none
+                  forced-colors:hover:text-[Highlight]
                 "
                 aria-label={`第 ${pageNum} 页`}
               >
@@ -166,9 +173,11 @@ const nextUrl = currentPage === lastPage ? undefined : getPageUrl(currentPage + 
           <a
             href={nextUrl}
             class="
-              flex items-center rounded-sm px-3 py-2 text-primary
-              transition-colors
+              flex items-center rounded-sm border border-transparent px-3 py-2
+              text-primary transition-colors
               hover:bg-hover
+              forced-colors:transition-none
+              forced-colors:hover:text-[Highlight]
             "
             aria-label={nextText}
           >
@@ -184,7 +193,8 @@ const nextUrl = currentPage === lastPage ? undefined : getPageUrl(currentPage + 
         )
       : (
           <span class="
-            flex cursor-not-allowed items-center px-3 py-2 text-muted
+            flex cursor-not-allowed items-center border border-transparent px-3
+            py-2 text-muted
           "
           >
             <span class="

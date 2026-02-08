@@ -7,7 +7,7 @@
 
 /* 自定义变体 - 无障碍支持 */
 @custom-variant update-fast (@media not (update: slow));
-@custom-variant transparency-reduce (@media (prefers-reduced-transparency: reduce));
+@custom-variant reduce-transparency (@media (prefers-reduced-transparency: reduce));
 
 /* Tailwind CSS v4 Theme Configuration */
 @theme {
@@ -100,6 +100,7 @@
   --scrollbar-thumb-radius: 0.25rem;
   --scrollbar-thumb: #a0a0a0;
   --scrollbar-thumb-hover: var(--color-secondary);
+  --scrollbar-thumb-active: var(--color-primary);
   --scrollbar-track: transparent;
 
   /* 其他颜色 */
@@ -253,7 +254,7 @@
   --os-handle-border-radius: var(--scrollbar-thumb-radius);
   --os-handle-bg: var(--scrollbar-thumb);
   --os-handle-bg-hover: var(--scrollbar-thumb-hover);
-  --os-handle-bg-active: var(--color-primary);
+  --os-handle-bg-active: var(--scrollbar-thumb-active);
 
   /* 交互区域 */
   --os-handle-interactive-area-offset: var(--scrollbar-thumb-radius);
@@ -351,5 +352,26 @@
 @media (prefers-reduced-transparency: reduce) and (prefers-color-scheme: dark) {
   :root {
     --color-overlay: #141416;
+  }
+}
+
+@media (forced-colors: active) {
+  :root {
+    --scrollbar-thumb: CanvasText;
+    --scrollbar-thumb-hover: Highlight;
+    --scrollbar-thumb-active: Highlight;
+  }
+
+  .os-scrollbar-track,
+  .os-scrollbar-handle {
+    transition: none !important;
+  }
+
+  .expressive-code .frame .copy button:after {
+    background-color: LinkText;
+  }
+
+  .expressive-code .frame .ec-section summary .expand:after {
+    background-color: LinkText;
   }
 }

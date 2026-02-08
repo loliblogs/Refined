@@ -38,6 +38,7 @@ const {
         gap-2 text-muted transition-opacity duration-200
         peer-focus:opacity-0
         peer-[:not(:placeholder-shown)]:opacity-0
+        forced-colors:text-[GrayText]
       "
     >
       <MagnifyingGlass width="1rem" height="1rem" />
@@ -59,9 +60,15 @@ const {
         data-global-search
         class="
           items-center gap-2 border-b border-line px-4 py-3 font-medium
-          transition-colors
+          transition-colors forced-color-adjust-none
           hover:bg-muted/10
           active:bg-muted/20
+          forced-colors:border-[CanvasText] forced-colors:text-[LinkText]
+          forced-colors:transition-none
+          forced-colors:hover:bg-[Highlight]
+          forced-colors:hover:text-[HighlightText]
+          forced-colors:active:bg-[Highlight]
+          forced-colors:active:text-[HighlightText]
         "
       >
         <MagnifyingGlassBold width="1rem" height="1rem" />

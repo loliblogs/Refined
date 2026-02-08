@@ -29,6 +29,8 @@ const { posts, showExcerpt = true, collection = 'post' } = Astro.props;
           class="
             text-primary transition
             hover:text-link
+            forced-colors:transition-none
+            forced-colors:hover:text-[Highlight]
           "
         >
           {post.title}
@@ -64,6 +66,8 @@ const { posts, showExcerpt = true, collection = 'post' } = Astro.props;
               rounded-sm bg-hover px-2 py-1 text-xs text-secondary ring-2
               ring-hover transition ring-inset
               hover:text-primary
+              forced-colors:transition-none
+              forced-colors:hover:text-[Highlight]
             "
           >
             #

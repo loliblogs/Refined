@@ -62,27 +62,36 @@ const sortedGroups = Object.entries(groupedTags).sort(([a], [b]) => {
       <ul class="list-none p-0">
         {letterTags.map(tag => (
           <li class="
-            group rounded-lg border-b border-hover px-4 py-3 transition
-            duration-200 ease-out
+            group rounded-lg border-b border-hover px-4 py-3
+            transition-[background-color,box-shadow] duration-200 ease-out
             hover:bg-hover hover:shadow-sm
+            forced-colors:transition-none
           "
           >
             <a
               href={getTagUrl(tag.path, collection)}
               class="
-                block text-inherit no-underline transition-transform
-                duration-200 ease-out
-                group-hover:translate-x-1
+                block text-inherit no-underline
+                motion-safe:transition-transform motion-safe:duration-200
+                motion-safe:ease-out
+                motion-safe:group-hover:translate-x-1
+                forced-colors:transition-none
               "
             >
               <div class="flex items-center gap-2">
-                <span class="font-medium text-primary">
+                <span class="
+                  font-medium text-primary
+                  forced-colors:group-hover:text-[Highlight]
+                "
+                >
                   {tag.name}
                 </span>
 
                 {showPostCount && (
                   <span class="
-                    rounded-sm bg-hover px-1.5 py-0.5 text-sm text-secondary
+                    rounded-sm border border-hover bg-hover px-1.5 py-0.5
+                    text-sm text-secondary
+                    forced-colors:group-hover:text-[Highlight]
                   "
                   >
                     {tag.postIds.size}

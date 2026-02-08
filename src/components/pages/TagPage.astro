@@ -69,13 +69,25 @@ const pageTitle = `标签: ${tag.name}`;
     {/* 面包屑导航 */}
     {ancestors.length > 0 && (
       <nav class="mt-4 text-sm">
-        <a href={getTagIndexUrl(collection)} class="text-link">
+        <a
+          href={getTagIndexUrl(collection)}
+          class="
+            text-link
+            forced-colors:hover:text-[Highlight]
+          "
+        >
           <span class="hover:underline">所有标签</span>
         </a>
         {ancestors.map(ancestor => (
           <>
             <span class="mx-2">/</span>
-            <a href={getTagUrl(ancestor.path, collection)} class="text-link">
+            <a
+              href={getTagUrl(ancestor.path, collection)}
+              class="
+                text-link
+                forced-colors:hover:text-[Highlight]
+              "
+            >
               <span class="hover:underline">{ancestor.name}</span>
             </a>
           </>
@@ -99,13 +111,19 @@ const pageTitle = `标签: ${tag.name}`;
           <a
             href={getTagUrl(child.path, collection)}
             class="
-              rounded-sm border p-4 transition
+              group rounded-sm border p-4 transition
               hover:bg-hover
+              forced-colors:transition-none
+              forced-colors:hover:text-[Highlight]
             "
           >
             <h3 class="font-semibold">{child.name}</h3>
             {/* 子标签显示包含其子标签的总文章数 */}
-            <p class="text-sm text-secondary">
+            <p class="
+              text-sm text-secondary
+              forced-colors:group-hover:text-[Highlight]
+            "
+            >
               {child.count}
               {' '}
               篇文章
@@ -132,7 +150,7 @@ const pageTitle = `标签: ${tag.name}`;
   {relatedTags.length > 0 && (
     <aside class="print:hidden">
       <h2 class="mb-4 text-xl font-bold">相关标签</h2>
-      <div class="min-h-72 rounded-lg bg-hover p-4">
+      <div class="min-h-72 rounded-lg border-2 border-hover bg-hover p-4">
         <TagCloud
           tags={relatedTags.map(t => [t.name, t.count, getTagUrl(t.path, collection)])}
           client:only="preact"

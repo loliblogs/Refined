@@ -31,8 +31,10 @@ function isNavActive(path: string, recursive: boolean): boolean {
   data-nav
   class="
     relative h-full w-nav shrink-0 bg-surface-nav
-    max-lg:fixed max-lg:z-10 max-lg:h-auto max-lg:w-full
+    max-lg:fixed max-lg:top-0 max-lg:z-10 max-lg:h-auto max-lg:w-full
     print:static print:h-auto print:w-full
+    forced-colors:border-l
+    forced-colors:max-lg:border-y forced-colors:max-lg:border-l-0
   "
 >
   {/* 移动端顶部栏 */}
@@ -50,6 +52,8 @@ function isNavActive(path: string, recursive: boolean): boolean {
         m-0 flex size-11 shrink-0 cursor-pointer items-center justify-center
         bg-transparent text-primary transition-colors duration-100 ease-in-out
         hover:bg-active
+        forced-colors:transition-none
+        forced-colors:hover:text-[Highlight]
         [#--sidebar-toggle:focus-visible~[data-nav]_&]:ring-2
         [#--sidebar-toggle:focus-visible~[data-nav]_&]:ring-primary
       "
@@ -64,6 +68,8 @@ function isNavActive(path: string, recursive: boolean): boolean {
         text-center text-2xl font-bold text-primary no-underline
         transition-colors duration-100 ease-in-out
         hover:text-secondary
+        forced-colors:border-x forced-colors:transition-none
+        forced-colors:hover:text-[Highlight]
       "
     >
       {config.title}
@@ -74,6 +80,8 @@ function isNavActive(path: string, recursive: boolean): boolean {
         m-0 flex size-11 shrink-0 cursor-pointer items-center justify-center
         bg-transparent text-primary transition-colors duration-100 ease-in-out
         hover:bg-active
+        forced-colors:transition-none
+        forced-colors:hover:text-[Highlight]
         [#--menu-toggle:focus-visible~[data-nav]_&]:ring-2
         [#--menu-toggle:focus-visible~[data-nav]_&]:ring-primary
       "
@@ -89,6 +97,8 @@ function isNavActive(path: string, recursive: boolean): boolean {
       flex h-full flex-col justify-center
       max-lg:h-0 max-lg:overflow-hidden max-lg:opacity-0
       print:h-auto print:justify-start
+      forced-colors:transition-none
+      forced-colors:max-lg:border-t
       max-lg:motion-safe:update-fast:transition-[height_0.35s_cubic-bezier(0.4,0,0.2,1),opacity_0.25s_ease-out]
       max-lg:[#--menu-toggle:checked~[data-nav]_&]:h-11
       max-lg:[#--menu-toggle:checked~[data-nav]_&]:opacity-100
@@ -126,8 +136,18 @@ function isNavActive(path: string, recursive: boolean): boolean {
                 max-lg:text-base/11
                 print:inline-block print:h-11 print:px-5 print:align-top
                 print:text-base/11
+                forced-colors:border-[CanvasText] forced-colors:transition-none
+                forced-colors:not-first:border-t
+                forced-colors:max-lg:not-first:border-t-0
+                forced-colors:max-lg:not-first:border-l
               `,
-              { 'bg-active': isNavActive(path, recursive) },
+              isNavActive(path, recursive)
+                ? `
+                  bg-active forced-color-adjust-none
+                  forced-colors:bg-[Highlight]
+                  forced-colors:text-[HighlightText]
+                `
+                : 'forced-colors:hover:text-[Highlight]',
             ]}
             href={path}
             aria-label={ariaLabel}

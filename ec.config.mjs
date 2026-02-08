@@ -21,10 +21,10 @@ export default defineEcConfig({
     },
   },
   styleOverrides: {
-    borderColor: 'var(--color-border)',
+    borderColor: 'var(--color-soft)',
     codeFontFamily: 'var(--font-mono)',
-    scrollbarThumbColor: 'var(--color-scrollbar-thumb)',
-    scrollbarThumbHoverColor: 'var(--color-secondary)',
+    scrollbarThumbColor: 'var(--scrollbar-thumb)',
+    scrollbarThumbHoverColor: 'var(--scrollbar-thumb-hover)',
     codePaddingInline: '0.875rem',
     codePaddingBlock: '0.75rem',
   },

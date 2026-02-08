@@ -287,7 +287,7 @@
 [data-markdown] table th,
 [data-markdown] table td {
   padding: 0.375em 0.75em;
-  border: 1px solid var(--color-line);
+  border: 1px solid var(--color-soft);
 }
 
 [data-markdown] table th {
@@ -377,5 +377,32 @@
 
   [data-markdown] span#more {
     scroll-margin-top: 11rem;
+  }
+}
+
+@media (forced-colors: active) {
+  [data-markdown] a {
+    transition: none;
+  }
+  [data-markdown] a:hover {
+    color: Highlight;
+  }
+
+  [data-markdown] blockquote::before,
+  [data-markdown] blockquote[data-directive-type]::before,
+  [data-markdown] blockquote[data-directive-type] > p:first-child::before {
+    background-color: Highlight;
+  }
+
+  [data-markdown] blockquote[data-directive-type] > p:first-child {
+    color: Highlight;
+  }
+
+  [data-markdown] .footnotes [data-footnote-backref]::after {
+    background-color: LinkText;
+  }
+
+  [data-markdown] .footnotes [data-footnote-backref]:hover::after {
+    background-color: Highlight;
   }
 }

@@ -99,6 +99,7 @@ const buttonClass = 'rounded-md border border-line px-3 py-1 text-sm transition-
         {/* 轨道背景 */}
         <div class="
           absolute top-1/2 h-1 w-full -translate-y-1/2 rounded-sm bg-muted
+          forced-colors:bg-[CanvasText]
         "
         >
         </div>
@@ -107,6 +108,7 @@ const buttonClass = 'rounded-md border border-line px-3 py-1 text-sm transition-
         <div class="
           absolute top-1/2 left-(--slider-start,0%) h-1 w-(--slider-width,100%)
           -translate-y-1/2 rounded-sm bg-primary
+          forced-colors:bg-[Highlight]
         "
         >
         </div>
@@ -121,6 +123,10 @@ const buttonClass = 'rounded-md border border-line px-3 py-1 text-sm transition-
             focus:ring-2 focus:ring-primary focus:ring-offset-2
             focus:outline-none
             active:scale-125 active:cursor-grabbing
+            forced-colors:border-2 forced-colors:border-[Canvas]
+            forced-colors:bg-[CanvasText]
+            forced-colors:hover:bg-[Highlight]
+            forced-colors:focus:outline-[Highlight]
           "
           data-role="thumb-start"
           role="slider"
@@ -143,6 +149,10 @@ const buttonClass = 'rounded-md border border-line px-3 py-1 text-sm transition-
             focus:ring-2 focus:ring-primary focus:ring-offset-2
             focus:outline-none
             active:scale-125 active:cursor-grabbing
+            forced-colors:border-2 forced-colors:border-[Canvas]
+            forced-colors:bg-[CanvasText]
+            forced-colors:hover:bg-[Highlight]
+            forced-colors:focus:outline-[Highlight]
           "
           data-role="thumb-end"
           role="slider"

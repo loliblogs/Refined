@@ -172,8 +172,25 @@ const SearchBoxClient: FC<SearchBoxClientProps> = ({
 
     // 清除上一个选中项的样式（检查元素是否还在 DOM 中）
     if (lastSelectedRef.current?.isConnected) {
-      lastSelectedRef.current.classList.remove('bg-muted/20');
-      lastSelectedRef.current.classList.add('hover:bg-muted/10', 'active:bg-muted/20');
+      lastSelectedRef.current.classList.remove(
+        'bg-muted/20',
+        'forced-colors:bg-[Highlight]',
+        'forced-colors:text-[HighlightText]',
+      );
+      lastSelectedRef.current.classList.add(
+        'hover:bg-muted/10',
+        'active:bg-muted/20',
+        'forced-colors:hover:bg-[Highlight]',
+        'forced-colors:hover:text-[HighlightText]',
+        'forced-colors:active:bg-[Highlight]',
+        'forced-colors:active:text-[HighlightText]',
+      );
+      // forced-color-adjust-none 下需要手动恢复基础文字色
+      if (lastSelectedRef.current === globalSearch) {
+        lastSelectedRef.current.classList.add('forced-colors:text-[LinkText]');
+      } else {
+        lastSelectedRef.current.classList.add('forced-colors:text-[ButtonText]');
+      }
     }
 
     // 找到新选中的元素
@@ -184,10 +201,24 @@ const SearchBoxClient: FC<SearchBoxClientProps> = ({
       current = contentWrapper.querySelector(`[data-index="${idx}"]`);
     }
 
-    // 应用选中样式
+    // 应用选中样式（forced-colors 下用 Highlight/HighlightText 反色替代不可见的 bg）
     if (current) {
-      current.classList.remove('hover:bg-muted/10', 'active:bg-muted/20');
-      current.classList.add('bg-muted/20');
+      current.classList.remove(
+        'hover:bg-muted/10',
+        'active:bg-muted/20',
+        // 移除基础文字色，避免与 HighlightText 同 specificity 冲突（互为 no-op）
+        'forced-colors:text-[LinkText]',
+        'forced-colors:text-[ButtonText]',
+        'forced-colors:hover:bg-[Highlight]',
+        'forced-colors:hover:text-[HighlightText]',
+        'forced-colors:active:bg-[Highlight]',
+        'forced-colors:active:text-[HighlightText]',
+      );
+      current.classList.add(
+        'bg-muted/20',
+        'forced-colors:bg-[Highlight]',
+        'forced-colors:text-[HighlightText]',
+      );
       lastSelectedRef.current = current;
     } else {
       lastSelectedRef.current = null;
@@ -209,7 +240,16 @@ const SearchBoxClient: FC<SearchBoxClientProps> = ({
 
       // 移除hidden并添加flex布局
       globalSearch.classList.remove('hidden');
-      globalSearch.classList.add('flex', 'hover:bg-muted/10', 'active:bg-muted/20');
+      globalSearch.classList.add(
+        'flex',
+        'hover:bg-muted/10',
+        'active:bg-muted/20',
+        'forced-colors:text-[LinkText]',
+        'forced-colors:hover:bg-[Highlight]',
+        'forced-colors:hover:text-[HighlightText]',
+        'forced-colors:active:bg-[Highlight]',
+        'forced-colors:active:text-[HighlightText]',
+      );
 
       // 绑定鼠标悬停事件
       globalSearch.onmouseenter = () => {
@@ -241,18 +281,25 @@ const SearchBoxClient: FC<SearchBoxClientProps> = ({
         button.setAttribute('data-index', String(index + 1));
         button.className = `
           w-full border-b border-line/50 px-4 py-3 text-left transition-colors
+          forced-color-adjust-none
           last:border-0
           hover:bg-muted/10
           active:bg-muted/20
+          forced-colors:border-[CanvasText] forced-colors:text-[ButtonText]
+          forced-colors:transition-none
+          forced-colors:hover:bg-[Highlight]
+          forced-colors:hover:text-[HighlightText]
+          forced-colors:active:bg-[Highlight]
+          forced-colors:active:text-[HighlightText]
         `;
 
         // 使用 DOM API 创建内容，避免 innerHTML
         const titleDiv = document.createElement('div');
-        titleDiv.className = 'text-sm text-foreground font-medium';
+        titleDiv.className = 'text-sm text-foreground font-medium forced-colors:text-inherit';
         titleDiv.textContent = result.text;
 
         const contextDiv = document.createElement('div');
-        contextDiv.className = 'text-xs text-muted mt-1 line-clamp-2';
+        contextDiv.className = 'text-xs text-muted mt-1 line-clamp-2 forced-colors:text-inherit';
         contextDiv.textContent = result.context;
 
         button.appendChild(titleDiv);
@@ -269,14 +316,15 @@ const SearchBoxClient: FC<SearchBoxClientProps> = ({
       });
 
       contentWrapper.replaceChildren(fragment);
-      // DOM 重建后立即应用选中样式
-      updateSelectedStyles(selectedIndex);
     } else if (keyword.trim()) {
       const noResultDiv = document.createElement('div');
       noResultDiv.className = 'px-4 py-8 text-center text-muted';
       noResultDiv.textContent = '本文无匹配内容';
       contentWrapper.replaceChildren(noResultDiv);
     }
+
+    // DOM 重建后立即应用选中样式（无论是否有本地结果，全局搜索项都需要响应）
+    updateSelectedStyles(selectedIndex);
   };
 
   // 处理输入变化
