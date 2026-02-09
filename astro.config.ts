@@ -12,6 +12,7 @@ import remarkRemoveCjkBreaks from './src/plugins/remark-remove-cjk-breaks';
 import remarkPangu from './src/plugins/remark-pangu';
 import buildSearch from './src/plugins/build-search';
 import postlinkIntegration from './src/plugins/postlink-integration';
+import skipTreeshake from './src/plugins/skip-treeshake';
 
 import remarkDirective from 'remark-directive';
 import remarkEmoji from 'remark-emoji';
@@ -32,7 +33,7 @@ export default defineConfig({
   prefetch: {
     prefetchAll: true,
   },
-  integrations: [postlinkIntegration(), expressiveCode(), preact(), mdx({ optimize: true }), db(), playformCompress({
+  integrations: [skipTreeshake(), postlinkIntegration(), expressiveCode(), preact(), mdx({ optimize: true }), db(), playformCompress({
     CSS: false,
     HTML: true,
     JSON: true,

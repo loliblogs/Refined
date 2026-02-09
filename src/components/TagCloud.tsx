@@ -97,7 +97,8 @@ const TagCloud: FC<Props> = ({ tags }) => {
       ref={cloudRef}
       className="
         relative size-full min-h-64 forced-color-adjust-none
-        forced-colors:*:text-[CanvasText]!
+        forced-colors:*:text-[LinkText]!
+        forced-colors:*:hover:text-[Highlight]!
       "
     />
   );

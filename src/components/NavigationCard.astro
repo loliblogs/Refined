@@ -62,10 +62,18 @@ const label = direction === 'prev' ? '上一篇' : '下一篇';
       { 'text-right': direction === 'next' },
     ]}
     >
-      <span class="text-xs font-medium tracking-wider text-secondary uppercase">
+      <span class="
+        text-xs font-medium tracking-wider text-secondary uppercase
+        forced-colors:group-hover:text-[Highlight]
+      "
+      >
         {label}
       </span>
-      <div class="mt-0.5 text-xs text-secondary">
+      <div class="
+        mt-0.5 text-xs text-secondary
+        forced-colors:group-hover:text-[Highlight]
+      "
+      >
         {formatDate(post.date)}
       </div>
     </div>
@@ -75,13 +83,19 @@ const label = direction === 'prev' ? '上一篇' : '下一篇';
   <h1 class="
     mb-2 text-xl font-semibold text-primary transition-colors duration-200
     group-hover:text-link
+    forced-colors:transition-none
+    forced-colors:group-hover:text-[Highlight]
   "
   >
     {post.title}
   </h1>
 
   {/* 文章描述 */}
-  <p class="mb-2 line-clamp-2 text-xs/relaxed text-secondary">
+  <p class="
+    mb-2 line-clamp-2 text-xs/relaxed text-secondary
+    forced-colors:group-hover:text-[Highlight]
+  "
+  >
     {post.excerptSource.type === 'fixed'
       ? post.excerptSource.text
       : post.description}
@@ -96,6 +110,8 @@ const label = direction === 'prev' ? '上一篇' : '下一篇';
             rounded-md bg-surface-aside px-2.5 py-1 text-xs font-medium
             text-secondary transition-colors duration-200
             group-hover:bg-primary/10 group-hover:text-primary
+            forced-colors:transition-none
+            forced-colors:group-hover:text-[Highlight]
           "
           >
             #

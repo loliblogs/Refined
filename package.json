@@ -89,7 +89,7 @@
     "@types/hast": "^3.0.4",
     "@types/mathjax": "^0.0.40",
     "@types/mdast": "^4.0.4",
-    "@types/node": "^25.2.0",
+    "@types/node": "^25.2.2",
     "@types/wordcloud": "^1.2.2",
     "@typescript-eslint/parser": "^8.54.0",
     "eslint": "^9.39.2",
@@ -131,5 +131,5 @@
       "remark-gfm"
     ]
   },
-  "packageManager": "pnpm@10.28.2"
+  "packageManager": "pnpm@10.29.2"
 }

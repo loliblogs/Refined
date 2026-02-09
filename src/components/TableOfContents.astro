@@ -3,10 +3,14 @@
  * 目录导航组件 - 从 slot 内容中提取标题并渲染目录
  * 极简设计：只用缩进区分层级，h2 带圆圈序号
  *
- * 为什么用 slot + cheerio 而不是 render() 返回的 headings？
- * headings 是从 markdown 源文件直接提取的原始文本，
- * 标题中的行内代码、数学公式等未经处理（如 `code` 和 $formula$ 会原样保留）。
- * 必须从渲染后的 HTML 提取，才能得到正确的、已处理的标题内容。
+ * 为什么用 slot + cheerio 而不是在渲染管线中提取？
+ * 1. render() 返回的 headings 是 markdown 源文件的原始文本，
+ *    行内代码、数学公式等未经处理（`code` 和 $formula$ 原样保留）。
+ * 2. rehype 插件可解决 .md 的问题（HAST 阶段标题已渲染），
+ *    但 .mdx 中通过 import 引入的组件（如 <Readme />）在 HAST 阶段
+ *    是不透明的 JSX 节点，标题要到运行时才产生，无法静态提取。
+ * 3. cheerio 对渲染后 HTML 统一处理，.md 和 .mdx 一条路径，无需双模回退。
+ *    CachedContent 已消除重复渲染开销，cheerio 解析成本可忽略。
  */
 
 import * as cheerio from 'cheerio';
