@@ -7,13 +7,8 @@ html mjx-container[display] {
 }
 
 /* 目录（TOC）中的 MathJax 公式不允许断行 */
- [data-toc-id] mjx-math[breakable] {
+[data-toc-id] mjx-math[breakable] {
   display: inline-block;
-}
-
-/* workaround for regression introduced by https://github.com/mathjax/MathJax-src/pull/1356 */
-html mjx-stretchy-v > mjx-ext {
-  white-space: normal;
 }
 
 @font-face /* MJX-NCM-ZERO */ {

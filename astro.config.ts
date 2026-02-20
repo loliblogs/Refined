@@ -23,6 +23,8 @@ import expressiveCode from 'astro-expressive-code';
 import playformCompress from '@playform/compress';
 import db from '@astrojs/db';
 
+import { browserslistToTargets } from 'lightningcss';
+
 // https://astro.build/config
 export default defineConfig({
   site: 'https://blog.lolifamily.js.org',
@@ -35,7 +37,43 @@ export default defineConfig({
   },
   integrations: [skipTreeshake(), postlinkIntegration(), expressiveCode(), preact(), mdx({ optimize: true }), db(), playformCompress({
     CSS: false,
-    HTML: true,
+    HTML: {
+      'html-minifier-terser': {
+        minifyCSS: { targets: browserslistToTargets(['chrome 99', 'edge 99', 'firefox 97', 'safari 15']) },
+        minifySVG: true,
+        ignoreCustomFragments: [
+          /<mjx-spacer[\s\S]*?<\/mjx-spacer>/,
+        ],
+        inlineCustomElements: [
+          // MathJax 容器
+          'mjx-container',
+          'mjx-assistive-mml',
+
+          // Token 元素（叶子节点，包含实际文本）
+          'mi', 'mn', 'mo', 'mtext', 'ms', 'mspace',
+
+          // 布局元素
+          'mrow', 'mfrac', 'msqrt', 'mroot',
+          'mstyle', 'merror', 'mpadded', 'mphantom',
+          'menclose',   // MathML Full，非 Core
+          'mfenced',    // 已废弃，但 MathJax 仍可能生成
+
+          // 上下标元素
+          'msub', 'msup', 'msubsup',
+          'munder', 'mover', 'munderover',
+          'mmultiscripts', 'mprescripts', 'none',
+
+          // 表格元素
+          'mtable', 'mtr', 'mtd',
+
+          // 语义/注释元素
+          'semantics', 'annotation', 'annotation-xml',
+
+          // 动作元素
+          'maction',
+        ],
+      },
+    },
     JSON: true,
     Image: false,
     JavaScript: false,
@@ -134,7 +172,6 @@ export default defineConfig({
     staticImportMetaEnv: true,
     headingIdCompat: true,
     contentIntellisense: true,
-    svgo: true,
   },
   env: {
     schema: {
