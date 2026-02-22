@@ -5,8 +5,7 @@ import { globby } from 'globby';
 import fs from 'fs/promises';
 import path from 'path';
 
-const packageJSON = JSON.parse(await fs.readFile('node_modules/pagefind/package.json', 'utf-8')) as Record<string, unknown>;
-const version = packageJSON.version as string;
+import { version } from '../../node_modules/pagefind/package.json';
 
 interface SearchConfig {
   sourceDir: string;
