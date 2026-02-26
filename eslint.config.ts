@@ -4,8 +4,8 @@ import { fixupPluginRules } from '@eslint/compat';
 import eslint from '@eslint/js';
 import css from '@eslint/css';
 import tseslint from 'typescript-eslint';
-import reactRefresh from 'eslint-plugin-react-refresh';
 import stylistic from '@stylistic/eslint-plugin';
+import solidjs from 'eslint-plugin-solid';
 import astro from 'eslint-plugin-astro';
 import * as mdx from 'eslint-plugin-mdx';
 import * as mdxParser from 'eslint-mdx';
@@ -99,6 +99,8 @@ export default defineConfig(
           maxEOF: 0,
         },
       ],
+      '@stylistic/jsx-pascal-case': ['error'],
+      '@stylistic/jsx-self-closing-comp': ['error'],
       '@typescript-eslint/no-unused-vars': [
         'error',
         {
@@ -115,8 +117,9 @@ export default defineConfig(
     },
   },
   {
-    files: ['**/*.{jsx,tsx,astro}'],
-    extends: [reactRefresh.configs.vite],
+    files: ['**/*.{jsx,tsx}'],
+    // @ts-expect-error eslint-plugin-solid 的 RuleModule 类型未适配 ESLint v10 的 RuleDefinition
+    extends: [solidjs.configs['flat/typescript']],
   },
   {
     files: ['**/*.{js,cjs,mjs,jsx}'],

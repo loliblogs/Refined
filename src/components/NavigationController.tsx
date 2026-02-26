@@ -1,11 +1,11 @@
-import { useEffect } from 'preact/hooks';
+import { onMount, onCleanup } from 'solid-js';
 
 /**
  * 导航控制器 - 仅处理交互逻辑
  * 高亮逻辑已移至 Navigation.astro 静态计算
  */
-const NavigationController = () => {
-  useEffect(() => {
+export default function NavigationController() {
+  onMount(() => {
     const controller = new AbortController();
     const { signal } = controller;
 
@@ -32,12 +32,10 @@ const NavigationController = () => {
     // View Transition 开始前关闭所有面板
     document.addEventListener('astro:before-preparation', closeAllPanels, { signal });
 
-    return () => {
+    onCleanup(() => {
       controller.abort();
-    };
-  }, []);
+    });
+  });
 
   return null;
-};
-
-export default NavigationController;
+}

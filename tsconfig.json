@@ -1,8 +1,8 @@
 {
   "extends": "astro/tsconfigs/strictest",
   "compilerOptions": {
-    /* JSX 配置 - 使用 Preact */
-    "jsxImportSource": "preact",
+    /* JSX 配置 - 使用 SolidJS */
+    "jsxImportSource": "solid-js",
     /* 路径别名 - 简化版 */
     "baseUrl": ".",
     "paths": {

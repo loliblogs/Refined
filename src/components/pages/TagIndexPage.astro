@@ -58,7 +58,7 @@ const pageContext = {
     <div class="min-h-72 rounded-lg border-2 border-hover bg-hover p-4">
       <TagCloud
         tags={tagCloudTags.map(t => [t.name, t.postIds.size, getTagUrl(t.path, collection)])}
-        client:only="preact"
+        client:only="solid-js"
       />
     </div>
   </section>

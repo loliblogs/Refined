@@ -3,12 +3,11 @@
  * 重构目标：拆分 165 行 useEffect → 职责清晰的多个函数
  */
 
-import { useEffect, useRef } from 'preact/hooks';
-import type { RefObject } from 'preact';
+import { onMount, onCleanup } from 'solid-js';
 import argon2Worker from '@/utils/argon2-worker?worker';
 
 import type { EncryptedPayload, Argon2WorkerMessage, Argon2WorkerResponse } from '@/types/encryption';
-import { decryptStore } from '@/stores/state';
+import { setIsDecrypted } from '@/stores/state';
 
 // === 类型定义 ===
 
@@ -197,7 +196,7 @@ function setDecryptUIState(
  * 使用 Argon2 从密码派生 AES-GCM 密钥
  */
 async function deriveKeyFromPassword(
-  workerRef: RefObject<Worker | null>,
+  workerRef: { current: Worker | null },
   password: string,
   salt: Uint8Array,
 ): Promise<CryptoKey> {
@@ -246,7 +245,7 @@ async function deriveKeyFromPassword(
 async function executeDecryption(
   dom: DecryptElements,
   password: string,
-  workerRef: RefObject<Worker | null>,
+  workerRef: { current: Worker | null },
 ): Promise<void> {
   const { contentData, tocData, markdownBody, tocWrapper } = dom;
 
@@ -274,7 +273,7 @@ async function executeDecryption(
   }
 
   // 标记内容已解密（通知其他组件重新初始化）
-  decryptStore.setState({ isDecrypted: true });
+  setIsDecrypted(true);
 }
 
 // === 成功/错误处理层 ===
@@ -282,7 +281,7 @@ async function executeDecryption(
 /**
  * 解密成功：淡出并移除解密面板
  */
-async function handleDecryptSuccess(dom: DecryptElements, workerRef: RefObject<Worker | null>): Promise<void> {
+async function handleDecryptSuccess(dom: DecryptElements, workerRef: { current: Worker | null }): Promise<void> {
   const { decryptPanel } = dom;
 
   decryptPanel.classList.add('motion-safe:update-fast:animate-[fade-out-up_0.5s_ease-out_forwards]');
@@ -322,7 +321,7 @@ function handleEmptyPassword(dom: DecryptElements): void {
  */
 function createDecryptHandler(
   dom: DecryptElements,
-  workerRef: RefObject<Worker | null>,
+  workerRef: { current: Worker | null },
 ) {
   let isDecrypting = false;
 
@@ -353,9 +352,9 @@ function createDecryptHandler(
 // === React 组件 ===
 
 export default function DecryptClient() {
-  const workerRef = useRef<Worker | null>(null);
+  const workerRef: { current: Worker | null } = { current: null };
 
-  useEffect(() => {
+  onMount(() => {
     // 1. 查询 DOM 元素
     const dom = queryDecryptElements();
     if (!dom) return;
@@ -374,12 +373,12 @@ export default function DecryptClient() {
     dom.input.focus();
 
     // 5. 清理函数
-    return () => {
+    onCleanup(() => {
       dom.button.removeEventListener('click', handleDecrypt);
       dom.input.removeEventListener('keydown', handleKeydown);
       workerRef.current?.terminate();
-    };
-  }, []);
+    });
+  });
 
   return null;
 }

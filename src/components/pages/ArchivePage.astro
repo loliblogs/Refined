@@ -101,8 +101,7 @@ const buttonClass = 'rounded-md border border-line px-3 py-1 text-sm transition-
           absolute top-1/2 h-1 w-full -translate-y-1/2 rounded-sm bg-muted
           forced-colors:bg-[CanvasText]
         "
-        >
-        </div>
+        />
 
         {/* 选中范围 */}
         <div class="
@@ -110,8 +109,7 @@ const buttonClass = 'rounded-md border border-line px-3 py-1 text-sm transition-
           -translate-y-1/2 rounded-sm bg-primary
           forced-colors:bg-[Highlight]
         "
-        >
-        </div>
+        />
 
         {/* 起始滑块 */}
         <div
@@ -136,8 +134,7 @@ const buttonClass = 'rounded-md border border-line px-3 py-1 text-sm transition-
           aria-valuenow="0"
           aria-orientation="horizontal"
           tabindex="0"
-        >
-        </div>
+        />
 
         {/* 结束滑块 */}
         <div
@@ -162,8 +159,7 @@ const buttonClass = 'rounded-md border border-line px-3 py-1 text-sm transition-
           aria-valuenow="100"
           aria-orientation="horizontal"
           tabindex="0"
-        >
-        </div>
+        />
       </div>
 
       {/* 范围与统计 */}
@@ -223,7 +219,7 @@ const buttonClass = 'rounded-md border border-line px-3 py-1 text-sm transition-
         <button data-preset="last-6m" class={buttonClass}>最近6月</button>
       </div>
 
-      <div class="mx-2 h-6 border-l border-soft"></div>
+      <div class="mx-2 h-6 border-l border-soft" />
 
       {/* 自定义 */}
       <details class="relative" data-role="custom">
@@ -316,5 +312,5 @@ const buttonClass = 'rounded-md border border-line px-3 py-1 text-sm transition-
   </div>
 
   {/* 客户端脚本（TSX，仅行为） */}
-  <TimelineFilterClient client:only="preact" />
+  <TimelineFilterClient client:only="solid-js" />
 </BaseLayout>

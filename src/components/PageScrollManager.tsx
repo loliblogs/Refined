@@ -1,13 +1,12 @@
-import { useEffect } from 'preact/hooks';
-import type { FunctionComponent as FC } from 'preact';
+import { onMount, onCleanup, createEffect } from 'solid-js';
 import { OverlayScrollbars, ClickScrollPlugin } from 'overlayscrollbars';
 import type { PartialOptions } from 'overlayscrollbars';
-import { decryptStore } from '@/stores/state';
+import { isDecrypted } from '@/stores/state';
 
 OverlayScrollbars.plugin(ClickScrollPlugin);
 
-const PageScrollManager: FC = () => {
-  useEffect(() => {
+export default function PageScrollManager() {
+  onMount(() => {
     const instances = new Map<Element, OverlayScrollbars>();
 
     // 缓存进度条元素
@@ -281,21 +280,15 @@ const PageScrollManager: FC = () => {
       instance.on('scroll', handleScroll);
       instance.on('updated', handleUpdated);
 
-      // 订阅内容解密状态
-      const unsubscribeDecrypt = decryptStore.subscribe(
-        state => state.isDecrypted,
-        (isDecrypted) => {
-          if (isDecrypted) {
-            initTocHighlight();
-            handleScroll();
-          }
-        },
-        { fireImmediately: true },
-      );
+      // 监听解密状态，重新初始化 TOC
+      createEffect(() => {
+        if (isDecrypted()) {
+          initTocHighlight();
+          handleScroll();
+        }
+      });
 
-      return () => {
-        unsubscribeDecrypt();
-      };
+      return null;
     }
 
     // 初始化所有滚动区域
@@ -306,7 +299,7 @@ const PageScrollManager: FC = () => {
     initScrollbar(document.querySelector('[data-authmeta-container]'));
 
     // 清理
-    return () => {
+    onCleanup(() => {
       instances.forEach((instance) => {
         // 清理 TOC 相关资源
         if (OverlayScrollbars.valid(instance)) {
@@ -314,10 +307,8 @@ const PageScrollManager: FC = () => {
         }
       });
       contentCleanup?.();
-    };
-  }, []);
+    });
+  });
 
   return null;
-};
-
-export default PageScrollManager;
+}

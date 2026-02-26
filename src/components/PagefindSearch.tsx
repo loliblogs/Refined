@@ -3,12 +3,11 @@
  * 使用Pagefind自带的UI组件
  */
 
-import { useEffect } from 'preact/hooks';
-import type { FunctionComponent as FC } from 'preact';
+import { onMount, onCleanup } from 'solid-js';
 import { getInstanceManager } from '@pagefind/component-ui';
 
-const PagefindSearch: FC = () => {
-  useEffect(() => {
+export default function PagefindSearch() {
+  onMount(() => {
     // 从URL获取初始查询
     const pathname = window.location.pathname;
     const params = new URLSearchParams(window.location.search);
@@ -37,12 +36,10 @@ const PagefindSearch: FC = () => {
     if (initialQuery) instance.triggerSearch(initialQuery);
     instance.on('search', handleInput);
 
-    return () => {
+    onCleanup(() => {
       manager.removeInstance('default');
-    };
-  }, []);
+    });
+  });
 
   return null;
-};
-
-export default PagefindSearch;
+}

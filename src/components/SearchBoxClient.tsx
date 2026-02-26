@@ -3,13 +3,12 @@
  * 不渲染DOM，只增强已存在的静态HTML
  */
 
-import { useEffect, useState, useRef, useCallback } from 'preact/hooks';
-import type { FunctionComponent as FC } from 'preact';
+import { createSignal, createEffect, onMount, onCleanup, untrack } from 'solid-js';
 
-import { decryptStore } from '@/stores/state';
+import { isDecrypted } from '@/stores/state';
 
 interface SearchBoxClientProps {
-  searchUrl?: string;
+  searchUrl: string;
 }
 
 interface LocalMatch {
@@ -21,35 +20,31 @@ interface LocalMatch {
 
 type Timeout = ReturnType<typeof setTimeout>;
 
-const SearchBoxClient: FC<SearchBoxClientProps> = ({
-  searchUrl = '/search',
-}) => {
-  const [keyword, setKeyword] = useState('');
-  const [showDropdown, setShowDropdown] = useState(false);
-  const [localResults, setLocalResults] = useState<LocalMatch[]>([]);
-  const [isSearching, setIsSearching] = useState(false);
-  const [selectedIndex, setSelectedIndex] = useState(0);
+export default function SearchBoxClient(props: SearchBoxClientProps) {
+  // 响应式状态
+  const [keyword, setKeyword] = createSignal('');
+  const [showDropdown, setShowDropdown] = createSignal(false);
+  const [localResults, setLocalResults] = createSignal<LocalMatch[]>([]);
+  const [isSearching, setIsSearching] = createSignal(false);
+  const [selectedIndex, setSelectedIndex] = createSignal(0);
 
-  const searchTimeoutRef = useRef<Timeout | null>(null);
-  const highlightTimeoutRef = useRef<Timeout | null>(null);
-  const lastHighlightRef = useRef<HTMLElement | null>(null);
-  const inputRef = useRef<HTMLInputElement | null>(null);
-  const dropdownRef = useRef<HTMLElement | null>(null);
-  const sidebarToggleRef = useRef<HTMLInputElement | null>(null);
-  const contentRef = useRef<Element | null>(null);
-  const resultsWrapperRef = useRef<Element | null>(null);
-  const globalSearchRef = useRef<HTMLAnchorElement | null>(null);
-  const keywordSpanRef = useRef<Element | null>(null);
-  const containerRef = useRef<Element | null>(null);
-  const lastSelectedRef = useRef<HTMLElement | null>(null);
-
-  // 用 ref 存储最新状态，避免事件监听器重复绑定
-  const stateRef = useRef({ showDropdown, localResults, selectedIndex, keyword });
+  // DOM 缓存（非响应式，mount 时赋值一次）
+  let searchTimeout: Timeout | null = null;
+  let highlightTimeout: Timeout | null = null;
+  let lastHighlight: HTMLElement | null = null;
+  let inputEl: HTMLInputElement | null = null;
+  let dropdownEl: HTMLElement | null = null;
+  let sidebarToggle: HTMLInputElement | null = null;
+  let contentEl: Element | null = null;
+  let resultsWrapper: Element | null = null;
+  let globalSearchEl: HTMLAnchorElement | null = null;
+  let keywordSpanEl: Element | null = null;
+  let containerEl: Element | null = null;
+  let lastSelected: HTMLElement | null = null;
 
   // 搜索文章内容 - 优化版本，使用正则表达式避免重复toLowerCase
   const findDOMMatches = (searchKeyword: string): LocalMatch[] => {
-    const content = contentRef.current;
-    if (!content || !searchKeyword.trim()) return [];
+    if (!contentEl || !searchKeyword.trim()) return [];
 
     const matches: LocalMatch[] = [];
     const keywordLen = searchKeyword.length;
@@ -60,7 +55,7 @@ const SearchBoxClient: FC<SearchBoxClientProps> = ({
 
     // 优化的TreeWalker过滤器 - 跳过太短的文本节点
     const walker = document.createTreeWalker(
-      content,
+      contentEl,
       NodeFilter.SHOW_TEXT,
       (node: Node) => {
         const parent = node.parentElement;
@@ -117,43 +112,43 @@ const SearchBoxClient: FC<SearchBoxClientProps> = ({
 
   // 高亮元素
   const highlightElement = (element: HTMLElement, duration = 3000) => {
-    if (lastHighlightRef.current) {
-      lastHighlightRef.current.style.outline = '';
-      lastHighlightRef.current.style.outlineOffset = '';
+    if (lastHighlight) {
+      lastHighlight.style.outline = '';
+      lastHighlight.style.outlineOffset = '';
     }
-    if (highlightTimeoutRef.current !== null) {
-      clearTimeout(highlightTimeoutRef.current);
+    if (highlightTimeout !== null) {
+      clearTimeout(highlightTimeout);
     }
 
     element.style.outline = '0.125rem solid var(--color-primary)';
     element.style.outlineOffset = '0.125rem';
-    lastHighlightRef.current = element;
+    lastHighlight = element;
 
-    highlightTimeoutRef.current = setTimeout(() => {
-      if (lastHighlightRef.current === element) {
+    highlightTimeout = setTimeout(() => {
+      if (lastHighlight === element) {
         element.style.outline = '';
         element.style.outlineOffset = '';
-        lastHighlightRef.current = null;
+        lastHighlight = null;
       }
     }, duration);
   };
 
   // 清空搜索状态和输入框
-  const clearSearch = useCallback(() => {
+  const clearSearch = () => {
     setKeyword('');
     setShowDropdown(false);
     setLocalResults([]);
     setSelectedIndex(0);
-    if (inputRef.current) {
-      inputRef.current.value = '';
+    if (inputEl) {
+      inputEl.value = '';
     }
-  }, []);
+  };
 
   // 滚动到结果
   const scrollToResult = (result: LocalMatch) => {
     // 关闭移动端sidebar
-    if (sidebarToggleRef.current) {
-      sidebarToggleRef.current.checked = false;
+    if (sidebarToggle) {
+      sidebarToggle.checked = false;
     }
 
     result.element.scrollIntoView({
@@ -166,18 +161,16 @@ const SearchBoxClient: FC<SearchBoxClientProps> = ({
 
   // 只更新选中样式，不重建 DOM（只操作 last 和 current 两个元素）
   const updateSelectedStyles = (idx: number) => {
-    const contentWrapper = resultsWrapperRef.current;
-    const globalSearch = globalSearchRef.current;
-    if (!contentWrapper) return;
+    if (!resultsWrapper) return;
 
     // 清除上一个选中项的样式（检查元素是否还在 DOM 中）
-    if (lastSelectedRef.current?.isConnected) {
-      lastSelectedRef.current.classList.remove(
+    if (lastSelected?.isConnected) {
+      lastSelected.classList.remove(
         'bg-muted/20',
         'forced-colors:bg-[Highlight]',
         'forced-colors:text-[HighlightText]',
       );
-      lastSelectedRef.current.classList.add(
+      lastSelected.classList.add(
         'hover:bg-muted/10',
         'active:bg-muted/20',
         'forced-colors:hover:bg-[Highlight]',
@@ -186,19 +179,19 @@ const SearchBoxClient: FC<SearchBoxClientProps> = ({
         'forced-colors:active:text-[HighlightText]',
       );
       // forced-color-adjust-none 下需要手动恢复基础文字色
-      if (lastSelectedRef.current === globalSearch) {
-        lastSelectedRef.current.classList.add('forced-colors:text-[LinkText]');
+      if (lastSelected === globalSearchEl) {
+        lastSelected.classList.add('forced-colors:text-[LinkText]');
       } else {
-        lastSelectedRef.current.classList.add('forced-colors:text-[ButtonText]');
+        lastSelected.classList.add('forced-colors:text-[ButtonText]');
       }
     }
 
     // 找到新选中的元素
     let current: HTMLElement | null = null;
-    if (idx === 0 && globalSearch && !globalSearch.classList.contains('hidden')) {
-      current = globalSearch;
+    if (idx === 0 && globalSearchEl && !globalSearchEl.classList.contains('hidden')) {
+      current = globalSearchEl;
     } else if (idx > 0) {
-      current = contentWrapper.querySelector(`[data-index="${idx}"]`);
+      current = resultsWrapper.querySelector(`[data-index="${idx}"]`);
     }
 
     // 应用选中样式（forced-colors 下用 Highlight/HighlightText 反色替代不可见的 bg）
@@ -219,28 +212,28 @@ const SearchBoxClient: FC<SearchBoxClientProps> = ({
         'forced-colors:bg-[Highlight]',
         'forced-colors:text-[HighlightText]',
       );
-      lastSelectedRef.current = current;
+      lastSelected = current;
     } else {
-      lastSelectedRef.current = null;
+      lastSelected = null;
     }
   };
 
   // 重建搜索结果 DOM（仅当内容变化时调用）
   const updateResultsDOM = () => {
-    const contentWrapper = resultsWrapperRef.current;
-    const globalSearch = globalSearchRef.current;
-    const keywordSpan = keywordSpanRef.current;
+    if (!resultsWrapper) return;
 
-    if (!contentWrapper) return;
+    const kw = keyword();
+    const searching = isSearching();
+    const results = localResults();
 
     // 更新全站搜索链接
-    if (globalSearch && keywordSpan && keyword.trim()) {
-      globalSearch.href = `${searchUrl}?q=${encodeURIComponent(keyword)}`;
-      keywordSpan.textContent = `在全站搜索 "${keyword}"`;
+    if (globalSearchEl && keywordSpanEl && kw.trim()) {
+      globalSearchEl.href = `${props.searchUrl}?q=${encodeURIComponent(kw)}`;
+      keywordSpanEl.textContent = `在全站搜索 "${kw}"`;
 
       // 移除hidden并添加flex布局
-      globalSearch.classList.remove('hidden');
-      globalSearch.classList.add(
+      globalSearchEl.classList.remove('hidden');
+      globalSearchEl.classList.add(
         'flex',
         'hover:bg-muted/10',
         'active:bg-muted/20',
@@ -252,30 +245,30 @@ const SearchBoxClient: FC<SearchBoxClientProps> = ({
       );
 
       // 绑定鼠标悬停事件
-      globalSearch.onmouseenter = () => {
+      globalSearchEl.onmouseenter = () => {
         setSelectedIndex(0);
       };
-    } else if (globalSearch) {
+    } else if (globalSearchEl) {
       // 隐藏时添加hidden并移除flex
-      globalSearch.classList.add('hidden');
-      globalSearch.classList.remove('flex');
+      globalSearchEl.classList.add('hidden');
+      globalSearchEl.classList.remove('flex');
     }
 
     // 重置选中状态
-    lastSelectedRef.current = null;
+    lastSelected = null;
 
     // 直接操作wrapper，不管OverlayScrollbars的结构
-    contentWrapper.replaceChildren();
+    resultsWrapper.replaceChildren();
 
-    if (isSearching) {
+    if (searching) {
       const loadingDiv = document.createElement('div');
       loadingDiv.className = 'px-4 py-8 text-center text-muted';
       loadingDiv.textContent = '搜索中...';
-      contentWrapper.replaceChildren(loadingDiv);
-    } else if (localResults.length > 0) {
+      resultsWrapper.replaceChildren(loadingDiv);
+    } else if (results.length > 0) {
       const fragment = document.createDocumentFragment();
 
-      localResults.forEach((result, index) => {
+      results.forEach((result, index) => {
         const button = document.createElement('button');
         button.type = 'button';
         button.setAttribute('data-index', String(index + 1));
@@ -315,16 +308,16 @@ const SearchBoxClient: FC<SearchBoxClientProps> = ({
         fragment.appendChild(button);
       });
 
-      contentWrapper.replaceChildren(fragment);
-    } else if (keyword.trim()) {
+      resultsWrapper.replaceChildren(fragment);
+    } else if (kw.trim()) {
       const noResultDiv = document.createElement('div');
       noResultDiv.className = 'px-4 py-8 text-center text-muted';
       noResultDiv.textContent = '本文无匹配内容';
-      contentWrapper.replaceChildren(noResultDiv);
+      resultsWrapper.replaceChildren(noResultDiv);
     }
 
-    // DOM 重建后立即应用选中样式（无论是否有本地结果，全局搜索项都需要响应）
-    updateSelectedStyles(selectedIndex);
+    // DOM 重建后立即应用选中样式（untrack 避免 selectedIndex 成为本 effect 的依赖）
+    updateSelectedStyles(untrack(selectedIndex));
   };
 
   // 处理输入变化
@@ -332,8 +325,8 @@ const SearchBoxClient: FC<SearchBoxClientProps> = ({
     setKeyword(value);
 
     // 清除之前的定时器
-    if (searchTimeoutRef.current !== null) {
-      clearTimeout(searchTimeoutRef.current);
+    if (searchTimeout !== null) {
+      clearTimeout(searchTimeout);
     }
 
     if (!value.trim()) {
@@ -345,7 +338,7 @@ const SearchBoxClient: FC<SearchBoxClientProps> = ({
 
     // 防抖搜索
     setIsSearching(true);
-    searchTimeoutRef.current = setTimeout(() => {
+    searchTimeout = setTimeout(() => {
       const results = findDOMMatches(value);
       setLocalResults(results);
       setShowDropdown(true);  // 搜索完成后才显示下拉框
@@ -354,49 +347,24 @@ const SearchBoxClient: FC<SearchBoxClientProps> = ({
     }, 200);
   };
 
-  // 初始化DOM引用
-  useEffect(() => {
+  // === 初始化：DOM 引用 + 事件绑定 + 订阅 ===
+  onMount(() => {
     const input = document.querySelector<HTMLInputElement>('[data-search-input]');
     const dropdown = document.querySelector<HTMLElement>('[data-search-dropdown]');
 
     if (!input || !dropdown) return;
 
-    inputRef.current = input;
-    dropdownRef.current = dropdown;
-    sidebarToggleRef.current = document.querySelector<HTMLInputElement>('#--sidebar-toggle');
+    inputEl = input;
+    dropdownEl = dropdown;
+    sidebarToggle = document.querySelector<HTMLInputElement>('#--sidebar-toggle');
     // 优先使用 pagefind 标记的内容区域，避免搜到标题、侧边栏等
-    contentRef.current = document.querySelector('[data-pagefind-body]')
+    contentEl = document.querySelector('[data-pagefind-body]')
       ?? document.querySelector('[data-content]');
     // 缓存搜索结果相关 DOM
-    resultsWrapperRef.current = document.querySelector('[data-search-results-wrapper]');
-    globalSearchRef.current = document.querySelector('[data-global-search]');
-    keywordSpanRef.current = document.querySelector('[data-search-keyword]');
-    containerRef.current = document.querySelector('[data-search-container]');
-  }, []);
-
-  // 监听解密状态：解密后清空搜索并刷新内容引用
-  useEffect(() => {
-    return decryptStore.subscribe(
-      state => state.isDecrypted,
-      (isDecrypted) => {
-        if (isDecrypted) {
-          clearSearch();
-          // 解密后文章主体会添加 data-pagefind-body，重新获取引用
-          contentRef.current = document.querySelector('[data-pagefind-body]');
-        }
-      },
-    );
-  }, [clearSearch]);
-
-  // 同步状态到 ref，让事件处理器能读到最新值
-  useEffect(() => {
-    stateRef.current = { showDropdown, localResults, selectedIndex, keyword };
-  }, [showDropdown, localResults, selectedIndex, keyword]);
-
-  // 绑定事件处理器 - 只在 mount 时绑定一次
-  useEffect(() => {
-    const input = inputRef.current;
-    if (!input) return;
+    resultsWrapper = document.querySelector('[data-search-results-wrapper]');
+    globalSearchEl = document.querySelector('[data-global-search]');
+    keywordSpanEl = document.querySelector('[data-search-keyword]');
+    containerEl = document.querySelector('[data-search-container]');
 
     // 输入事件处理
     const handleInputEvent = (e: Event) => {
@@ -404,20 +372,20 @@ const SearchBoxClient: FC<SearchBoxClientProps> = ({
       handleInput(value);
     };
 
-    // 键盘事件处理 - 通过 stateRef 访问最新状态
+    // 键盘事件处理 - signal getter 没有闭包陷阱，不需要 stateRef 桥接
     const handleKeyDownEvent = (e: KeyboardEvent) => {
       // Escape 始终可用：清空并 blur（不管下拉框是否显示）
       if (e.key === 'Escape') {
         e.stopPropagation();
         clearSearch();
-        inputRef.current?.blur();
+        inputEl?.blur();
         return;
       }
 
       // 以下快捷键仅在下拉框显示时生效
-      const { showDropdown: show, localResults: results, selectedIndex: idx, keyword: kw } = stateRef.current;
-      if (!show) return;
+      if (!showDropdown()) return;
 
+      const results = localResults();
       const totalItems = results.length + 1; // +1 for global search
 
       switch (e.key) {
@@ -433,10 +401,10 @@ const SearchBoxClient: FC<SearchBoxClientProps> = ({
 
         case 'Enter':
           e.preventDefault();
-          if (idx === 0) {
-            window.location.href = `${searchUrl}?q=${encodeURIComponent(kw)}`;
+          if (selectedIndex() === 0) {
+            window.location.href = `${props.searchUrl}?q=${encodeURIComponent(keyword())}`;
           } else {
-            const targetResult = results[idx - 1];
+            const targetResult = results[selectedIndex() - 1];
             if (targetResult) {
               scrollToResult(targetResult);
             }
@@ -445,10 +413,9 @@ const SearchBoxClient: FC<SearchBoxClientProps> = ({
       }
     };
 
-    // 点击外部关闭 - 使用缓存的 containerRef
+    // 点击外部关闭
     const handleClickOutside = (e: MouseEvent) => {
-      const container = containerRef.current;
-      if (container && !container.contains(e.target as Node)) {
+      if (containerEl && !containerEl.contains(e.target as Node)) {
         setShowDropdown(false);
         setSelectedIndex(0);
       }
@@ -480,63 +447,68 @@ const SearchBoxClient: FC<SearchBoxClientProps> = ({
     document.addEventListener('mousedown', handleClickOutside);
     document.addEventListener('keydown', handleGlobalKeyDown);
 
-    return () => {
+    // 监听解密状态：解密后清空搜索并刷新内容引用
+    createEffect(() => {
+      if (isDecrypted()) {
+        clearSearch();
+        // 解密后文章主体会添加 data-pagefind-body，重新获取引用
+        contentEl = document.querySelector('[data-pagefind-body]');
+      }
+    });
+
+    // 清理
+    onCleanup(() => {
       input.removeEventListener('input', handleInputEvent);
       input.removeEventListener('keydown', handleKeyDownEvent);
       document.removeEventListener('mousedown', handleClickOutside);
       document.removeEventListener('keydown', handleGlobalKeyDown);
-    };
-  }, [searchUrl]);
+      if (searchTimeout !== null) {
+        clearTimeout(searchTimeout);
+      }
+      if (highlightTimeout !== null) {
+        clearTimeout(highlightTimeout);
+      }
+      if (lastHighlight) {
+        lastHighlight.style.outline = '';
+        lastHighlight.style.outlineOffset = '';
+      }
+    });
+  });
+
+  // === 响应式 effects ===
 
   // 更新下拉框显示状态
-  useEffect(() => {
-    if (dropdownRef.current) {
-      if (showDropdown && keyword.trim()) {
-        dropdownRef.current.classList.remove('hidden');
+  createEffect(() => {
+    if (dropdownEl) {
+      if (showDropdown() && keyword().trim()) {
+        dropdownEl.classList.remove('hidden');
       } else {
-        dropdownRef.current.classList.add('hidden');
+        dropdownEl.classList.add('hidden');
       }
     }
-  }, [showDropdown, keyword]);
+  });
 
   // 更新搜索结果 DOM（内容变化时重建）
-  useEffect(() => {
+  createEffect(() => {
     updateResultsDOM();
-  }, [localResults, isSearching, keyword, searchUrl]);
+  });
 
   // 更新选中样式（只操作两个元素，不重建 DOM）
-  useEffect(() => {
-    updateSelectedStyles(selectedIndex);
-  }, [selectedIndex]);
+  createEffect(() => {
+    updateSelectedStyles(selectedIndex());
+  });
 
   // 选中项滚动
-  useEffect(() => {
-    if (!showDropdown || !dropdownRef.current) return;
+  createEffect(() => {
+    const idx = selectedIndex();
+    if (!showDropdown() || !dropdownEl) return;
 
     // 全局搜索固定在顶部不滚动，选中它时滚动第一个结果项到顶部
-    const targetIndex = selectedIndex === 0 ? 1 : selectedIndex;
-    const element = dropdownRef.current.querySelector(`[data-index="${targetIndex}"]`);
+    const targetIndex = idx === 0 ? 1 : idx;
+    const element = dropdownEl.querySelector(`[data-index="${targetIndex}"]`);
     element?.scrollIntoView({ block: 'nearest' });
-  }, [selectedIndex, showDropdown]);
-
-  // 清理
-  useEffect(() => {
-    return () => {
-      if (searchTimeoutRef.current !== null) {
-        clearTimeout(searchTimeoutRef.current);
-      }
-      if (highlightTimeoutRef.current !== null) {
-        clearTimeout(highlightTimeoutRef.current);
-      }
-      if (lastHighlightRef.current) {
-        lastHighlightRef.current.style.outline = '';
-        lastHighlightRef.current.style.outlineOffset = '';
-      }
-    };
-  }, []);
+  });
 
   // 不渲染任何内容
   return null;
-};
-
-export default SearchBoxClient;
+}

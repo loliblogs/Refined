@@ -1,4 +1,4 @@
-import { useEffect } from 'preact/hooks';
+import { onMount, onCleanup } from 'solid-js';
 import { formatDate } from '@/utils/date-helpers';
 
 // ============================================================================
@@ -525,7 +525,7 @@ function setupCustomPanelClose(elements: TimelineElements, signal: AbortSignal):
 // ============================================================================
 
 export default function TimelineFilterClient() {
-  useEffect(() => {
+  onMount(() => {
     // ------------------------------------------------------------------------
     // 1. DOM 查询与验证
     // ------------------------------------------------------------------------
@@ -586,11 +586,11 @@ export default function TimelineFilterClient() {
     // 5. 清理
     // ------------------------------------------------------------------------
 
-    return () => {
+    onCleanup(() => {
       controller.abort();
       if (rafId) cancelAnimationFrame(rafId);
-    };
-  }, []);
+    });
+  });
 
   return null;
 }

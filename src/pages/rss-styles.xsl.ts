@@ -3,14 +3,14 @@ import { experimental_AstroContainer } from 'astro/container';
 import type { AstroComponentFactory } from 'astro/runtime/server/index.js';
 import { loadRenderers } from 'astro:container';
 
-import { getContainerRenderer as preactContainerRenderer } from '@astrojs/preact';
+import { getContainerRenderer as solidjsContainerRenderer } from '@astrojs/solid-js';
 import * as cheerio from 'cheerio';
 
 import RSSLayout from '@/layouts/RSSLayout.astro';
 
 export const GET: APIRoute = async (_context: APIContext) => {
   // 渲染 Astro 组件
-  const renderers = await loadRenderers([preactContainerRenderer()]);
+  const renderers = await loadRenderers([solidjsContainerRenderer()]);
   const container = await experimental_AstroContainer.create({ renderers });
 
   const html = await container.renderToString(RSSLayout as AstroComponentFactory, {

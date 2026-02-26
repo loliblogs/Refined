@@ -1,5 +1,5 @@
-import { useEffect, useRef } from 'preact/hooks';
-import type { FunctionComponent as FC } from 'preact';
+import { onMount, onCleanup } from 'solid-js';
+import type { Component } from 'solid-js';
 import chroma from 'chroma-js';
 import WordCloud from 'wordcloud';
 
@@ -7,14 +7,8 @@ export interface Props {
   tags: [string, number, string][];
 }
 
-const TagCloud: FC<Props> = ({ tags }) => {
-  const cloudRef = useRef<HTMLDivElement>(null);
-
-  const minWeight = Math.max(Math.min(...tags.map(tag => tag[1])), 1);
-  const maxWeight = Math.max(...tags.map(tag => tag[1]), 1);
-
-  // 边界保护：所有权重相同时使用默认factor
-  const factor = minWeight === maxWeight ? 1 : 48 / Math.log(maxWeight / minWeight);
+const TagCloud: Component<Props> = (props) => {
+  let cloudRef: HTMLDivElement | undefined;
 
   // OKLCH颜色生成函数
   const generateAdaptiveColor = () => {
@@ -29,12 +23,16 @@ const TagCloud: FC<Props> = ({ tags }) => {
   };
 
   const renderWordCloud = () => {
-    const cloudContainer = cloudRef.current;
-    if (!cloudContainer) return;
+    if (!cloudRef) return;
+
+    const minWeight = Math.max(Math.min(...props.tags.map(tag => tag[1])), 1);
+    const maxWeight = Math.max(...props.tags.map(tag => tag[1]), 1);
+    // 边界保护：所有权重相同时使用默认factor
+    const factor = minWeight === maxWeight ? 1 : 48 / Math.log(maxWeight / minWeight);
 
     // 配置选项
     const options: WordCloud.Options = {
-      list: tags.filter(tag => tag[1] > 0),
+      list: props.tags.filter(tag => tag[1] > 0),
       gridSize: 8,
       weightFactor: (weight: number) => {
         if (weight === 0) return 24;
@@ -54,7 +52,7 @@ const TagCloud: FC<Props> = ({ tags }) => {
     };
 
     // 调用WordCloud - 传入div而不是canvas，会自动使用span元素渲染
-    WordCloud(cloudContainer, options);
+    WordCloud(cloudRef, options);
   };
 
   const handleResize = () => {
@@ -64,14 +62,14 @@ const TagCloud: FC<Props> = ({ tags }) => {
   };
 
   const handleMedia = () => {
-    const spans = cloudRef.current?.querySelectorAll<HTMLSpanElement>('span');
+    const spans = cloudRef?.querySelectorAll<HTMLSpanElement>('span');
     spans?.forEach((span) => {
       span.style.color = generateAdaptiveColor();
     });
   };
 
-  useEffect(() => {
-    if (!cloudRef.current) return;
+  onMount(() => {
+    if (!cloudRef) return;
 
     let timeoutId = 0;
     const observer = new ResizeObserver(() => {
@@ -79,23 +77,23 @@ const TagCloud: FC<Props> = ({ tags }) => {
       // 首次 timeoutId 为 0 立即执行，后续 debounce 200ms
       timeoutId = window.setTimeout(handleResize, timeoutId ? 200 : 0);
     });
-    observer.observe(cloudRef.current); // 监听大小变化
+    observer.observe(cloudRef); // 监听大小变化
 
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     mediaQuery.addEventListener('change', handleMedia); // 监听主题变化并重绘
 
-    return () => {
+    onCleanup(() => {
       clearTimeout(timeoutId);
       observer.disconnect();
       mediaQuery.removeEventListener('change', handleMedia);
       WordCloud.stop();
-    };
-  }, []);
+    });
+  });
 
   return (
     <div
-      ref={cloudRef}
-      className="
+      ref={el => (cloudRef = el)}
+      class="
         relative size-full min-h-64 forced-color-adjust-none
         forced-colors:*:text-[LinkText]!
         forced-colors:*:hover:text-[Highlight]!
