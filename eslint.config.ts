@@ -1,5 +1,4 @@
 import { defineConfig } from 'eslint/config';
-import { fixupPluginRules } from '@eslint/compat';
 
 import eslint from '@eslint/js';
 import css from '@eslint/css';
@@ -53,7 +52,7 @@ export default defineConfig(
       },
     },
     plugins: {
-      mdx: fixupPluginRules(mdx),
+      mdx,
     },
     // 使用 createRemarkProcessor 并确保配置一致
     processor: mdx.createRemarkProcessor({

@@ -3,6 +3,7 @@
   "compilerOptions": {
     /* JSX 配置 - 使用 SolidJS */
     "jsxImportSource": "solid-js",
+    "skipLibCheck": false,
     /* 路径别名 - 简化版 */
     "baseUrl": ".",
     "paths": {
