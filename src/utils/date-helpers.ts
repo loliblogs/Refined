@@ -18,9 +18,9 @@ export function formatDate(date: Date | string | number): string {
     return '';
   }
 
-  const year = d.getFullYear();
-  const month = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
+  const year = d.getUTCFullYear();
+  const month = String(d.getUTCMonth() + 1).padStart(2, '0');
+  const day = String(d.getUTCDate()).padStart(2, '0');
 
   return `${year}-${month}-${day}`;
 }
@@ -32,7 +32,7 @@ export function formatDate(date: Date | string | number): string {
  * @returns MM/DD 格式的字符串
  */
 export function formatMonthDay(date: Date): string {
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+  const day = String(date.getUTCDate()).padStart(2, '0');
   return `${month}/${day}`;
 }

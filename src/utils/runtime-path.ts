@@ -2,7 +2,7 @@
  * 获取构建产物中 runtime chunk 的路径
  *
  * 配合 astro.config.ts 中的 manualChunks 配置使用：
- * - manualChunks 将 preact 运行时、zustand 等核心依赖合并到单一 runtime.xxx.js
+ * - manualChunks 将 solid-js 运行时等核心依赖合并到单一 runtime.xxx.js
  * - 本模块在 SSG 构建时读取生成的文件名，供 BaseLayout 添加 modulepreload
  * - 预加载 runtime chunk 可以减少客户端 JS 的瀑布流式加载深度
  *

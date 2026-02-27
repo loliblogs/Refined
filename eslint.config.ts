@@ -46,9 +46,6 @@ export default defineConfig(
     files: ['**/*.{md,mdx}'],
     languageOptions: {
       parser: mdxParser,
-      globals: {
-        React: false,
-      },
       // parserOptions 是关键，会传递给 performSyncWork
       parserOptions: {
         remarkConfigPath: 'package.json',
@@ -68,7 +65,6 @@ export default defineConfig(
       'mdx/remark': 'error',
       'no-unused-expressions': 'error',
       'no-unused-vars': 'off',
-      'react/react-in-jsx-scope': 'off',
     },
   },
   {
@@ -99,8 +95,8 @@ export default defineConfig(
           maxEOF: 0,
         },
       ],
-      '@stylistic/jsx-pascal-case': ['error'],
-      '@stylistic/jsx-self-closing-comp': ['error'],
+      '@stylistic/jsx-pascal-case': 'error',
+      '@stylistic/jsx-self-closing-comp': 'error',
       '@typescript-eslint/no-unused-vars': [
         'error',
         {

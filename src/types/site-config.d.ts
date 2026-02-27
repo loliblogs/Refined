@@ -5,7 +5,7 @@
  * 通过类型系统强制路径格式，避免运行时检查
  */
 
-import type { JSX } from 'preact';
+import type { JSX } from 'solid-js';
 import type { TransitionAnimationValue } from 'astro';
 
 /**
