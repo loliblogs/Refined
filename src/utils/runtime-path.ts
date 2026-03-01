@@ -33,7 +33,7 @@ export default async function getRuntimePath(): Promise<string | null> {
   if (cachedPath !== undefined) return cachedPath;
 
   const files = await readdir(astroDir);
-  const runtimeFileName = files.find(f => /^runtime\.[a-zA-Z0-9]+\.js$/.test(f));
+  const runtimeFileName = files.find(f => /^runtime\.[a-zA-Z0-9-_]+\.js$/.test(f));
 
   cachedPath = runtimeFileName ? `/_astro/${runtimeFileName}` : null;
   return cachedPath;

@@ -32,9 +32,6 @@ export default defineConfig({
   trailingSlash: 'never',
   output: 'static',
   cacheDir: '.cache',
-  prefetch: {
-    prefetchAll: true,
-  },
   integrations: [skipTreeshake(), postlinkIntegration(), expressiveCode(), solidJs(), mdx({ optimize: true }), db(), playformCompress({
     CSS: false,
     HTML: {
@@ -95,7 +92,6 @@ export default defineConfig({
           manualChunks(id) {
             const runtimePatterns = [
               'node_modules/solid-js',
-              '@astrojs/solid-js/dist/client',
               'src/stores/state',
             ];
 

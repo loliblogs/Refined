@@ -16,6 +16,9 @@ import 'overlayscrollbars/overlayscrollbars.css';
 import '@/styles/global.css';
 import 'medium-zoom-next/dist/style.css';
 import noscriptCssUrl from '@/styles/noscript.css?url';
+import mathjaxCss from '@/styles/mathjax.css?inline';
+import jbMonoNormalUrl from '@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2?url';
+import jbMonoItalicUrl from '@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-italic.woff2?url';
 
 interface Props {
   title?: string;
@@ -55,6 +58,12 @@ const runtimePath = await getRuntimePath();
     <meta name="keywords" content={config.keywords} />
     <meta name="description" content={pageDescription} />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+    {/* 字体预加载 - HTML parse 阶段立即下载，与 CSS bundle 并行 */}
+    <link rel="preload" href={jbMonoNormalUrl} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={jbMonoItalicUrl} as="font" type="font/woff2" crossorigin />
+    {/* MathJax @font-face 内联 - 配合 rehype 的 inline style 让浏览器在 parse 阶段匹配字体 */}
+    <style set:html={mathjaxCss} />
 
     <link rel="dns-prefetch" href="https://giscus.app" />
     <link rel="preconnect" href="https://giscus.app" crossorigin="anonymous" />

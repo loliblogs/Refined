@@ -17,7 +17,7 @@ export default function Comments(props: { term?: string }) {
   });
 
   return (
-    <div data-comments-section class="min-h-80">
+    <div class="min-h-80">
       <giscus-widget
         repo="loliblogs/discussion"
         repoId="R_kgDOPgBpfA"

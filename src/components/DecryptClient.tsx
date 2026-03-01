@@ -4,7 +4,7 @@
  */
 
 import { onMount, onCleanup } from 'solid-js';
-import argon2Worker from '@/utils/argon2-worker?worker';
+import argon2Worker from '@/utils/argon2-worker?worker&inline';
 
 import type { EncryptedPayload, Argon2WorkerMessage, Argon2WorkerResponse } from '@/types/encryption';
 import { setIsDecrypted } from '@/stores/state';
