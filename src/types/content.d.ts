@@ -79,6 +79,16 @@ export type Category = TaxonomyNode;
 export type Tag = TaxonomyNode;
 
 /**
+ * OG Article 元数据 - 仅文章页传入，BaseLayout 据此决定 og:type
+ */
+export interface OgArticle {
+  publishedTime: Date;
+  modifiedTime: Date | undefined;
+  tags: string[];
+  section: string | undefined;
+}
+
+/**
  * 页面上下文 - 只包含必要信息
  */
 export interface PageContext {

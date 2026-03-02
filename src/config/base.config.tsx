@@ -19,6 +19,7 @@ import avatarImg from '@/assets/avatar.jpg';
 import faviconUrl from '@/assets/favicon-32x32.png?url&no-inline';
 import faviconUrl192 from '@/assets/favicon-192x192.png?url&no-inline';
 import faviconUrl180 from '@/assets/favicon-180x180.png?url&no-inline';
+import ogImage from '@/assets/og-cover.jpg?url&no-inline';
 import type { SiteConfig } from '@/types/site-config';
 
 /**
@@ -147,6 +148,7 @@ export const postConfig: SiteConfig = {
       <link rel="apple-touch-icon" href={faviconUrl180} sizes="180x180" />
     </>
   ),
+  ogImage,                             // og:image path
 
   header: () => (
     <>
@@ -232,6 +234,7 @@ export const oiConfig: SiteConfig = {
   animationNew: postConfig.animationNew,
   // 网站图标（可以使用相同或不同的图标）
   favicon: postConfig.favicon,
+  ogImage: postConfig.ogImage,
 
   header: postConfig.header,
   footer: postConfig.footer,

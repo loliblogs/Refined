@@ -57,6 +57,12 @@ const pageContext = {
   title={post.title}
   description={post.description}
   pageContext={pageContext}
+  ogArticle={{
+    publishedTime: post.date,
+    modifiedTime: post.updated,
+    tags: post.tags,
+    section: post.category[0],
+  }}
 >
   <article>
     <header class="mb-8 border-b border-line pb-4">

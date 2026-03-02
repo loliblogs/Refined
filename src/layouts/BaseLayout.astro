@@ -10,7 +10,7 @@ import MediumZoom from '@/components/MediumZoom';
 import { getRssUrl, getSitemapIndexUrl, getSearchBundlePath } from '@/utils/collection-paths';
 import getRuntimePath from '@/utils/runtime-path';
 
-import type { PageContext } from '@/types/content';
+import type { OgArticle, PageContext } from '@/types/content';
 
 import 'overlayscrollbars/overlayscrollbars.css';
 import '@/styles/global.css';
@@ -24,12 +24,14 @@ interface Props {
   title?: string;
   description?: string | undefined;
   pageContext: PageContext;
+  ogArticle?: OgArticle;
 }
 
 const {
   title: pageTitle,
   description: propDescription,
   pageContext,
+  ogArticle,
 } = Astro.props;
 
 // 获取全局配置 - 统一配置源
@@ -81,6 +83,21 @@ const runtimePath = await getRuntimePath();
     {pageContext.noindex
       ? <meta name="robots" content="noindex" />
       : <link rel="canonical" href={new URL(pageContext.path, Astro.site).toString()} />}
+
+    {/* Open Graph */}
+    <meta property="og:type" content={ogArticle ? 'article' : 'website'} />
+    <meta property="og:url" content={new URL(pageContext.path, Astro.site).toString()} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:image" content={new URL(config.ogImage, Astro.site).toString()} />
+    {ogArticle && (
+      <>
+        <meta property="article:published_time" content={ogArticle.publishedTime.toISOString()} />
+        {ogArticle.modifiedTime && <meta property="article:modified_time" content={ogArticle.modifiedTime.toISOString()} />}
+        {ogArticle.section && <meta property="article:section" content={ogArticle.section} />}
+        {ogArticle.tags.map(tag => <meta property="article:tag" content={tag} />)}
+      </>
+    )}
 
     {/* RSS 订阅 */}
     <link rel="alternate" href={getRssUrl(pageContext.collection)} title={config.title} type="application/rss+xml" />

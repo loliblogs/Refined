@@ -349,7 +349,7 @@ function createDecryptHandler(
   };
 }
 
-// === React 组件 ===
+// === SolidJS 组件 ===
 
 export default function DecryptClient() {
   const workerRef: { current: Worker | null } = { current: null };

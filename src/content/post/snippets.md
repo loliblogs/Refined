@@ -37,6 +37,14 @@ magick $FILENAME -resize 32x32 ( +clone -alpha extract -fill white -colorize 100
 magick $FILENAME -resize 180x180 -define png:compression-level=9 favicon-180x180.png
 ```
 
+## 用 `Magick` 制作网站 og\:image JPG
+
+本站背景原图下载地址：[https://static.lolifamily.js.org/lolifamily/background.jpg](https://static.lolifamily.js.org/lolifamily/background.jpg)
+
+```cmd
+magick background.jpg -resize 1200x630^ -gravity Center -crop 1200x630+0+0 +repage -quality 85 -define jpeg:optimize-coding=true -strip og-cover.jpg
+```
+
 ## 用 `Magick` 制作切割图
 
 ```cmd
