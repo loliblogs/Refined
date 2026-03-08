@@ -293,10 +293,12 @@ export default function PageScrollManager() {
 
     // 初始化所有滚动区域
     const contentCleanup = initContentScrollbar();
-    initScrollbar(document.querySelector('[data-toc-container]'));
-    initScrollbar(document.querySelector('[data-searchresults-container]'));
-    initScrollbar(document.querySelector('[data-nav-menu-scroll]'));
-    initScrollbar(document.querySelector('[data-authmeta-container]'));
+    requestAnimationFrame(() => {
+      initScrollbar(document.querySelector('[data-toc-container]'));
+      initScrollbar(document.querySelector('[data-searchresults-container]'));
+      initScrollbar(document.querySelector('[data-nav-menu-scroll]'));
+      initScrollbar(document.querySelector('[data-authmeta-container]'));
+    });
 
     // 清理
     onCleanup(() => {

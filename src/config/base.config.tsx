@@ -2,18 +2,13 @@
  * 站点基础配置文件
  * 从 Hexo Concise 主题迁移的配置
  *
- * 使用方法：
- * 1. 直接修改此文件中的配置项
- * 2. 所有更改会在开发服务器重启后生效
- * 3. 配置项都有详细的注释说明
- *
  * 注意：此文件不包含 MathJax 处理逻辑，处理后的配置请从 site.config.ts 导入
  */
 
-import GithubLogoIcon from '@phosphor-icons/core/assets/duotone/github-logo-duotone.svg?raw';
-import LinuxLogoIcon from '@phosphor-icons/core/assets/duotone/linux-logo-duotone.svg?raw';
-import SteamLogoIcon from '@phosphor-icons/core/assets/duotone/steam-logo-duotone.svg?raw';
-import SubwayIcon from '@phosphor-icons/core/assets/duotone/subway-duotone.svg?raw';
+import GithubLogoIcon from '@phosphor-icons/core/assets/duotone/github-logo-duotone.svg';
+import LinuxLogoIcon from '@phosphor-icons/core/assets/duotone/linux-logo-duotone.svg';
+import SteamLogoIcon from '@phosphor-icons/core/assets/duotone/steam-logo-duotone.svg';
+import SubwayIcon from '@phosphor-icons/core/assets/duotone/subway-duotone.svg';
 
 import avatarImg from '@/assets/avatar.jpg';
 import faviconUrl from '@/assets/favicon-32x32.png?url&no-inline';

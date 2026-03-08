@@ -49,6 +49,8 @@ const Analytics = config.analytics;
 
 // 获取 runtime chunk 路径用于预加载
 const runtimePath = await getRuntimePath();
+
+const currentUrl = new URL(pageContext.path, Astro.site).toString();
 ---
 
 <!DOCTYPE html>
@@ -67,8 +69,10 @@ const runtimePath = await getRuntimePath();
     {/* MathJax @font-face 内联 - 配合 rehype 的 inline style 让浏览器在 parse 阶段匹配字体 */}
     <style set:html={mathjaxCss} />
 
+    {/* Giscus */}
     <link rel="dns-prefetch" href="https://giscus.app" />
     <link rel="preconnect" href="https://giscus.app" crossorigin="anonymous" />
+    <meta name="giscus:backlink" content={currentUrl} />
 
     {runtimePath && <link rel="modulepreload" href={runtimePath} />}
 
@@ -82,11 +86,11 @@ const runtimePath = await getRuntimePath();
     <link rel="sitemap" href={getSitemapIndexUrl()} />
     {pageContext.noindex
       ? <meta name="robots" content="noindex" />
-      : <link rel="canonical" href={new URL(pageContext.path, Astro.site).toString()} />}
+      : <link rel="canonical" href={currentUrl} />}
 
     {/* Open Graph */}
     <meta property="og:type" content={ogArticle ? 'article' : 'website'} />
-    <meta property="og:url" content={new URL(pageContext.path, Astro.site).toString()} />
+    <meta property="og:url" content={currentUrl} />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={pageDescription} />
     <meta property="og:image" content={new URL(config.ogImage, Astro.site).toString()} />

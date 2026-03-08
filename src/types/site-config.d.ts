@@ -88,7 +88,7 @@ export interface SiteConfig {
 
   // ========== 社交链接 ==========
   links: {
-    icon: string;                              // SVG 字符串（?raw 导入）
+    icon: typeof import('*.svg').default;      // SVG Component
     url: string;                               // 链接地址
     title?: string;                            // 标题（可选）
   }[];

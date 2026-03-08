@@ -40,16 +40,15 @@
 这些经过@theme定义后均可直接使用，如果是其他的则必须使用任意值语法
 
 - 当标准类名无法满足需求时，优先使用任意值语法而非编写额外的 CSS 文件，保持样式与组件的就近原则。
-
-- 在使用命令行的时候，非必要不要使用绝对目录，文件和目录名请始终使用操作系统对应的格式（如Windows请始终使用类似C:\这种）且使用双括号包裹
+- 在使用命令行的时候，非必要不要使用绝对目录，文件和目录名请始终使用操作系统对应的格式（Cygwin/MSYS2等也始终使用类似C:\这种）且使用双引号包裹
 - 请使用pnpm，不要使用npm，不要尝试使用background运行方式运行build等非无限等待的命令
-- 项目使用typescript-eslint和stylistic超级严格模式，外加extends astro/tsconfigs/strictest，请严格遵循语法规范，不允许尝试修改任何lint选项或在用户明确许可前使用eslint-disable等语句。
+- 项目使用typescript-eslint和stylistic超级严格模式，外加extends astro/tsconfigs/strictest，请严格遵循语法规范，不允许尝试修改任何lint选项或在用户明确许可前使用eslint-disable/ts-ignore等语句。
 - 除非特别需要，项目中不允许出现js/mjs/jsx实现，必须ts/tsx实现
-- 如果不需要客户端代码，请始终编写astro文件，astro文件可以在编译的时候使用客户端组件，如果需要客户端代码，请始终将客户端部分编写tsx文件，并配置合理的client指令。尽量编写渐进式的设计，即把渲染的html部分放在astro里，tsx只保留client:only的脚本逻辑。
-- 所有图标资源请使用@phosphor-icons/core里面的svg文件，astro文件直接导入作为组件使用（支持width/height等原生SVG属性），tsx文件使用?raw导入为字符串。图标清单可以从node\_modules/@phosphor-icons/core/assets/\*/目录读取，目录名对应weight（regular/bold/fill/duotone等）。
+- 如果不需要客户端代码，请始终编写astro文件，astro文件可以import island组件，如果需要客户端代码，请始终将客户端部分编写tsx文件，并配置合理的client指令。尽量编写渐进式的设计，即把渲染的html部分放在astro里，tsx只保留client:only的脚本逻辑。
+- 所有图标资源请使用@phosphor-icons/core里面的svg文件，最终在astro文件中渲染的直接导入作为组件使用（支持width/height等原生SVG属性），最终在客户端tsx中渲染的使用?raw导入为字符串。图标清单可以从node\_modules/@phosphor-icons/core/assets/\*/目录读取，目录名对应weight（regular/bold/fill/duotone等）。
 - astro项目是SSG为主的项目，用户不需要考虑dev server的延迟，不需要考虑dev server中实时更新的问题，只需要考虑build速度和最终的效果。
 - Astro Content Collections：.md 有预渲染缓存（rendered 字段），.mdx 需运行时渲染；通过 `render()` 从 `astro:content` 获取 Content 组件；每次 `<Content />` 创建新实例，框架无跨实例缓存。
 - 除非用户明确要求请不要使用MCP服务器中的截屏功能，你应该使用执行js脚本的方式计算得到对应的答案，如果MCP返回长度过长也代表执行成功，请缩小输出范围后重试指令。
 - 请始终使用中文回答我问题和编写代码注释。
-- class类名不允许任何形式的拼接，单行不允许过长，如有必要请编写多行的单字符串，如果一定需要拼接，astro文件请使用class:list语法，tsx文件请使用clsx/lite，注意不允许使用clsx主包！
+- class类名不允许任何形式的拼接，排序和单行长度遵循eslint-plugin-better-tailwindcss的限制，如果一定需要拼接，astro文件请使用class:list语法，tsx文件请使用clsx/lite，注意不允许使用clsx主包！
 - tsconfig.json已经配置了@/\*的文件用法，所有src里的文件，只要跨越类型（如component，util）都必须使用这种方式来import文件
