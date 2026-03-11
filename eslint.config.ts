@@ -123,7 +123,7 @@ export default defineConfig(
   },
   {
     ...tseslint.configs.eslintRecommended,
-    files: ['**/*.{astro,mdx}'],
+    files: ['**/*.astro'],
   },
   {
     files: ['**/*.{md,mdx,astro}/**'],

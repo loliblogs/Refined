@@ -1,10 +1,8 @@
-import fs from 'fs';
-
 import { defineEcConfig } from 'astro-expressive-code';
 import { pluginCollapsibleSections } from '@expressive-code/plugin-collapsible-sections';
 import { pluginLineNumbers } from '@expressive-code/plugin-line-numbers';
 
-const ahk2 = JSON.parse(fs.readFileSync('src/syntaxes/ahk2.tmLanguage.json', 'utf8'));
+import ahk2 from './src/syntaxes/ahk2.tmLanguage.json' with { type: 'json' };
 
 export default defineEcConfig({
   themes: ['gruvbox-dark-medium', 'gruvbox-light-hard'],
