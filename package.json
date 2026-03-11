@@ -111,7 +111,7 @@
   "pnpm": {
     "overrides": {
       "html-minifier-terser": "npm:html-minifier-next",
-      "lightningcss": "^1.31.1"
+      "lightningcss": "^1.32.0"
     },
     "onlyBuiltDependencies": [
       "@swc/core",

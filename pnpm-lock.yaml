@@ -6,7 +6,7 @@ settings:
 
 overrides:
   html-minifier-terser: npm:html-minifier-next
-  lightningcss: ^1.31.1
+  lightningcss: ^1.32.0
 
 importers:
 
@@ -4962,7 +4962,7 @@ packages:
       '@types/node': ^18.0.0 || ^20.0.0 || >=22.0.0
       jiti: '>=1.21.0'
       less: '*'
-      lightningcss: ^1.31.1
+      lightningcss: ^1.32.0
       sass: '*'
       sass-embedded: '*'
       stylus: '*'
@@ -5002,7 +5002,7 @@ packages:
       '@types/node': ^20.19.0 || >=22.12.0
       jiti: '>=1.21.0'
       less: ^4.0.0
-      lightningcss: ^1.31.1
+      lightningcss: ^1.32.0
       sass: ^1.70.0
       sass-embedded: ^1.70.0
       stylus: '>=0.54.8'
