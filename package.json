@@ -23,12 +23,12 @@
     "online:netlify": "pnpx --package netlify-cli@latest netlify deploy --no-build --prod"
   },
   "dependencies": {
-    "@astrojs/db": "^0.19.0",
-    "@astrojs/mdx": "^4.3.13",
-    "@astrojs/rss": "^4.0.15",
-    "@astrojs/sitemap": "^3.7.0",
-    "@astrojs/solid-js": "^5.1.3",
-    "@astrojs/ts-plugin": "^1.10.6",
+    "@astrojs/db": "^0.20.0",
+    "@astrojs/mdx": "^5.0.0",
+    "@astrojs/rss": "^4.0.17",
+    "@astrojs/sitemap": "^3.7.1",
+    "@astrojs/solid-js": "^6.0.0",
+    "@astrojs/ts-plugin": "^1.10.7",
     "@babel/preset-typescript": "^7.28.5",
     "@expressive-code/plugin-collapsible-sections": "^0.41.7",
     "@expressive-code/plugin-line-numbers": "^0.41.7",
@@ -41,7 +41,7 @@
     "@phosphor-icons/core": "^2.1.1",
     "@playform/compress": "^0.2.1",
     "@tailwindcss/vite": "^4.2.1",
-    "astro": "^5.18.0",
+    "astro": "^6.0.2",
     "astro-expressive-code": "^0.41.7",
     "cheerio": "^1.2.0",
     "chroma-js": "^3.2.0",
@@ -51,7 +51,7 @@
     "gray-matter": "^4.0.3",
     "hast-util-to-text": "^4.0.2",
     "hastscript": "^9.0.1",
-    "lightningcss": "^1.31.1",
+    "lightningcss": "^1.32.0",
     "mdast-util-from-markdown": "^2.0.3",
     "mdast-util-math": "^3.0.0",
     "medium-zoom-next": "^2.0.1",
@@ -74,13 +74,12 @@
     "unist-builder": "^4.0.0",
     "unist-util-visit": "^5.1.0",
     "unist-util-visit-parents": "^6.0.2",
-    "vite": "^7.3.1",
     "wordcloud": "^1.2.3"
   },
   "devDependencies": {
-    "@astrojs/check": "^0.9.6",
-    "@astrojs/language-server": "^2.16.3",
-    "@eslint/css": "^0.14.1",
+    "@astrojs/check": "^0.9.7",
+    "@astrojs/language-server": "^2.16.4",
+    "@eslint/css": "^1.0.0",
     "@eslint/js": "^10.0.1",
     "@stylistic/eslint-plugin": "^5.10.0",
     "@tailwindcss/language-server": "^0.14.29",
@@ -89,9 +88,9 @@
     "@types/hast": "^3.0.4",
     "@types/mathjax": "^0.0.40",
     "@types/mdast": "^4.0.4",
-    "@types/node": "^25.3.5",
+    "@types/node": "^25.4.0",
     "@types/wordcloud": "^1.2.2",
-    "@typescript-eslint/parser": "^8.56.1",
+    "@typescript-eslint/parser": "^8.57.0",
     "eslint": "^10.0.3",
     "eslint-interactive": "^13.0.1",
     "eslint-mdx": "^3.7.0",
@@ -106,14 +105,13 @@
     "remark-math": "^6.0.0",
     "remark-parse": "^11.0.0",
     "remark-stringify": "^11.0.0",
-    "typescript-eslint": "^8.56.1",
+    "typescript-eslint": "^8.57.0",
     "vfile": "^6.0.3"
   },
   "pnpm": {
     "overrides": {
       "html-minifier-terser": "npm:html-minifier-next",
-      "lightningcss": "^1.31.1",
-      "vite": "^7.3.1"
+      "lightningcss": "^1.31.1"
     },
     "onlyBuiltDependencies": [
       "@swc/core",
@@ -132,5 +130,5 @@
       "remark-gfm"
     ]
   },
-  "packageManager": "pnpm@10.30.3"
+  "packageManager": "pnpm@10.32.1"
 }

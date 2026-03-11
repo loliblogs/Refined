@@ -204,10 +204,10 @@ export default function PageScrollManager() {
     }
 
     // content 专属滚动条初始化
-    function initContentScrollbar(): (() => void) | null {
+    function initContentScrollbar() {
       const target = document.querySelector<HTMLElement>('[data-content]');
       const viewport = document.querySelector<HTMLElement>('[data-content-viewport]');
-      if (!target || !viewport) return null;
+      if (!target || !viewport) return;
 
       // 初始化前 focus 到 body 层级的 trap 元素
       // 该元素不受 OverlayScrollbars DOM 操作影响，避免 focus() 触发累积的脏样式重算
@@ -287,12 +287,10 @@ export default function PageScrollManager() {
           handleScroll();
         }
       });
-
-      return null;
     }
 
     // 初始化所有滚动区域
-    const contentCleanup = initContentScrollbar();
+    initContentScrollbar();
     requestAnimationFrame(() => {
       initScrollbar(document.querySelector('[data-toc-container]'));
       initScrollbar(document.querySelector('[data-searchresults-container]'));
@@ -303,12 +301,10 @@ export default function PageScrollManager() {
     // 清理
     onCleanup(() => {
       instances.forEach((instance) => {
-        // 清理 TOC 相关资源
         if (OverlayScrollbars.valid(instance)) {
           instance.destroy();
         }
       });
-      contentCleanup?.();
     });
   });
 

@@ -3,6 +3,7 @@
   "compilerOptions": {
     /* JSX 配置 - 使用 SolidJS */
     "jsxImportSource": "solid-js",
+    /* lint .d.ts files */
     "skipLibCheck": false,
     /* 路径别名 - 简化版 */
     "baseUrl": ".",
@@ -16,15 +17,5 @@
         "name": "@astrojs/ts-plugin"
       }
     ]
-  },
-  "include": [
-    ".astro/types.d.ts",
-    "src/**/*",
-    "db/**/*",
-    "*.config.ts",
-    "*.config.mjs"
-  ],
-  "exclude": [
-    "dist"
-  ]
+  }
 }

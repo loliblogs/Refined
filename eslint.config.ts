@@ -38,6 +38,11 @@ export default defineConfig(
         tsconfigRootDir: import.meta.dirname,
       },
     },
+    settings: {
+      'better-tailwindcss': {
+        entryPoint: 'src/styles/global.css',
+      },
+    },
   },
   eslint.configs.recommended,
   css.configs.recommended,
@@ -72,15 +77,11 @@ export default defineConfig(
       tseslint.configs.stylisticTypeChecked,
       astro.configs['flat/recommended'],
       astro.configs['flat/jsx-a11y-strict'],
+      tailwindcss.configs['recommended-error'],
       stylisticConfig,
     ],
     files: ['**/*.{js,jsx,cjs,mjs,ts,tsx,astro}'],
-    plugins: {
-      '@stylistic': stylistic,
-      'better-tailwindcss': tailwindcss,
-    },
     rules: {
-      ...tailwindcss.configs['recommended-error'].rules,
       '@stylistic/no-multi-spaces': [
         'error',
         {
@@ -121,31 +122,16 @@ export default defineConfig(
     extends: [tseslint.configs.disableTypeChecked],
   },
   {
+    ...tseslint.configs.eslintRecommended,
+    files: ['**/*.{astro,mdx}'],
+  },
+  {
     files: ['**/*.{md,mdx,astro}/**'],
     extends: [tseslint.configs.disableTypeChecked],
     rules: {
       '@typescript-eslint/no-unused-vars': 'off',
       '@typescript-eslint/no-empty-function': 'off',
       'no-undef': 'off',
-    },
-  },
-  {
-    files: ['src/layouts/RSSLayout.astro'],
-    languageOptions: {
-      globals: {
-        xsl: 'readonly',
-        'value-of': 'readonly',
-        attribute: 'readonly',
-        'for-each': 'readonly',
-        if: 'readonly',
-      },
-    },
-  },
-  {
-    settings: {
-      'better-tailwindcss': {
-        entryPoint: 'src/styles/global.css',
-      },
     },
   },
 );

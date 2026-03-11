@@ -109,7 +109,7 @@ async function initializeDataOnce(collection: CollectionName = 'post'): Promise<
 
     // 生成 SEO description
     const finalDescription = post.data.description ?? post.data.excerpt
-      ?? truncateText(post.body, 150, { wordBoundary: true });
+      ?? truncateText(post.body ?? '', 150, { wordBoundary: true });
 
     // 计算 excerptSource - 统一使用工具函数
     const prompt = post.data.prompt ?? siteConfig.passwordPrompt ?? '此内容已加密，需要密码查看';
@@ -117,7 +117,7 @@ async function initializeDataOnce(collection: CollectionName = 'post'): Promise<
       post.data.excerpt,
       post.data.encrypted,
       prompt,
-      post.body,
+      post.body ?? '',
     );
 
     // 计算 encryption（可能需要 await Argon2）
@@ -140,7 +140,6 @@ async function initializeDataOnce(collection: CollectionName = 'post'): Promise<
     // 构造完整 Post 对象
     processedPosts.push({
       id: post.id,
-      slug: post.slug,
       title: post.data.title,
       description: finalDescription,
       date: post.data.date,
@@ -173,8 +172,8 @@ async function initializeDataOnce(collection: CollectionName = 'post'): Promise<
       if (timeDiff !== 0) {
         return timeDiff;
       }
-      // 时间相同时按 slug 升序排序，确保排序稳定
-      return a.slug.localeCompare(b.slug);
+      // 时间相同时按 id 升序排序，确保排序稳定
+      return a.id.localeCompare(b.id);
     });
 
   // 2. unfilteredArchivePosts: 纯时间排序，包含草稿（用于渲染草稿）
@@ -185,8 +184,8 @@ async function initializeDataOnce(collection: CollectionName = 'post'): Promise<
     if (timeDiff !== 0) {
       return timeDiff;
     }
-    // 时间相同时按 slug 升序排序，确保排序稳定
-    return a.slug.localeCompare(b.slug);
+    // 时间相同时按 id 升序排序，确保排序稳定
+    return a.id.localeCompare(b.id);
   });
 
   // 3. archivePosts: 基于unfilteredArchivePosts过滤草稿（用于归档页）

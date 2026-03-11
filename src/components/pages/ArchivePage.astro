@@ -279,14 +279,13 @@ const buttonClass = 'rounded-md border border-line px-3 py-1 text-sm transition-
               <li
                 data-role="item"
                 data-timestamp={post.date.getTime()}
-                data-post-id={post.id}
                 class="flex items-baseline gap-4"
               >
                 <span class="shrink-0 text-sm text-secondary">
                   {formatMonthDay(post.date)}
                 </span>
                 <a
-                  href={getPostUrl(post.slug, collection)}
+                  href={getPostUrl(post.id, collection)}
                   class="
                     text-secondary transition-colors
                     hover:text-primary

@@ -12,7 +12,7 @@ import path, { posix } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { globby } from 'globby';
 import matter from 'gray-matter';
-import GithubSlugger from 'github-slugger';
+import { slug as githubSlug } from 'github-slugger';
 import type { AstroIntegration, AstroConfig } from 'astro';
 
 import { getCollectionPath } from '../config/paths.config';
@@ -21,20 +21,19 @@ import { getCollectionPath } from '../config/paths.config';
 export const postlinkMap: Record<string, string> = {};
 
 /**
- * 计算文件的 slug
- * - 优先使用 frontmatter 中的 slug
- * - 否则使用 github-slugger 处理文件名
+ * 计算文件的 id（对齐 Astro 6 非 legacy glob loader 的 generateIdDefault 逻辑）
+ * - 优先使用 frontmatter 中的 slug（原样返回，不做处理）
+ * - 否则去扩展名，每段 githubSlug，去尾部 /index
  */
-function computeSlug(filename: string, frontmatter: Record<string, unknown>): string {
-  // 优先使用自定义 slug
+function computeSlug(pathInCollection: string, frontmatter: Record<string, unknown>): string {
+  // 优先使用自定义 slug（与 Astro 6 generateIdDefault 一致）
   if (frontmatter.slug && typeof frontmatter.slug === 'string') {
     return frontmatter.slug;
   }
 
-  // 使用 github-slugger 处理文件名（去掉扩展名）
-  const slugger = new GithubSlugger();
-  const nameWithoutExt = filename.replace(/\.mdx?$/, '');
-  return slugger.slug(nameWithoutExt);
+  // 对齐 Astro 6: 去扩展名 → 每段 githubSlug → 去尾部 /index
+  const withoutExt = pathInCollection.replace(/\.mdx?$/, '');
+  return withoutExt.split('/').map(segment => githubSlug(segment)).join('/').replace(/\/index$/, '');
 }
 
 /**
@@ -62,8 +61,8 @@ async function buildPostlinkMap(config: AstroConfig): Promise<void> {
     if (firstSlash === -1) continue;
 
     const collection = relativePath.slice(0, firstSlash);
-    const id = relativePath.slice(firstSlash + 1);
-    const filename = id.split('/').at(-1);
+    const pathInCollection = relativePath.slice(firstSlash + 1);
+    const filename = pathInCollection.split('/').at(-1);
 
     // 跳过以 _ 开头的文件（隐藏文件）
     if (!filename || filename.startsWith('_')) continue;
@@ -73,8 +72,8 @@ async function buildPostlinkMap(config: AstroConfig): Promise<void> {
     const content = fs.readFileSync(filePath, 'utf-8');
     const { data: frontmatter } = matter(content);
 
-    // 计算 slug 和 URL
-    const slug = computeSlug(filename, frontmatter);
+    // 计算 slug 和 URL（使用 collection 内完整路径，对齐 Astro 6 id 生成逻辑）
+    const slug = computeSlug(pathInCollection, frontmatter);
     const url = buildPostUrl(slug, collection, base);
 
     // key = collection/id（与 PostLink 参数格式一致）

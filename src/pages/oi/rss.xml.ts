@@ -15,7 +15,7 @@ export const GET: APIRoute = async (context) => {
     title: post.title,
     pubDate: post.date,
     description: post.description,
-    link: getPostUrl(post.slug, 'oi'),
+    link: getPostUrl(post.id, 'oi'),
     categories: [
       ...post.category,
       ...post.tags,

@@ -156,8 +156,6 @@ export default defineConfig({
   },
   experimental: {
     clientPrerender: true,
-    staticImportMetaEnv: true,
-    headingIdCompat: true,
     contentIntellisense: true,
   },
   env: {

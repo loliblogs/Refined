@@ -37,7 +37,6 @@ export interface EncryptionInfo {
  */
 export interface Post {
   id: string;
-  slug: string;
   title: string;
   date: Date;
   updated?: Date | undefined;

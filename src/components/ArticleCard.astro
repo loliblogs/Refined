@@ -38,7 +38,7 @@ const Content = shouldRenderContent
   : null;
 
 // 使用动态路径生成（消除硬编码）
-const postUrl = getPostUrl(post.slug, post.collection);
+const postUrl = getPostUrl(post.id, post.collection);
 const excerptLink = config.excerpt_link;
 ---
 

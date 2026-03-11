@@ -18,10 +18,13 @@ export default function remarkDirectiveRehype() {
         case 'important':
         case 'warning':
         case 'caution':
+        case 'danger':
           if (node.type !== 'containerDirective' || node.children.length === 0) {
             node.data.hProperties.class = 'hidden';
             console.warn('github admonitions to directives: not a container directive or no children');
           } else {
+            if (node.name === 'danger') node.name = 'caution';
+
             node.data.hName = 'blockquote';
             node.data.hProperties = hast.properties;
             node.data.hProperties['data-directive-type'] = node.name;

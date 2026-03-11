@@ -18,7 +18,7 @@ const label = direction === 'prev' ? '上一篇' : '下一篇';
 ---
 
 <a
-  href={getPostUrl(post.slug, collection)}
+  href={getPostUrl(post.id, collection)}
   class:list={[
     `
       group relative block transform overflow-hidden rounded-2xl border-2

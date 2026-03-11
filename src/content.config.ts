@@ -1,4 +1,5 @@
 import { defineCollection } from 'astro:content';
+import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 
 /**
@@ -97,22 +98,22 @@ const pageSchema = z.object({
 });
 
 const post = defineCollection({
-  type: 'content',
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/post' }),
   schema: contentSchema,
 });
 
 const oi = defineCollection({
-  type: 'content',
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/oi' }),
   schema: contentSchema,
 });
 
 const page = defineCollection({
-  type: 'content',
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/page' }),
   schema: pageSchema,
 });
 
 const oiPage = defineCollection({
-  type: 'content',
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/oiPage' }),
   schema: pageSchema,
 });
 

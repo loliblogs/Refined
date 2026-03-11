@@ -25,7 +25,7 @@ const { posts, showExcerpt = true, collection = 'post' } = Astro.props;
     >
       <h2 class="mb-2 text-2xl font-bold">
         <a
-          href={getPostUrl(post.slug, collection)}
+          href={getPostUrl(post.id, collection)}
           class="
             text-primary transition
             hover:text-link

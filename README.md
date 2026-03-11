@@ -132,7 +132,7 @@ Inside your Astro project, you'll see the following folders and files:
 
 Astro uses file-based routing: any .astro, .md, .mdx, or .ts file under `src/pages` is exposed as a route based on its file path, and nested directories become nested URLs. Dynamic and catch-all routes such as `src/pages/[...slug].astro` and pagination patterns like `**/[page].astro` are supported. Server endpoints implemented as `.ts` files (for example `src/pages/rss.xml.ts`) export a handler returning a `Response` and are emitted as dynamic assets.
 
-Content Collections are defined in `src/content.config.ts` via `defineCollection` and Zod schemas; each collection maps to a folder under `src/content/<collection>` where Markdown/MDX entries provide frontmatter validated at dev/build time. Strong types are generated for safe access and can be synchronized with `pnpm sync`, and content is queried with utilities like `getCollection('post')` in pages and components.
+Content Collections are defined in `src/content.config.ts` via `defineCollection` with the `glob` loader from `astro/loaders`; each collection maps to a folder under `src/content/<collection>` where Markdown/MDX entries provide frontmatter validated at dev/build time. Strong types are generated for safe access and can be synchronized with `pnpm sync`, and content is queried with utilities like `getCollection('post')` in pages and components.
 
 Content rendering is optimized in `src/utils/data-loader.ts`: it pre-fetches the `Content` component for each post using Astro's `render()` at load time, so page templates receive a ready-to-use component rather than calling `render()` themselves. Additionally, `src/components/CachedContent.astro` caches rendered HTML during build, avoiding duplicate renders when the same content appears multiple times (e.g., article body and table of contents). This cache is skipped in dev mode to preserve hot-reload behavior.
 
@@ -308,14 +308,19 @@ hint: The password you received privately.
 Body content will be encrypted at build time when served to the client.
 ```
 
-Server‑side secrets are read with `getSecret()` and must be provided via environment variables. On first install, the `postinstall` script attempts to copy `.env.example` to `.env` if `.env` is missing; otherwise copy it manually. Only `.env` is loaded locally. Define `SECRET_PASSWORDS`, `SECRET_ENCRYPTION_PASSWORD` and `SECRET_ENCRYPTION_SALT`. `SECRET_PASSWORDS` is a JSON object mapping `<collection>:<entry id>` to the clear‑text password used to derive the per‑post key; the entry id includes the file extension relative to its collection directory (for example `src/content/post/encrypted-test.mdx` has the id `encrypted-test.mdx`). `SECRET_ENCRYPTION_PASSWORD` and `SECRET_ENCRYPTION_SALT` are used to HKDF‑derive an AES‑GCM key that encrypts derived keys at rest in the Astro DB cache.
+Server‑side secrets are read with `getSecret()` and must be provided via environment variables. On first install, the `postinstall` script attempts to copy `.env.example` to `.env` if `.env` is missing; otherwise copy it manually. Only `.env` is loaded locally. Define `SECRET_PASSWORDS`, `SECRET_ENCRYPTION_PASSWORD` and `SECRET_ENCRYPTION_SALT`. `SECRET_PASSWORDS` is a JSON object mapping `<collection>:<entry id>` to the clear‑text password used to derive the per‑post key; the entry id is the content slug without file extension (for example `src/content/post/encrypted-test.mdx` has the id `encrypted-test`). `SECRET_ENCRYPTION_PASSWORD` and `SECRET_ENCRYPTION_SALT` are used to HKDF‑derive an AES‑GCM key that encrypts derived keys at rest in the Astro DB cache.
+
+> [!CAUTION]
+> The `SECRET_PASSWORDS` key format has changed. Entry IDs no longer include the file extension (Astro 6 content collection migration). Update your `.env` and CI/deployment secrets accordingly:
+> - `post:encrypted-test.mdx` → `post:encrypted-test`
+> - `oi:binary-search.md` → `oi:binary-search`
 
 ```dotenv
 # Map content entries to their passwords. Keys are "<collection>:<entry id>".
 # Examples:
-#   post:encrypted-test.mdx   → src/content/post/encrypted-test.mdx
-#   oi:binary-search.md       → src/content/oi/binary-search.md
-SECRET_PASSWORDS='{"post:encrypted-test.mdx":"change-me","oi:binary-search.md":"change-me-too"}'
+#   post:encrypted-test   → src/content/post/encrypted-test.mdx
+#   oi:binary-search      → src/content/oi/binary-search.md
+SECRET_PASSWORDS='{"post:encrypted-test":"change-me","oi:binary-search":"change-me-too"}'
 
 # Defense-in-depth: derives an AES-GCM key for encrypting cached keys.
 # The cache DB already has file-level encryption; this adds a second layer.

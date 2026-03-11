@@ -21,7 +21,7 @@ export function createPostRoutes(collection: CollectionName = 'post') {
     const posts = await getPosts('unfilteredArchive', collection);
 
     return posts.map((post, index) => ({
-      params: { slug: post.slug },
+      params: { slug: post.id },
       props: {
         post,
         // 草稿文章的上下篇可以包含其他草稿，正式文章只链接到正式文章
@@ -177,7 +177,7 @@ export function createCustomPageRoutes(collectionName: 'page' | 'oiPage' = 'page
   return async function getStaticPaths() {
     const pages = await getCollection(collectionName);
     return pages.map(page => ({
-      params: { slug: page.slug },
+      params: { slug: page.id },
       props: { page },
     }));
   };
