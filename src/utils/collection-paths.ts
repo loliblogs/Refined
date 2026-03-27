@@ -131,9 +131,8 @@ export function getRssUrl(collection: CollectionName): string {
 /**
  * 生成RSS URL
  */
-export function getRssStylesUrl(collection: CollectionName): string {
-  const basePath = getBasePath(collection);
-  return posix.join(basePath, 'rss-styles.xsl');
+export function getRssStylesUrl(): string {
+  return posix.join(globalBase, 'rss-styles.xsl');
 }
 
 /**

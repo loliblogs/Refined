@@ -28,13 +28,8 @@ export const GET: APIRoute = async (context) => {
     description: config.description,
     site: new URL(getBasePath('oi'), context.site),
     items,
-    customData: `
-      <language>zh-CN</language>
-      <copyright>Copyright ${new Date().getFullYear()}</copyright>
-      <ttl>60</ttl>
-      <lastBuildDate>${new Date().toISOString()}</lastBuildDate>
-    `,
-    stylesheet: getRssStylesUrl('oi'),
+    customData: `<lastBuildDate>${new Date().toUTCString()}</lastBuildDate>`,
+    stylesheet: getRssStylesUrl(),
     trailingSlash: false,
   });
 };

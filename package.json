@@ -23,6 +23,7 @@
     "online:netlify": "pnpx --config.trust-policy= --package netlify-cli@latest netlify deploy --no-build --prod"
   },
   "dependencies": {
+    "@astrojs/compiler-rs": "^0.1.6",
     "@astrojs/db": "^0.20.1",
     "@astrojs/mdx": "^5.0.3",
     "@astrojs/rss": "^4.0.18",

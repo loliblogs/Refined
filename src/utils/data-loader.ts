@@ -294,7 +294,7 @@ async function initializeDataOnce(collection: CollectionName = 'post'): Promise<
  */
 export async function getPosts(
   sortMode: 'index' | 'archive' | 'unfilteredArchive' = 'index',
-  collection: CollectionName = 'post',
+  collection: CollectionName,
 ): Promise<Post[]> {
   const data = await initializeDataOnce(collection);
 
@@ -304,13 +304,13 @@ export async function getPosts(
   return data.indexPosts;
 }
 
-export async function getAllTagPaths(collection: CollectionName = 'post'): Promise<TagPathData[]> {
+export async function getAllTagPaths(collection: CollectionName): Promise<TagPathData[]> {
   const data = await initializeDataOnce(collection);
   return data.tagPaths;
 }
 
 
-export async function getAllCategoryPaths(collection: CollectionName = 'post'): Promise<CategoryPathData[]> {
+export async function getAllCategoryPaths(collection: CollectionName): Promise<CategoryPathData[]> {
   const data = await initializeDataOnce(collection);
   return data.categoryPaths;
 }

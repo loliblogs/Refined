@@ -158,6 +158,11 @@ export default defineConfig({
   experimental: {
     clientPrerender: true,
     contentIntellisense: true,
+    rustCompiler: true,
+    queuedRendering: {
+      enabled: true,
+      contentCache: true,
+    },
   },
   env: {
     schema: {
