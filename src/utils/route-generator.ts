@@ -16,7 +16,7 @@ import type { CollectionName } from '@/types/content';
  * 文章详情路由生成器
  * 用于 /post/[...slug] 和 /oi/post/[...slug]
  */
-export function createPostRoutes(collection: CollectionName = 'post') {
+export function createPostRoutes(collection: CollectionName) {
   return async function getStaticPaths() {
     const posts = await getPosts('unfilteredArchive', collection);
 
@@ -36,7 +36,7 @@ export function createPostRoutes(collection: CollectionName = 'post') {
  * 分类首页路由生成器（第一页）
  * 用于 /category/[...path] 和 /oi/category/[...path]
  */
-export function createCategoryRoutes(collection: CollectionName = 'post') {
+export function createCategoryRoutes(collection: CollectionName) {
   return async function getStaticPaths() {
     const categoryPaths = await getAllCategoryPaths(collection);
     const config = getSiteConfig(collection);
@@ -68,7 +68,7 @@ export function createCategoryRoutes(collection: CollectionName = 'post') {
  * 用于 /category/[...path]/page/[page]
  * 注意：过滤掉第一页，避免与分类首页重复（SEO）
  */
-export function createCategoryPagedRoutes(collection: CollectionName = 'post') {
+export function createCategoryPagedRoutes(collection: CollectionName) {
   return async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
     const categoryPaths = await getAllCategoryPaths(collection);
     const config = getSiteConfig(collection);
@@ -95,7 +95,7 @@ export function createCategoryPagedRoutes(collection: CollectionName = 'post') {
  * 标签首页路由生成器（第一页）
  * 用于 /tag/[...path] 和 /oi/tag/[...path]
  */
-export function createTagRoutes(collection: CollectionName = 'post') {
+export function createTagRoutes(collection: CollectionName) {
   return async function getStaticPaths() {
     const tagPaths = await getAllTagPaths(collection);
     const config = getSiteConfig(collection);
@@ -128,7 +128,7 @@ export function createTagRoutes(collection: CollectionName = 'post') {
  * 用于 /tag/[...path]/page/[page]
  * 注意：过滤掉第一页，避免与标签首页重复（SEO）
  */
-export function createTagPagedRoutes(collection: CollectionName = 'post') {
+export function createTagPagedRoutes(collection: CollectionName) {
   return async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
     const tagPaths = await getAllTagPaths(collection);
     const config = getSiteConfig(collection);
@@ -158,7 +158,7 @@ export function createTagPagedRoutes(collection: CollectionName = 'post') {
  * 用于 /page/[page] 和 /oi/page/[page]
  * 注意：过滤掉第一页，避免与首页重复（SEO）
  */
-export function createHomePagedRoutes(collection: CollectionName = 'post') {
+export function createHomePagedRoutes(collection: CollectionName) {
   return async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
     const config = getSiteConfig(collection);
     const sortedPosts = await getPosts('index', collection);
@@ -173,7 +173,7 @@ export function createHomePagedRoutes(collection: CollectionName = 'post') {
  * 自定义页面路由生成器
  * 用于 /[...slug] 和 /oi/[...slug]
  */
-export function createCustomPageRoutes(collectionName: 'page' | 'oiPage' = 'page') {
+export function createCustomPageRoutes(collectionName: 'page' | 'oiPage') {
   return async function getStaticPaths() {
     const pages = await getCollection(collectionName);
     return pages.map(page => ({

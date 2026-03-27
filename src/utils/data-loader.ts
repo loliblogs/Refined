@@ -3,7 +3,7 @@
  * 核心改进：
  * 1. 支持多个collection独立管理
  * 2. 每个collection有独立的索引和缓存
- * 3. 保持向后兼容（默认使用post）
+ * 3. 所有调用点必须显式指定collection
  */
 
 import { getCollection, render } from 'astro:content';
@@ -85,7 +85,7 @@ export async function getCategorySystem(collection: CollectionName) {
  *
  * @returns 初始化后的CollectionData（从缓存或新建）
  */
-async function initializeDataOnce(collection: CollectionName = 'post'): Promise<CollectionData> {
+async function initializeDataOnce(collection: CollectionName): Promise<CollectionData> {
   // 快速路径：数据存在就直接返回
   const cached = collectionDataCache.get(collection);
   if (cached) {
@@ -290,7 +290,7 @@ async function initializeDataOnce(collection: CollectionName = 'post'): Promise<
 /**
  * 获取文章列表（支持多collection）
  * @param sortMode 'index' = sticky优先+时间, 'archive' = 纯时间
- * @param collection 集合名称，默认post
+ * @param collection 集合名称
  */
 export async function getPosts(
   sortMode: 'index' | 'archive' | 'unfilteredArchive' = 'index',

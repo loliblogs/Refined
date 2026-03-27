@@ -19,10 +19,11 @@ interface Props {
 
 const { collection = 'post' } = Astro.props;
 
-// 获取已排序的文章（纯时间排序）
+// 获取文章（已按日期降序排列，newest first）
 const timelinePosts = await getPosts('archive', collection);
 
 // 计算时间范围 + 按月分组 - 一次遍历完成所有工作
+// Map 按插入序迭代，输入降序保证了月份分组自然从新到旧排列
 const nowTime = Date.now();
 let minTime = Infinity;
 let maxTime = -Infinity;

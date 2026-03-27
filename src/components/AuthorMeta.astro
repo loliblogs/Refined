@@ -14,10 +14,10 @@ import SocialLinks from './SocialLinks.astro';
 import { Picture } from 'astro:assets';
 
 interface Props {
-  collection?: CollectionName;
+  collection: CollectionName;
 }
 
-const { collection = 'post' } = Astro.props;
+const { collection } = Astro.props;
 
 const config = getSiteConfig(collection);
 ---
