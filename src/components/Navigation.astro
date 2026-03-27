@@ -123,6 +123,7 @@ function isNavActive(path: string, recursive: boolean): boolean {
         const path = getFullPath(relativePath);
         const ariaLabel = isObject ? navItem.ariaLabel : undefined;
         const recursive = !isObject || navItem.recursive !== false;
+        const active = isNavActive(path, recursive);
 
         return (
           <a
@@ -141,13 +142,10 @@ function isNavActive(path: string, recursive: boolean): boolean {
                 forced-colors:max-lg:not-first:border-t-0
                 forced-colors:max-lg:not-first:border-l
               `,
-              isNavActive(path, recursive)
-                ? `
-                  bg-active forced-color-adjust-none
-                  forced-colors:bg-[Highlight]
-                  forced-colors:text-[HighlightText]
-                `
-                : 'forced-colors:hover:text-[Highlight]',
+              {
+                'bg-active forced-color-adjust-none forced-colors:bg-[Highlight] forced-colors:text-[HighlightText]': active,
+                'forced-colors:hover:text-[Highlight]': !active,
+              },
             ]}
             href={path}
             aria-label={ariaLabel}

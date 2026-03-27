@@ -110,6 +110,8 @@ export default defineConfig(
           allowBoolean: true,
         },
       ],
+      'astro/prefer-class-list-directive': ['error'],
+      'astro/prefer-object-class-list': ['error'],
     },
   },
   {

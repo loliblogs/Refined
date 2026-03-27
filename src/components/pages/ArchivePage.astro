@@ -212,18 +212,18 @@ const buttonClass = 'rounded-md border border-line px-3 py-1 text-sm transition-
     >
       {/* 预设 */}
       <div class="flex gap-1" data-role="presets">
-        <button data-preset="all" class={buttonClass}>全部</button>
-        <button data-preset="this-year" class={buttonClass}>今年</button>
-        <button data-preset="last-year" class={buttonClass}>去年</button>
-        <button data-preset="last-3m" class={buttonClass}>最近3月</button>
-        <button data-preset="last-6m" class={buttonClass}>最近6月</button>
+        <button data-preset="all" class:list={buttonClass}>全部</button>
+        <button data-preset="this-year" class:list={buttonClass}>今年</button>
+        <button data-preset="last-year" class:list={buttonClass}>去年</button>
+        <button data-preset="last-3m" class:list={buttonClass}>最近3月</button>
+        <button data-preset="last-6m" class:list={buttonClass}>最近6月</button>
       </div>
 
       <div class="mx-2 h-6 border-l border-soft" />
 
       {/* 自定义 */}
       <details class="relative" data-role="custom">
-        <summary class:list={[`flex cursor-pointer list-none items-center gap-1`, buttonClass]}>
+        <summary class:list={['flex cursor-pointer list-none items-center gap-1', buttonClass]}>
           <span class="mr-1">自定义</span>
           <CaretDown width="0.75rem" height="0.75rem" />
         </summary>

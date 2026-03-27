@@ -20,7 +20,7 @@
     "online:workers": "pnpx wrangler@latest -c wrangler-workers.jsonc deploy",
     "online:pages": "pnpx wrangler@latest pages deploy",
     "online:vercel": "pnpx vercel@latest --cwd dist deploy --prod",
-    "online:netlify": "pnpx --package netlify-cli@latest netlify deploy --no-build --prod"
+    "online:netlify": "pnpx --config.trust-policy= --package netlify-cli@latest netlify deploy --no-build --prod"
   },
   "dependencies": {
     "@astrojs/db": "^0.20.1",

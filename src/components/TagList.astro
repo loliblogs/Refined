@@ -48,7 +48,7 @@ const sortedGroups = Object.entries(groupedTags).sort(([a], [b]) => {
 });
 ---
 
-<div class={className}>
+<div class:list={className}>
   {sortedGroups.map(([letter, letterTags]) => (
     <div class="mb-6">
       <h3 class="border-b border-hover pb-3 text-xl font-bold text-primary">

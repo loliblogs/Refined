@@ -123,7 +123,7 @@ export default function remarkRemoveCjkBreaks({
   });
 
   // 构建标点相关的正则（用于处理公式前后的标点）
-  const punctPattern = `[、。，：；！？]`;
+  const punctPattern = '[、。，：；！？]';
   const punctBeforeMathRegex = new RegExp(`(${punctPattern})[\\s\\r\\n]+$`, 'u');
   const punctAfterMathRegex = new RegExp(`^[\\s\\r\\n]+(${punctPattern})`, 'u');
 
