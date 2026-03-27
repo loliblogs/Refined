@@ -23,11 +23,11 @@
     "online:netlify": "pnpx --package netlify-cli@latest netlify deploy --no-build --prod"
   },
   "dependencies": {
-    "@astrojs/db": "^0.20.0",
-    "@astrojs/mdx": "^5.0.0",
-    "@astrojs/rss": "^4.0.17",
-    "@astrojs/sitemap": "^3.7.1",
-    "@astrojs/solid-js": "^6.0.0",
+    "@astrojs/db": "^0.20.1",
+    "@astrojs/mdx": "^5.0.3",
+    "@astrojs/rss": "^4.0.18",
+    "@astrojs/sitemap": "^3.7.2",
+    "@astrojs/solid-js": "^6.0.1",
     "@astrojs/ts-plugin": "^1.10.7",
     "@babel/preset-typescript": "^7.28.5",
     "@expressive-code/plugin-collapsible-sections": "^0.41.7",
@@ -37,11 +37,11 @@
     "@mathjax/src": "^4.1.1",
     "@node-rs/argon2": "^2.0.2",
     "@pagefind/component-ui": "1.5.0-beta.1",
-    "@phi-ag/argon2": "^0.5.19",
+    "@phi-ag/argon2": "^0.5.20",
     "@phosphor-icons/core": "^2.1.1",
-    "@playform/compress": "^0.2.1",
-    "@tailwindcss/vite": "^4.2.1",
-    "astro": "^6.0.2",
+    "@playform/compress": "^0.2.2",
+    "@tailwindcss/vite": "^4.2.2",
+    "astro": "^6.1.1",
     "astro-expressive-code": "^0.41.7",
     "cheerio": "^1.2.0",
     "chroma-js": "^3.2.0",
@@ -66,10 +66,10 @@
     "remark-emoji": "^5.0.2",
     "remark-github-admonitions-to-directives": "^2.1.0",
     "sharp": "^0.34.5",
-    "solid-js": "^1.9.11",
-    "tailwindcss": "^4.2.1",
-    "terser": "^5.46.0",
-    "typescript": "^5.9.3",
+    "solid-js": "^1.9.12",
+    "tailwindcss": "^4.2.2",
+    "terser": "^5.46.1",
+    "typescript": "^6.0.2",
     "unified": "^11.0.5",
     "unist-builder": "^4.0.0",
     "unist-util-visit": "^5.1.0",
@@ -77,8 +77,8 @@
     "wordcloud": "^1.2.3"
   },
   "devDependencies": {
-    "@astrojs/check": "^0.9.7",
-    "@astrojs/language-server": "^2.16.4",
+    "@astrojs/check": "^0.9.8",
+    "@astrojs/language-server": "^2.16.6",
     "@eslint/css": "^1.0.0",
     "@eslint/js": "^10.0.1",
     "@stylistic/eslint-plugin": "^5.10.0",
@@ -88,10 +88,10 @@
     "@types/hast": "^3.0.4",
     "@types/mathjax": "^0.0.40",
     "@types/mdast": "^4.0.4",
-    "@types/node": "^25.4.0",
+    "@types/node": "^25.5.0",
     "@types/wordcloud": "^1.2.2",
-    "@typescript-eslint/parser": "^8.57.0",
-    "eslint": "^10.0.3",
+    "@typescript-eslint/parser": "^8.57.2",
+    "eslint": "^10.1.0",
     "eslint-interactive": "^13.0.1",
     "eslint-mdx": "^3.7.0",
     "eslint-plugin-astro": "^1.6.0",
@@ -105,21 +105,8 @@
     "remark-math": "^6.0.0",
     "remark-parse": "^11.0.0",
     "remark-stringify": "^11.0.0",
-    "typescript-eslint": "^8.57.0",
+    "typescript-eslint": "^8.57.2",
     "vfile": "^6.0.3"
-  },
-  "pnpm": {
-    "overrides": {
-      "html-minifier-terser": "npm:html-minifier-next",
-      "vite": "^7.3.1",
-      "lightningcss": "^1.32.0"
-    },
-    "onlyBuiltDependencies": [
-      "@swc/core",
-      "@tailwindcss/oxide",
-      "esbuild",
-      "sharp"
-    ]
   },
   "remarkConfig": {
     "plugins": [
@@ -131,5 +118,5 @@
       "remark-gfm"
     ]
   },
-  "packageManager": "pnpm@10.32.1"
+  "packageManager": "pnpm@10.33.0"
 }

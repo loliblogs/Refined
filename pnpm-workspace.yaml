@@ -1,4 +1,13 @@
+overrides:
+  html-minifier-terser: npm:html-minifier-next
+  vite: ^7.3.1
+  lightningcss: ^1.32.0
+
 onlyBuiltDependencies:
+  - '@swc/core'
   - '@tailwindcss/oxide'
   - esbuild
   - sharp
+
+trustPolicy: no-downgrade
+trustPolicyIgnoreAfter: 129600
