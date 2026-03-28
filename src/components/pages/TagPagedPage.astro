@@ -19,10 +19,10 @@ interface Props {
   tag: Tag;
   relatedTags?: Tag[];
   childTags?: Tag[];
-  collection?: CollectionName;
+  collection: CollectionName;
 }
 
-const { page, tag, relatedTags = [], childTags = [], collection = 'post' } = Astro.props;
+const { page, tag, relatedTags = [], childTags = [], collection } = Astro.props;
 
 // 页面上下文
 const pageContext = {

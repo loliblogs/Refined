@@ -13,10 +13,10 @@ import { getCategoryUrl, getCategoryIndexUrl } from '@/utils/collection-paths';
 import type { CollectionName } from '@/types/content';
 
 interface Props {
-  collection?: CollectionName;
+  collection: CollectionName;
 }
 
-const { collection = 'post' } = Astro.props;
+const { collection } = Astro.props;
 
 // 获取分类数据（每个collection独立）
 const categorySystem = await getCategorySystem(collection);

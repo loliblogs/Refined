@@ -20,7 +20,7 @@ interface Props {
   childTags: Tag[];
   currentPage: number;
   lastPage: number;
-  collection?: CollectionName;
+  collection: CollectionName;
 }
 
 const {
@@ -31,7 +31,7 @@ const {
   childTags,
   currentPage,
   lastPage,
-  collection = 'post',
+  collection,
 } = Astro.props;
 
 // 页面上下文

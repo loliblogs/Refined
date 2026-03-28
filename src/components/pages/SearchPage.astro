@@ -13,10 +13,10 @@ import '@/styles/pagefind.css';
 import type { CollectionName } from '@/types/content';
 
 interface Props {
-  collection?: CollectionName;
+  collection: CollectionName;
 }
 
-const { collection = 'post' } = Astro.props;
+const { collection } = Astro.props;
 
 // 页面上下文
 const pageContext = {

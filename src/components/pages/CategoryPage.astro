@@ -19,7 +19,7 @@ interface Props {
   subcategories: Category[];  // 子分类
   currentPage: number;
   lastPage: number;
-  collection?: CollectionName;
+  collection: CollectionName;
 }
 
 const {
@@ -29,7 +29,7 @@ const {
   subcategories,
   currentPage,
   lastPage,
-  collection = 'post',
+  collection,
 } = Astro.props;
 
 // 获取同级分类

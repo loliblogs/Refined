@@ -16,10 +16,10 @@ import type { Post, Category } from '@/types/content';
 interface Props {
   page: Page<Post>;  // Astro的Page对象
   category: Category;
-  collection?: CollectionName;
+  collection: CollectionName;
 }
 
-const { page, category, collection = 'post' } = Astro.props;
+const { page, category, collection } = Astro.props;
 
 // 页面上下文
 const pageContext = {

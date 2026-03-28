@@ -14,10 +14,10 @@ import Comments from '@/config/comments.config';
 import { getSiteConfig } from '@/config/site.config';
 
 interface Props {
-  collection?: CollectionName;
+  collection: CollectionName;
 }
 
-const { collection = 'post' } = Astro.props;
+const { collection } = Astro.props;
 
 const config = getSiteConfig(collection);
 

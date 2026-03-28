@@ -9,10 +9,10 @@ import { getBasePath, getFullPath, isRootPath } from '@/utils/collection-paths';
 import NavigationController from './NavigationController';
 
 interface Props {
-  collection?: CollectionName | undefined;
+  collection: CollectionName;
 }
 
-const { collection = 'post' } = Astro.props;
+const { collection } = Astro.props;
 const config = getSiteConfig(collection);
 const homePath = getBasePath(collection);
 const currentPath = Astro.url.pathname;

@@ -14,10 +14,10 @@ import CaretDown from '@phosphor-icons/core/assets/regular/caret-down.svg';
 import type { CollectionName, Post } from '@/types/content';
 
 interface Props {
-  collection?: CollectionName;
+  collection: CollectionName;
 }
 
-const { collection = 'post' } = Astro.props;
+const { collection } = Astro.props;
 
 // 获取文章（已按日期降序排列，newest first）
 const timelinePosts = await getPosts('archive', collection);

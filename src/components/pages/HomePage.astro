@@ -14,12 +14,12 @@ import PaginationNav from '../PaginationNav.astro';
 import type { CollectionName } from '@/types/content';
 
 interface Props {
-  collection?: CollectionName;
+  collection: CollectionName;
   currentPage?: number;
 }
 
 const {
-  collection = 'post',
+  collection,
   currentPage = 1,
 } = Astro.props;
 

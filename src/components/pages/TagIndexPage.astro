@@ -12,10 +12,10 @@ import TagList from '../TagList.astro';
 import type { CollectionName } from '@/types/content';
 
 interface Props {
-  collection?: CollectionName;
+  collection: CollectionName;
 }
 
-const { collection = 'post' } = Astro.props;
+const { collection } = Astro.props;
 
 // 获取标签数据（每个collection独立）
 const tagSystem = await getTagSystem(collection);

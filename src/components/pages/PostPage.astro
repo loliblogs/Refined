@@ -29,10 +29,10 @@ interface Props {
   post: Post;
   prevPost: Post | null;
   nextPost: Post | null;
-  collection?: CollectionName;
+  collection: CollectionName;
 }
 
-const { post, prevPost, nextPost, collection = 'post' } = Astro.props;
+const { post, prevPost, nextPost, collection } = Astro.props;
 const { Content } = post;
 
 // 提取第一个分类（如果存在）

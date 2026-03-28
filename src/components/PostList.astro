@@ -9,10 +9,10 @@ import { getPostUrl, getTagUrl } from '@/utils/collection-paths';
 export interface Props {
   posts: Post[];
   showExcerpt?: boolean;
-  collection?: CollectionName;
+  collection: CollectionName;
 }
 
-const { posts, showExcerpt = true, collection = 'post' } = Astro.props;
+const { posts, showExcerpt = true, collection } = Astro.props;
 
 // 直接使用posts，已经在data-loader中标准化过了
 ---

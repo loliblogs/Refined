@@ -8,7 +8,7 @@ export interface Props {
   showPostCount?: boolean;
   sortBy?: 'name' | 'count';
   sortDirection?: 'asc' | 'desc';
-  collection?: CollectionName;
+  collection: CollectionName;
 }
 
 const {
@@ -17,7 +17,7 @@ const {
   showPostCount = true,
   sortBy = 'count',
   sortDirection = 'desc',
-  collection = 'post',
+  collection,
 } = Astro.props;
 
 // 排序标签
