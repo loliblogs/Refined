@@ -48,7 +48,7 @@
     "chroma-js": "^3.2.0",
     "giscus": "^1.6.0",
     "github-slugger": "^2.0.0",
-    "globby": "^16.1.1",
+    "globby": "^16.2.0",
     "gray-matter": "^4.0.3",
     "hast-util-to-text": "^4.0.2",
     "hastscript": "^9.0.1",
