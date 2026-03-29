@@ -16,6 +16,8 @@ import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { outDir } from 'astro:config/server';
 
+import { getFullPath } from './collection-paths';
+
 const outDirPath = fileURLToPath(outDir);
 const astroDir = join(outDirPath, '_astro');
 
@@ -35,6 +37,6 @@ export default async function getRuntimePath(): Promise<string | null> {
   const files = await readdir(astroDir);
   const runtimeFileName = files.find(f => /^runtime\.[a-zA-Z0-9-_]+\.js$/.test(f));
 
-  cachedPath = runtimeFileName ? `/_astro/${runtimeFileName}` : null;
+  cachedPath = runtimeFileName ? getFullPath(`/_astro/${runtimeFileName}`) : null;
   return cachedPath;
 }

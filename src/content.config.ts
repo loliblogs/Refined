@@ -56,8 +56,8 @@ const contentSchema = z.object({
   title: z.string(),
   description: z.string().optional(),
   excerpt: z.string().optional(),
-  date: z.coerce.date(),
-  updated: z.coerce.date().optional(),
+  date: z.date(),
+  updated: z.date().optional(),
   lang: z.string().optional(),
 
   // 标准字段
@@ -90,8 +90,8 @@ const contentSchema = z.object({
 
 const pageSchema = z.object({
   title: z.string(),
-  date: z.coerce.date().optional(),
-  updated: z.coerce.date().optional(),
+  date: z.date().optional(),
+  updated: z.date().optional(),
   description: z.string().optional(),
   lang: z.string().optional(),
   comments: z.boolean().optional(),
