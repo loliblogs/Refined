@@ -41,9 +41,7 @@ const animationNew = {
 export const postConfig: SiteConfig = {
   // ========== 站点基本信息 ==========
   title: 'loli\'s diary',                           // 站点标题
-  subtitle: 'loli\'s diary about learning and design with Astro', // 副标题
   description: '关于学习和生活的日记碎碎念，记录在各种实验和实践中的经历和思考，进行一些案例分析和分享',      // 站点描述（SEO）
-  keywords: 'blog, design, learning, life, diary, thinking',       // 关键词（SEO）
 
   // ========== 分页配置 ==========
   // 各页面的每页文章数配置
@@ -181,9 +179,7 @@ export const postConfig: SiteConfig = {
 export const oiConfig: SiteConfig = {
   // ========== 站点基本信息 ==========
   title: 'loli\'s OI log',                              // 站点标题
-  subtitle: 'lolifamily\'s log about competitive programming with Astro',              // 副标题
   description: '关于OI学习的记录，记录题解和部分算法上思考',     // 站点描述（SEO）
-  keywords: 'OI, ACM, algorithm, competitive programming', // 关键词（SEO）
 
   // ========== 分页配置 ==========
   // 各页面的每页文章数配置

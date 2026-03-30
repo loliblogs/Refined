@@ -54,9 +54,7 @@ export type NavItem = ValidPath | {
 export interface SiteConfig {
   // ========== 站点基本信息 ==========
   title: string;                              // 站点标题
-  subtitle?: string;                          // 副标题（可选）
   description: string;                        // 站点描述（SEO）
-  keywords: string;                           // 关键词（SEO）
 
   // ========== 分页配置 ==========
   pagination: {

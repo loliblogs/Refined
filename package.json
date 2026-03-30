@@ -85,7 +85,6 @@
     "@stylistic/eslint-plugin": "^5.10.0",
     "@tailwindcss/language-server": "^0.14.29",
     "@types/chroma-js": "^3.1.2",
-    "@types/eslint-plugin-tailwindcss": "^3.17.0",
     "@types/hast": "^3.0.4",
     "@types/mathjax": "^0.0.40",
     "@types/mdast": "^4.0.4",
@@ -100,14 +99,12 @@
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-mdx": "^3.7.0",
     "eslint-plugin-solid": "^0.14.5",
-    "mdast-util-directive": "^3.1.0",
     "remark-frontmatter": "^5.0.0",
     "remark-gfm": "^4.0.1",
     "remark-math": "^6.0.0",
     "remark-parse": "^11.0.0",
     "remark-stringify": "^11.0.0",
-    "typescript-eslint": "^8.57.2",
-    "vfile": "^6.0.3"
+    "typescript-eslint": "^8.57.2"
   },
   "remarkConfig": {
     "plugins": [
