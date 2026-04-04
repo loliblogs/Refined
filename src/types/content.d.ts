@@ -39,7 +39,7 @@ export interface Post {
   id: string;
   title: string;
   date: Date;
-  updated?: Date | undefined;
+  updated: Date | undefined;
   author: string;  // 现在是必需的（默认使用站点配置的作者）
 
   // 分类（支持多分类，每个分类支持多级路径）

@@ -38,11 +38,11 @@
     "@mathjax/src": "^4.1.1",
     "@node-rs/argon2": "^2.0.2",
     "@pagefind/component-ui": "1.5.0-beta.1",
-    "@phi-ag/argon2": "^0.5.20",
+    "@phi-ag/argon2": "^0.5.21",
     "@phosphor-icons/core": "^2.1.1",
     "@playform/compress": "^0.2.2",
     "@tailwindcss/vite": "^4.2.2",
-    "astro": "^6.1.1",
+    "astro": "^6.1.3",
     "astro-expressive-code": "^0.41.7",
     "cheerio": "^1.2.0",
     "chroma-js": "^3.2.0",
@@ -80,7 +80,7 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.8",
     "@astrojs/language-server": "^2.16.6",
-    "@eslint/css": "^1.0.0",
+    "@eslint/css": "^1.1.0",
     "@eslint/js": "^10.0.1",
     "@stylistic/eslint-plugin": "^5.10.0",
     "@tailwindcss/language-server": "^0.14.29",
@@ -88,10 +88,10 @@
     "@types/hast": "^3.0.4",
     "@types/mathjax": "^0.0.40",
     "@types/mdast": "^4.0.4",
-    "@types/node": "^25.5.0",
+    "@types/node": "^25.5.2",
     "@types/wordcloud": "^1.2.2",
-    "@typescript-eslint/parser": "^8.57.2",
-    "eslint": "^10.1.0",
+    "@typescript-eslint/parser": "^8.58.0",
+    "eslint": "^10.2.0",
     "eslint-interactive": "^13.0.1",
     "eslint-mdx": "^3.7.0",
     "eslint-plugin-astro": "^1.6.0",
@@ -104,7 +104,7 @@
     "remark-math": "^6.0.0",
     "remark-parse": "^11.0.0",
     "remark-stringify": "^11.0.0",
-    "typescript-eslint": "^8.57.2"
+    "typescript-eslint": "^8.58.0"
   },
   "remarkConfig": {
     "plugins": [

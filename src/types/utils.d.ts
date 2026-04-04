@@ -13,7 +13,7 @@ export interface TaxonomyNode {
   level: number;
 
   // 关系 - 直接使用引用，不用字符串
-  parentNode?: TaxonomyNode | undefined;  // 明确允许 undefined
+  parentNode: TaxonomyNode | undefined;
   childNodes: Set<TaxonomyNode>;
 
   /**

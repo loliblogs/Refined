@@ -9,12 +9,12 @@ import { mathFromMarkdown, mathToMarkdown } from 'mdast-util-math';
 import { math as micromarkMath } from 'micromark-extension-math';
 
 export interface RemarkMathToOptions extends MathToOptions {
-  flowSingleLineMinDelimiter?: number | null | undefined;
+  flowSingleLineMinDelimiter?: number | null;
 }
 
 declare module 'mdast-util-from-markdown' {
   interface CompileData {
-    customMathDelimiterSize?: number | undefined;
+    customMathDelimiterSize?: number;
   }
 }
 
@@ -65,7 +65,7 @@ function createDisplayFromMarkdown(
           originalEnterMathText.call(this, token);
         }
         // 我们的逻辑
-        this.data.customMathDelimiterSize = undefined;
+        delete this.data.customMathDelimiterSize;
       },
 
       // 添加我们独有的处理器
@@ -87,7 +87,7 @@ function createDisplayFromMarkdown(
 
         // 我们的逻辑
         const open = this.data.customMathDelimiterSize;
-        this.data.customMathDelimiterSize = undefined;
+        delete this.data.customMathDelimiterSize;
 
         if (open == undefined || min == null || open < min) {
           return;
