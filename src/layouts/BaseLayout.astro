@@ -180,8 +180,6 @@ const currentUrl = new URL(pageContext.path, Astro.site).toString();
             </div>
           </div>
         </div>
-        <MediumZoom client:idle />
-        <PageScrollManager client:idle />
       </div>
       <header
         class="
@@ -246,6 +244,12 @@ const currentUrl = new URL(pageContext.path, Astro.site).toString();
       </header>
     </main>
     {Analytics && <Analytics />}
+    {/* 脚本组件放在 data-content 外部：
+        OverlayScrollbars 无条件执行 target.appendChild(viewport)，
+        DOM 规范强制 remove → insert，自定义元素回调不可避免（由 isScrollbarReady signal 协调）。
+        但将 viewport 保持为 target 唯一子节点可避免真正的 DOM 位置变更和兄弟节点重排 */}
+    <MediumZoom client:idle />
+    <PageScrollManager client:idle />
     {/*
       手动控制页面切换动画，而不是用 transition:animate API
       原因：transition:animate 在 fetch 完成后才播放，用户点击链接会感知延迟

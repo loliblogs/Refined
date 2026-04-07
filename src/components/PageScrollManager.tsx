@@ -1,7 +1,7 @@
 import { onMount, onCleanup, createEffect } from 'solid-js';
 import { OverlayScrollbars, ClickScrollPlugin } from 'overlayscrollbars';
 import type { PartialOptions } from 'overlayscrollbars';
-import { isDecrypted } from '@/stores/state';
+import { isDecrypted, setIsScrollbarReady } from '@/stores/state';
 
 OverlayScrollbars.plugin(ClickScrollPlugin);
 
@@ -289,8 +289,9 @@ export default function PageScrollManager() {
       });
     }
 
-    // 初始化所有滚动区域
+    // 初始化所有滚动区域（OverlayScrollbars 会同步完成 DOM 重排）
     initContentScrollbar();
+    setIsScrollbarReady(true);
     requestAnimationFrame(() => {
       initScrollbar(document.querySelector('[data-toc-container]'));
       initScrollbar(document.querySelector('[data-searchresults-container]'));
@@ -300,6 +301,7 @@ export default function PageScrollManager() {
 
     // 清理
     onCleanup(() => {
+      setIsScrollbarReady(false);
       instances.forEach((instance) => {
         if (OverlayScrollbars.valid(instance)) {
           instance.destroy();

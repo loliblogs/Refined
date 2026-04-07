@@ -3,8 +3,9 @@
  * 使用Pagefind自带的UI组件
  */
 
-import { onMount, onCleanup } from 'solid-js';
+import { onMount, onCleanup, createEffect } from 'solid-js';
 import { getInstanceManager } from '@pagefind/component-ui';
+import { isScrollbarReady } from '@/stores/state';
 
 export default function PagefindSearch() {
   onMount(() => {
@@ -33,7 +34,16 @@ export default function PagefindSearch() {
       window.history.replaceState({}, '', newUrl);
     };
 
-    if (initialQuery) instance.triggerSearch(initialQuery);
+    // 等待 OverlayScrollbars 完成 DOM 操作后再触发初始搜索，
+    // 否则 <pagefind-input> 的 connectedCallback 会重建输入框并清空值
+    if (initialQuery) {
+      createEffect(() => {
+        if (isScrollbarReady()) {
+          instance.triggerSearch(initialQuery);
+        }
+      });
+    }
+
     instance.on('search', handleInput);
 
     onCleanup(() => {

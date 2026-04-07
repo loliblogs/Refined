@@ -374,6 +374,7 @@ export default function DecryptClient() {
 
     // 5. 清理函数
     onCleanup(() => {
+      setIsDecrypted(false);
       dom.button.removeEventListener('click', handleDecrypt);
       dom.input.removeEventListener('keydown', handleKeydown);
       workerRef.current?.terminate();
