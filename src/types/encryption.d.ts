@@ -10,11 +10,10 @@ export interface EncryptedPayload {
 }
 
 export interface Argon2WorkerMessage {
-  type: 'DERIVE_KEY';
+  origin: string;
   password: string;
   salt: Uint8Array;
 }
-
 
 export interface Argon2WorkerResponseKeyDerived {
   type: 'KEY_DERIVED';

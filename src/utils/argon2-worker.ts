@@ -9,10 +9,13 @@ import type { Argon2WorkerMessage, Argon2WorkerResponse } from '@/types/encrypti
 let argon2Promise: Promise<Argon2> | null = null;
 
 self.addEventListener('message', (event: MessageEvent<Argon2WorkerMessage>) => {
-  const { password, salt } = event.data;
+  const { origin, password, salt } = event.data;
+
+  // wasm?url 产生相对路径，但 inline Worker 从 blob: URL 运行，相对路径无法解析
+  const url = new URL(wasm, origin);
 
   // 首次调用时加载 WASM
-  argon2Promise ??= initialize(wasm);
+  argon2Promise ??= initialize(url.toString());
 
   argon2Promise.then((argon2) => {
     const result = argon2.tryHash(password, {

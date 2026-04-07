@@ -205,7 +205,7 @@ async function deriveKeyFromPassword(
 
   // 发送密钥派生请求
   workerRef.current.postMessage({
-    type: 'DERIVE_KEY',
+    origin: location.origin,
     password,
     salt,
   } satisfies Argon2WorkerMessage);
