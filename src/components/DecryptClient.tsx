@@ -5,6 +5,7 @@
 
 import { onMount, onCleanup } from 'solid-js';
 import argon2Worker from '@/utils/argon2-worker?worker&inline';
+import wasmUrl from '@phi-ag/argon2/argon2.wasm?url';
 
 import type { EncryptedPayload, Argon2WorkerMessage, Argon2WorkerResponse } from '@/types/encryption';
 import { setIsDecrypted } from '@/stores/state';
@@ -47,6 +48,39 @@ function shakeElement(el: HTMLElement): void {
   el.classList.remove('motion-safe:update-fast:animate-[shake_0.35s_ease-in-out]');
   void el.offsetHeight; // 强制 reflow
   el.classList.add('motion-safe:update-fast:animate-[shake_0.35s_ease-in-out]');
+}
+
+// === WASM 预加载 ===
+
+// 模块级标记：整个页面生命周期内只预加载一次
+let wasmPreloaded = false;
+
+/**
+ * 向 <head> 注入 <link rel="preload">，让浏览器提前下载 Argon2 WASM。
+ *
+ * 设计动机：
+ * - Worker 仅在首次解密时创建，首次解密要等 WASM 下载 + 编译，冷启动延迟明显
+ * - 用户一旦开始在密码框输入即表达解密意图，此刻预下载最划算
+ * - 只做 link 级预加载，不触达 Worker 协议，零侵入、零破坏
+ *
+ * 幂等性：
+ * - 模块级 wasmPreloaded 标记防止重复插入
+ * - 配合事件监听器的 { once: true } 形成双重保护
+ *
+ * 缓存复用：
+ * - crossorigin="anonymous" 与 Worker 内部 fetch(url) 的默认 CORS 模式兼容
+ * - Vite 对同一个 ?url 资源合并输出，此处 wasmUrl 与 Worker 中的 wasm 指向同一文件
+ */
+function preloadArgon2Wasm(): void {
+  if (wasmPreloaded) return;
+  wasmPreloaded = true;
+
+  const link = document.createElement('link');
+  link.rel = 'preload';
+  link.as = 'fetch';
+  link.href = wasmUrl;
+  link.crossOrigin = 'anonymous';
+  document.head.appendChild(link);
 }
 
 // === 解密相关纯函数 ===
@@ -367,16 +401,27 @@ export default function DecryptClient() {
       if (e.key === 'Enter') handleDecrypt();
     };
 
-    // 4. 绑定事件
-    dom.button.addEventListener('click', handleDecrypt);
-    dom.input.addEventListener('keydown', handleKeydown);
+    // 4. 用 AbortController 统一管理所有监听器的生命周期
+    const listenerAbort = new AbortController();
+    const { signal } = listenerAbort;
+
+    // 解密交互
+    dom.button.addEventListener('click', handleDecrypt, { signal });
+    dom.input.addEventListener('keydown', handleKeydown, { signal });
+
+    // WASM 预加载触发器：用户开始输入密码时（真实表达解密意图）下载 WASM
+    //   - 不监听 focus：dom.input.focus() 的自动聚焦会立即消耗 focus 事件，
+    //     导致预加载退化为"挂载即触发"，失去等待真实交互的意义
+    //   - input 事件同时覆盖手动输入和浏览器 autofill
+    //   - { once: true } + 函数内部幂等标记构成双重保护
+    dom.input.addEventListener('input', preloadArgon2Wasm, { signal, once: true });
+
     dom.input.focus();
 
-    // 5. 清理函数
+    // 5. 清理函数：一次 abort() 卸载所有监听器
     onCleanup(() => {
       setIsDecrypted(false);
-      dom.button.removeEventListener('click', handleDecrypt);
-      dom.input.removeEventListener('keydown', handleKeydown);
+      listenerAbort.abort();
       workerRef.current?.terminate();
     });
   });
