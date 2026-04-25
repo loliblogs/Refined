@@ -1,34 +1,416 @@
-/* Pagefind UI 自定义样式覆盖 */
-/* 必须在 @pagefind/component-ui/css 之后加载 */
+/* pagefind component-ui 自定义样式 — 替代上游 CSS */
 
-:root {
-  --pf-text: var(--color-primary);
-  --pf-text-secondary: var(--color-secondary);
-  --pf-text-muted: var(--color-muted);
-  --pf-background: var(--color-surface);
-  --pf-border: var(--color-line);
-  --pf-border-focus: var(--color-link);
-  --pf-skeleton: var(--color-skeleton);
-  --pf-skeleton-shine: var(--color-skeleton-shine);
-  --pf-hover: var(--color-hover);
-  --pf-mark: var(--color-link-hover);
+/* === 自定义元素基础 === */
 
-  --pf-outline-focus: var(--color-outline-focus);
-
-  --pf-font: var(--font-sans);
-
-  /* 14px -> 1rem */
-  --pf-zoom: calc(var(--base-zoom) * 16 / 14);
-  /* 12px -> 1rem */
-  --pf-summary-zoom: calc(var(--base-zoom) * 16 / 12);
+pagefind-input,
+pagefind-keyboard-hints,
+pagefind-results,
+pagefind-summary {
+  display: block;
+  box-sizing: border-box;
 }
+
+pagefind-config {
+  display: none;
+}
+
+/* === 工具属性 === */
+
+[data-pf-hidden] {
+  display: none !important;
+}
+
+[data-pf-suppressed] {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+[data-pf-sr-hidden] {
+  clip: rect(0 0 0 0) !important;
+  clip-path: inset(100%) !important;
+  height: 1px !important;
+  overflow: hidden !important;
+  position: absolute !important;
+  white-space: nowrap !important;
+  width: 1px !important;
+}
+
+[class^="pf-"][hidden],
+[class*=" pf-"][hidden] {
+  display: none;
+}
+
+/* === pagefind-input === */
+
+.pf-input-wrapper {
+  position: relative;
+}
+
+.pf-input-wrapper::before {
+  content: "";
+  position: absolute;
+  background-color: var(--color-muted);
+  width: 0.875rem;
+  height: 0.875rem;
+  top: calc((2.25rem - 0.875rem) / 2);
+  inset-inline-start: 0.625rem;
+  mask-image: url("@phosphor-icons/core/assets/regular/magnifying-glass.svg");
+  mask-size: 100%;
+  pointer-events: none;
+}
+
+.pf-input {
+  width: 100%;
+  height: 2.25rem;
+  padding: 0;
+  padding-inline-start: 2rem;
+  padding-inline-end: 2.25rem;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: 6px;
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--color-primary);
+  box-sizing: border-box;
+}
+
+.pf-input:focus-visible {
+  outline: none;
+  border-color: var(--color-outline-focus);
+  box-shadow: 0 0 0 2px var(--color-outline-focus);
+}
+
+.pf-input::placeholder {
+  color: var(--color-muted);
+}
+
+.pf-input::-webkit-search-decoration,
+.pf-input::-webkit-search-cancel-button,
+.pf-input::-webkit-search-results-button,
+.pf-input::-webkit-search-results-decoration {
+  display: none;
+  appearance: none;
+}
+
+.pf-input-clear {
+  position: absolute;
+  inset-inline-end: 0;
+  top: 0;
+  bottom: 0;
+  min-width: 2.75rem;
+  padding: 0 0.5rem;
+  background-color: transparent;
+  background-clip: padding-box;
+  border: 1px solid transparent;
+  font-size: 0.75rem;
+  color: var(--color-muted);
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.pf-input-clear:hover {
+  background-color: var(--color-hover);
+  color: var(--color-secondary);
+}
+
+.pf-input-clear:focus-visible {
+  outline: 2px solid var(--color-outline-focus);
+  outline-offset: 2px;
+}
+
+.pf-input-clear[data-pf-suppressed] {
+  display: none;
+}
+
+/* === pagefind-summary === */
+
+.pf-summary {
+  font-size: 0.875rem;
+  color: var(--color-muted);
+}
+
+/* === pagefind-keyboard-hints === */
+
+.pf-keyboard-hints {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.75rem;
+  color: var(--color-muted);
+  min-height: 1.25rem;
+}
+
+.pf-keyboard-hint {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.pf-keyboard-key {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.125rem;
+  height: 1.125rem;
+  padding: 0 0.25rem;
+  background: var(--color-hover);
+  border: 1px solid var(--color-soft);
+  border-radius: 3px;
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 0.75rem;
+  color: var(--color-secondary);
+}
+
+/* === pagefind-results === */
+
+.pf-results {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.pf-result {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.pf-result-card,
+.pf-heading-chip {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 0.625rem 0.75rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: 6px;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.pf-result-card {
+  flex-direction: row;
+  gap: 0.75rem;
+}
+
+.pf-result-card:hover,
+.pf-heading-chip:hover {
+  border-color: var(--color-link);
+  box-shadow: var(--shadow-md);
+}
+
+.pf-result-card:has(.pf-result-link:focus-visible),
+.pf-heading-chip:has(.pf-heading-link:focus-visible) {
+  border-color: var(--color-outline-focus);
+  box-shadow: 0 0 0 2px var(--color-outline-focus);
+}
+
+.pf-result-card:has([data-pf-selected]),
+.pf-heading-chip:has([data-pf-selected]) {
+  border-color: var(--color-line);
+  background: var(--color-hover);
+}
+
+.pf-result-image {
+  width: 4rem;
+  height: 3rem;
+  border-radius: 4px;
+  object-fit: cover;
+  background: var(--color-skeleton);
+  flex-shrink: 0;
+}
+
+.pf-result-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.pf-result-title {
+  font-size: 1rem;
+  font-weight: 500;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.pf-result-link {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.pf-result-link::after,
+.pf-heading-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+
+.pf-result-link:hover,
+.pf-heading-link:hover {
+  text-decoration: underline;
+}
+
+.pf-result-link:focus-visible,
+.pf-heading-link:focus-visible {
+  outline: none;
+}
+
+.pf-result-excerpt,
+.pf-heading-excerpt {
+  font-size: 0.875rem;
+  color: var(--color-secondary);
+  margin: 0.25rem 0 0 0;
+  line-height: 1.5;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pf-result-excerpt mark,
+.pf-heading-excerpt mark {
+  background: transparent;
+  font-weight: 500;
+  color: var(--color-link-hover);
+}
+
+/* === 子标题结果 === */
+
+.pf-heading-chips {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  margin: 0;
+  padding: 0;
+  padding-inline-start: 0.75rem;
+  list-style: none;
+}
+
+.pf-heading-link {
+  color: var(--color-primary);
+  font-weight: 500;
+  font-size: 0.875rem;
+  text-decoration: none;
+  line-height: 1.5;
+}
+
+.pf-heading-link::before {
+  content: "#";
+  color: var(--color-muted);
+  margin-inline-end: 0.25rem;
+}
+
+/* === Skeleton loading === */
+
+.pf-skeleton {
+  background: var(--color-skeleton);
+  border-radius: 4px;
+}
+
+.pf-skeleton-title {
+  height: 1rem;
+  width: 60%;
+  margin-bottom: 0.5rem;
+}
+
+.pf-skeleton-excerpt {
+  height: 1rem;
+  width: 90%;
+}
+
+.pf-skeleton-image {
+  width: 4rem;
+  height: 3rem;
+  flex-shrink: 0;
+}
+
+/* === 空状态 === */
+
+.pf-empty {
+  text-align: center;
+  padding: 2rem 1rem;
+  color: var(--color-muted);
+}
+
+.pf-empty-icon {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  opacity: 0.4;
+}
+
+.pf-empty-text {
+  font-size: 1rem;
+  margin: 0;
+}
+
+/* === 错误状态 === */
+
+.pf-error {
+  padding: 0.75rem 1rem;
+  background: color-mix(in srgb, var(--color-red) 8%, var(--color-surface));
+  border: 1px solid color-mix(in srgb, var(--color-red) 25%, var(--color-surface));
+  border-radius: 6px;
+  color: var(--color-red);
+  font-size: 1rem;
+}
+
+.pf-error strong {
+  font-weight: 600;
+}
+
+.pf-error small {
+  display: block;
+  margin-top: 0.25rem;
+  color: var(--color-red);
+  font-size: 0.75rem;
+}
+
+/* === 动画 === */
+
+@media (prefers-reduced-motion: no-preference) {
+  .pf-skeleton {
+    background: linear-gradient(
+      90deg,
+      var(--color-skeleton) 25%,
+      var(--color-skeleton-shine) 50%,
+      var(--color-skeleton) 75%
+    );
+    background-size: 200% 100%;
+    animation: pf-shimmer 1.5s infinite;
+  }
+
+  @keyframes pf-shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+}
+
+/* === 无障碍 === */
 
 @media (forced-colors: active) {
   pagefind-results mark {
     color: Highlight !important;
   }
 
-  .pf-input-wrapper:before, .pf-searchbox-input-wrapper:before {
+  .pf-input-wrapper::before {
     background-color: GrayText !important;
+  }
+
+  .pf-input:focus-visible,
+  .pf-input-clear:focus-visible,
+  .pf-result-card:has(.pf-result-link:focus-visible),
+  .pf-heading-chip:has(.pf-heading-link:focus-visible) {
+    outline: 2px solid CanvasText;
+  }
+}
+
+@media (hover: none) {
+  pagefind-keyboard-hints,
+  .pf-keyboard-hints {
+    display: none;
   }
 }

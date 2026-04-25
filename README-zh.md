@@ -47,20 +47,20 @@ pnpm sync
 
 更多命令见下表：
 
-| 命令                     | 作用                                  |
-|:-----------------------|:------------------------------------|
-| `pnpm install`         | 安装依赖                                |
-| `pnpm dev`             | 在 `localhost:3000` 启动本地开发服务器        |
-| `pnpm dev:full`        | 以完全冷启动（无缓存）启动开发服务器                  |
-| `pnpm build`           | 构建生产站点到 `./dist/`                   |
-| `pnpm build:full`      | 完整清理构建（忽略缓存）到 `./dist/`              |
-| `pnpm sync`            | 同步 Astro 生成的类型                      |
-| `pnpm preview`         | 在本地 `localhost:4321` 预览构建产物         |
-| `pnpm typecheck`       | 通过 Astro 运行类型检查（包含 `.astro` 文件！）    |
-| `pnpm lint`            | 使用 ESLint 检查项目文件                    |
-| `pnpm lint:fix`        | 自动修复可修复的 ESLint 问题                  |
-| `pnpm astro ...`       | 运行 `astro add`、`astro db` 等 CLI 命令  |
-| `pnpm astro -- --help` | 查看 Astro CLI 帮助                     |
+| 命令                     | 作用                                 |
+|:-----------------------|:-----------------------------------|
+| `pnpm install`         | 安装依赖                               |
+| `pnpm dev`             | 在 `localhost:3000` 启动本地开发服务器       |
+| `pnpm dev:full`        | 以完全冷启动（无缓存）启动开发服务器                 |
+| `pnpm build`           | 构建生产站点到 `./dist/`                  |
+| `pnpm build:full`      | 完整清理构建（忽略缓存）到 `./dist/`            |
+| `pnpm sync`            | 同步 Astro 生成的类型                     |
+| `pnpm preview`         | 在本地 `localhost:4321` 预览构建产物        |
+| `pnpm typecheck`       | 通过 Astro 运行类型检查（包含 `.astro` 文件！）   |
+| `pnpm lint`            | 使用 ESLint 检查项目文件                   |
+| `pnpm lint:fix`        | 自动修复可修复的 ESLint 问题                 |
+| `pnpm astro ...`       | 运行 `astro add`、`astro db` 等 CLI 命令 |
+| `pnpm astro -- --help` | 查看 Astro CLI 帮助                    |
 
 **CI 说明：** GitHub Actions 工作流会检测提交标题（首行）中的 `[full]` 并运行 `pnpm build:full` 而非 `pnpm build`。这很少需要——仅用于边界情况，例如 `.md` 与 `.mdx` 之间重命名导致旧缓存引发构建失败时：
 

@@ -34,15 +34,16 @@ export default function PagefindSearch() {
       window.history.replaceState({}, '', newUrl);
     };
 
-    // 等待 OverlayScrollbars 完成 DOM 操作后再触发初始搜索，
+    // 等待 OverlayScrollbars 完成 DOM 操作后再触发初始搜索和聚焦，
     // 否则 <pagefind-input> 的 connectedCallback 会重建输入框并清空值
-    if (initialQuery) {
-      createEffect(() => {
-        if (isScrollbarReady()) {
+    createEffect(() => {
+      if (isScrollbarReady()) {
+        if (initialQuery) {
           instance.triggerSearch(initialQuery);
         }
-      });
-    }
+        document.querySelector<HTMLInputElement>('.pf-input')?.focus();
+      }
+    });
 
     instance.on('search', handleInput);
 

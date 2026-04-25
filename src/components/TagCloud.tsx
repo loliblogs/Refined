@@ -1,3 +1,4 @@
+import { navigate } from 'astro:transitions/client';
 import { onMount, onCleanup } from 'solid-js';
 import type { Component } from 'solid-js';
 import chroma from 'chroma-js';
@@ -47,7 +48,7 @@ const TagCloud: Component<Props> = (props) => {
       classes: 'transition-transform duration-200 hover:scale-110 cursor-pointer',
       // 点击事件
       click: (item) => {
-        window.location.href = item[2] as string;
+        void navigate(item[2] as string);
       },
     };
 

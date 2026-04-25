@@ -72,12 +72,11 @@ async function buildPostlinkMap(config: AstroConfig): Promise<void> {
     const content = fs.readFileSync(filePath, 'utf-8');
     const { data: frontmatter } = matter(content);
 
-    // 计算 slug 和 URL（使用 collection 内完整路径，对齐 Astro 6 id 生成逻辑）
+    // 计算 slug（使用 collection 内完整路径，对齐 Astro 6 id 生成逻辑）
     const slug = computeSlug(pathInCollection, frontmatter);
-    const url = buildPostUrl(slug, collection, base);
 
     // key = collection/id（与 PostLink 参数格式一致）
-    postlinkMap[relativePath] = url;
+    postlinkMap[relativePath] = buildPostUrl(slug, collection, base);
   }
 }
 

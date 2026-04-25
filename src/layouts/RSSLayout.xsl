@@ -4,8 +4,8 @@
   <xsl:template match="/">
     <html lang="zh-CN" class="h-full scroll-smooth">
       <head>
-        <meta charset="UTF-8"></meta>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title><xsl:value-of select="rss/channel/title" /></title>
         <!-- @STYLESHEETS@ -->
       </head>

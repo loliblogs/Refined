@@ -5,8 +5,14 @@
 @import "./typography.css";
 
 /* 自定义变体 - 无障碍支持 */
-@custom-variant update-fast (@media not (update: slow));
 @custom-variant reduce-transparency (@media (prefers-reduced-transparency: reduce));
+@custom-variant update-fast {
+  @media not all and (update: slow) {
+    @media not all and (update: none) {
+      @slot;
+    }
+  }
+}
 
 /* Tailwind CSS v4 Theme Configuration */
 @theme {
@@ -69,7 +75,6 @@
 :root {
   /* Base font size for responsive scaling */
   --base-font-size: clamp(1rem, 0.85rem + 0.15vw, 1.25rem);
-  --base-zoom: calc(var(--base-font-size) / 1rem);
   
   /* 
    * 视口高度统一管理 - "消除特殊情况" - Linus

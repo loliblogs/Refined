@@ -23,9 +23,9 @@
     "online:netlify": "pnpx --config.trust-policy= --package netlify-cli@latest netlify deploy --no-build --prod"
   },
   "dependencies": {
-    "@astrojs/compiler-rs": "^0.1.6",
+    "@astrojs/compiler-rs": "^0.1.10",
     "@astrojs/db": "^0.20.1",
-    "@astrojs/mdx": "^5.0.3",
+    "@astrojs/mdx": "^5.0.4",
     "@astrojs/rss": "^4.0.18",
     "@astrojs/sitemap": "^3.7.2",
     "@astrojs/solid-js": "^6.0.1",
@@ -41,8 +41,8 @@
     "@phi-ag/argon2": "^0.5.21",
     "@phosphor-icons/core": "^2.1.1",
     "@playform/compress": "^0.2.3",
-    "@tailwindcss/vite": "^4.2.2",
-    "astro": "^6.1.5",
+    "@tailwindcss/vite": "^4.2.4",
+    "astro": "^6.1.9",
     "astro-expressive-code": "^0.41.7",
     "cheerio": "^1.2.0",
     "chroma-js": "^3.2.0",
@@ -68,9 +68,9 @@
     "remark-github-admonitions-to-directives": "^2.1.0",
     "sharp": "^0.34.5",
     "solid-js": "^1.9.12",
-    "tailwindcss": "^4.2.2",
-    "terser": "^5.46.1",
-    "typescript": "^6.0.2",
+    "tailwindcss": "^4.2.4",
+    "terser": "^5.46.2",
+    "typescript": "^6.0.3",
     "unified": "^11.0.5",
     "unist-builder": "^4.0.0",
     "unist-util-visit": "^5.1.0",
@@ -90,8 +90,8 @@
     "@types/mdast": "^4.0.4",
     "@types/node": "^25.6.0",
     "@types/wordcloud": "^1.2.2",
-    "@typescript-eslint/parser": "^8.58.1",
-    "eslint": "^10.2.0",
+    "@typescript-eslint/parser": "^8.59.0",
+    "eslint": "^10.2.1",
     "eslint-interactive": "^13.0.1",
     "eslint-mdx": "^3.7.0",
     "eslint-plugin-astro": "^1.7.0",
@@ -104,7 +104,7 @@
     "remark-math": "^6.0.0",
     "remark-parse": "^11.0.0",
     "remark-stringify": "^11.0.0",
-    "typescript-eslint": "^8.58.1"
+    "typescript-eslint": "^8.59.0"
   },
   "remarkConfig": {
     "plugins": [
@@ -116,5 +116,5 @@
       "remark-gfm"
     ]
   },
-  "packageManager": "pnpm@10.33.0"
+  "packageManager": "pnpm@10.33.2"
 }

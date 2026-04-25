@@ -3,6 +3,7 @@
  * 不渲染DOM，只增强已存在的静态HTML
  */
 
+import { navigate } from 'astro:transitions/client';
 import { createSignal, createEffect, onMount, onCleanup, untrack } from 'solid-js';
 
 import { isDecrypted } from '@/stores/state';
@@ -402,7 +403,7 @@ export default function SearchBoxClient(props: SearchBoxClientProps) {
         case 'Enter':
           e.preventDefault();
           if (selectedIndex() === 0) {
-            window.location.href = `${props.searchUrl}?q=${encodeURIComponent(keyword())}`;
+            void navigate(`${props.searchUrl}?q=${encodeURIComponent(keyword())}`);
           } else {
             const targetResult = results[selectedIndex() - 1];
             if (targetResult) {
