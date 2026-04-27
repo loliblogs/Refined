@@ -87,7 +87,6 @@ export default defineConfig({
       target: ['chrome99', 'edge99', 'firefox97', 'safari15'],
       sourcemap: true, // 开源项目，随便看！
       rollupOptions: {
-        external: ['@astrojs/solid-js'],
         output: {
           // 合并 solid-js 运行时、状态管理到单一 chunk，减少关键路径串行深度
           manualChunks(id) {
@@ -110,7 +109,7 @@ export default defineConfig({
       transformer: 'lightningcss',
     },
     plugins: [
-      tailwindcss(),
+      tailwindcss({ optimize: false }),
     ],
     resolve: {
       alias: {
