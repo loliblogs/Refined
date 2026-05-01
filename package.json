@@ -24,13 +24,12 @@
   },
   "dependencies": {
     "@astrojs/compiler-rs": "^0.1.10",
-    "@astrojs/db": "^0.20.1",
+    "@astrojs/db": "^0.21.1",
     "@astrojs/mdx": "^5.0.4",
     "@astrojs/rss": "^4.0.18",
     "@astrojs/sitemap": "^3.7.2",
     "@astrojs/solid-js": "^6.0.1",
     "@astrojs/ts-plugin": "^1.10.7",
-    "@babel/preset-typescript": "^7.28.5",
     "@expressive-code/plugin-collapsible-sections": "^0.41.7",
     "@expressive-code/plugin-line-numbers": "^0.41.7",
     "@fontsource-variable/jetbrains-mono": "^5.2.8",
@@ -42,7 +41,7 @@
     "@phosphor-icons/core": "^2.1.1",
     "@playform/compress": "^0.2.3",
     "@tailwindcss/vite": "^4.2.4",
-    "astro": "^6.1.9",
+    "astro": "^6.2.1",
     "astro-expressive-code": "^0.41.7",
     "cheerio": "^1.2.0",
     "chroma-js": "^3.2.0",
@@ -78,9 +77,9 @@
     "wordcloud": "^1.2.3"
   },
   "devDependencies": {
-    "@astrojs/check": "^0.9.8",
-    "@astrojs/language-server": "^2.16.6",
-    "@eslint/css": "^1.1.0",
+    "@astrojs/check": "^0.9.9",
+    "@astrojs/language-server": "^2.16.7",
+    "@eslint/css": "^1.2.0",
     "@eslint/js": "^10.0.1",
     "@stylistic/eslint-plugin": "^5.10.0",
     "@tailwindcss/language-server": "^0.14.29",
@@ -90,12 +89,12 @@
     "@types/mdast": "^4.0.4",
     "@types/node": "^25.6.0",
     "@types/wordcloud": "^1.2.2",
-    "@typescript-eslint/parser": "^8.59.0",
+    "@typescript-eslint/parser": "^8.59.1",
     "eslint": "^10.2.1",
     "eslint-interactive": "^13.0.1",
     "eslint-mdx": "^3.7.0",
     "eslint-plugin-astro": "^1.7.0",
-    "eslint-plugin-better-tailwindcss": "^4.4.1",
+    "eslint-plugin-better-tailwindcss": "^4.5.0",
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-mdx": "^3.7.0",
     "eslint-plugin-solid": "^0.14.5",
@@ -104,7 +103,8 @@
     "remark-math": "^6.0.0",
     "remark-parse": "^11.0.0",
     "remark-stringify": "^11.0.0",
-    "typescript-eslint": "^8.59.0"
+    "tailwind-csstree": "^0.3.1",
+    "typescript-eslint": "^8.59.1"
   },
   "remarkConfig": {
     "plugins": [

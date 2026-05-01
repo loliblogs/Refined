@@ -99,9 +99,9 @@
   --color-link-hover: #0256c7;
   
   /* 滚动条样式 - noscript.css 和 os-theme-modern 共用 */
-  --scrollbar-size: 0.375rem;
+  --scrollbar-size: 0.4rem;
   --scrollbar-size-hover: 0.5rem;
-  --scrollbar-thumb-radius: 0.25rem;
+  --scrollbar-thumb-radius: 0.2rem;
   --scrollbar-thumb: #a0a0a0;
   --scrollbar-thumb-hover: var(--color-secondary);
   --scrollbar-thumb-active: var(--color-primary);
@@ -244,7 +244,6 @@
 .os-theme-modern {
   /* 尺寸 */
   --os-size: var(--scrollbar-size);
-  --os-size-hover: var(--scrollbar-size-hover);
   --os-padding-perpendicular: 0;
   --os-padding-axis: 0;
 
@@ -276,7 +275,7 @@
  *
  * 无 JS 时的 smooth 由 noscript.css 处理（不会有初始化打断问题）
  */
- [data-overlayscrollbars-viewport] {
+[data-overlayscrollbars-viewport] {
   scroll-behavior: smooth;
 }
 

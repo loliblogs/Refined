@@ -10,6 +10,8 @@ import * as mdx from 'eslint-plugin-mdx';
 import * as mdxParser from 'eslint-mdx';
 import tailwindcss from 'eslint-plugin-better-tailwindcss';
 
+import { tailwind4 } from 'tailwind-csstree';
+
 const stylisticConfig = stylistic.configs.customize({
   jsx: true,
   quotes: 'single',
@@ -44,8 +46,16 @@ export default defineConfig(
       },
     },
   },
-  eslint.configs.recommended,
-  css.configs.recommended,
+  {
+    files: ['**/*.css'],
+    plugins: {
+      css,
+    },
+    language: 'css/css',
+    languageOptions: {
+      customSyntax: tailwind4,
+    },
+  },
   {
     files: ['**/*.{md,mdx}'],
     languageOptions: {
@@ -73,6 +83,7 @@ export default defineConfig(
   },
   {
     extends: [
+      eslint.configs.recommended,
       tseslint.configs.strictTypeChecked,
       tseslint.configs.stylisticTypeChecked,
       astro.configs['flat/recommended'],

@@ -222,7 +222,7 @@ const currentUrl = new URL(pageContext.path, Astro.site).toString();
           aria-label="切换菜单"
         />
 
-        <Navigation collection={pageContext.collection} />
+        <Navigation pageContext={pageContext} />
 
         {Astro.slots.has('sidebar')
           ? (

@@ -3,19 +3,19 @@ import Files from '@phosphor-icons/core/assets/regular/files.svg';
 import List from '@phosphor-icons/core/assets/regular/list.svg';
 
 import { getSiteConfig } from '@/config/site.config';
-import type { CollectionName } from '@/types/content';
+import type { PageContext } from '@/types/content';
 import { getBasePath, getFullPath, isRootPath } from '@/utils/collection-paths';
 
 import NavigationController from './NavigationController';
 
 interface Props {
-  collection: CollectionName;
+  pageContext: PageContext;
 }
 
-const { collection } = Astro.props;
-const config = getSiteConfig(collection);
-const homePath = getBasePath(collection);
-const currentPath = Astro.url.pathname;
+const { pageContext } = Astro.props;
+const config = getSiteConfig(pageContext.collection);
+const homePath = getBasePath(pageContext.collection);
+const currentPath = pageContext.path;
 
 // 静态计算导航项是否激活
 function isNavActive(path: string, recursive: boolean): boolean {

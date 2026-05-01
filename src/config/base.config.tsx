@@ -158,10 +158,10 @@ export const postConfig: SiteConfig = {
     <a
       href="https://icp.gov.moe/?keyword=20252105"
       target="_blank"
-      class={`
+      class="
         text-muted
         hover:text-primary
-      `}
+      "
     >
       <span class="underline">萌ICP备20252105号</span>
     </a>
