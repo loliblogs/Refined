@@ -1,6 +1,6 @@
 - 请使用tailwindcss v4，非必要不编写css，禁止使用@apply语法，禁止使用\<style\>内联，如果theme支持定义类型的情况下禁止@blabla-\[--var-blabla]这种语法，应该直接使用覆盖后的类如color-primary，下面是正确的global.css样例：
 
-```plain
+```css
 @theme {
   color-primary: var(--color-primary);
 }

@@ -159,8 +159,8 @@ export default defineConfig({
     contentIntellisense: true,
     rustCompiler: true,
     queuedRendering: {
-      enabled: false,
-      contentCache: false,
+      enabled: true,
+      contentCache: true,
     },
   },
   env: {
