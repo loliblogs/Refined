@@ -1,5 +1,8 @@
 /* Markdown Enhanced Styles - Only what's truly needed */
 
+[data-markdown] > :first-child { margin-top: 0; }
+[data-markdown] > :last-child { margin-bottom: 0; }
+
 /* 标题基础样式 */
 [data-markdown] :is(h1, h2, h3, h4, h5, h6) {
   scroll-margin-top: 1rem;

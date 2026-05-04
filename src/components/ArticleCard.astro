@@ -45,10 +45,10 @@ const excerptLink = config.excerpt_link;
 <article
   class:list={[
     `
-      pb-10
+      pb-8
       max-lg:pb-5
     `,
-    { '-mt-px border-t border-line pt-10 max-lg:pt-5': !isFirst },
+    { '-mt-px border-t border-line pt-8 max-lg:pt-5': !isFirst },
   ]}
 >
   {/* 文章头部 */}
@@ -133,7 +133,7 @@ const excerptLink = config.excerpt_link;
 
   {/* 文章内容/摘要 */}
   {showExcerpt && (
-    <div class="mt-5">
+    <div class="mt-6">
       <div class="mb-4 leading-relaxed text-secondary">
         {excerptText
           ? (
