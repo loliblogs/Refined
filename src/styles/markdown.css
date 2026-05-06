@@ -4,7 +4,7 @@
 [data-markdown] > :last-child { margin-bottom: 0; }
 
 /* 标题基础样式 */
-[data-markdown] :is(h1, h2, h3, h4, h5, h6) {
+[data-markdown] :where(h1, h2, h3, h4, h5, h6) {
   scroll-margin-top: 1rem;
   margin-bottom: 1rem;
   font-weight: 600;
@@ -15,11 +15,11 @@
 [data-markdown] h2 { margin-top: 2rem; }          /* 32px - 章节分隔 */
 [data-markdown] h3 { margin-top: 1.5rem; }        /* 24px */
 [data-markdown] h4 { margin-top: 1.25rem; }       /* 20px */
-[data-markdown] :is(h5, h6) { margin-top: 1rem; } /* 16px */
+[data-markdown] :where(h5, h6) { margin-top: 1rem; } /* 16px */
 
 /* GitHub-style heading borders - 用 em 保持与字体的比例 */
-[data-markdown] :is(h1, h2) {
-  padding-bottom: 0.25em;
+[data-markdown] :where(h1, h2) {
+  padding-bottom: 0.5em;
   border-bottom: 1px solid var(--color-line);
 }
 
@@ -28,7 +28,7 @@
 }
 
 /* Paragraphs & Block Elements */
-[data-markdown] :is(p, blockquote, table, details, dl, .expressive-code) {
+[data-markdown] :where(p, blockquote, table, details, ul, ol, dl, .expressive-code) {
   margin-top: 0;
   margin-bottom: 1em;
 }
@@ -58,9 +58,7 @@
 }
 
 /* Lists */
-[data-markdown] :is(ul, ol) {
-  margin-top: 0;
-  margin-bottom: 0.5em;
+[data-markdown] :where(ul, ol) {
   padding-left: 1.25em;
 }
 
@@ -69,7 +67,7 @@
 }
 
 [data-markdown] li {
-  margin-top: 0.25em;
+  margin-block: 0.25em;
 }
 
 [data-markdown] ul {
@@ -119,7 +117,7 @@
 }
 
 /* Inline Code & Sample Output */
-[data-markdown] :is(code, samp) {
+[data-markdown] :where(code, samp) {
   font-family: var(--font-mono), monospace;
   color: var(--color-primary);
   background-color: var(--color-code);
@@ -327,7 +325,7 @@
 [data-markdown] .footnotes {
   margin-top: 3em;
   padding-top: 1em;
-  border-top: 2px solid var(--color-line);
+  border-top: 2px solid var(--color-soft);
   font-size: 0.875rem;
   color: var(--color-secondary);
 }
@@ -339,6 +337,10 @@
   display: block;
   margin-bottom: 0.5em;
 }
+
+[data-markdown] .footnotes ol li { margin-block: 0.5em; }
+[data-markdown] .footnotes ol li > :first-child { margin-top: 0; }
+[data-markdown] .footnotes ol li > :last-child { margin-bottom: 0; }
 
 /*
  * 脚注返回按钮 - 双伪元素方案
@@ -375,7 +377,7 @@
 
 /* 移动端导航栏高度补偿 */
 @media (max-width: 1024px) {
-  [data-markdown] :is(h1, h2, h3, h4, h5, h6),
+  [data-markdown] :where(h1, h2, h3, h4, h5, h6),
   [data-markdown] a {
     scroll-margin-top: 4rem;
   }

@@ -2,8 +2,8 @@
 /* Typography - moved from global.css */
 
 @layer base {
-  :is(h1, h2, h3, h4, h5, h6) {
-    line-height: 1.5;
+  :where(h1, h2, h3, h4, h5, h6) {
+    line-height: 1.25;
   }
 
   h1 {
