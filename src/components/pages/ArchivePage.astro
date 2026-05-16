@@ -194,7 +194,7 @@ const buttonClass = 'rounded-md border border-line px-3 py-1 text-sm transition-
             print:hidden
           "
           >
-            <DotBold width="1rem" height="1rem" />
+            <DotBold width="1rem" height="1rem" aria-hidden="true" />
           </span>
           显示
           <span data-role="count-visible">{timelinePosts.length}</span>
@@ -226,7 +226,7 @@ const buttonClass = 'rounded-md border border-line px-3 py-1 text-sm transition-
       <details class="relative" data-role="custom">
         <summary class:list={['flex cursor-pointer list-none items-center gap-1', buttonClass]}>
           <span class="mr-1">自定义</span>
-          <CaretDown width="0.75rem" height="0.75rem" />
+          <CaretDown width="0.75rem" height="0.75rem" aria-hidden="true" />
         </summary>
         <div
           data-role="custom-panel"
@@ -261,10 +261,7 @@ const buttonClass = 'rounded-md border border-line px-3 py-1 text-sm transition-
     <div class="space-y-6 contain-content" data-role="list">
       {Array.from(monthGroups, ([yearMonthKey, posts]) => (
         <section data-role="section" data-ym={yearMonthKey}>
-          <h2
-            id={`archive-${yearMonthKey}`}
-            class="mb-3 text-lg font-medium text-primary"
-          >
+          <h2 class="mb-3 text-lg font-medium text-primary">
             {Math.floor(yearMonthKey / 100)}
             年
             {yearMonthKey % 100}

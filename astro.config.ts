@@ -1,4 +1,4 @@
-import { defineConfig, envField } from 'astro/config';
+import { defineConfig, svgoOptimizer, envField } from 'astro/config';
 import solidJs from '@astrojs/solid-js';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
@@ -37,7 +37,7 @@ export default defineConfig({
     HTML: {
       'html-minifier-terser': {
         minifyCSS: { targets: browserslistToTargets(['chrome 99', 'edge 99', 'firefox 97', 'safari 15']) },
-        minifySVG: true,
+        minifySVG: false,
         ignoreCustomFragments: [
           /<mjx-spacer[\s\S]*?<\/mjx-spacer>/,
         ],
@@ -162,6 +162,18 @@ export default defineConfig({
       enabled: true,
       contentCache: true,
     },
+    svgOptimizer: svgoOptimizer({
+      plugins: [
+        'preset-default',
+        'removeXMLNS',
+        {
+          name: 'removeXlink',
+          params: {
+            includeLegacy: true,
+          },
+        },
+      ],
+    }),
   },
   env: {
     schema: {

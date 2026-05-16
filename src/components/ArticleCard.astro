@@ -84,7 +84,7 @@ const excerptLink = config.excerpt_link;
           forced-colors:hover:text-[Highlight]
         "
       >
-        <Calendar width="1rem" height="1rem" />
+        <Calendar width="1rem" height="1rem" role="img" aria-label="发布日期" />
         <time datetime={post.date.toISOString()} class="ml-1.5">
           {formatDate(post.date)}
         </time>
@@ -97,7 +97,7 @@ const excerptLink = config.excerpt_link;
             duration-200
           "
         >
-          <ArrowClockwise width="1rem" height="1rem" />
+          <ArrowClockwise width="1rem" height="1rem" role="img" aria-label="更新日期" />
           <time datetime={post.updated.toISOString()} class="ml-1.5">
             {formatDate(post.updated)}
           </time>
@@ -107,7 +107,7 @@ const excerptLink = config.excerpt_link;
       {/* 标签 */}
       {post.tags.length > 0 && (
         <div class="flex list-none items-center overflow-hidden text-muted">
-          <Tag width="1rem" height="1rem" />
+          <Tag width="1rem" height="1rem" role="img" aria-label="标签" />
           {post.tags.map((tag, tagIndex) => (
             <>
               <a

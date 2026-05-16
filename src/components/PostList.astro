@@ -39,14 +39,14 @@ const { posts, showExcerpt = true, collection } = Astro.props;
 
       <div class="mb-3 flex items-center gap-4 text-sm text-secondary">
         <div class="flex items-center gap-1.5">
-          <CalendarFill width="1rem" height="1rem" />
+          <CalendarFill width="1rem" height="1rem" role="img" aria-label="发布日期" />
           <time datetime={post.date.toISOString()}>
             {formatDate(post.date)}
           </time>
         </div>
 
         <div class="flex items-center gap-1.5">
-          <UserFill width="1rem" height="1rem" />
+          <UserFill width="1rem" height="1rem" role="img" aria-label="作者" />
           <span>{post.author}</span>
         </div>
       </div>

@@ -77,10 +77,12 @@ const nextUrl = currentPage === lastPage ? undefined : getPageUrl(currentPage + 
 ---
 
 {showPagination && (
-  <nav class:list={[
-    'mt-8 flex items-center justify-center gap-1',
-    className,
-  ]}
+  <nav
+    aria-label="分页导航"
+    class:list={[
+      'mt-8 flex items-center justify-center gap-1',
+      className,
+    ]}
   >
     {/* 上一页按钮 */}
     {prevUrl
@@ -96,7 +98,7 @@ const nextUrl = currentPage === lastPage ? undefined : getPageUrl(currentPage + 
             "
             aria-label={prevText}
           >
-            <ArrowLeft width="1rem" height="1rem" />
+            <ArrowLeft width="1rem" height="1rem" aria-hidden="true" />
             <span class="
               ml-1 hidden
               sm:inline
@@ -112,7 +114,7 @@ const nextUrl = currentPage === lastPage ? undefined : getPageUrl(currentPage + 
             py-2 text-muted
           "
           >
-            <ArrowLeft width="1rem" height="1rem" />
+            <ArrowLeft width="1rem" height="1rem" aria-hidden="true" />
             <span class="
               ml-1 hidden
               sm:inline
@@ -129,7 +131,7 @@ const nextUrl = currentPage === lastPage ? undefined : getPageUrl(currentPage + 
         if (typeof pageNum === 'string') {
           return (
             <span class="p-2 text-muted select-none">
-              <DotsThree width="1rem" height="1rem" />
+              <DotsThree width="1rem" height="1rem" role="img" aria-label="更多页码" />
             </span>
           );
         }
@@ -188,7 +190,7 @@ const nextUrl = currentPage === lastPage ? undefined : getPageUrl(currentPage + 
             >
               {nextText}
             </span>
-            <ArrowRight width="1rem" height="1rem" />
+            <ArrowRight width="1rem" height="1rem" aria-hidden="true" />
           </a>
         )
       : (
@@ -204,7 +206,7 @@ const nextUrl = currentPage === lastPage ? undefined : getPageUrl(currentPage + 
             >
               {nextText}
             </span>
-            <ArrowRight width="1rem" height="1rem" />
+            <ArrowRight width="1rem" height="1rem" aria-hidden="true" />
           </span>
         )}
   </nav>

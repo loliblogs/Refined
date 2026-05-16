@@ -29,12 +29,12 @@ const CustomFooter = config.footer;
 >
   <div class="flex flex-wrap items-center justify-center gap-1">
     <span class="flex items-center gap-1">
-      <Copyright width="0.75rem" height="0.75rem" />
+      <Copyright width="0.75rem" height="0.75rem" role="img" aria-label="版权" />
       <span>{currentYear}</span>
       <span>{config.title}</span>
     </span>
     <span>
-      <LineVerticalBold width="1rem" height="1rem" />
+      <LineVerticalBold width="1rem" height="1rem" aria-hidden="true" />
     </span>
     <a
       href="https://astro.build"
@@ -48,7 +48,7 @@ const CustomFooter = config.footer;
     >
       <span class="underline">Astro</span>
     </a>
-    <span><XBold width="0.75rem" height="0.75rem" /></span>
+    <span><XBold width="0.75rem" height="0.75rem" role="img" aria-label="×" /></span>
     <a
       href="https://github.com/loliblogs/Refined"
       target="_blank"
@@ -63,7 +63,7 @@ const CustomFooter = config.footer;
     </a>
     {CustomFooter && (
       <span>
-        <LineVerticalBold width="1rem" height="1rem" />
+        <LineVerticalBold width="1rem" height="1rem" aria-hidden="true" />
       </span>
       <CustomFooter />
     )}

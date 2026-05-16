@@ -27,7 +27,7 @@ const { links } = Astro.props;
             title={link.title}
             aria-label={link.title ?? link.url}
           >
-            <Icon height="2.5rem" width="2.5rem" />
+            <Icon height="2.5rem" width="2.5rem" aria-hidden="true" />
           </a>
         );
       })}

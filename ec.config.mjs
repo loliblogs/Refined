@@ -1,4 +1,4 @@
-import { defineEcConfig } from 'astro-expressive-code';
+import { defineEcConfig, ensureColorContrastOnBackground } from 'astro-expressive-code';
 import { pluginCollapsibleSections } from '@expressive-code/plugin-collapsible-sections';
 import { pluginLineNumbers } from '@expressive-code/plugin-line-numbers';
 
@@ -11,7 +11,6 @@ export default defineEcConfig({
     showLineNumbers: true,
     wrap: true,
   },
-  useThemedSelectionColors: true,
   shiki: {
     langs: [ahk2],
     langAlias: {
@@ -23,6 +22,7 @@ export default defineEcConfig({
     codeFontFamily: 'var(--font-mono)',
     scrollbarThumbColor: 'var(--scrollbar-thumb)',
     scrollbarThumbHoverColor: 'var(--scrollbar-thumb-hover)',
+    gutterForeground: ({ theme, resolveSetting }) => ensureColorContrastOnBackground(theme.colors['editorLineNumber.foreground'], resolveSetting('codeBackground'), 4.5, 4.7),
     codePaddingInline: '0.875rem',
     codePaddingBlock: '0.75rem',
   },

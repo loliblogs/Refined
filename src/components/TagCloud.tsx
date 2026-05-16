@@ -10,18 +10,13 @@ export interface Props {
 
 const TagCloud: Component<Props> = (props) => {
   let cloudRef: HTMLDivElement | undefined;
+  const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
-  // OKLCH颜色生成函数
-  const generateAdaptiveColor = () => {
-    const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-
-    // 使用OKLCH颜色空间 - 感知均匀
-    return chroma.oklch(
-      isDark ? 0.75 + Math.random() * 0.15 : 0.35 + Math.random() * 0.15,  // L: 亮度
-      0.12 + Math.random() * 0.08,  // C: 色度
-      Math.random() * 360,          // H: 色相
-    ).hex();
-  };
+  const generateAdaptiveColor = () => chroma.oklch(
+    mediaQuery.matches ? 0.75 + Math.random() * 0.15 : 0.35 + Math.random() * 0.15,
+    0.12 + Math.random() * 0.08,
+    Math.random() * 360,
+  ).hex();
 
   const renderWordCloud = () => {
     if (!cloudRef) return;
@@ -33,7 +28,11 @@ const TagCloud: Component<Props> = (props) => {
 
     // 配置选项
     const options: WordCloud.Options = {
-      list: props.tags.filter(tag => tag[1] > 0),
+      list: props.tags.filter(tag => tag[1] > 0).map(tag => ({
+        word: tag[0],
+        weight: tag[1],
+        attributes: { tabindex: '0', role: 'link', 'data-url': tag[2] },
+      })),
       gridSize: 8,
       weightFactor: (weight: number) => {
         if (weight === 0) return 24;
@@ -44,12 +43,7 @@ const TagCloud: Component<Props> = (props) => {
       rotateRatio: 0,
       backgroundColor: 'transparent',
       shape: 'square',
-      // 为span元素添加类名
-      classes: 'transition-transform duration-200 hover:scale-110 cursor-pointer',
-      // 点击事件
-      click: (item) => {
-        void navigate(item[2] as string);
-      },
+      classes: 'cursor-pointer duration-200 transition-transform hover:scale-110',
     };
 
     // 调用WordCloud - 传入div而不是canvas，会自动使用span元素渲染
@@ -69,25 +63,39 @@ const TagCloud: Component<Props> = (props) => {
     });
   };
 
+  const handleNavigate = (e: Event) => {
+    const url = (e.target as HTMLElement).dataset.url;
+    if (!url) return;
+    e.preventDefault();
+    void navigate(url);
+  };
+
+  const handleKeydown = (e: KeyboardEvent) => {
+    if (e.key === 'Enter') handleNavigate(e);
+  };
+
   onMount(() => {
     if (!cloudRef) return;
+
+    const ac = new AbortController();
+    const { signal } = ac;
+
+    cloudRef.addEventListener('click', handleNavigate, { signal });
+    cloudRef.addEventListener('keydown', handleKeydown, { signal });
+    mediaQuery.addEventListener('change', handleMedia, { signal });
 
     let timeoutId = 0;
     const observer = new ResizeObserver(() => {
       clearTimeout(timeoutId);
-      // 首次 timeoutId 为 0 立即执行，后续 debounce 200ms
       timeoutId = window.setTimeout(handleResize, timeoutId ? 200 : 0);
     });
-    observer.observe(cloudRef); // 监听大小变化
-
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    mediaQuery.addEventListener('change', handleMedia); // 监听主题变化并重绘
+    observer.observe(cloudRef);
 
     onCleanup(() => {
-      clearTimeout(timeoutId);
       observer.disconnect();
-      mediaQuery.removeEventListener('change', handleMedia);
       WordCloud.stop();
+      ac.abort();
+      clearTimeout(timeoutId);
     });
   });
 
