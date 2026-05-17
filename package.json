@@ -66,7 +66,7 @@
     "remark-emoji": "^5.0.2",
     "remark-github-admonitions-to-directives": "^2.1.0",
     "sharp": "^0.34.5",
-    "solid-js": "^1.9.12",
+    "solid-js": "^1.9.13",
     "tailwindcss": "^4.3.0",
     "terser": "^5.47.1",
     "typescript": "^6.0.3",
@@ -91,7 +91,7 @@
     "@types/wordcloud": "^1.2.2",
     "@typescript-eslint/parser": "^8.59.3",
     "eslint": "^10.4.0",
-    "eslint-interactive": "^13.0.1",
+    "eslint-interactive": "^14.0.0",
     "eslint-mdx": "^3.7.0",
     "eslint-plugin-astro": "^1.7.0",
     "eslint-plugin-better-tailwindcss": "^4.5.0",
@@ -116,5 +116,5 @@
       "remark-gfm"
     ]
   },
-  "packageManager": "pnpm@11.1.1"
+  "packageManager": "pnpm@11.1.2"
 }

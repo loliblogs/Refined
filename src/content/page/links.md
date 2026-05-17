@@ -1,7 +1,7 @@
 ---
 title: 友情链接
 date: 2021-02-08
-updated: 2025-10-25
+updated: 2026-05-17
 ---
 
 # 友情链接
@@ -16,8 +16,6 @@ updated: 2025-10-25
 # 镜像网站
 
 主站（Powered by Workers）：[https://blog.lolifamily.js.org](https://blog.lolifamily.js.org)
-
-国内站（Powered by RainYun & Nginx）：[https://loliblogs.yearnstudio.cn](https://loliblogs.yearnstudio.cn)
 
 其他备份站：
 - [https://loliblogs.pages.dev](https://loliblogs.pages.dev)
