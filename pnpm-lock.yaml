@@ -5,7 +5,7 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
-  terser: ^5.47.1
+  terser: ^5.48.0
   html-minifier-terser: npm:html-minifier-next
   vite: ^7.3.3
   lightningcss: ^1.32.0
