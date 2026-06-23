@@ -59,7 +59,7 @@ More commands are listed in the table below.
 | `pnpm typecheck`       | Run type checks via Astro (Including .astro files!)         |
 | `pnpm lint`            | Lint project files with ESLint                              |
 | `pnpm lint:fix`        | Automatically fix fixable ESLint issues                     |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro db`               |
+| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro sync`               |
 | `pnpm astro -- --help` | Get help using the Astro CLI                                |
 
 **CI note:** The GitHub Actions workflow detects `[full]` in the commit title (first line) and runs `pnpm build:full` instead of `pnpm build`. This is rarely needed—only for edge cases like renaming files between `.md` and `.mdx` where stale cache causes build failures:
@@ -288,9 +288,9 @@ Comments are wired through `src/config/comments.config.tsx`. Despite the name, t
 
 Encrypted posts use a password‑derived key to protect the rendered HTML. On the server, a 32‑byte key is derived with Argon2id (memory 64MB, time 3, parallelism 1) from a per‑post password and a unique salt, then the content is encrypted using AES‑256‑GCM with a random 12‑byte nonce. The encrypted payload is emitted as JSON that includes the salt, nonce and ciphertext with an authentication tag. On the client, a small web worker derives the same key from the password and salt, and the browser WebCrypto API performs authenticated decryption locally.
 
-Implementation lives in `src/utils/encrypt-processor.ts` and `src/components/EncryptWrapper.astro` for server‑side encryption, `src/utils/argon2-worker.ts` and `src/components/DecryptClient.tsx` for client‑side derivation and decryption, `src/utils/argon2-cache.ts` for server key derivation and caching, and `db/config.ts` for the Astro DB table that stores encrypted derived keys and metadata. The post page integrates these pieces in `src/components/pages/PostPage.astro`.
+Implementation lives in `src/utils/encrypt-processor.ts` and `src/components/EncryptWrapper.astro` for server‑side encryption, `src/utils/argon2-worker.ts` and `src/components/DecryptClient.tsx` for client‑side derivation and decryption, `src/utils/argon2-cache.ts` for server key derivation and caching (which stores encrypted derived keys and metadata in a local SQLite database via Node's built-in `node:sqlite`). The post page integrates these pieces in `src/components/pages/PostPage.astro`.
 
-The Argon2 cache is a build‑time optimization only—losing it simply means recalculating keys (a few seconds of CPU time), with no data loss. The cache uses a local SQLite file (`file:.cache/persist.db`) with file‑level encryption via `encryptionKey` in the database URL. The additional AES‑GCM layer (derived from `SECRET_ENCRYPTION_PASSWORD` and `SECRET_ENCRYPTION_SALT`) is a conservative defense‑in‑depth measure; in practice, the file‑level encryption already protects the cache at rest. Do not configure a true remote database for this cache—latency and network reliability would defeat the purpose.
+The Argon2 cache is a build‑time optimization only—losing it simply means recalculating keys (a few seconds of CPU time), with no data loss. The cache uses a local SQLite file (`.cache/argon2-cache.db`) through Node's built‑in `node:sqlite`, with no extra dependencies. Sensitive fields are protected at the application layer: derived keys are sealed with AES‑256‑GCM and passwords are stored as HMAC‑SHA256 digests, both keyed via HKDF from `SECRET_ENCRYPTION_PASSWORD` and `SECRET_ENCRYPTION_SALT`—so the database file itself needs no file‑level encryption. In CI the `.cache` directory is persisted across builds via the Actions cache, so keys are computed once and reused.
 
 To mark a post as protected, set encryption fields in frontmatter. The password itself is never stored in content; instead, secrets supply it at build or runtime.
 
@@ -308,7 +308,7 @@ hint: The password you received privately.
 Body content will be encrypted at build time when served to the client.
 ```
 
-Server‑side secrets are read with `getSecret()` and must be provided via environment variables. On first install, the `postinstall` script attempts to copy `.env.example` to `.env` if `.env` is missing; otherwise copy it manually. Only `.env` is loaded locally. Define `SECRET_PASSWORDS`, `SECRET_ENCRYPTION_PASSWORD` and `SECRET_ENCRYPTION_SALT`. `SECRET_PASSWORDS` is a JSON object mapping `<collection>:<entry id>` to the clear‑text password used to derive the per‑post key; the entry id is the content slug without file extension (for example `src/content/post/encrypted-test.mdx` has the id `encrypted-test`). `SECRET_ENCRYPTION_PASSWORD` and `SECRET_ENCRYPTION_SALT` are used to HKDF‑derive an AES‑GCM key that encrypts derived keys at rest in the Astro DB cache.
+Server‑side secrets are read with `getSecret()` and must be provided via environment variables. On first install, the `postinstall` script attempts to copy `.env.example` to `.env` if `.env` is missing; otherwise copy it manually. Only `.env` is loaded locally. Define `SECRET_PASSWORDS`, `SECRET_ENCRYPTION_PASSWORD` and `SECRET_ENCRYPTION_SALT`. `SECRET_PASSWORDS` is a JSON object mapping `<collection>:<entry id>` to the clear‑text password used to derive the per‑post key; the entry id is the content slug without file extension (for example `src/content/post/encrypted-test.mdx` has the id `encrypted-test`). `SECRET_ENCRYPTION_PASSWORD` and `SECRET_ENCRYPTION_SALT` are used to HKDF‑derive an AES‑GCM key that encrypts derived keys at rest in the SQLite cache.
 
 > [!CAUTION]
 > The `SECRET_PASSWORDS` key format has changed. Entry IDs no longer include the file extension (Astro 6 content collection migration). Update your `.env` and CI/deployment secrets accordingly:
@@ -322,8 +322,8 @@ Server‑side secrets are read with `getSecret()` and must be provided via envir
 #   oi:binary-search      → src/content/oi/binary-search.md
 SECRET_PASSWORDS='{"post:encrypted-test":"change-me","oi:binary-search":"change-me-too"}'
 
-# Defense-in-depth: derives an AES-GCM key for encrypting cached keys.
-# The cache DB already has file-level encryption; this adds a second layer.
+# Derives an AES-GCM key (and HMAC key) protecting cached keys and passwords
+# at rest, so the SQLite cache file needs no file-level encryption.
 SECRET_ENCRYPTION_PASSWORD='please-generate-a-strong-random-string'
 SECRET_ENCRYPTION_SALT='another-strong-random-string-or-base64'
 ```

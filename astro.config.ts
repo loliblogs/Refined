@@ -21,9 +21,10 @@ import { remarkDefinitionList, defListHastHandlers } from 'remark-definition-lis
 
 import expressiveCode from 'astro-expressive-code';
 import playformCompress from '@playform/compress';
-import db from '@astrojs/db';
 
 import { browserslistToTargets } from 'lightningcss';
+
+import { unified } from '@astrojs/markdown-remark';
 
 // https://astro.build/config
 export default defineConfig({
@@ -32,7 +33,7 @@ export default defineConfig({
   trailingSlash: 'never',
   output: 'static',
   cacheDir: '.cache',
-  integrations: [skipTreeshake(), postlinkIntegration(), expressiveCode(), solidJs(), mdx({ optimize: true }), db(), playformCompress({
+  integrations: [skipTreeshake(), postlinkIntegration(), expressiveCode(), solidJs(), mdx({ optimize: true }), playformCompress({
     CSS: false,
     HTML: {
       'html-minifier-terser': {
@@ -124,25 +125,27 @@ export default defineConfig({
     format: 'file',
   },
   markdown: {
-    remarkPlugins: [remarkDefinitionList, remarkGithubAdmonitionsToDirectives,
-      remarkDirective, remarkDirectiveRehype, remarkPangu,
-      [remarkRemoveCjkBreaks, {
-        includeEmoji: true,
-        includeMathWithPunctuation: true,
-      }], [remarkMath, {
-        flowSingleLineMinDelimiter: 2,
-      }], [remarkEmoji, {
-        accessible: true,
-      }]],
-    rehypePlugins: [rehypeMathJax, rehypeSanitize],
-    remarkRehype: {
-      handlers: {
-        ...defListHastHandlers,
+    processor: unified({
+      remarkPlugins: [remarkDefinitionList, remarkGithubAdmonitionsToDirectives,
+        remarkDirective, remarkDirectiveRehype, remarkPangu,
+        [remarkRemoveCjkBreaks, {
+          includeEmoji: true,
+          includeMathWithPunctuation: true,
+        }], [remarkMath, {
+          flowSingleLineMinDelimiter: 2,
+        }], [remarkEmoji, {
+          accessible: true,
+        }]],
+      rehypePlugins: [rehypeMathJax, rehypeSanitize],
+      remarkRehype: {
+        handlers: {
+          ...defListHastHandlers,
+        },
+        footnoteBackContent: '\u2003', // Em Space
+        footnoteBackLabel: (idx: number, reIdx: number) => `返回引用 ${idx + 1}${reIdx > 1 ? `-${reIdx}` : ''}`,
+        footnoteLabel: '脚注',
       },
-      footnoteBackContent: '\u2003', // Em Space
-      footnoteBackLabel: (idx, reIdx) => `返回引用 ${idx + 1}${reIdx > 1 ? `-${reIdx}` : ''}`,
-      footnoteLabel: '脚注',
-    },
+    }),
   },
   image: {
     layout: 'constrained',

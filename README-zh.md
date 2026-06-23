@@ -59,7 +59,7 @@ pnpm sync
 | `pnpm typecheck`       | 通过 Astro 运行类型检查（包含 `.astro` 文件！）   |
 | `pnpm lint`            | 使用 ESLint 检查项目文件                   |
 | `pnpm lint:fix`        | 自动修复可修复的 ESLint 问题                 |
-| `pnpm astro ...`       | 运行 `astro add`、`astro db` 等 CLI 命令 |
+| `pnpm astro ...`       | 运行 `astro add`、`astro sync` 等 CLI 命令 |
 | `pnpm astro -- --help` | 查看 Astro CLI 帮助                    |
 
 **CI 说明：** GitHub Actions 工作流会检测提交标题（首行）中的 `[full]` 并运行 `pnpm build:full` 而非 `pnpm build`。这很少需要——仅用于边界情况，例如 `.md` 与 `.mdx` 之间重命名导致旧缓存引发构建失败时：
@@ -288,7 +288,7 @@ console.log('代码块会被语法高亮');
 
 加密文章使用由密码派生的密钥保护渲染后的 HTML。服务端从每篇文章的密码与唯一盐值通过 Argon2id（内存 64MB、时间 3、并行度 1）派生 32 字节密钥，然后采用 AES‑256‑GCM 与随机 12 字节随机数（nonce）进行加密。加密后的负载以 JSON 形式输出，包含盐值、随机数与携带认证标签的密文。客户端通过一个轻量 Web Worker 使用同样的口令与盐值派生密钥，并借助浏览器 WebCrypto API 在本地进行认证解密。
 
-实现分布于：服务端加密 `src/utils/encrypt-processor.ts` 与 `src/components/EncryptWrapper.astro`；客户端派生与解密 `src/utils/argon2-worker.ts` 与 `src/components/DecryptClient.tsx`；服务端密钥派生与缓存 `src/utils/argon2-cache.ts`；以及在 Astro DB 中用于存储加密后的派生密钥与元数据的表 `db/config.ts`。文章页在 `src/components/pages/PostPage.astro` 中整合这些模块。
+实现分布于：服务端加密 `src/utils/encrypt-processor.ts` 与 `src/components/EncryptWrapper.astro`；客户端派生与解密 `src/utils/argon2-worker.ts` 与 `src/components/DecryptClient.tsx`；服务端密钥派生与缓存 `src/utils/argon2-cache.ts`（使用 Node 原生 `node:sqlite` 在本地 SQLite 数据库中存储加密后的派生密钥与元数据）。文章页在 `src/components/pages/PostPage.astro` 中整合这些模块。
 
 要将某篇文章标记为受保护，请在 frontmatter 中设置加密相关字段。注意，密码本身不会存储在内容中；改由机密（secrets）在构建或运行时提供。
 
@@ -306,7 +306,7 @@ hint: 你收到的私密密码。
 正文内容在构建时会被加密，客户端收到的是密文。
 ```
 
-服务端机密通过 `getSecret()` 读取，需通过环境变量提供。首次安装时，`postinstall` 脚本会在缺失 `.env` 的情况下尝试将 `.env.example` 复制为 `.env`；若未成功，请手动复制。本地仅加载 `.env`。请定义 `SECRET_PASSWORDS`、`SECRET_ENCRYPTION_PASSWORD` 与 `SECRET_ENCRYPTION_SALT`。其中 `SECRET_PASSWORDS` 为一个 JSON 对象，将 `<collection>:<entry id>` 映射到用于派生每篇文章密钥的明文密码；entry id 为不含文件扩展名的内容 slug（例如 `src/content/post/encrypted-test.mdx` 对应 id `encrypted-test`）。`SECRET_ENCRYPTION_PASSWORD` 与 `SECRET_ENCRYPTION_SALT` 用于通过 HKDF 派生用于静态加密（AES‑GCM）的密钥，以加密 Astro DB 缓存中的派生密钥。
+服务端机密通过 `getSecret()` 读取，需通过环境变量提供。首次安装时，`postinstall` 脚本会在缺失 `.env` 的情况下尝试将 `.env.example` 复制为 `.env`；若未成功，请手动复制。本地仅加载 `.env`。请定义 `SECRET_PASSWORDS`、`SECRET_ENCRYPTION_PASSWORD` 与 `SECRET_ENCRYPTION_SALT`。其中 `SECRET_PASSWORDS` 为一个 JSON 对象，将 `<collection>:<entry id>` 映射到用于派生每篇文章密钥的明文密码；entry id 为不含文件扩展名的内容 slug（例如 `src/content/post/encrypted-test.mdx` 对应 id `encrypted-test`）。`SECRET_ENCRYPTION_PASSWORD` 与 `SECRET_ENCRYPTION_SALT` 用于通过 HKDF 派生用于静态加密（AES‑GCM）的密钥，以加密 SQLite 缓存中的派生密钥。
 
 > [!CAUTION]
 > `SECRET_PASSWORDS` 的键格式已变更。entry ID 不再包含文件扩展名（Astro 6 内容集合迁移）。请相应更新 `.env` 与 CI/部署密钥：
@@ -320,15 +320,15 @@ hint: 你收到的私密密码。
 #   oi:binary-search      → src/content/oi/binary-search.md
 SECRET_PASSWORDS='{"post:encrypted-test":"change-me","oi:binary-search":"change-me-too"}'
 
-# 纵深防御：派生 AES-GCM 密钥用于加密缓存的密钥。
-# 缓存数据库已有文件级加密；这是额外的一层防护。
+# 派生 AES-GCM 密钥（及 HMAC 密钥）用于在静态存储中保护缓存的派生密钥与密码，
+# 因此 SQLite 缓存文件本身无需文件级加密。
 SECRET_ENCRYPTION_PASSWORD='please-generate-a-strong-random-string'
 SECRET_ENCRYPTION_SALT='another-strong-random-string-or-base64'
 ```
 
 本地开发时，将上述变量置于 `.env`（`.env.example` 仅为模板，不会被加载）。在 Cloudflare Pages 上，请以相同名称配置项目机密（例如使用 `wrangler pages secret put SECRET_PASSWORDS`，另外两个同理）。密钥与密码不会发送至浏览器；仅加密后的有效载荷会下发，且解密在客户端由用户输入的密码完成。
 
-Argon2 缓存只是一个构建期优化——丢失它仅意味着重新计算密钥（几秒钟的 CPU 时间），不会有数据丢失。缓存使用本地 SQLite 文件（`file:.cache/persist.db`），通过数据库 URL 中的 `encryptionKey` 实现文件级加密。额外的 AES-GCM 层（由 `SECRET_ENCRYPTION_PASSWORD` 与 `SECRET_ENCRYPTION_SALT` 派生）是一种保守的纵深防御措施；实际上文件级加密已足够保护静态缓存数据。不要为此缓存配置真正的远程数据库——延迟和网络可靠性会使其失去意义。
+Argon2 缓存只是一个构建期优化——丢失它仅意味着重新计算密钥（几秒钟的 CPU 时间），不会有数据丢失。缓存使用本地 SQLite 文件（`.cache/argon2-cache.db`），通过 Node 原生 `node:sqlite` 访问，无需任何额外依赖。敏感字段在应用层得到保护：派生密钥用 AES-256-GCM 封装，密码以 HMAC-SHA256 摘要存储，二者均由 `SECRET_ENCRYPTION_PASSWORD` 与 `SECRET_ENCRYPTION_SALT` 经 HKDF 派生——因此数据库文件本身无需文件级加密。在 CI 中，`.cache` 目录通过 Actions 缓存跨构建持久化，密钥只需计算一次即可复用。
 
 ## 🧮 MathJax
 
