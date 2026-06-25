@@ -135,7 +135,9 @@ async function initializeDataOnce(collection: CollectionName): Promise<Collectio
     }
 
     // 预获取 Content 组件（Astro 5 方式：render() 很快，只返回组件引用）
-    const { Content } = await render(post);
+    // mathStyles 由 rehype-mathjax-satteri 写入 remarkPluginFrontmatter
+    const { Content, remarkPluginFrontmatter } = await render(post);
+    const mathStyles: unknown = remarkPluginFrontmatter.mathStyles;
 
     // 构造完整 Post 对象
     processedPosts.push({
@@ -155,6 +157,7 @@ async function initializeDataOnce(collection: CollectionName): Promise<Collectio
       Content,
       excerptSource,
       encryption,
+      ...(typeof mathStyles === 'string' ? { mathStyles } : {}),
     });
   }
 

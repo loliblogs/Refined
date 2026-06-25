@@ -1,7 +1,7 @@
 overrides:
   terser: ^5.48.0
   html-minifier-terser: npm:html-minifier-next
-  vite: ^7.3.3
+  vite: ^8.1.0
   lightningcss: ^1.32.0
 
 trustPolicy: no-downgrade
@@ -11,3 +11,15 @@ allowBuilds:
   '@tailwindcss/oxide': true
   esbuild: true
   sharp: true
+
+minimumReleaseAgeExclude:
+  - '@bruits/satteri-darwin-arm64@0.9.3'
+  - '@bruits/satteri-darwin-x64@0.9.3'
+  - '@bruits/satteri-linux-arm64-gnu@0.9.3'
+  - '@bruits/satteri-linux-arm64-musl@0.9.3'
+  - '@bruits/satteri-linux-x64-gnu@0.9.3'
+  - '@bruits/satteri-linux-x64-musl@0.9.3'
+  - '@bruits/satteri-wasm32-wasi@0.9.3'
+  - '@bruits/satteri-win32-arm64-msvc@0.9.3'
+  - '@bruits/satteri-win32-x64-msvc@0.9.3'
+  - satteri@0.9.3

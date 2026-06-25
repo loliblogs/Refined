@@ -1,10 +1,10 @@
 /**
  * https://github.com/gatsbyjs/gatsby/blob/main/packages/gatsby-remark-remove-cjk-breaks/src/index.js
+ * Sätteri 版:text visitor 替换 value;inlineMath 前后标点用 ctx.parent/indexOf 取相邻 text 兄弟改写。
  */
 
-import { visit } from 'unist-util-visit';
-import { visitParents } from 'unist-util-visit-parents';
-import type { Root } from 'mdast';
+import { defineMdastPlugin } from 'satteri';
+import type { MdastPluginDefinition } from 'satteri';
 
 /* eslint @stylistic/indent: ["error", 2, { "ignoreComments": true }] */
 const cjkChars = [
@@ -60,12 +60,6 @@ const cjkChars = [
   '\\u{FE13}-\\u{FE16}',   // ︓︔︕︖ ... Glyphs for vertical variants (Latin symbols of vertical form)
   '\\u{FE17}-\\u{FE18}', // ︗︘ ... Glyphs for vertical variants
   '\\u{FE19}',            // ︙ ... Glyphs for vertical variants (Presentation Form for Vertical Horizontal Ellipsis)
-
-  // References:
-  // https://unicode.org/charts/
-  // https://unicode.org/Public/UCD/latest/ucd/Scripts.txt
-  // https://unicode.org/Public/UNIDATA/ScriptExtensions.txt
-  // https://unicode-table.com/en/
 ];
 
 const squaredLatinAbbrChars = [
@@ -84,14 +78,7 @@ const squaredLatinAbbrChars = [
   '\\u{33FF}',           // ㏿ ... Squared Latin abbreviations (Square Gal)
 ];
 
-
-export default function remarkRemoveCjkBreaks({
-  includeHangul = false,
-  includeEmoji = false,
-  includeSquaredLatinAbbrs = false,
-  includeMathWithPunctuation = true,
-  additionalRegexpPairs,
-}: {
+interface RemarkRemoveCjkBreaksOptions {
   includeHangul?: boolean;
   includeEmoji?: boolean;
   includeSquaredLatinAbbrs?: boolean;
@@ -100,7 +87,15 @@ export default function remarkRemoveCjkBreaks({
     beforeBreak?: string;
     afterBreak?: string;
   }[];
-} = {}) {
+}
+
+export default function remarkRemoveCjkBreaksSatteri({
+  includeHangul = false,
+  includeEmoji = false,
+  includeSquaredLatinAbbrs = false,
+  includeMathWithPunctuation = true,
+  additionalRegexpPairs,
+}: RemarkRemoveCjkBreaksOptions = {}): () => MdastPluginDefinition {
   const charGroup = [...cjkChars];
   if (includeSquaredLatinAbbrs) charGroup.push(...squaredLatinAbbrChars);
   if (includeHangul) charGroup.push('\\p{scx=Hangul}');
@@ -122,40 +117,44 @@ export default function remarkRemoveCjkBreaks({
     );
   });
 
-  // 构建标点相关的正则（用于处理公式前后的标点）
+  // 构建标点相关的正则(用于处理公式前后的标点)
   const punctPattern = '[、。，：；！？]';
   const punctBeforeMathRegex = new RegExp(`(${punctPattern})[\\s\\r\\n]+$`, 'u');
   const punctAfterMathRegex = new RegExp(`^[\\s\\r\\n]+(${punctPattern})`, 'u');
 
-  return function (tree: Root) {
-    visit(tree, 'text', (node) => {
+  return () => defineMdastPlugin({
+    name: 'remark-remove-cjk-breaks-satteri',
+    text(node, ctx) {
+      let value = node.value;
       for (const regItem of regexpItems) {
-        node.value = node.value.replace(regItem, '$1$2');
+        value = value.replace(regItem, '$1$2');
       }
-    });
+      if (value !== node.value) ctx.setProperty(node, 'value', value);
+    },
+    inlineMath(node, ctx) {
+      if (!includeMathWithPunctuation) return;
 
-    if (includeMathWithPunctuation) {
-      visitParents(tree, 'inlineMath', (node, parents) => {
-        const parent = parents[parents.length - 1];
-        if (parent?.type !== 'paragraph') {
-          return;
-        }
+      const parent = ctx.parent(node);
+      if (parent.type !== 'paragraph') return;
 
-        const index = parent.children.indexOf(node);
-        if (index > 0) {
-          const prevNode = parent.children[index - 1];
-          if (prevNode?.type === 'text') {
-            prevNode.value = prevNode.value.replace(punctBeforeMathRegex, '$1');
-          }
-        }
+      const index = ctx.indexOf(node);
+      if (index === undefined) return;
 
-        if (index < parent.children.length - 1) {
-          const nextNode = parent.children[index + 1];
-          if (nextNode?.type === 'text') {
-            nextNode.value = nextNode.value.replace(punctAfterMathRegex, '$1');
-          }
+      if (index > 0) {
+        const prevNode = parent.children[index - 1];
+        if (prevNode?.type === 'text') {
+          const value = prevNode.value.replace(punctBeforeMathRegex, '$1');
+          if (value !== prevNode.value) ctx.setProperty(prevNode, 'value', value);
         }
-      });
-    }
-  };
+      }
+
+      if (index < parent.children.length - 1) {
+        const nextNode = parent.children[index + 1];
+        if (nextNode?.type === 'text') {
+          const value = nextNode.value.replace(punctAfterMathRegex, '$1');
+          if (value !== nextNode.value) ctx.setProperty(nextNode, 'value', value);
+        }
+      }
+    },
+  });
 }

@@ -161,15 +161,19 @@ const pageContext = {
       {post.encryption
         ? (
             <EncryptWrapper derivedKey={post.encryption.derivedKey} salt={post.encryption.salt}>
+              {post.mathStyles && <style is:inline set:html={post.mathStyles} />}
               <CachedContent collection={collection} cacheKey={post.id}>
                 <Content />
               </CachedContent>
             </EncryptWrapper>
           )
         : (
-            <CachedContent collection={collection} cacheKey={post.id}>
-              <Content />
-            </CachedContent>
+            <>
+              {post.mathStyles && <style is:inline set:html={post.mathStyles} />}
+              <CachedContent collection={collection} cacheKey={post.id}>
+                <Content />
+              </CachedContent>
+            </>
           )}
     </div>
 

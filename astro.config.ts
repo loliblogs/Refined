@@ -4,27 +4,23 @@ import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 import mdx from '@astrojs/mdx';
 
-import remarkMath from './src/plugins/remark-math';
-import rehypeMathJax from './src/plugins/rehype-mathjax';
-import rehypeSanitize from './src/plugins/rehype-sanitize';
-import remarkDirectiveRehype from './src/plugins/remark-directive-rehype';
-import remarkRemoveCjkBreaks from './src/plugins/remark-remove-cjk-breaks';
-import remarkPangu from './src/plugins/remark-pangu';
+import rehypeMathjax from './src/plugins/rehype-mathjax-satteri';
+import rehypeSanitize from './src/plugins/rehype-sanitize-satteri';
+import remarkDirective from './src/plugins/remark-directive-satteri';
+import remarkGithubAlerts from './src/plugins/remark-github-alerts-satteri';
+import remarkRemoveCjkBreaks from './src/plugins/remark-remove-cjk-breaks-satteri';
+import remarkPangu from './src/plugins/remark-pangu-satteri';
+import remarkEmoji from './src/plugins/remark-emoji-satteri';
 import buildSearch from './src/plugins/build-search';
 import postlinkIntegration from './src/plugins/postlink-integration';
 import skipTreeshake from './src/plugins/skip-treeshake';
-
-import remarkDirective from 'remark-directive';
-import remarkEmoji from 'remark-emoji';
-import remarkGithubAdmonitionsToDirectives from 'remark-github-admonitions-to-directives';
-import { remarkDefinitionList, defListHastHandlers } from 'remark-definition-list';
 
 import expressiveCode from 'astro-expressive-code';
 import playformCompress from '@playform/compress';
 
 import { browserslistToTargets } from 'lightningcss';
 
-import { unified } from '@astrojs/markdown-remark';
+import { satteri } from '@astrojs/markdown-satteri';
 
 // https://astro.build/config
 export default defineConfig({
@@ -125,26 +121,31 @@ export default defineConfig({
     format: 'file',
   },
   markdown: {
-    processor: unified({
-      remarkPlugins: [remarkDefinitionList, remarkGithubAdmonitionsToDirectives,
-        remarkDirective, remarkDirectiveRehype, remarkPangu,
-        [remarkRemoveCjkBreaks, {
-          includeEmoji: true,
-          includeMathWithPunctuation: true,
-        }], [remarkMath, {
-          flowSingleLineMinDelimiter: 2,
-        }], [remarkEmoji, {
-          accessible: true,
-        }]],
-      rehypePlugins: [rehypeMathJax, rehypeSanitize],
-      remarkRehype: {
-        handlers: {
-          ...defListHastHandlers,
+    processor: satteri({
+      features: {
+        math: true,
+        frontmatter: true,
+        directive: true,
+        gfm: {
+          footnotes: {
+            label: '脚注',
+            backContent: '\u2003', // Em Space
+            // satteri 的 referenceNumber 已是 1-based（remark-rehype 的 idx 是 0-based 需 +1）
+            backLabel: (referenceNumber: number, rerunIndex: number) =>
+              `返回引用 ${referenceNumber}${rerunIndex > 1 ? `-${rerunIndex}` : ''}`,
+          },
         },
-        footnoteBackContent: '\u2003', // Em Space
-        footnoteBackLabel: (idx: number, reIdx: number) => `返回引用 ${idx + 1}${reIdx > 1 ? `-${reIdx}` : ''}`,
-        footnoteLabel: '脚注',
       },
+      // ⚠️ 全部裸 factory 引用，保证 per-document 闭包隔离（尤其 rehypeMathjax 的 output）。
+      // remarkGithubAlerts 必须排在 remarkDirective 之前（blockquote→containerDirective）。
+      mdastPlugins: [
+        remarkGithubAlerts,
+        remarkDirective,
+        remarkPangu,
+        remarkRemoveCjkBreaks({ includeEmoji: true, includeMathWithPunctuation: true }),
+        remarkEmoji,
+      ],
+      hastPlugins: [rehypeMathjax, rehypeSanitize],
     }),
   },
   image: {
@@ -160,11 +161,6 @@ export default defineConfig({
   experimental: {
     clientPrerender: true,
     contentIntellisense: true,
-    rustCompiler: true,
-    queuedRendering: {
-      enabled: true,
-      contentCache: true,
-    },
     svgOptimizer: svgoOptimizer({
       plugins: [
         'preset-default',

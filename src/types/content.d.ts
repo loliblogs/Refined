@@ -68,6 +68,9 @@ export interface Post {
   // Astro 集成字段
   collection: CollectionName;  // 必需（标识内容集合）
   Content: AstroComponentFactory; // 预渲染的内容组件（Astro 5: 从 render(entry) 获取）
+
+  // 数学公式样式（rehype-mathjax-satteri 经 remarkPluginFrontmatter 透出，模板层注入到 Content 前）
+  mathStyles?: string;
 }
 
 /**

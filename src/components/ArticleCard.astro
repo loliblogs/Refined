@@ -142,6 +142,7 @@ const excerptLink = config.excerpt_link;
           : Content && (
             <div data-markdown {...(post.lang && { lang: post.lang })}>
               <ExcerptExtractor>
+                {post.mathStyles && <style is:inline set:html={post.mathStyles} />}
                 <CachedContent collection={post.collection} cacheKey={post.id}>
                   <Content />
                 </CachedContent>
