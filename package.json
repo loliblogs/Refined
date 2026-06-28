@@ -79,7 +79,7 @@
     "@types/node": "^26.0.1",
     "@types/wordcloud": "^1.2.2",
     "@typescript-eslint/parser": "^8.62.0",
-    "eslint": "^10.5.0",
+    "eslint": "^10.6.0",
     "eslint-interactive": "^14.0.0",
     "eslint-mdx": "^3.8.1",
     "eslint-plugin-astro": "^2.1.1",

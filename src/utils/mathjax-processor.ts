@@ -26,12 +26,14 @@ import '@mathjax/src/js/input/tex/require/RequireConfiguration.js';
 import '@mathjax/src/js/input/tex/autoload/AutoloadConfiguration.js';
 import '@mathjax/src/js/input/tex/configmacros/ConfigMacrosConfiguration.js';
 
-import type { LiteElement } from '@mathjax/src/js/adaptors/lite/Element.js';
+import type { LiteElement, LiteNode } from '@mathjax/src/js/adaptors/lite/Element.js';
+import type { LiteText } from '@mathjax/src/js/adaptors/lite/Text.js';
+import type { LiteDocument } from '@mathjax/src/js/adaptors/lite/Document.js';
 import type { MathDocument } from '@mathjax/src/js/core/MathDocument.js';
 
 // 全局共享的 adaptor 和 input
 const adaptor = liteAdaptor();
-AssistiveMmlHandler(RegisterHTMLHandler(adaptor));
+AssistiveMmlHandler<LiteNode, LiteText, LiteDocument>(RegisterHTMLHandler(adaptor));
 
 const input = new TeX({
   packages: ['ams', 'base', 'newcommand', 'noundefined', 'textmacros', 'require', 'autoload', 'configmacros'],
