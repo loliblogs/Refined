@@ -126,6 +126,8 @@ export default defineConfig({
         math: true,
         frontmatter: true,
         directive: true,
+        definitionList: true,
+        superscript: true,
         gfm: {
           footnotes: {
             label: '脚注',
