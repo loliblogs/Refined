@@ -19,8 +19,8 @@
     "online": "pnpm run online:workers && pnpm run online:pages && pnpm run online:vercel && pnpm run online:netlify",
     "online:workers": "pnpx wrangler@latest -c wrangler-workers.jsonc deploy",
     "online:pages": "pnpx wrangler@latest pages deploy",
-    "online:vercel": "pnpx --config.trust-policy= vercel@latest --cwd dist deploy --prod",
-    "online:netlify": "pnpx --config.trust-policy= --package netlify-cli@latest netlify deploy --no-build --prod"
+    "online:vercel": "pnpx --config.trust-policy=off vercel@latest --cwd dist deploy --prod",
+    "online:netlify": "pnpx --config.trust-policy=off --package netlify-cli@latest netlify deploy --no-build --prod"
   },
   "dependencies": {
     "@astrojs/compiler-rs": "^0.5.0",
