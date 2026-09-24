@@ -3,7 +3,7 @@ import pangu from 'pangu';
 
 function format(value: string): string {
   if (!value) return value;
-  return pangu.spacingText(value);
+  return pangu.spaceText(value);
 }
 
 /**

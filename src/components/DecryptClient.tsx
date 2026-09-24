@@ -46,7 +46,7 @@ function base64ToUint8(b64: string): Uint8Array {
 
 function shakeElement(el: HTMLElement): void {
   el.classList.remove('motion-safe:update-fast:animate-[shake_0.35s_ease-in-out]');
-  void el.offsetHeight; // 强制 reflow
+  el.getBoundingClientRect(); // 强制 reflow
   el.classList.add('motion-safe:update-fast:animate-[shake_0.35s_ease-in-out]');
 }
 
