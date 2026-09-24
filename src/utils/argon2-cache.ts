@@ -107,7 +107,7 @@ function tryLoadFromCache(
     return null;
   }
 
-  if (!row || !isArgon2CacheRow(row)) return null;
+  if (!isArgon2CacheRow(row)) return null;
 
   // 验证密码是否匹配
   const hashedPassword = crypto.createHmac('sha256', envHashTag)
